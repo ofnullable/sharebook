@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="include/head :: head"></head>
-<body>
-	<nav th:replace="include/nav :: nav"></nav>
-
-
-	<footer th:replace="include/footer :: footer"></footer>
-	<th:block th:replace="include/scripts :: scripts"/>
-</body>
+	<head th:replace="include/head :: head"></head>
+	<body>
+		<section th:replace="include/header :: header"></section>
+		
+		<div class="album py-5">
+			<div class="container">
+				<div class="row">
+				</div>
+			</div>
+		</div>
+		
+		<footer th:replace="include/footer :: footer"></footer>
+		<th:block th:replace="include/scripts :: scripts"/>
+	</body>
 </html>

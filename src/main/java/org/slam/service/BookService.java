@@ -16,10 +16,6 @@ public class BookService {
 	@Autowired
 	private BookRepository bookRepo;
 	
-	public Iterable<Book> getBookList() {
-		return bookRepo.findAll();
-	}
-	
 	@PostConstruct
 	private void init() {
 		bookRepo.findById(1L).ifPresentOrElse(

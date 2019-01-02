@@ -6,15 +6,19 @@ body {
 	font-family: 'Fira Mono', 'Nanum Gothic Coding', monospace !important;
 	margin-bottom: 60px;
 }
-.navbar-dark .navbar-toggler {
-	border: none;
-}
 .jumbotron {
 	background-color: transparent;
 	padding: 5rem 2rem;
 }
 .jumbotron > .container {
 	max-width: 40rem;
+}
+img {
+	width: 100%;
+	max-width: 100%;
+}
+a:hover, a:focus {
+	text-decoration: none;
 }
 footer {
 	position: absolute;
