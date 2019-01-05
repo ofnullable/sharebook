@@ -17,7 +17,9 @@ public class BookController {
 	
 	@GetMapping("/{id}")
 	public String getBookDetail(@PathVariable Long id, Model model) {
-		model.addAttribute("book", bookSelectService.selectBookDetail(id));
+		var book = bookSelectService.selectBookDetail(id);
+		System.out.println(book);
+		model.addAttribute("book", book);
 		return "book/detail";
 	}
 	

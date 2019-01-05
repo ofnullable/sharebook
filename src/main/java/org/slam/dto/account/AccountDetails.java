@@ -1,4 +1,4 @@
-package org.slam.entity.account;
+package org.slam.dto.account;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

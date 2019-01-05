@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+jdbc.sqlonly    : Logs only SQL
+jdbc.sqltiming  : Logs the SQL, post-execution, including timing execution statistics
+jdbc.audit      : Logs ALL JDBC calls except for ResultSets
+jdbc.resultset  : all calls to ResultSet objects are logged
+jdbc.connection : Logs connection open and close events
+-->
+<configuration>
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="jdbc" level="OFF"/>
+
+	<logger name="jdbc.sqlonly" level="OFF">
+		<appender-ref ref="STDOUT"/>
+	</logger>
+
+	<logger name="jdbc.sqltiming" level="DEBUG" additivity="false">
+		<appender-ref ref="STDOUT"/>
+	</logger>
+
+	<logger name="jdbc.resultsettable" level="OFF">
+		<appender-ref ref="STDOUT"/>
+	</logger>
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT"/>
+	</root>
+
+</configuration>
