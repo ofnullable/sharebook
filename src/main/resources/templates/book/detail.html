@@ -3,26 +3,54 @@
 	<head th:replace="include/head :: head"></head>
 	<body>
 		<section th:replace="include/header :: header"></section>
-		
+		<style type="text/css">
+			textarea {
+				margin-bottom: .5rem;
+				padding: .5rem;
+				resize: none;
+				border-radius: 9px;
+				min-height: 50px;
+			}
+		</style>
 		<div class="album py-5">
 			<div class="container">
 				<div class="row">
-					<div class="clearfix w-100">
-						<div class="float-left w-25">
-							<img class="w-50" src="https://image.aladin.co.kr/product/16234/12/cover/8932035059_1.jpg" th:alt="${book.title}">
-							<div class="d-inline-block" th:each="image : ${book.images}">
-								<p th:text="${image}"></p>
-							</div>
+					<div class="col-6">
+						<img class="col-md-6 col-12" th:src="@{https://image.aladin.co.kr/product/16234/12/cover/8932035059_1.jpg}" th:alt="${book.title}">
+						<div class="row">
+							<p class="col-4" th:each="image : ${book.images}" th:text="${image}"></p>
 						</div>
-						<div class="float-right w-50">
-							<h1 th:text="${book.title}"></h1>
-							<p th:text="${book.author}"></p>
-							<p th:text="${book.owner}"></p>
+					</div>
+					<div class="col-6">
+						<h1 th:text="${book.title}"></h1>
+						<span th:text="${book.author}"></span>
+						<p th:text="${book.owner}"></p>
+						<div th:if="${session != null && session.auth != null}" class="text-center">
+							<button class="btn btn-outline-secondary">예약</button>
+							<button class="btn btn-success">대여</button>
 						</div>
 					</div>
 					
 					<div>
 						<p th:text="${book.description}"></p>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-12">
+						<div class="container">
+							<form class="row justify-content-end">
+								<textarea class="col-12"></textarea>
+								<button class="btn btn-success col-md-1 col-12 mb-3">등록</button>
+							</form>
+							<div class="row comments bg-light p-3 rounded align-items-start">
+								<img th:src="@{https://placeimg.com/70/70/animals}" style="width: 70px;border-radius: 50%;margin-right: 15px;">
+								<div style="flex: 1;">
+									<p><b>nickname</b> | 2019-01-03</p>
+									<p>Donec id elit non mi porta gravida at eget metus. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Donec ullamcorper nulla non metus auctor fringilla. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis.</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

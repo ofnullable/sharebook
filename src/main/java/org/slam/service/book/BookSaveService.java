@@ -1,4 +1,4 @@
-package org.slam.service;
+package org.slam.service.book;
 
 import org.slam.dto.book.Book;
 import org.slam.mapper.book.BookImageMapper;

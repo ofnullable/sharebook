@@ -1,6 +1,7 @@
 package org.slam.config;
 
-import org.slam.service.AccountService;
+import org.slam.handler.AuthSuccessHandler;
+import org.slam.service.account.AccountSelectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,7 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-	private AccountService accountService;
+	private AccountSelectService accountSelectService;
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -28,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(accountService).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(accountSelectService).passwordEncoder(passwordEncoder());
 	}
 	
 	@Override
@@ -47,8 +48,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 				.formLogin()
 					.loginPage("/sign-in")
+					.successHandler(new AuthSuccessHandler())
 			.and()
 				.logout()
+					.logoutUrl("/sign-out")
 					.clearAuthentication(true)
 					.invalidateHttpSession(true)
 			.and()

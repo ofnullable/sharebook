@@ -27,7 +27,6 @@
 		  FROM BOOK b
 		  JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
-	  ORDER BY ID DESC, SORT_NO ASC
 	</select>
 
 	<select id="findById" resultMap="selectBookMap">
@@ -43,6 +42,5 @@
 		  JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
 		 WHERE ID = #{id}
-	  ORDER BY SORT_NO ASC
 	</select>
 </mapper>

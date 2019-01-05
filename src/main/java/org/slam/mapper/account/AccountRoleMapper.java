@@ -1,9 +1,11 @@
 package org.slam.mapper.account;
 
-import org.slam.dto.account.Account;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 
 public interface AccountRoleMapper {
 	
-	void save(Account account);
+	@Insert("INSERT INTO ACCOUNT_ROLE (USERNAME, ROLE_ID) VALUES (#{username}, #{role_id})")
+	void save(@Param("username") String username, @Param("role_id") Long roleId);
 	
 }

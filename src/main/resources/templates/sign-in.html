@@ -24,19 +24,20 @@
 				<img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
 				<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 				<label for="username" class="sr-only">Email address</label>
-				<input type="text" name="username" id="username" class="form-control" placeholder="Email address" required="required" autofocus="autofocus">
+				<input type="text" name="username" id="username" class="form-control mb-1" placeholder="your_id" required="required" autofocus="autofocus">
 				<label for="password" class="sr-only">Password</label>
-				<input type="password" name="password" id="password" class="form-control" placeholder="Password" required="required">
+				<input type="password" name="password" id="password" class="form-control mb-1" placeholder="password" required="required">
 				
 				<div class="custom-control custom-checkbox mb-3">
 					<input type="checkbox" class="custom-control-input" id="customCheck1">
 					<label class="custom-control-label" for="customCheck1"> Remember me </label>
 				</div>
 				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+				<a href="/sign-up" class="btn btn-lg btn-link btn-block">Sign up</a>
 			</form>
-			
+		
 		</div>
-
+		
 		<footer th:replace="include/footer :: footer"></footer>
 		<th:block th:replace="include/scripts :: scripts"/>
 	</body>

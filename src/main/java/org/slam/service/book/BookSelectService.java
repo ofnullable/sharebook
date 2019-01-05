@@ -1,4 +1,4 @@
-package org.slam.service;
+package org.slam.service.book;
 
 import org.slam.dto.book.Book;
 import org.slam.mapper.book.BookSelectMapper;
@@ -19,7 +19,7 @@ public class BookSelectService {
 	
 	public Book selectBookDetail(Long id) {
 		return Optional.ofNullable(bookSelectMapper.findById(id))
-				.orElseThrow( () -> new IllegalArgumentException("CAN NOT FOUND BOOK. ID : " + id) );
+				.orElseThrow( () -> new IllegalArgumentException("CAN NOT FOUND BOOK FOR ID : " + id) );
 	}
 	
 }
