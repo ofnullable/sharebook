@@ -42,8 +42,8 @@
 						<button type="button" class="btn btn-primary float-right">Register!</button>
 					</form>
 					
-					<form id="file-form" class="d-none" action="/image/register" method="post">
-						<input name="bookImage" type="file" hidden="hidden" multiple>
+					<form id="file-form" class="d-none" action= method="post">
+						<input name="bookImages" type="file" hidden="hidden" multiple>
 					</form>
 				</div>
 			</div>
@@ -53,7 +53,29 @@
 		<th:block th:replace="include/scripts :: scripts"/>
 		<script type="text/javascript">
 			$('#add-image, .image-area').click(function(e) {
-				$('input[name="bookImage"]').trigger('click');
+				$('input[name="bookImages"]').trigger('click');
+			});
+			
+			$('input[name="bookImages"]').change(function(e) {
+				var files = $(this)[0].files;
+				console.log(files);
+				var data = new FormData();
+				Array.from(files).forEach(function(v) {
+					data.append('bookImages', v);
+				});
+				
+				console.log(data);
+				
+				$.ajax({
+					url: "/files/images",
+					type: "post",
+					data: data,
+					processData: false,
+					contentType: false,
+					success: function(res) {
+						console.log(res);
+					}
+				})
 			});
 		</script>
 	</body>
