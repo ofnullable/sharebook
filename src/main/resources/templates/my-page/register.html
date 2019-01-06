@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="include/head :: head"></head>
+	<body>
+		<section th:replace="include/header :: header"></section>
+		<style type="text/css">
+			#description {
+				min-height: 150px;
+			}
+			.image-area.before {
+				display: flex;
+				width: 100%;
+				min-height: 100px;
+				justify-content: center;
+				align-items: center;
+				border-radius: 5px;
+				border: 2px dashed #0069D9;
+				color: #0069D9;
+				padding: 10px 20px;
+				margin-bottom: 1rem;
+			}
+		</style>
+		<div class="album py-5">
+			<div class="container">
+				<div class="row">
+					
+					<div class="image-area before">
+						<p class="m-0">Upload image</p>
+					</div>
+					
+					<form class="new-book-form w-100 clearfix" action="/my-page/item/register" method="post">
+						<label for="title" class="sr-only">Title</label>
+						<input type="text" name="title" id="title" class="form-control mb-1" placeholder="enter title" required="required" autofocus="autofocus">
+						
+						<label for="author" class="sr-only">Author</label>
+						<input type="text" name="author" id="author" class="form-control mb-1" placeholder="enter author" required="required">
+						
+						<label for="description" class="sr-only">Description</label>
+						<textarea type="email" name="description" id="description" class="form-control mb-1" placeholder="enter description" required="required"></textarea>
+						
+						<button id="add-image" type="button" class="btn btn-success">Add image</button>
+						<button type="button" class="btn btn-primary float-right">Register!</button>
+					</form>
+					
+					<form id="file-form" class="d-none" action="/image/register" method="post">
+						<input name="bookImage" type="file" hidden="hidden" multiple>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<footer th:replace="include/footer :: footer"></footer>
+		<th:block th:replace="include/scripts :: scripts"/>
+		<script type="text/javascript">
+			$('#add-image, .image-area').click(function(e) {
+				$('input[name="bookImage"]').trigger('click');
+			});
+		</script>
+	</body>
+</html>

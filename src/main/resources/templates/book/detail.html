@@ -18,7 +18,7 @@
 					<div class="col-6">
 						<img class="col-md-6 col-12" th:src="@{https://image.aladin.co.kr/product/16234/12/cover/8932035059_1.jpg}" th:alt="${book.title}">
 						<div class="row">
-							<p class="col-4" th:each="image : ${book.images}" th:text="${image}"></p>
+							<p class="col-4" th:each="image : ${book.images}" th:text="${image.imageUrl}"></p>
 						</div>
 					</div>
 					<div class="col-6">

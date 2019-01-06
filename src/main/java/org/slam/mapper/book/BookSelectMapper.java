@@ -8,6 +8,8 @@ public interface BookSelectMapper {
 	
 	List<Book> findAll();
 	
+	List<Book> findAllById(String owner);
+	
 	Book findById(Long id);
 	
 }

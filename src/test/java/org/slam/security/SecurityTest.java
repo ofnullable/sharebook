@@ -9,11 +9,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,8 +38,21 @@ public class SecurityTest {
 	
 	@WithMockUser(username = "username", password = "pass", roles = "ADMIN")
 	@Test
-	public void test() throws Exception {
-		mvc.perform(get("/user/all")).andExpect(status().isOk());
+	public void accessSuccessTest() throws Exception {
+		Assert.isTrue(
+				mvc.perform(get("/admin/user/list"))
+						.andExpect(status().isOk())
+						.andDo(print())
+						.andReturn().getResponse().getContentAsString().contains("username")
+		);
+	}
+	
+	@WithMockUser(username = "default", password = "pass", roles = "BASIC")
+	@Test
+	public void accessDeniedTest() throws Exception {
+		mvc.perform(get("/admin/user/list"))
+				.andExpect(status().isForbidden())
+				.andDo(print());
 	}
 	
 	@Test
@@ -46,8 +61,8 @@ public class SecurityTest {
 				.userParameter("username").user("username")
 				.passwordParam("password").password("pass");
 		mvc.perform( requestBuilder )
-				.andExpect(redirectedUrl("/"));
+				.andExpect(redirectedUrl("/"))
+				.andDo(print());
 	}
-	
 	
 }

@@ -16,7 +16,6 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 	public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException, ServletException {
 		setAuthInfoToSession(req, auth);
 		String prev = getPrevPage(req);
-		System.out.println(prev);
 		clearPrevAttr(req);
 		res.sendRedirect( Optional.ofNullable(prev).orElse("/") );
 	}

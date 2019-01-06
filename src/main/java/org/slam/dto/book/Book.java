@@ -20,9 +20,9 @@ public class Book {
 	private LocalDateTime modifiedAt;
 	private LocalDateTime createdAt;
 	
-	private List<String> images;
+	private List<BookImage> images;
 	
-	public Book(String title, String author, List<String> images) {
+	public Book(String title, String author, List<BookImage> images) {
 		this.title = title;
 		this.author = author;
 		this.images = images;

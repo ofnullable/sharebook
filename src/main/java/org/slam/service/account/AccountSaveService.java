@@ -1,22 +1,20 @@
 package org.slam.service.account;
 
+import lombok.AllArgsConstructor;
 import org.slam.dto.account.Account;
 import org.slam.mapper.account.AccountRoleMapper;
 import org.slam.mapper.account.AccountSaveMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@AllArgsConstructor
 public class AccountSaveService {
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	@Autowired
-	private AccountSaveMapper accountSaveMapper;
-	@Autowired
-	private AccountRoleMapper accountRoleMapper;
+	private final PasswordEncoder passwordEncoder;
+	private final AccountSaveMapper accountSaveMapper;
+	private final AccountRoleMapper accountRoleMapper;
 	
 	@Transactional
 	public void save(Account account) {

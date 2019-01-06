@@ -1,14 +1,12 @@
 package org.slam.service.account;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.slam.dto.account.Account;
 import org.slam.dto.account.AccountDetails;
 import org.slam.mapper.account.AccountSelectMapper;
-import org.slam.mapper.account.RoleMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +14,10 @@ import java.util.Optional;
 
 @Log4j2
 @Service
+@AllArgsConstructor
 public class AccountSelectService implements UserDetailsService {
 	
-	@Autowired
-	private AccountSelectMapper accountSelectMapper;
+	private final AccountSelectMapper accountSelectMapper;
 	
 	@Override
 	public AccountDetails loadUserByUsername(String username) throws UsernameNotFoundException {

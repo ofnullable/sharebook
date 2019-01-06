@@ -1,9 +1,11 @@
 package org.slam.mapper.book;
 
-import org.slam.dto.book.Book;
+import org.slam.dto.book.BookImage;
+
+import java.util.List;
 
 public interface BookImageMapper {
 	
-	void save(Book book);
+	void save(List<BookImage> bookImages);
 	
 }

@@ -9,19 +9,14 @@
 		INSERT INTO BOOK_IMAGE
 		            (
 		            BOOK_ID
-		            , IMAGE
+		            , IMAGE_URL
+					, ORD_NO
 		            )
-		     VALUES <foreach collection="images" item="i" separator=",">
+		     VALUES <foreach collection="bookImages" item="i" separator=",">
 		            (
-		            <choose>
-						<when test="id != null and id != 0">
-							#{id}
-						</when>
-						<otherwise>
-							LAST_INSERT_ID()
-						</otherwise>
-					</choose>
-		            , #{i}
+					#{i.bookId}
+		            , #{i.imageUrl}
+		            , #{i.ordNo}
 		            )
 	                </foreach>
 	</insert>

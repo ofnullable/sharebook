@@ -2,7 +2,6 @@ package org.slam.config;
 
 import org.slam.handler.AuthSuccessHandler;
 import org.slam.service.account.AccountSelectService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +18,11 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	@Autowired
-	private AccountSelectService accountSelectService;
+	private final AccountSelectService accountSelectService;
+	
+	public WebSecurityConfig(AccountSelectService accountSelectService) {
+		this.accountSelectService = accountSelectService;
+	}
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -43,7 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 				.csrf().disable()
 				.authorizeRequests()
-					.antMatchers("/user/all").hasRole("ADMIN")
+					.antMatchers("/admin/**").hasRole("ADMIN")
+					.antMatchers("/my-page/**").authenticated()
 					.antMatchers("/**").permitAll()
 			.and()
 				.formLogin()

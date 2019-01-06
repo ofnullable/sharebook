@@ -11,8 +11,8 @@
 		<result column="OWNER" property="owner"/>
 		<result column="DESCRIPTION" property="description"/>
 		<result column="CREATED_AT" property="createdAt"/>
-		<collection property="images" ofType="String">
-			<result column="IMAGE" property="images"/>
+		<collection property="images" ofType="bookImage">
+			<result column="IMAGE_URL" property="imageUrl"/>
 		</collection>
 	</resultMap>
 	<select id="findAll" resultMap="selectBookMap">
@@ -23,10 +23,27 @@
 		       , OWNER
 		       , DESCRIPTION
 		       , CREATED_AT
-		       , IMAGE
+		       , IMAGE_URL
 		  FROM BOOK b
 		  JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
+	  ORDER BY ID ASC, ORD_NO ASC
+	</select>
+
+	<select id="findAllById" resultMap="selectBookMap">
+		SELECT
+		       ID
+		       , TITLE
+		       , AUTHOR
+		       , OWNER
+		       , DESCRIPTION
+		       , CREATED_AT
+		       , IMAGE_URL
+		  FROM BOOK b
+		  JOIN BOOK_IMAGE i
+		    ON b.ID = i.BOOK_ID
+		 WHERE OWNER = #{owner}
+	  ORDER BY ID ASC, ORD_NO ASC
 	</select>
 
 	<select id="findById" resultMap="selectBookMap">
@@ -37,10 +54,11 @@
 		       , OWNER
 		       , DESCRIPTION
 		       , CREATED_AT
-		       , IMAGE
+		       , IMAGE_URL
 		  FROM BOOK b
 		  JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
 		 WHERE ID = #{id}
+	  ORDER BY ORD_NO ASC
 	</select>
 </mapper>
