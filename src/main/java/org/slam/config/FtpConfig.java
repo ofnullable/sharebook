@@ -9,12 +9,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
+import org.springframework.integration.dsl.IntegrationFlow;
+import org.springframework.integration.dsl.IntegrationFlows;
+import org.springframework.integration.file.remote.gateway.AbstractRemoteFileOutboundGateway.Option;
 import org.springframework.integration.file.remote.session.CachingSessionFactory;
 import org.springframework.integration.file.remote.session.SessionFactory;
+import org.springframework.integration.file.support.FileExistsMode;
+import org.springframework.integration.ftp.config.FtpOutboundChannelAdapterParser;
+import org.springframework.integration.ftp.dsl.Ftp;
+import org.springframework.integration.ftp.gateway.FtpOutboundGateway;
 import org.springframework.integration.ftp.outbound.FtpMessageHandler;
 import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Log4j2
 @Configuration
@@ -41,8 +52,9 @@ public class FtpConfig {
 		sf.setConnectTimeout(5000);
 		sf.setBufferSize(10000);
 		sf.setClientMode(FTPClient.PASSIVE_LOCAL_DATA_CONNECTION_MODE);
-		return new CachingSessionFactory<>(sf);
+		return new CachingSessionFactory<>(sf, 10);
 	}
+	
 	
 	@Bean
 	public MessageChannel toFtpChannel() {
@@ -58,29 +70,31 @@ public class FtpConfig {
 	@ServiceActivator(inputChannel = "toFtpChannel")
 	public MessageHandler handler() {
 		var handler = new FtpMessageHandler(sessionFactory());
+		handler.setCharset("UTF-8");
 		handler.setAutoCreateDirectory(true);
 		handler.setRemoteDirectoryExpressionString("headers['path']");
-		handler.setFileNameGenerator( message -> (String) message.getHeaders().get("file_name") );
 		return handler;
 	}
-	/* Can send with code below too. */
-//	@Bean
-//	@ServiceActivator(inputChannel = "toFtpChannel")
-//	public FtpOutboundGateway outboundGateway() {
-//		var gw = new FtpOutboundGateway(sessionFactory(), "ls", "payload");
-//		gw.setOption(Option.ALL);
-//		gw.setOutputChannelName("fromFtpChannel");
-//		return gw;
-//	}
-//	@Bean
-//	public IntegrationFlow outboundFlow() {
-//		return IntegrationFlows.from("toFtpChannel")
-//				.handle(Ftp.outboundAdapter(sessionFactory(), FileExistsMode.REPLACE)
-//						.remoteFileSeparator(File.separator)
-//						.useTemporaryFileName(false)
-//						.fileNameExpression("headers['file_name']")
-//						.remoteDirectory("headers['path']")
-//				).get();
-//	}
+	/* Can send by gateway with code below too. */
+	/*
+	@Bean
+	@ServiceActivator(inputChannel = "toFtpChannel")
+	public FtpOutboundGateway outboundGateway() {
+		var gw = new FtpOutboundGateway(sessionFactory(), "ls", "payload");
+		gw.setOption(Option.ALL);
+		gw.setOutputChannelName("fromFtpChannel");
+		return gw;
+	}
+	@Bean
+	public IntegrationFlow outboundFlow() {
+		return IntegrationFlows.from("toFtpChannel")
+				.handle(Ftp.outboundAdapter(sessionFactory(), FileExistsMode.REPLACE)
+						.temporaryRemoteDirectory( m -> (String) m.getHeaders().get("path"))
+						.charset("UTF-8")
+						.autoCreateDirectory(true)
+						.remoteDirectoryExpression("headers['path']")
+				).get();
+	}
+	*/
 	
 }

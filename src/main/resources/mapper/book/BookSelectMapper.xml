@@ -25,7 +25,7 @@
 		       , CREATED_AT
 		       , IMAGE_URL
 		  FROM BOOK b
-		  JOIN BOOK_IMAGE i
+	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
 	  ORDER BY ID ASC, ORD_NO ASC
 	</select>
@@ -40,7 +40,7 @@
 		       , CREATED_AT
 		       , IMAGE_URL
 		  FROM BOOK b
-		  JOIN BOOK_IMAGE i
+	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
 		 WHERE OWNER = #{owner}
 	  ORDER BY ID ASC, ORD_NO ASC
@@ -56,7 +56,7 @@
 		       , CREATED_AT
 		       , IMAGE_URL
 		  FROM BOOK b
-		  JOIN BOOK_IMAGE i
+	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
 		 WHERE ID = #{id}
 	  ORDER BY ORD_NO ASC

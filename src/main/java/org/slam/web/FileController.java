@@ -21,8 +21,7 @@ public class FileController {
 	@PostMapping("/image")
 	public String saveImage(MultipartFile bookImage) {
 		log.info("FILE NAME : " + bookImage.getOriginalFilename());
-//		TODO: Make code
-//		fileService.send(bookImage);
+		fileService.send(bookImage);
 		return "success";
 	}
 	
@@ -31,8 +30,7 @@ public class FileController {
 		Arrays.stream(bookImages).forEach(
 				f -> log.info("FILE NAME : " + f.getOriginalFilename())
 		);
-//		TODO: Make code
-//		fileService.sendAll(bookImages);
+		fileService.sendAll(bookImages);
 		return "success";
 	}
 	
