@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
+import java.util.List;
 
 @Log4j2
 @RestController
@@ -19,19 +19,19 @@ public class FileController {
 	private final FileService fileService;
 	
 	@PostMapping("/image")
-	public String saveImage(MultipartFile bookImage) {
-		log.info("FILE NAME : " + bookImage.getOriginalFilename());
-		fileService.send(bookImage);
-		return "success";
+	public String saveImage(MultipartFile bookImage) throws InterruptedException {
+		var sendResult = fileService.send(bookImage);
+		Thread.sleep( 2 * 1000 ); // Wait for upload to complete
+		return sendResult;
 	}
-	
 	@PostMapping("/images")
-	public String saveImages(MultipartFile[] bookImages) {
-		Arrays.stream(bookImages).forEach(
-				f -> log.info("FILE NAME : " + f.getOriginalFilename())
-		);
-		fileService.sendAll(bookImages);
-		return "success";
+	public List<String> saveImages(MultipartFile[] bookImages) throws InterruptedException {
+		long startTime = System.currentTimeMillis();
+		List<String> sendResults = fileService.sendAll(bookImages);
+		long endTime = System.currentTimeMillis();
+		log.info("Elapsed time : {}", (endTime - startTime));
+		Thread.sleep( 2 * 1000 );
+		return sendResults;
 	}
 	
 }

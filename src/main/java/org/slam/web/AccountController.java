@@ -38,7 +38,7 @@ public class AccountController {
 	
 	private String setPrevPage(HttpServletRequest req, Authentication auth, String toGo) {
 		String prev = req.getHeader("Referer");
-		log.info("AUTHENTICATION : {}, PREV : {}, TOGO : {}" + auth, prev, toGo);
+		log.info("AUTHENTICATION : {}, PREV : {}, TOGO : {}", auth, prev, toGo);
 		if ( auth != null ) {
 			return prev != null ? "redirect:" + prev : "redirect:/";
 		}

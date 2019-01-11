@@ -6,6 +6,7 @@
 		<style type="text/css">
 			#description {
 				min-height: 150px;
+				resize: vertical;
 			}
 			.image-area.before {
 				display: flex;
@@ -18,6 +19,25 @@
 				color: #0069D9;
 				padding: 10px 20px;
 				margin-bottom: 1rem;
+			}
+			.loading-box {
+				opacity: .7;
+				background-color: #FFFFFF;
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				text-align: center;
+			}
+			.loading-box i {
+				position: relative;
+				color: #333333;
+				top: 40%;
+			}
+			.images {
+				width: 100%;
+				margin-bottom: 3rem;
 			}
 		</style>
 		<div class="album py-5">
@@ -42,30 +62,30 @@
 						<button type="button" class="btn btn-primary float-right">Register!</button>
 					</form>
 					
-					<form id="file-form" class="d-none" action= method="post">
+					<form id="file-form" class="d-none">
 						<input name="bookImages" type="file" hidden="hidden" multiple>
 					</form>
 				</div>
 			</div>
 		</div>
-		
+		<div class="loading-box fa-3x" style="display: none;">
+			<i class="fas fa-spinner fa-spin"></i>
+		</div>
 		<footer th:replace="include/footer :: footer"></footer>
 		<th:block th:replace="include/scripts :: scripts"/>
 		<script type="text/javascript">
-			$('#add-image, .image-area').click(function(e) {
+			$('#add-image, .image-area').click(function() {
 				$('input[name="bookImages"]').trigger('click');
 			});
 			
-			$('input[name="bookImages"]').change(function(e) {
+			$('input[name="bookImages"]').change(function() {
+				var $loadingBox = $('.loading-box');
+				$loadingBox.show();
 				var files = $(this)[0].files;
-				console.log(files);
 				var data = new FormData();
 				Array.from(files).forEach(function(v) {
 					data.append('bookImages', v);
 				});
-				
-				console.log(data);
-				
 				$.ajax({
 					url: "/files/images",
 					type: "post",
@@ -73,10 +93,35 @@
 					processData: false,
 					contentType: false,
 					success: function(res) {
-						console.log(res);
+						if ( res ) {
+							afterSendFile(res);
+							$loadingBox.hide();
+						}
 					}
 				})
 			});
+			
+			function afterSendFile( res ) {
+				$('.image-area').remove();
+				var $bookForm = $('.new-book-form');
+				var imgTags = '', inputs = '';
+				res.forEach(function(item, index) {
+					console.log('item : ', item, ' index : ', index);
+					imgTags += makeImageTags(item);
+					inputs += makeInputTags(item, index);
+				});
+				// Append image
+				$bookForm.before( '<div class="images"></div>' );
+				$('.images').append(imgTags);
+				// Append image path
+				$bookForm.append(inputs);
+			}
+			function makeImageTags(item) {
+				return '<img src="http://img.worksout.co.kr/' + item + '" style="max-width: 150px;margin-left: 0 2%;">';
+			}
+			function makeInputTags(item, index) {
+				return '<input type="hidden" name="images[' + index + '].imageUrl" value="' + item + '">';
+			}
 		</script>
 	</body>
 </html>

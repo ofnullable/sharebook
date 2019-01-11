@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/admin/user")
-public class UserManagementController {
+public class AdminController {
 
 	private final AccountSelectService accountSelectService;
 	
