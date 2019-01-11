@@ -6,6 +6,7 @@
 		<style type="text/css">
 			#description {
 				min-height: 150px;
+				resize: vertical;
 			}
 			.image-area.before {
 				display: flex;
@@ -19,6 +20,25 @@
 				padding: 10px 20px;
 				margin-bottom: 1rem;
 			}
+			.loading-box {
+				opacity: .7;
+				background-color: #FFFFFF;
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				text-align: center;
+			}
+			.loading-box i {
+				position: relative;
+				color: #333333;
+				top: 40%;
+			}
+			.images {
+				width: 100%;
+				margin-bottom: 3rem;
+			}
 		</style>
 		<div class="album py-5">
 			<div class="container">
@@ -29,6 +49,7 @@
 					</div>
 					
 					<form class="new-book-form w-100 clearfix" action="/my-page/item/register" method="post">
+						<input type="hidden" name="createdBy" th:value="${session.auth.username}">
 						<label for="title" class="sr-only">Title</label>
 						<input type="text" name="title" id="title" class="form-control mb-1" placeholder="enter title" required="required" autofocus="autofocus">
 						
@@ -39,22 +60,73 @@
 						<textarea type="email" name="description" id="description" class="form-control mb-1" placeholder="enter description" required="required"></textarea>
 						
 						<button id="add-image" type="button" class="btn btn-success">Add image</button>
-						<button type="button" class="btn btn-primary float-right">Register!</button>
+						<button type="submit" class="btn btn-primary float-right">Register!</button>
 					</form>
 					
-					<form id="file-form" class="d-none" action="/image/register" method="post">
-						<input name="bookImage" type="file" hidden="hidden" multiple>
+					<form id="file-form" class="d-none">
+						<input name="bookImages" type="file" hidden="hidden" multiple>
 					</form>
 				</div>
 			</div>
 		</div>
-		
+		<div class="loading-box fa-3x" style="display: none;">
+			<i class="fas fa-spinner fa-spin"></i>
+		</div>
 		<footer th:replace="include/footer :: footer"></footer>
 		<th:block th:replace="include/scripts :: scripts"/>
 		<script type="text/javascript">
-			$('#add-image, .image-area').click(function(e) {
-				$('input[name="bookImage"]').trigger('click');
+			$('#add-image, .image-area').click(function() {
+				$('input[name="bookImages"]').trigger('click');
 			});
+			
+			$('input[name="bookImages"]').change(function() {
+				var $loadingBox = $('.loading-box');
+				$loadingBox.show();
+				var files = $(this)[0].files;
+				var data = new FormData();
+				Array.from(files).forEach(function(v) {
+					data.append('bookImages', v);
+				});
+				$.ajax({
+					url: "/files/images",
+					type: "post",
+					data: data,
+					processData: false,
+					contentType: false,
+					success: function(res) {
+						if ( res ) {
+							$(this).val('');
+							afterSendFile(res);
+							$loadingBox.hide();
+						}
+					}
+				})
+			});
+			
+			function afterSendFile( res ) {
+				$('.image-area').remove();
+				var $bookForm = $('.new-book-form');
+				var imgTags = '', inputs = '';
+				res.forEach(function(item, index) {
+					console.log('item : ', item, ' index : ', index);
+					imgTags += makeImageTags(item);
+					inputs += makeInputTags(item, index);
+				});
+				// Append image tag
+				makeOrSelectImageWrapper($bookForm).append(imgTags);
+				// Append image path
+				$bookForm.append(inputs);
+			}
+			function makeOrSelectImageWrapper($bookForm) {
+				var $images = $('.images');
+				return $images.length ? $images : $bookForm.before('<div class="images"></div>').prev();
+			}
+			function makeImageTags(item) {
+				return '<img src="http://img.worksout.co.kr/' + item + '" style="max-width: 150px;margin-left: 0 2%;">';
+			}
+			function makeInputTags(item, index) {
+				return '<input type="hidden" name="images[' + index + '].imageUrl" value="' + item + '">';
+			}
 		</script>
 	</body>
 </html>

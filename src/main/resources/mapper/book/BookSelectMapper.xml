@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.slam.mapper.book.BookSelectMapper">
-	<resultMap id="selectBookMap" type="book">
-		<id column="ID" property="id"/>
-		<result column="TITLE" property="title"/>
-		<result column="AUTHOR" property="author"/>
-		<result column="OWNER" property="owner"/>
-		<result column="DESCRIPTION" property="description"/>
-		<result column="CREATED_AT" property="createdAt"/>
-		<collection property="images" ofType="bookImage">
-			<result column="IMAGE_URL" property="imageUrl"/>
-		</collection>
-	</resultMap>
-	<select id="findAll" resultMap="selectBookMap">
+    <resultMap id="selectBookMap" type="book">
+        <id column="ID" property="id"/>
+        <result column="TITLE" property="title"/>
+        <result column="AUTHOR" property="author"/>
+        <result column="DESCRIPTION" property="description"/>
+        <result column="CREATED_BY" property="createdBy"/>
+        <result column="CREATED_AT" property="createdAt"/>
+        <collection property="images" ofType="bookImage">
+            <result column="IMAGE_URL" property="imageUrl"/>
+        </collection>
+    </resultMap>
+    <select id="findAll" resultMap="selectBookMap">
 		SELECT
 		       ID
 		       , TITLE
 		       , AUTHOR
-		       , OWNER
 		       , DESCRIPTION
+		       , CREATED_BY
 		       , CREATED_AT
 		       , IMAGE_URL
 		  FROM BOOK b
-		  JOIN BOOK_IMAGE i
+	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
 	  ORDER BY ID ASC, ORD_NO ASC
 	</select>
 
-	<select id="findAllById" resultMap="selectBookMap">
+    <select id="findAllById" resultMap="selectBookMap">
 		SELECT
 		       ID
 		       , TITLE
 		       , AUTHOR
-		       , OWNER
 		       , DESCRIPTION
+		       , CREATED_BY
 		       , CREATED_AT
 		       , IMAGE_URL
 		  FROM BOOK b
-		  JOIN BOOK_IMAGE i
+	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
-		 WHERE OWNER = #{owner}
+		 WHERE CREATED_BY = #{owner}
 	  ORDER BY ID ASC, ORD_NO ASC
 	</select>
 
-	<select id="findById" resultMap="selectBookMap">
+    <select id="findById" resultMap="selectBookMap">
 		SELECT
 		       ID
 		       , TITLE
 		       , AUTHOR
-		       , OWNER
 		       , DESCRIPTION
+		       , CREATED_BY
 		       , CREATED_AT
 		       , IMAGE_URL
 		  FROM BOOK b
-		  JOIN BOOK_IMAGE i
+	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
 		 WHERE ID = #{id}
 	  ORDER BY ORD_NO ASC

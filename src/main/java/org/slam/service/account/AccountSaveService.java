@@ -11,17 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @AllArgsConstructor
 public class AccountSaveService {
-	
-	private final PasswordEncoder passwordEncoder;
-	private final AccountSaveMapper accountSaveMapper;
-	private final AccountRoleMapper accountRoleMapper;
-	
-	@Transactional
-	public void save(Account account) {
-		account.setPassword( passwordEncoder.encode(account.getPassword()) );
-		accountSaveMapper.save(account);
-		accountRoleMapper.save(account.getUsername(), 1L);
-		// TODO: Make enum for default role value
-	}
-	
+
+    private final PasswordEncoder passwordEncoder;
+    private final AccountSaveMapper accountSaveMapper;
+    private final AccountRoleMapper accountRoleMapper;
+
+    @Transactional
+    public void save(Account account) {
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        accountSaveMapper.save(account);
+        accountRoleMapper.save(account.getUsername(), 1L);
+        // TODO: Make enum for default role value
+    }
+
 }

@@ -36,7 +36,7 @@ public class AccountTest {
 	
 	@Test
 	public void accountUpdateTest() {
-		var account = new Account("default", "pass", "", "");
+		var account = new Account("default", "123", "", "");
 		accountUpdateService.updatePassword(account);
 	}
 	

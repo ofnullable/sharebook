@@ -20,11 +20,15 @@
 						<div class="row">
 							<p class="col-4" th:each="image : ${book.images}" th:text="${image.imageUrl}"></p>
 						</div>
+						<div class="images">
+							<img th:each="i : ${book.images}" th:src="|http://img.worksout.co.kr/${i.imageUrl}|" th:alt="${book.title}"/>
+						</div>
 					</div>
 					<div class="col-6">
 						<h1 th:text="${book.title}"></h1>
 						<span th:text="${book.author}"></span>
-						<p th:text="${book.owner}"></p>
+						<p th:text="${book.createdBy}"></p>
+						<p th:text="${session.auth.username}"></p>
 						<div th:if="${session != null && session.auth != null}" class="text-center">
 							<button class="btn btn-outline-secondary">예약</button>
 							<button class="btn btn-success">대여</button>

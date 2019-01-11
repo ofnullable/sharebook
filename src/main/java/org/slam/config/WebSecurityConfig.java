@@ -17,53 +17,53 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	private final AccountSelectService accountSelectService;
-	
-	public WebSecurityConfig(AccountSelectService accountSelectService) {
-		this.accountSelectService = accountSelectService;
-	}
-	
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	}
-	
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(accountSelectService).passwordEncoder(passwordEncoder());
-	}
-	
-	@Override
-	public void configure(WebSecurity web) {
-		web.ignoring()
-				.antMatchers("/css/**", "/js/**", "/img/**");
-	}
-	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-				.csrf().disable()
-				.authorizeRequests()
-					.antMatchers("/admin/**").hasRole("ADMIN")
-					.antMatchers("/my-page/**").authenticated()
-					.antMatchers("/**").permitAll()
-			.and()
-				.formLogin()
-					.loginPage("/sign-in")
-					.successHandler(new AuthSuccessHandler())
-			.and()
-				.logout()
-					.logoutUrl("/sign-out")
-					.clearAuthentication(true)
-					.invalidateHttpSession(true)
-			.and()
-				.sessionManagement();
-	}
-	
-	@Bean
-	public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
-		return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
-	}
-	
+
+    private final AccountSelectService accountSelectService;
+
+    public WebSecurityConfig(AccountSelectService accountSelectService) {
+        this.accountSelectService = accountSelectService;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(accountSelectService).passwordEncoder(passwordEncoder());
+    }
+
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers("/css/**", "/js/**", "/img/**");
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/my-page/**").authenticated()
+                    .antMatchers("/**").permitAll()
+            .and()
+                .formLogin()
+                    .loginPage("/sign-in")
+                    .successHandler(new AuthSuccessHandler())
+            .and()
+                .logout()
+                    .logoutUrl("/sign-out")
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+            .and()
+                .sessionManagement();
+    }
+
+    @Bean
+    public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
+        return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
+    }
+
 }

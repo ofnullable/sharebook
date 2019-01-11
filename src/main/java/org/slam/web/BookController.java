@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @AllArgsConstructor
 @RequestMapping("/book")
 public class BookController {
-	
-	private final BookSelectService bookSelectService;
-	
-	@GetMapping("/{id}")
-	public String getBookDetail(@PathVariable Long id, Model model) {
-		model.addAttribute("book", bookSelectService.selectBookDetail(id));
-		return "book/detail";
-	}
-	
+
+    private final BookSelectService bookSelectService;
+
+    @GetMapping("/{id}")
+    public String getBookDetail(@PathVariable Long id, Model model) {
+        model.addAttribute("book", bookSelectService.selectBookDetail(id));
+        return "book/detail";
+    }
+
 }
