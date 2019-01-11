@@ -8,7 +8,7 @@
 			<div class="container">
 				<div class="row">
 					
-					<th:block th:if="${books} == null">
+					<th:block th:if="${books} != null">
 						<div th:each="book : ${books}" class="col-md-4">
 							<div class="card mb-4 shadow-sm">
 								<a th:href="|/book/${book.id}|">
@@ -75,7 +75,6 @@
 								</div>
 							</div>
 						</div>
-						
 					</th:block>
 					<th:block th:unless="${books} == null">
 						<div class="col-12 text-center">

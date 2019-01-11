@@ -20,50 +20,50 @@ import org.springframework.messaging.MessageHandler;
 @Configuration
 @PropertySource("classpath:/properties/ftp.properties")
 public class FtpConfig {
-	
-	@Value("${ftp.host}")
-	private String FTP_HOST;
-	@Value("${ftp.username}")
-	private String FTP_USERNAME;
-	@Value("${ftp.password}")
-	private String FTP_PASSWORD;
-	
-	@Bean
-	public SessionFactory<FTPFile> sessionFactory() {
-		log.info("Setup for FTP session factory..");
-		var sf = new DefaultFtpSessionFactory();
-		sf.setHost(FTP_HOST);
-		sf.setPort(FTPClient.DEFAULT_PORT);
-		sf.setControlEncoding("UTF-8");
-		sf.setUsername(FTP_USERNAME);
-		sf.setPassword(FTP_PASSWORD);
-		sf.setDefaultTimeout(5000);
-		sf.setConnectTimeout(5000);
-		sf.setClientMode(FTPClient.PASSIVE_LOCAL_DATA_CONNECTION_MODE);
-		return new CachingSessionFactory<>(sf, 10);
-	}
-	
-	
-	@Bean
-	public MessageChannel toFtpChannel() {
-		return new DirectChannel();
-	}
-	
-	@Bean
-	public MessageChannel fromFtpChannel() {
-		return new DirectChannel();
-	}
-	
-	@Bean
-	@ServiceActivator(inputChannel = "toFtpChannel")
-	public MessageHandler handler() {
-		var handler = new FtpMessageHandler(sessionFactory());
-		handler.setCharset("UTF-8");
-		handler.setAutoCreateDirectory(true);
-		handler.setRemoteDirectoryExpressionString("headers['path']");
-		return handler;
-	}
-	/* Can send by gateway with code below too. */
+
+    @Value("${ftp.host}")
+    private String FTP_HOST;
+    @Value("${ftp.username}")
+    private String FTP_USERNAME;
+    @Value("${ftp.password}")
+    private String FTP_PASSWORD;
+
+    @Bean
+    public SessionFactory<FTPFile> sessionFactory() {
+        log.info("Setup for FTP session factory..");
+        var sf = new DefaultFtpSessionFactory();
+        sf.setHost(FTP_HOST);
+        sf.setPort(FTPClient.DEFAULT_PORT);
+        sf.setControlEncoding("UTF-8");
+        sf.setUsername(FTP_USERNAME);
+        sf.setPassword(FTP_PASSWORD);
+        sf.setDefaultTimeout(5000);
+        sf.setConnectTimeout(5000);
+        sf.setClientMode(FTPClient.PASSIVE_LOCAL_DATA_CONNECTION_MODE);
+        return new CachingSessionFactory<>(sf, 10);
+    }
+
+
+    @Bean
+    public MessageChannel toFtpChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public MessageChannel fromFtpChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    @ServiceActivator(inputChannel = "toFtpChannel")
+    public MessageHandler handler() {
+        var handler = new FtpMessageHandler(sessionFactory());
+        handler.setCharset("UTF-8");
+        handler.setAutoCreateDirectory(true);
+        handler.setRemoteDirectoryExpressionString("headers['path']");
+        return handler;
+    }
+    /* Can send by gateway with code below too. */
 	/*
 	@Bean
 	@ServiceActivator(inputChannel = "toFtpChannel")
@@ -84,5 +84,5 @@ public class FtpConfig {
 				).get();
 	}
 	*/
-	
+
 }

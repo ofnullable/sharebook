@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BookSaveMapper {
 	
-	void save(Book book);
+	Long save(Book book);
 	
 	void saveAll(List<Book> books);
 	

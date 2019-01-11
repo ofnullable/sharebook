@@ -8,12 +8,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter @Setter @ToString
 public class Role {
-	
-	private Long id;
-	private String name;
-	
-	public Role(String name) {
-		this.name = name;
-	}
-	
+
+    private Long id;
+    private String name;
+
+    public Role(String name) {
+        this.name = name;
+    }
+
 }

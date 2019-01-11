@@ -14,11 +14,11 @@ import java.util.List;
 @RequestMapping("/admin/user")
 public class AdminController {
 
-	private final AccountSelectService accountSelectService;
-	
-	@GetMapping("/list")
-	public List<Account> selectAllUser() {
-		return accountSelectService.findAll();
-	}
+    private final AccountSelectService accountSelectService;
+
+    @GetMapping("/list")
+    public List<Account> selectAllUser() {
+        return accountSelectService.findAll();
+    }
 
 }

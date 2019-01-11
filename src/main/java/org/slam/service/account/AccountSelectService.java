@@ -16,23 +16,23 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class AccountSelectService implements UserDetailsService {
-	
-	private final AccountSelectMapper accountSelectMapper;
-	
-	@Override
-	public AccountDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		log.info("PROCESSING LOGIN FOR USER : {}", username);
-		return Optional.ofNullable(accountSelectMapper.findById(username))
-				.map(AccountDetails::new)
-				.orElseThrow( () -> new UsernameNotFoundException("Can not find user. username : " + username) );
-	}
-	
-	public List<Account> findAll() {
-		return accountSelectMapper.findAll();
-	}
-	
-	public void remove(Account account) {
-		accountSelectMapper.delete(account);
-	}
-	
+
+    private final AccountSelectMapper accountSelectMapper;
+
+    @Override
+    public AccountDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("PROCESSING LOGIN FOR USER : {}", username);
+        return Optional.ofNullable(accountSelectMapper.findById(username))
+                .map(AccountDetails::new)
+                .orElseThrow( () -> new UsernameNotFoundException("Can not find user. username : " + username) );
+    }
+
+    public List<Account> findAll() {
+        return accountSelectMapper.findAll();
+    }
+
+    public void remove(Account account) {
+        accountSelectMapper.delete(account);
+    }
+
 }

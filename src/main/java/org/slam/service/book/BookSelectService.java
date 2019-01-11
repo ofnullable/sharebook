@@ -11,20 +11,20 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class BookSelectService {
-	
-	private final BookSelectMapper bookSelectMapper;
-	
-	public List<Book> selectBookList() {
-		return bookSelectMapper.findAll();
-	}
-	
-	public List<Book> selectBookList(String owner) {
-		return bookSelectMapper.findAllById(owner);
-	}
-	
-	public Book selectBookDetail(Long id) {
-		return Optional.ofNullable(bookSelectMapper.findById(id))
-				.orElseThrow( () -> new IllegalArgumentException("CAN NOT FOUND BOOK FOR ID : " + id) );
-	}
-	
+
+    private final BookSelectMapper bookSelectMapper;
+
+    public List<Book> selectBookList() {
+        return bookSelectMapper.findAll();
+    }
+
+    public List<Book> selectBookList(String owner) {
+        return bookSelectMapper.findAllById(owner);
+    }
+
+    public Book selectBookDetail(Long id) {
+        return Optional.ofNullable(bookSelectMapper.findById(id))
+                .orElseThrow( () -> new IllegalArgumentException("CAN NOT FOUND BOOK FOR ID : " + id) );
+    }
+
 }

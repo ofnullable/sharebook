@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class AccountUpdateService {
-	
-	private final AccountUpdateMapper accountUpdateMapper;
-	private final PasswordEncoder passwordEncoder;
-	
-	public void updatePassword(Account account) {
-		account.setPassword( passwordEncoder.encode(account.getPassword()) );
-		accountUpdateMapper.updatePassword(account);
-	}
-	
+
+    private final AccountUpdateMapper accountUpdateMapper;
+    private final PasswordEncoder passwordEncoder;
+
+    public void updatePassword(Account account) {
+        account.setPassword( passwordEncoder.encode(account.getPassword()) );
+        accountUpdateMapper.updatePassword(account);
+    }
+
 }

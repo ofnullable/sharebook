@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @AllArgsConstructor
 @RequestMapping("/my-page")
 public class MyPageController {
-	
-	private final BookSelectService bookSelectService;
-	
-	@GetMapping("/")
-	public String selectMyBooks(@AuthenticationPrincipal AccountDetails auth, Model model) {
-		model.addAttribute("books", bookSelectService.selectBookList(auth.getUsername()));
-		return "my-page/index";
-	}
-	
+
+    private final BookSelectService bookSelectService;
+
+    @GetMapping("/")
+    public String selectMyBooks(@AuthenticationPrincipal AccountDetails accountDetails, Model model) {
+        model.addAttribute("books", bookSelectService.selectBookList(accountDetails.getUsername()));
+        return "my-page/index";
+    }
+
 }

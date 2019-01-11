@@ -49,6 +49,7 @@
 					</div>
 					
 					<form class="new-book-form w-100 clearfix" action="/my-page/item/register" method="post">
+						<input type="hidden" name="createdBy" th:value="${session.auth.username}">
 						<label for="title" class="sr-only">Title</label>
 						<input type="text" name="title" id="title" class="form-control mb-1" placeholder="enter title" required="required" autofocus="autofocus">
 						
@@ -59,7 +60,7 @@
 						<textarea type="email" name="description" id="description" class="form-control mb-1" placeholder="enter description" required="required"></textarea>
 						
 						<button id="add-image" type="button" class="btn btn-success">Add image</button>
-						<button type="button" class="btn btn-primary float-right">Register!</button>
+						<button type="submit" class="btn btn-primary float-right">Register!</button>
 					</form>
 					
 					<form id="file-form" class="d-none">
@@ -94,6 +95,7 @@
 					contentType: false,
 					success: function(res) {
 						if ( res ) {
+							$(this).val('');
 							afterSendFile(res);
 							$loadingBox.hide();
 						}
@@ -110,11 +112,14 @@
 					imgTags += makeImageTags(item);
 					inputs += makeInputTags(item, index);
 				});
-				// Append image
-				$bookForm.before( '<div class="images"></div>' );
-				$('.images').append(imgTags);
+				// Append image tag
+				makeOrSelectImageWrapper($bookForm).append(imgTags);
 				// Append image path
 				$bookForm.append(inputs);
+			}
+			function makeOrSelectImageWrapper($bookForm) {
+				var $images = $('.images');
+				return $images.length ? $images : $bookForm.before('<div class="images"></div>').prev();
 			}
 			function makeImageTags(item) {
 				return '<img src="http://img.worksout.co.kr/' + item + '" style="max-width: 150px;margin-left: 0 2%;">';

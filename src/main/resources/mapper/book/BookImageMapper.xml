@@ -12,9 +12,9 @@
 		            , IMAGE_URL
 					, ORD_NO
 		            )
-		     VALUES <foreach collection="bookImages" item="i" separator=",">
+		     VALUES <foreach collection="list" item="i" separator=",">
 		            (
-					#{i.bookId}
+					LAST_INSERT_ID()
 		            , #{i.imageUrl}
 		            , #{i.ordNo}
 		            )
