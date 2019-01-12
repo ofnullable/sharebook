@@ -14,29 +14,33 @@
 		</style>
 		<div class="album py-5">
 			<div class="container">
-				<div class="row">
+				<div class="row mb-5">
 					<div class="col-6">
 						<img class="col-md-6 col-12" th:src="@{https://image.aladin.co.kr/product/16234/12/cover/8932035059_1.jpg}" th:alt="${book.title}">
 						<div class="row">
 							<p class="col-4" th:each="image : ${book.images}" th:text="${image.imageUrl}"></p>
 						</div>
 						<div class="images">
-							<img th:each="i : ${book.images}" th:src="|http://img.worksout.co.kr/${i.imageUrl}|" th:alt="${book.title}"/>
+							<img th:each="i : ${book.images}" th:src="@{|http://img.worksout.co.kr/${i.imageUrl}|}" th:alt="${book.title}"/>
 						</div>
 					</div>
 					<div class="col-6">
 						<h1 th:text="${book.title}"></h1>
 						<span th:text="${book.author}"></span>
 						<p th:text="${book.createdBy}"></p>
-						<p th:text="${session.auth.username}"></p>
-						<div th:if="${session != null && session.auth != null}" class="text-center">
-							<button class="btn btn-outline-secondary">예약</button>
-							<button class="btn btn-success">대여</button>
+						<div th:if="${session != null && session.auth != null && session.auth.username != book.createdBy}">
+							<button th:id="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE} ? 'loan-btn' : 'resv-btn'"
+									th:class="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE} ? 'btn btn-success col-6' : 'btn btn-outline-success col-6'"
+									th:text="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE} ? '대여하기' : '예약하기'"></button>
 						</div>
-					</div>
-					
-					<div>
-						<p th:text="${book.description}"></p>
+						<div th:if="${session == null || session.auth == null}">
+							<a href="/sign-in"
+							   th:class="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE} ? 'btn btn-success col-6' : 'btn btn-outline-success col-6'"
+							   th:text="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE} ? '대여하기' : '예약하기'"></a>
+						</div>
+						<div th:utext="*{#strings.replace(book.description, T(System).getProperty('line.separator'), '&lt;br/&gt;')}"
+							 class="my-3"> <!-- for textarea's data.. do i must write like below? -->
+						</div>
 					</div>
 				</div>
 				
@@ -62,5 +66,20 @@
 		
 		<footer th:replace="include/footer :: footer"></footer>
 		<th:block th:replace="include/scripts :: scripts"/>
+		<script type="text/javascript" th:inline="javascript">
+			$(function() {
+				$('#loan-btn').click(function(e) {
+					console.log([[${book}]]);
+					if (!confirm('해당 도서를 대여하시겠습니까?')) return;
+					$.ajax({
+						url: '/book/loan/[[${book.id}]]',
+						type: 'post',
+						success: function(res) {
+
+						}
+					});
+				});
+			});
+		</script>
 	</body>
 </html>

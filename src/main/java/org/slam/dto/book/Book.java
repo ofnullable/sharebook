@@ -16,6 +16,7 @@ public class Book {
     private String title;
     private String author;
     private String description;
+    private BookStatus status;
     private String modifiedBy;
     private LocalDateTime modifiedAt;
     private String createdBy;

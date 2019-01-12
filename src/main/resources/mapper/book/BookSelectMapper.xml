@@ -9,6 +9,7 @@
         <result column="TITLE" property="title"/>
         <result column="AUTHOR" property="author"/>
         <result column="DESCRIPTION" property="description"/>
+		<result column="STATUS" property="status"/>
         <result column="CREATED_BY" property="createdBy"/>
         <result column="CREATED_AT" property="createdAt"/>
         <collection property="images" ofType="bookImage">
@@ -21,6 +22,7 @@
 		       , TITLE
 		       , AUTHOR
 		       , DESCRIPTION
+		       , STATUS
 		       , CREATED_BY
 		       , CREATED_AT
 		       , IMAGE_URL
@@ -36,6 +38,7 @@
 		       , TITLE
 		       , AUTHOR
 		       , DESCRIPTION
+		       , STATUS
 		       , CREATED_BY
 		       , CREATED_AT
 		       , IMAGE_URL
@@ -52,6 +55,7 @@
 		       , TITLE
 		       , AUTHOR
 		       , DESCRIPTION
+		       , STATUS
 		       , CREATED_BY
 		       , CREATED_AT
 		       , IMAGE_URL

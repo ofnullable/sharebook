@@ -22,4 +22,6 @@ public class MyPageController {
         return "my-page/index";
     }
 
+    // TODO: Actions about account or else...
+
 }

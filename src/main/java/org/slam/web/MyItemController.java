@@ -17,16 +17,18 @@ public class MyItemController {
 
     private final BookSaveService bookSaveService;
 
-    @GetMapping("/register")
+    @GetMapping("/")
     public String registerItem() {
-        return "/my-page/register";
+        return "my-page/register";
     }
 
-    @PostMapping("/register")
+    @PostMapping("/")
     public String registerItem(Book book) {
         log.info("RECEIVED DATA : {}, CREATOR : {}", book, book.getCreatedBy());
         bookSaveService.save(book);
         return "redirect:/my-page/";
     }
+
+    // TODO: Update, delete method
 
 }
