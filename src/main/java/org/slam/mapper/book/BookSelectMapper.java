@@ -8,7 +8,7 @@ public interface BookSelectMapper {
 
     List<Book> findAll();
 
-    List<Book> findAllById(String owner);
+    List<Book> findAllByOwner(String owner);
 
     Book findById(Long id);
 

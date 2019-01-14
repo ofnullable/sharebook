@@ -12,9 +12,14 @@
 		<result column="STATUS" property="status"/>
         <result column="CREATED_BY" property="createdBy"/>
         <result column="CREATED_AT" property="createdAt"/>
+		<result column="RECENT_LOANER" property="recentLoaner"/>
         <collection property="images" ofType="bookImage">
             <result column="IMAGE_URL" property="imageUrl"/>
         </collection>
+		<collection property="histories" ofType="bookHistory">
+			<result column="REQUESTED_STATUS" property="requestedStatus"/>
+			<result column="REQUESTED_USER" property="requestedUser"/>
+		</collection>
     </resultMap>
     <select id="findAll" resultMap="selectBookMap">
 		SELECT
@@ -32,7 +37,7 @@
 	  ORDER BY ID ASC, ORD_NO ASC
 	</select>
 
-    <select id="findAllById" resultMap="selectBookMap">
+    <select id="findAllByOwner" resultMap="selectBookMap">
 		SELECT
 		       ID
 		       , TITLE
@@ -55,13 +60,18 @@
 		       , TITLE
 		       , AUTHOR
 		       , DESCRIPTION
-		       , STATUS
+		       , b.STATUS
 		       , CREATED_BY
 		       , CREATED_AT
 		       , IMAGE_URL
+		       , h.REQUESTED_STATUS
+		       , h.REQUESTED_USER
+		       , (SELECT REQUESTED_USER FROM BOOK_HISTORY WHERE BOOK_ID = #{id}) AS RECENT_LOANER
 		  FROM BOOK b
 	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
+	 LEFT JOIN BOOK_HISTORY h
+		    ON b.ID = h.BOOK_ID
 		 WHERE ID = #{id}
 	  ORDER BY ORD_NO ASC
 	</select>

@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import org.slam.dto.book.Book;
 import org.slam.mapper.book.BookSelectMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class BookSelectService {
 
@@ -19,7 +21,7 @@ public class BookSelectService {
     }
 
     public List<Book> selectBookList(String owner) {
-        return bookSelectMapper.findAllById(owner);
+        return bookSelectMapper.findAllByOwner(owner);
     }
 
     public Book selectBookDetail(Long id) {

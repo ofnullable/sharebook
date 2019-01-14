@@ -1,19 +1,16 @@
-package org.slam.dto.history;
+package org.slam.dto.book;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.slam.dto.book.BookStatus;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
 @Getter @Setter @ToString
-public class LoanHistory {
+public class BookHistory {
 
     private Long bookId;
-    private BookStatus status;
+    private BookStatus requestedStatus;
     private String requestedUser;
     private LocalDateTime requestedAt;
 

@@ -1,6 +1,9 @@
 package org.slam.mapper.book;
 
+import org.slam.dto.book.Book;
+
 public interface BookUpdateMapper {
 
-    int loanRequest(Long id);
+    int updateStatus(Book book);
+
 }

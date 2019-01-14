@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="include/head :: head"></head>
-	<body>
-		<section th:replace="include/header :: header"></section>
+	<head>
+		<th:block th:replace="include/head :: head" />
+		<title>Register :: Public-Share</title>
 		<style type="text/css">
 			#description {
 				min-height: 150px;
@@ -40,6 +40,10 @@
 				margin-bottom: 3rem;
 			}
 		</style>
+	</head>
+	<body>
+		<section th:replace="include/header :: header"></section>
+
 		<div class="album py-5">
 			<div class="container">
 				<div class="row">
