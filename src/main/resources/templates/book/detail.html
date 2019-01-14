@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="include/head :: head"></head>
-	<body>
-		<section th:replace="include/header :: header"></section>
+	<head>
+		<th:block th:replace="include/head :: head" />
+		<title th:text="${book.title}"></title>
 		<style type="text/css">
 			textarea {
 				margin-bottom: .5rem;
@@ -12,31 +12,44 @@
 				min-height: 50px;
 			}
 		</style>
+	</head>
+	<body>
+		<section th:replace="include/header :: header"></section>
+
 		<div class="album py-5">
 			<div class="container">
-				<div class="row">
+				<div class="row mb-5">
 					<div class="col-6">
 						<img class="col-md-6 col-12" th:src="@{https://image.aladin.co.kr/product/16234/12/cover/8932035059_1.jpg}" th:alt="${book.title}">
 						<div class="row">
 							<p class="col-4" th:each="image : ${book.images}" th:text="${image.imageUrl}"></p>
 						</div>
 						<div class="images">
-							<img th:each="i : ${book.images}" th:src="|http://img.worksout.co.kr/${i.imageUrl}|" th:alt="${book.title}"/>
+							<img th:each="i : ${book.images}" th:src="@{|http://img.worksout.co.kr/${i.imageUrl}|}" th:alt="${book.title}"/>
 						</div>
 					</div>
 					<div class="col-6">
 						<h1 th:text="${book.title}"></h1>
 						<span th:text="${book.author}"></span>
 						<p th:text="${book.createdBy}"></p>
-						<p th:text="${session.auth.username}"></p>
-						<div th:if="${session != null && session.auth != null}" class="text-center">
-							<button class="btn btn-outline-secondary">예약</button>
-							<button class="btn btn-success">대여</button>
+						<div th:if="${session != null && session.auth != null && session.auth.username != book.createdBy}">
+							<th:block th:if="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE}">
+								<button id="loan-btn" class="btn btn-success col-6" th:text="대여하기"></button>
+							</th:block>
+							<th:block th:unless="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE}">
+								<button th:id="${book.recentLoaner == session.auth.username} ? 'cancel-btn' : 'resv-btn'"
+										th:class="${book.recentLoaner == session.auth.username} ? 'btn btn-outline-danger col-6' : 'btn btn-outline-success col-6'"
+										th:text="${book.recentLoaner == session.auth.username} ? '신청취소' : '예약하기'"></button>
+							</th:block>
 						</div>
-					</div>
-					
-					<div>
-						<p th:text="${book.description}"></p>
+						<div th:if="${session == null || session.auth == null}">
+							<a href="/sign-in" data-toggle="tooltip" data-placement="top" title="Sign in first!"
+							   th:class="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE} ? 'btn btn-success col-6' : 'btn btn-outline-success col-6'"
+							   th:text="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE} ? '대여하기' : '예약하기'"></a>
+						</div>
+						<div th:utext="*{#strings.replace(book.description, T(System).getProperty('line.separator'), '&lt;br/&gt;')}"
+							 class="my-3"> <!-- for textarea's data.. do i must write like below? -->
+						</div>
 					</div>
 				</div>
 				
@@ -48,7 +61,7 @@
 								<button class="btn btn-success col-md-1 col-12 mb-3">등록</button>
 							</form>
 							<div class="row comments bg-light p-3 rounded align-items-start">
-								<img th:src="@{https://placeimg.com/70/70/animals}" style="width: 70px;border-radius: 50%;margin-right: 15px;">
+								<img th:src="@{https://placeimg.com/70/70/animals}" style="width: 70px;border-radius: 50%;margin-right: 15px;" alt>
 								<div style="flex: 1;">
 									<p><b>nickname</b> | 2019-01-03</p>
 									<p>Donec id elit non mi porta gravida at eget metus. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Donec ullamcorper nulla non metus auctor fringilla. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis.</p>
@@ -62,5 +75,66 @@
 		
 		<footer th:replace="include/footer :: footer"></footer>
 		<th:block th:replace="include/scripts :: scripts"/>
+		<th:block th:if="${session != null && session.auth != null}">
+			<script type="text/javascript" th:inline="javascript">
+				$(function() {
+					$('#loan-btn').click(function(e) {
+						if (!confirm('해당 도서를 대여하시겠습니까?')) return;
+						var username = [[${session.auth.username}]];
+						$.ajax({
+							url: '/book/loan/[[${book.id}]]/' + username,
+							type: 'post',
+							success: function(res) {
+								if (res) {
+									window.location.reload();
+									alert('Success!');
+								} else {
+									alert('Something went wrong.. try again after few minute')
+								}
+							}
+						});
+					});
+
+					$('#resv-btn').click(function(e) {
+						if (!confirm('해당 도서를 예약하시겠습니까?')) return;
+						var username = [[${session.auth.username}]];
+						$.ajax({
+							url: '/book/reservation/[[${book.id}]]/' + username,
+							type: 'post',
+							success: function(res) {
+								if (res) {
+									window.location.reload();
+									alert('Success!');
+								} else {
+									alert('Something went wrong.. try again after few minute')
+								}
+							}
+						});
+					});
+
+					$('#cancel-btn').click(function(e) {
+						if (!confirm('해당 도서를 예약하시겠습니까?')) return;
+						var username = [[${session.auth.username}]];
+						$.ajax({
+							url: '/book/cancel/[[${book.id}]]/' + username,
+							type: 'post',
+							success: function(res) {
+								if (res) {
+									window.location.reload();
+									alert('Success!');
+								} else {
+									alert('Something went wrong.. try again after few minute')
+								}
+							}
+						});
+					});
+				});
+			</script>
+		</th:block>
+		<th:block th:unless="${session != null && session.auth != null}">
+			<script type="text/javascript">
+				$('[data-toggle="tooltip"]').tooltip();
+			</script>
+		</th:block>
 	</body>
 </html>

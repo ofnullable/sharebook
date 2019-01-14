@@ -16,17 +16,26 @@ public class Book {
     private String title;
     private String author;
     private String description;
+    private BookStatus status;
     private String modifiedBy;
     private LocalDateTime modifiedAt;
     private String createdBy;
     private LocalDateTime createdAt;
 
+    private String RecentLoaner;
     private List<BookImage> images;
+    private List<BookHistory> histories;
 
     public Book(String title, String author, List<BookImage> images) {
         this.title = title;
         this.author = author;
         this.images = images;
+    }
+
+    public Book(Long id, BookStatus status, String modifiedBy) {
+        this.id = id;
+        this.status = status;
+        this.modifiedBy = modifiedBy;
     }
 
 }

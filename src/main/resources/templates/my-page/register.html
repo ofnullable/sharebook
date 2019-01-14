@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="include/head :: head"></head>
-	<body>
-		<section th:replace="include/header :: header"></section>
+	<head>
+		<th:block th:replace="include/head :: head" />
+		<title>Register :: Public-Share</title>
 		<style type="text/css">
 			#description {
 				min-height: 150px;
@@ -40,6 +40,10 @@
 				margin-bottom: 3rem;
 			}
 		</style>
+	</head>
+	<body>
+		<section th:replace="include/header :: header"></section>
+
 		<div class="album py-5">
 			<div class="container">
 				<div class="row">
@@ -57,7 +61,7 @@
 						<input type="text" name="author" id="author" class="form-control mb-1" placeholder="enter author" required="required">
 						
 						<label for="description" class="sr-only">Description</label>
-						<textarea type="email" name="description" id="description" class="form-control mb-1" placeholder="enter description" required="required"></textarea>
+						<textarea type="email" name="description" id="description" class="form-control mb-1" placeholder="Enter simple description or introduction for this book" required="required"></textarea>
 						
 						<button id="add-image" type="button" class="btn btn-success">Add image</button>
 						<button type="submit" class="btn btn-primary float-right">Register!</button>

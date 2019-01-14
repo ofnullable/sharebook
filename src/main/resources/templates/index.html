@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="include/head :: head"></head>
+	<head>
+		<th:block th:replace="include/head :: head" />
+		<title>Main page :: Public-Share</title>
+	</head>
 	<body>
 		<section th:replace="include/header :: header"></section>
 		
