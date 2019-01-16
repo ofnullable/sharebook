@@ -3,9 +3,17 @@
 <section th:fragment="header" class="jumbotron text-center container">
 	<div> <!-- class="container" -->
 		<h1 class="jumbotron-heading"><a href="/">Public Share</a></h1>
-		<div th:unless="${session == null || session.auth == null}" class="clearfix mb-3">
-			<a href="/my-page/" class="btn btn-link float-right">MyPage</a>
-			<a href="/sign-out" class="btn text-danger float-right">Sign-out</a>
+		<div th:unless="${session == null || session.auth == null}" class="mb-3">
+			<div class="clearfix">
+				<a href="/my-page/" class="btn btn-link float-right">MyPage</a>
+				<a href="/sign-out" class="btn text-danger float-right">Sign-out</a>
+			</div>
+			<div class="alarm clearfix">
+				<button type="button" class="btn btn-toolbar float-right">
+					alarm
+					<span class="badge badge-pill badge-danger ml-1" style="line-height: unset;">1</span>
+				</button>
+			</div>
 		</div>
 		<!--<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>-->
 		<p th:if="${session == null || session.auth == null}">

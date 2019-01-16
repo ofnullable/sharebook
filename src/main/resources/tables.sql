@@ -54,11 +54,11 @@ CREATE TABLE `account_role` (
 
  CREATE TABLE `book_history` (
    `book_id` bigint(20) unsigned NOT NULL,
-   `status` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+   `requested_status` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
    `requested_user` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
    `requested_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
    KEY `fk_book_history_idx` (`book_id`),
-   KEY `fk_account_loan_history_idx` (`requested_user`),
-   CONSTRAINT `fk_account_loan_history` FOREIGN KEY (`requested_user`) REFERENCES `account` (`username`),
-   CONSTRAINT `fk_book_history` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`)
+   KEY `fk_account_book_history_idx` (`requested_user`),
+   CONSTRAINT `fk_account_book_history` FOREIGN KEY (`requested_user`) REFERENCES `account` (`username`),
+   CONSTRAINT `fk_book_book_history` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

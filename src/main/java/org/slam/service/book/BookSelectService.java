@@ -20,7 +20,7 @@ public class BookSelectService {
         return bookSelectMapper.findAll();
     }
 
-    public List<Book> selectBookList(String owner) {
+    public List<Book> selectBookListByOwner(String owner) {
         return bookSelectMapper.findAllByOwner(owner);
     }
 

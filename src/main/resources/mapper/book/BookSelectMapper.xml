@@ -66,7 +66,14 @@
 		       , IMAGE_URL
 		       , h.REQUESTED_STATUS
 		       , h.REQUESTED_USER
-		       , (SELECT REQUESTED_USER FROM BOOK_HISTORY WHERE BOOK_ID = #{id}) AS RECENT_LOANER
+		       , (SELECT
+		                 REQUESTED_USER
+		            FROM BOOK_HISTORY
+		           WHERE BOOK_ID = #{id}
+		             AND REQUESTED_STATUS = 'WAIT_FOR_RESPONSE'
+		        ORDER BY REQUESTED_AT ASC
+		           LIMIT 1
+		         ) AS RECENT_LOANER
 		  FROM BOOK b
 	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID

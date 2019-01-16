@@ -18,7 +18,7 @@ public class MyPageController {
 
     @GetMapping("/")
     public String selectMyBooks(@AuthenticationPrincipal AccountDetails accountDetails, Model model) {
-        model.addAttribute("books", bookSelectService.selectBookList(accountDetails.getUsername()));
+        model.addAttribute("books", bookSelectService.selectBookListByOwner(accountDetails.getUsername()));
         return "my-page/index";
     }
 

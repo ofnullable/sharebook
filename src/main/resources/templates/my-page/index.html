@@ -9,8 +9,14 @@
 		
 		<div class="album py-5">
 			<div class="container">
+				<nav class="nav nav-pills nav-justified my-3">
+					<a id="my-books" class="nav-item nav-link active" href="javascript:void(0)">My books</a>
+					<a id="on-loan" class="nav-item nav-link" href="javascript:void(0)">On Loan</a>
+					<a id="on-apply" class="nav-item nav-link" href="javascript:void(0)">On Apply</a>
+					<a id="on-resv" class="nav-item nav-link" href="javascript:void(0)">On Reservation</a>
+				</nav>
 				<div class="row">
-					
+
 					<th:block th:if="${books.size() != 0}">
 						<div th:each="book : ${books}" class="col-md-4">
 							<div class="card mb-4 shadow-sm">
@@ -50,5 +56,22 @@
 		
 		<footer th:replace="include/footer :: footer"></footer>
 		<th:block th:replace="include/scripts :: scripts"/>
+		<script type="text/javascript" th:inline="javascript">
+			$('.nav > a').click(function(e) {
+				$('.nav').children().removeClass('active');
+				$(this).addClass('active');
+
+				switch ( $(this).attr('id') ) {
+					case 'my-books' :
+						break;
+					case 'on-loan' :
+						break;
+					case 'on-apply' :
+						break;
+					case 'on-resv' :
+						break;
+				}
+			});
+		</script>
 	</body>
 </html>
