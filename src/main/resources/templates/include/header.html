@@ -1,15 +1,35 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <section th:fragment="header" class="jumbotron text-center container">
+	<div th:if="${session != null && session.auth != null}" class="modal fade" id="alarm-modal" tabindex="-1" role="dialog"
+		 aria-labelledby="alarm-modal" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Modal title</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>Modal body text goes here.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div> <!-- class="container" -->
 		<h1 class="jumbotron-heading"><a href="/">Public Share</a></h1>
-		<div th:unless="${session == null || session.auth == null}" class="mb-3">
+		<div th:if="${session != null && session.auth != null}" class="mb-3">
 			<div class="clearfix">
 				<a href="/my-page/" class="btn btn-link float-right">MyPage</a>
 				<a href="/sign-out" class="btn text-danger float-right">Sign-out</a>
 			</div>
 			<div class="alarm clearfix">
-				<button type="button" class="btn btn-toolbar float-right">
+				<button type="button" class="btn btn-toolbar float-right" data-toggle="modal" data-target="#alarm-modal">
 					alarm
 					<span class="badge badge-pill badge-danger ml-1" style="line-height: unset;">1</span>
 				</button>

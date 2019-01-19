@@ -7,6 +7,7 @@ import org.slam.service.book.BookSelectService;
 import org.slam.service.book.HistoryService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,30 +15,26 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/my-page")
+@RequestMapping("/my-page/history")
 public class MyPageRestController {
 
     private final BookSelectService bookSelectService;
     private final HistoryService historyService;
 
-    @GetMapping("/my-items")
-    public List<Book> selectMyItems(Authentication auth) {
-        return bookSelectService.selectBookListByOwner(auth.getName());
-    }
-
-    @GetMapping("/on-loan")
-    public List<Book> selectMyLoanItems(Authentication auth) {
-        return historyService.selectMatchStatusHistory(BookStatus.ON_LOAN, auth.getName());
-    }
-
-    @GetMapping("/on-apply")
-    public List<Book> selectMyApplyItems(Authentication auth) {
-        return historyService.selectMatchStatusHistory(BookStatus.WAIT_FOR_RESPONSE, auth.getName());
-    }
-
-    @GetMapping("/on-resv")
-    public List<Book> selectMyReservationItems(Authentication auth) {
-        return historyService.selectMatchStatusHistory(BookStatus.ON_RESERVED, auth.getName());
+    @GetMapping("/{status}")
+    public List<Book> selectMyItems(@PathVariable String status, Authentication auth) {
+        switch (status) {
+            case "my-books" :
+                return bookSelectService.selectBookListByOwner(auth.getName());
+            case "on-loan" :
+                return historyService.selectMatchStatusHistory(BookStatus.ON_LOAN, auth.getName());
+            case "on-apply" :
+                return historyService.selectMatchStatusHistory(BookStatus.WAIT_FOR_RESPONSE, auth.getName());
+            case "on-resv" :
+                return historyService.selectMatchStatusHistory(BookStatus.ON_RESERVED, auth.getName());
+            default:
+                return null;
+        }
     }
 
 }
