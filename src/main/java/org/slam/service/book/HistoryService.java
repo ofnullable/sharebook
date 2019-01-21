@@ -17,4 +17,5 @@ public class HistoryService {
     public List<Book> selectMatchStatusHistory(BookStatus status, String username) {
         return historyMapper.selectMatchStatusHistory(status, username);
     }
+
 }

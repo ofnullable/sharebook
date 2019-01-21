@@ -3,6 +3,7 @@ package org.slam.service.common;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.net.ftp.FTPFile;
+import org.slam.utils.FtpUtils;
 import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,9 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.slam.utils.FtpUtils.makeDirName;
-import static org.slam.utils.FtpUtils.makeFilename;
-
 @Log4j2
 @Service
 @AllArgsConstructor
@@ -23,6 +21,7 @@ public class FileService {
 
     private final SessionFactory<FTPFile> sf;
     private static final String INITIAL_PATH = "share/book/";
+    private final FtpUtils ftpUtils = new FtpUtils();
 
     public String send(MultipartFile bookImage) {
         return sendImage(bookImage, this.makePath());
@@ -52,9 +51,9 @@ public class FileService {
     }
 
     private String makePath() {
-        var fullPath = new StringBuilder(INITIAL_PATH).append(makeDirName());
+        var fullPath = new StringBuilder(INITIAL_PATH).append(ftpUtils.makeDirName());
         makeRemoteDir(fullPath.toString());
-        return fullPath.append("/").append(makeFilename()).append("-").toString();
+        return fullPath.append("/").append(ftpUtils.makeFilename()).append("-").toString();
     }
 
     private void makeRemoteDir(String fullPath) {

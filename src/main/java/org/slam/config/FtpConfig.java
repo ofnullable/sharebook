@@ -7,14 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.integration.annotation.ServiceActivator;
-import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.file.remote.session.CachingSessionFactory;
 import org.springframework.integration.file.remote.session.SessionFactory;
-import org.springframework.integration.ftp.outbound.FtpMessageHandler;
 import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
-import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.MessageHandler;
 
 @Log4j2
 @Configuration
@@ -43,12 +38,11 @@ public class FtpConfig {
         return new CachingSessionFactory<>(sf, 10);
     }
 
-
+    /*
     @Bean
     public MessageChannel toFtpChannel() {
         return new DirectChannel();
     }
-
     @Bean
     public MessageChannel fromFtpChannel() {
         return new DirectChannel();
@@ -63,13 +57,13 @@ public class FtpConfig {
         handler.setRemoteDirectoryExpressionString("headers['path']");
         return handler;
     }
-    /* Can send by gateway with code below too. */
-	/*
+
+//    Can send by gateway with code below too.
 	@Bean
 	@ServiceActivator(inputChannel = "toFtpChannel")
 	public FtpOutboundGateway outboundGateway() {
 		var gw = new FtpOutboundGateway(sessionFactory(), "ls", "payload");
-		gw.setOption(Option.ALL);
+		gw.setOption(AbstractRemoteFileOutboundGateway.Option.ALL);
 		gw.setOutputChannelName("fromFtpChannel");
 		return gw;
 	}
@@ -83,6 +77,6 @@ public class FtpConfig {
 						.remoteDirectoryExpression("headers['path']")
 				).get();
 	}
-	*/
+    */
 
 }

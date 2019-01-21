@@ -23,6 +23,7 @@ public class Book {
     private LocalDateTime createdAt;
 
     private String RecentLoaner;
+    private Integer waiters;
     private List<BookImage> images;
     private List<BookHistory> histories;
 

@@ -2,25 +2,25 @@ package org.slam.handler;
 
 import org.slam.dto.account.AccountDetails;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-public class AuthSuccessHandler implements AuthenticationSuccessHandler {
+public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException{
+    public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException {
         setAuthInfoToSession(req, auth);
         String prev = getPrevPage(req);
         clearPrevAttr(req);
-        res.sendRedirect( Optional.ofNullable(prev).orElse("/") );
+        res.sendRedirect(Optional.ofNullable(prev).orElse("/"));
     }
 
     private void setAuthInfoToSession(HttpServletRequest req, Authentication auth) {
-        req.getSession().setAttribute( "auth", ((AccountDetails) auth.getPrincipal()).getAccount() );
+        req.getSession().setAttribute("auth", ((AccountDetails) auth.getPrincipal()).getAccount());
     }
 
     private String getPrevPage(HttpServletRequest req) {

@@ -16,17 +16,17 @@ public class BookSelectService {
 
     private final BookSelectMapper bookSelectMapper;
 
+    public Book selectBookDetail(Long id) {
+        return Optional.ofNullable(bookSelectMapper.findById(id))
+                .orElseThrow( () -> new IllegalArgumentException("CAN NOT FOUND BOOK FOR ID : " + id) );
+    }
+
     public List<Book> selectBookList() {
         return bookSelectMapper.findAll();
     }
 
     public List<Book> selectBookListByOwner(String owner) {
         return bookSelectMapper.findAllByOwner(owner);
-    }
-
-    public Book selectBookDetail(Long id) {
-        return Optional.ofNullable(bookSelectMapper.findById(id))
-                .orElseThrow( () -> new IllegalArgumentException("CAN NOT FOUND BOOK FOR ID : " + id) );
     }
 
 }

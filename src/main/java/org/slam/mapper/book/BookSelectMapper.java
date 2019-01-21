@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface BookSelectMapper {
 
+    Book findById(Long id);
+
     List<Book> findAll();
 
     List<Book> findAllByOwner(String owner);
-
-    Book findById(Long id);
 
 }

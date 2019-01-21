@@ -44,6 +44,7 @@ public class SecurityTest {
 						.andExpect(status().isOk())
 						.andDo(print())
 						.andReturn().getResponse().getContentAsString().contains("username")
+				, "Can not access /admin/user/list"
 		);
 	}
 	
