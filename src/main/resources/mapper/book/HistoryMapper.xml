@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.slam.mapper.book.HistoryMapper">
+
+    <select id="selectMatchStatusHistory" resultType="book">
+        SELECT /* selectMatchStatusHistory */
+               ID
+               , TITLE
+               , AUTHOR
+               , STATUS
+               , CREATED_BY
+               , CREATED_AT
+               , MAIN_IMAGE
+          FROM BOOK_HISTORY h
+          JOIN BOOK b ON h.BOOK_ID = b.ID
+         WHERE REQUESTED_USER = #{username}
+           AND REQUESTED_STATUS = #{status}
+    </select>
+
+</mapper>
