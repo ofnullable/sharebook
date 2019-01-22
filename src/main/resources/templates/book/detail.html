@@ -32,6 +32,7 @@
 						<h1 th:text="${book.title}"></h1>
 						<span th:text="${book.author}"></span>
 						<p th:text="${book.createdBy}"></p>
+
 						<div th:if="${session != null && session.auth != null && session.auth.username != book.createdBy}">
 							<th:block th:if="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE}">
 								<button id="loan-btn" class="btn btn-success col-6" th:text="대여하기"></button>
@@ -42,13 +43,18 @@
 										th:text="${book.recentLoaner == session.auth.username} ? '신청취소' : '예약하기'"></button>
 							</th:block>
 						</div>
+
+						<div th:if="${session != null && session.auth != null && session.auth.username == book.createdBy}">
+							<button id="see-history" class="btn btn-info col-6">History</button>
+						</div>
+
 						<div th:if="${session == null || session.auth == null}">
 							<a href="/sign-in" data-toggle="tooltip" data-placement="top" title="Sign in first!"
 							   th:class="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE} ? 'btn btn-success col-6' : 'btn btn-outline-success col-6'"
 							   th:text="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE} ? '대여하기' : '예약하기'"></a>
 						</div>
-						<div th:utext="*{#strings.replace(book.description, T(System).getProperty('line.separator'), '&lt;br/&gt;')}"
-							 class="my-3"> <!-- for textarea's data.. do i must write like below? -->
+						<div th:utext="*{#strings.replace(book.description, T(System).getProperty('line.separator'), '&lt;br/&gt;')}" class="my-3">
+							<!-- for textarea's data.. do i must write like below? -->
 						</div>
 					</div>
 				</div>

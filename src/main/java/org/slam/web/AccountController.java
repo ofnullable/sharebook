@@ -1,7 +1,6 @@
 package org.slam.web;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.slam.dto.account.Account;
 import org.slam.service.account.AccountSaveService;
 import org.springframework.security.core.Authentication;
@@ -12,7 +11,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Log4j2
 @Controller
 @AllArgsConstructor
 public class AccountController {
@@ -38,10 +36,10 @@ public class AccountController {
 
     private String setPrevPage(HttpServletRequest req, Authentication auth, String toGo) {
         String prev = req.getHeader("Referer");
-        if ( auth != null ) {
+        if (auth != null) {
             return prev != null ? "redirect:" + prev : "redirect:/";
         }
-        if (!"http://localhost:8080/sign-in".equals(prev) && !"http://localhost:8080/sign-up".equals(prev) && req.getSession().getAttribute("prev") == null) {
+        if (prev != null && !prev.contains("/sign-in") && !prev.contains("/sign-up")) {
             req.getSession().setAttribute("prev", prev);
         }
         return toGo;

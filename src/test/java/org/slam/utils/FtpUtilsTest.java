@@ -2,19 +2,18 @@ package org.slam.utils;
 
 import org.junit.Test;
 
-import static org.slam.utils.FtpUtils.makeDirName;
-import static org.slam.utils.FtpUtils.makeFilename;
-
 public class FtpUtilsTest {
-	
+
+	private FtpUtils ftpUtils = new FtpUtils();
+
 	@Test
 	public void dirNameTest() {
-		System.out.println("Directory name : " + makeDirName());
+		System.out.println("Directory name : " + ftpUtils.makeDirName());
 	}
 	
 	@Test
 	public void filenameTest() {
-		System.out.println("File name : " + makeFilename());
+		System.out.println("File name : " + ftpUtils.makeFilename());
 	}
 	
 }

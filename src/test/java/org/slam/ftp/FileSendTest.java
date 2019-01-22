@@ -6,7 +6,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.slam.gateway.FtpGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.integration.file.remote.session.SessionFactory;
@@ -14,16 +13,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class FtpTest {
-	
-	@Autowired
-	private FtpGateway gw;
+public class FileSendTest {
+
 	@Autowired
 	SessionFactory<FTPFile> sf;
 	private List<File> fileList;
@@ -39,8 +35,8 @@ public class FtpTest {
 	}
 	
 	@Test
-	public void CLIENT_BIG_FILE_TEST() {
-		var file = new File("D:/images/test-image.gif");
+	public void CLIENT_BIG_FILE_TEST() throws FileNotFoundException {
+		var file = ResourceUtils.getFile(this.getClass().getResource("/test-image.gif"));
 		long startTime = System.currentTimeMillis();
 		try (
 				var session = sf.getSession();
@@ -58,7 +54,7 @@ public class FtpTest {
 	@Test
 	public void CLIENT_MULTI_FILE_SEND_TEST() {
 		long startTime = System.currentTimeMillis();
-		fileList.forEach( f -> {
+		fileList.parallelStream().forEach( f -> {
 			try (
 					var session = sf.getSession();
 					var in = new FileInputStream(f);
@@ -72,10 +68,13 @@ public class FtpTest {
 		long endTime = System.currentTimeMillis();
 		System.out.println("CLIENT SEND TIME : " + (endTime - startTime));
 	}
-	
+	/*
+	@Autowired
+	private FtpGateway gw;
+
 	@Test
-	public void GATEWAY_BIG_FILE_TEST() {
-		var file = new File("D:/images/test-image.gif");
+	public void GATEWAY_BIG_FILE_TEST() throws FileNotFoundException {
+		var file = ResourceUtils.getFile(this.getClass().getResource("/test-image.gif"));
 		long startTime = System.currentTimeMillis();
 		try (
 				var in = new FileInputStream(file);
@@ -92,7 +91,7 @@ public class FtpTest {
 	@Test
 	public void GATEWAY_MULTI_FILE_SEND_TEST() {
 		long startTime = System.currentTimeMillis();
-		fileList.forEach( f -> {
+		fileList.parallelStream().forEach( f -> {
 			try (
 					var in = new FileInputStream(f);
 					var bin = new BufferedInputStream(in)
@@ -105,20 +104,5 @@ public class FtpTest {
 		long endTime = System.currentTimeMillis();
 		System.out.println("GATEWAY SEND TIME : " + (endTime - startTime));
 	}
-	
-	private void makeDirectory(String path) {
-		var splittedPath = path.split("/");
-		var temp = new StringBuilder();
-		
-		Arrays.stream(splittedPath).forEach( p -> {
-			temp.append("/").append(p);
-			try {
-				sf.getSession().mkdir(temp.toString());
-			} catch (IOException e) {
-				// TODO: Do something for fail to mkdir command
-				e.printStackTrace();
-			}
-		});
-	}
-	
+	*/
 }

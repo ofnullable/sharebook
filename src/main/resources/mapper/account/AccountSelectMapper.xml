@@ -18,7 +18,7 @@
         </collection>
     </resultMap>
     <select id="findById" resultMap="accountFindMap">
-		SELECT
+		SELECT /* findById */
 		       acc.USERNAME,
 		       acc.NAME,
 		       PASSWORD,
@@ -41,7 +41,7 @@
 	</select>
 
     <select id="findAll" resultMap="accountFindMap">
-		SELECT
+		SELECT /* findAll */
 		       acc.USERNAME,
 		       acc.NAME,
 		       PASSWORD,

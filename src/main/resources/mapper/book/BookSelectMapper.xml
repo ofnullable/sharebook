@@ -13,6 +13,7 @@
         <result column="CREATED_BY" property="createdBy"/>
         <result column="CREATED_AT" property="createdAt"/>
 		<result column="RECENT_LOANER" property="recentLoaner"/>
+		<result column="WAITERS" property="waiters"/>
         <collection property="images" ofType="bookImage">
             <result column="IMAGE_URL" property="imageUrl"/>
         </collection>
@@ -22,40 +23,39 @@
 		</collection>
     </resultMap>
     <select id="findAll" resultMap="selectBookMap">
-		SELECT
+		SELECT /* findAll */
 		       ID
 		       , TITLE
 		       , AUTHOR
-		       , DESCRIPTION
 		       , STATUS
 		       , CREATED_BY
 		       , CREATED_AT
-		       , IMAGE_URL
+		       , MAIN_IMAGE
 		  FROM BOOK b
 	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
-	  ORDER BY ID ASC, ORD_NO ASC
+	  ORDER BY ID DESC, ORD_NO ASC
 	</select>
 
     <select id="findAllByOwner" resultMap="selectBookMap">
-		SELECT
+		SELECT /* findAllByOwner */
 		       ID
 		       , TITLE
 		       , AUTHOR
-		       , DESCRIPTION
 		       , STATUS
 		       , CREATED_BY
 		       , CREATED_AT
-		       , IMAGE_URL
+		       , MAIN_IMAGE
+			   , (SELECT COUNT(*) FROM BOOK_HISTORY h WHERE b.ID = h.BOOK_ID AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED')) AS WAITERS
 		  FROM BOOK b
 	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
 		 WHERE CREATED_BY = #{owner}
-	  ORDER BY ID ASC, ORD_NO ASC
+	  ORDER BY ID DESC, ORD_NO ASC
 	</select>
 
     <select id="findById" resultMap="selectBookMap">
-		SELECT
+		SELECT /* findById */
 		       ID
 		       , TITLE
 		       , AUTHOR
@@ -66,7 +66,13 @@
 		       , IMAGE_URL
 		       , h.REQUESTED_STATUS
 		       , h.REQUESTED_USER
-		       , (SELECT REQUESTED_USER FROM BOOK_HISTORY WHERE BOOK_ID = #{id}) AS RECENT_LOANER
+		       , (SELECT
+		                 REQUESTED_USER
+		            FROM BOOK_HISTORY
+		           WHERE BOOK_ID = #{id}
+		             AND REQUESTED_STATUS = 'WAIT_FOR_RESPONSE'
+		           LIMIT 1
+		         ) AS RECENT_LOANER
 		  FROM BOOK b
 	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
@@ -75,4 +81,5 @@
 		 WHERE ID = #{id}
 	  ORDER BY ORD_NO ASC
 	</select>
+
 </mapper>
