@@ -20,4 +20,38 @@
            AND REQUESTED_STATUS = #{status}
     </select>
 
+    <select id="selectHistoryById" resultType="bookHistory">
+        SELECT
+               BOOK_ID
+               , REQUESTED_STATUS
+               , STARTED_AT
+               , ENDED_AT
+               , REQUESTED_USER
+               , REQUESTED_AT
+          FROM BOOK_HISTORY h
+          JOIN BOOK b
+            ON h.BOOK_ID = b.id
+         WHERE BOOK_ID = #{id}
+           AND b.CREATED_BY = #{username}
+           AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED')
+      ORDER BY REQUESTED_AT ASC
+         LIMIT 15
+    </select>
+    
+    <update id="updateBookHistoryToOnLoan">
+        UPDATE BOOK_HISTORY
+           SET REQUESTED_STATUS = #{requestedStatus}
+               , STARTED_AT = NOW()
+         WHERE BOOK_ID = #{bookId}
+           AND REQUESTED_STATUS = 'WAIT_FOR_RESPONSE'
+    </update>
+
+    <update id="updateBookHistoryToAvailable">
+        UPDATE BOOK_HISTORY
+           SET REQUESTED_STATUS = #{requestedStatus}
+               , ENDED_AT = NOW()
+         WHERE BOOK_ID = #{bookId}
+           AND REQUESTED_STATUS = 'WAIT_FOR_RESPONSE'
+    </update>
+
 </mapper>

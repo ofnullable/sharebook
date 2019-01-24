@@ -29,4 +29,9 @@ public class BookRestController {
         return bookUpdateService.cancelLoanRequest(id, username);
     }
 
+    @PostMapping("/return/{id}/{username}")
+    public int returnRequest(@PathVariable Long id, @PathVariable String username) {
+        return bookUpdateService.returnRequest(id, username);
+    }
+
 }

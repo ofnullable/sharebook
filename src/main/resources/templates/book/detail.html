@@ -38,9 +38,13 @@
 								<button id="loan-btn" class="btn btn-success col-6" th:text="대여하기"></button>
 							</th:block>
 							<th:block th:unless="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE}">
-								<button th:id="${book.recentLoaner == session.auth.username} ? 'cancel-btn' : 'resv-btn'"
-										th:class="${book.recentLoaner == session.auth.username} ? 'btn btn-outline-danger col-6' : 'btn btn-outline-success col-6'"
-										th:text="${book.recentLoaner == session.auth.username} ? '신청취소' : '예약하기'"></button>
+								<th:block th:if="${book.recentLoaner == session.auth.username}">
+									<button th:id="${book.status == T(org.slam.dto.book.BookStatus).ON_LOAN} ? 'return-btn' : 'cancel-btn'" class="btn btn-outline-danger col-6"
+											th:text="${book.status == T(org.slam.dto.book.BookStatus).ON_LOAN} ? '반납하기' : '신청취소'"></button>
+								</th:block>
+								<th:block th:unless="${book.recentLoaner == session.auth.username}">
+									<button id="resv-btn" class="btn btn-outline-success col-6">예약하기</button>
+								</th:block>
 							</th:block>
 						</div>
 
@@ -129,7 +133,24 @@
 									window.location.reload();
 									alert('Success!');
 								} else {
-									alert('Something went wrong.. try again after few minute')
+									alert('Something went wrong.. try again after few minute');
+								}
+							}
+						});
+					});
+
+					$('#return-btn').click(function(e) {
+						if (!confirm('도서를 반납하시겠습니까?')) return;
+						var username = [[${session.auth.username}]];
+						$.ajax({
+							url: '/book/return/[[${book.id}]]/' + username,
+							type: 'post',
+							success: function(res) {
+								if (res) {
+									window.location.reload();
+									alert('Success!');
+								} else {
+									alert('Something went wrong.. try again after few minute');
 								}
 							}
 						});

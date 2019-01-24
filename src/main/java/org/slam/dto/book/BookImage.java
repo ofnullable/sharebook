@@ -1,21 +1,13 @@
 package org.slam.dto.book;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@NoArgsConstructor
 @Getter @Setter @ToString
+@Builder @NoArgsConstructor @AllArgsConstructor
 public class BookImage {
 
     private Long bookId;
     private String imageUrl;
     private Integer ordNo;
-
-    public BookImage(Long bookId, String imageUrl) {
-        this.bookId = bookId;
-        this.imageUrl = imageUrl;
-    }
 
 }

@@ -7,8 +7,9 @@
 
     <update id="updateStatus">
         UPDATE BOOK
-           SET STATUS = #{status},
-               MODIFIED_BY = #{modifiedBy}
+           SET STATUS = #{status}
+               , MODIFIED_BY = #{modifiedBy}
+               , MODIFIED_AT = NOW()
          WHERE ID = #{id}
     </update>
 

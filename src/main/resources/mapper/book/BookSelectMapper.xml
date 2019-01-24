@@ -70,7 +70,7 @@
 		                 REQUESTED_USER
 		            FROM BOOK_HISTORY
 		           WHERE BOOK_ID = #{id}
-		             AND REQUESTED_STATUS = 'WAIT_FOR_RESPONSE'
+		             AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_LOAN')
 		           LIMIT 1
 		         ) AS RECENT_LOANER
 		  FROM BOOK b

@@ -32,7 +32,7 @@ CREATE TABLE `book` (
   `author` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `main_image` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'AVAILABLE' COMMENT 'AVAILABLE\nWAIT_FOR_RESPONSE\nON_LOAN\nON_RESERVED\nLOAN_OVERDUE\nCANCELED',
+  `status` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'AVAILABLE' COMMENT 'AVAILABLE\nWAIT_FOR_RESPONSE\nON_LOAN\nON_RESERVED\nLOAN_OVERDUE\nCANCELED\nREJECTED\nRETURN_REQUEST\nRETURNED',
   `modified_by` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `modified_at` timestamp NULL DEFAULT NULL,
   `created_by` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,

@@ -24,7 +24,6 @@ public class MyItemController {
 
     @PostMapping("/")
     public String registerItem(Book book) {
-        log.info("RECEIVED DATA : {}, CREATOR : {}", book, book.getCreatedBy());
         bookSaveService.save(book);
         return "redirect:/my-page/";
     }
