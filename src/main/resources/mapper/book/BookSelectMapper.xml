@@ -14,6 +14,7 @@
         <result column="CREATED_AT" property="createdAt"/>
 		<result column="RECENT_LOANER" property="recentLoaner"/>
 		<result column="WAITERS" property="waiters"/>
+        <result column="IS_RESERVED" property="isReserved"/>
         <collection property="images" ofType="bookImage">
             <result column="IMAGE_URL" property="imageUrl"/>
         </collection>
@@ -23,7 +24,7 @@
 		</collection>
     </resultMap>
     <select id="findAll" resultMap="selectBookMap">
-		SELECT /* findAll */
+		SELECT /* bookSelectMapper.findAll */
 		       ID
 		       , TITLE
 		       , AUTHOR
@@ -38,7 +39,7 @@
 	</select>
 
     <select id="findAllByOwner" resultMap="selectBookMap">
-		SELECT /* findAllByOwner */
+		SELECT /* bookSelectMapper.findAllByOwner */
 		       ID
 		       , TITLE
 		       , AUTHOR
@@ -55,8 +56,8 @@
 	</select>
 
     <select id="findById" resultMap="selectBookMap">
-		SELECT /* findById */
-		       ID
+		SELECT /* bookSelectMapper.findById */
+		       b.ID
 		       , TITLE
 		       , AUTHOR
 		       , DESCRIPTION
@@ -73,12 +74,19 @@
 		             AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_LOAN')
 		           LIMIT 1
 		         ) AS RECENT_LOANER
+		       <if test="username != null">
+		       , IF ((SELECT 1
+		                FROM BOOK_HISTORY
+		               WHERE BOOK_ID = #{id}
+		                 AND REQUESTED_STATUS = 'ON_RESERVED'
+		                 AND REQUESTED_USER = #{username}), 1, 0) AS IS_RESERVED
+               </if>
 		  FROM BOOK b
 	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
 	 LEFT JOIN BOOK_HISTORY h
 		    ON b.ID = h.BOOK_ID
-		 WHERE ID = #{id}
+		 WHERE b.ID = #{id}
 	  ORDER BY ORD_NO ASC
 	</select>
 

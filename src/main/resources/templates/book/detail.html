@@ -43,7 +43,12 @@
 											th:text="${book.status == T(org.slam.dto.book.BookStatus).ON_LOAN} ? '반납하기' : '신청취소'"></button>
 								</th:block>
 								<th:block th:unless="${book.recentLoaner == session.auth.username}">
-									<button id="resv-btn" class="btn btn-outline-success col-6">예약하기</button>
+									<th:block th:if="${book.isReserved == false}">
+										<button id="resv-btn" class="btn btn-outline-success col-6">예약하기</button>
+									</th:block>
+									<th:block th:unless="${book.isReserved == false}">
+										<button id="resv-cancel-btn" class="btn btn-outline-danger col-6">예약취소</button>
+									</th:block>
 								</th:block>
 							</th:block>
 						</div>
@@ -90,16 +95,15 @@
 				$(function() {
 					$('#loan-btn').click(function(e) {
 						if (!confirm('해당 도서를 대여하시겠습니까?')) return;
-						var username = [[${session.auth.username}]];
 						$.ajax({
-							url: '/book/loan/[[${book.id}]]/' + username,
+							url: '/book/loan/[[${book.id}]]/' + [[${session.auth.username}]],
 							type: 'post',
 							success: function(res) {
 								if (res) {
 									window.location.reload();
 									alert('Success!');
 								} else {
-									alert('Something went wrong.. try again after few minute')
+									alert('Something went wrong.. try again after few minute');
 								}
 							}
 						});
@@ -107,16 +111,31 @@
 
 					$('#resv-btn').click(function(e) {
 						if (!confirm('해당 도서를 예약하시겠습니까?')) return;
-						var username = [[${session.auth.username}]];
 						$.ajax({
-							url: '/book/reservation/[[${book.id}]]/' + username,
+							url: '/book/reservation/[[${book.id}]]/' + [[${session.auth.username}]],
 							type: 'post',
 							success: function(res) {
 								if (res) {
 									window.location.reload();
 									alert('Success!');
 								} else {
-									alert('Something went wrong.. try again after few minute')
+									alert('Something went wrong.. try again after few minute');
+								}
+							}
+						});
+					});
+
+					$('#resv-cancel-btn').click(function(e) {
+						if (!confirm('해당 도서 예약을 취소하시겠습니까?')) return;
+						$.ajax({
+							url: '/book/cancel-reservation/[[${book.id}]]/' + [[${session.auth.username}]],
+							type: 'post',
+							success: function(res) {
+								if (res) {
+									window.location.reload();
+									alert('Success!');
+								} else {
+									alert('Something went wrong.. try again after few minute');
 								}
 							}
 						});
@@ -124,9 +143,8 @@
 
 					$('#cancel-btn').click(function(e) {
 						if (!confirm('해당 도서를 예약하시겠습니까?')) return;
-						var username = [[${session.auth.username}]];
 						$.ajax({
-							url: '/book/cancel/[[${book.id}]]/' + username,
+							url: '/book/cancel/[[${book.id}]]/' + [[${session.auth.username}]],
 							type: 'post',
 							success: function(res) {
 								if (res) {
@@ -141,9 +159,8 @@
 
 					$('#return-btn').click(function(e) {
 						if (!confirm('도서를 반납하시겠습니까?')) return;
-						var username = [[${session.auth.username}]];
 						$.ajax({
-							url: '/book/return/[[${book.id}]]/' + username,
+							url: '/book/return/[[${book.id}]]/' + [[${session.auth.username}]],
 							type: 'post',
 							success: function(res) {
 								if (res) {

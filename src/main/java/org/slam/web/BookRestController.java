@@ -24,6 +24,11 @@ public class BookRestController {
         return bookUpdateService.reservationRequest(id, username);
     }
 
+    @PostMapping("/cancel-reservation/{id}/{username}")
+    public int cancelReservationRequest(@PathVariable Long id, @PathVariable String username) {
+        return bookUpdateService.cancelReservationRequest(id, username);
+    }
+
     @PostMapping("/cancel/{id}/{username}")
     public int cancelRequest(@PathVariable Long id, @PathVariable String username) {
         return bookUpdateService.cancelLoanRequest(id, username);
