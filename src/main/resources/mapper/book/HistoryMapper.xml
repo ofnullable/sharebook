@@ -7,7 +7,7 @@
 
     <select id="selectMatchStatusHistory" resultType="book">
         SELECT /* historyMapper.selectMatchStatusHistory */
-               ID
+               b.ID
                , TITLE
                , AUTHOR
                , STATUS
@@ -22,6 +22,23 @@
 
     <select id="selectHistoryById" resultType="bookHistory">
         SELECT /* historyMapper.selectHistoryById */
+               BOOK_ID
+               , REQUESTED_STATUS
+               , STARTED_AT
+               , ENDED_AT
+               , REQUESTED_USER
+               , REQUESTED_AT
+          FROM BOOK_HISTORY h
+          JOIN BOOK b
+            ON h.BOOK_ID = b.id
+         WHERE BOOK_ID = #{id}
+           AND b.CREATED_BY = #{username}
+      ORDER BY REQUESTED_AT ASC
+         LIMIT 15
+    </select>
+
+    <select id="selectBookRequestHistoryById" resultType="bookHistory">
+        SELECT /* historyMapper.selectBookRequestHistoryById */
                BOOK_ID
                , REQUESTED_STATUS
                , STARTED_AT

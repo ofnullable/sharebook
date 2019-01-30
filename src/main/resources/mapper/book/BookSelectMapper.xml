@@ -25,7 +25,7 @@
     </resultMap>
     <select id="findAll" resultMap="selectBookMap">
 		SELECT /* bookSelectMapper.findAll */
-		       ID
+		       b.ID
 		       , TITLE
 		       , AUTHOR
 		       , STATUS
@@ -40,14 +40,18 @@
 
     <select id="findAllByOwner" resultMap="selectBookMap">
 		SELECT /* bookSelectMapper.findAllByOwner */
-		       ID
+		       b.ID
 		       , TITLE
 		       , AUTHOR
 		       , STATUS
 		       , CREATED_BY
 		       , CREATED_AT
 		       , MAIN_IMAGE
-			   , (SELECT COUNT(*) FROM BOOK_HISTORY h WHERE b.ID = h.BOOK_ID AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED')) AS WAITERS
+			   , (SELECT COUNT(*)
+			        FROM BOOK_HISTORY h
+			       WHERE b.ID = h.BOOK_ID
+			         AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED')
+			     ) AS WAITERS
 		  FROM BOOK b
 	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID

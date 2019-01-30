@@ -18,6 +18,8 @@ public interface HistoryMapper {
 
     List<BookHistory> selectHistoryById(@Param("id") Long id, @Param("username") String username);
 
+    List<BookHistory> selectBookRequestHistoryById(@Param("id") Long id, @Param("username") String username);
+
     void updateBookHistoryToOnLoan(BookHistory history);
 
     void updateBookHistoryToAvailable(BookHistory history);
@@ -33,4 +35,5 @@ public interface HistoryMapper {
 
     @Update("UPDATE BOOK_HISTORY SET REQUESTED_STATUS = 'CANCELED', ENDED_AT = NOW() WHERE BOOK_ID = #{id} AND REQUESTED_USER = #{username}")
     int cancelReservation(@Param("id") Long id, @Param("username") String username);
+
 }

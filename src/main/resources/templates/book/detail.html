@@ -14,6 +14,28 @@
 		</style>
 	</head>
 	<body>
+
+        <div th:if="${session != null && session.auth != null && book.createdBy == session.auth.username}" class="modal fade" id="history-modal" tabindex="-1" role="dialog"
+             aria-labelledby="history-modal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">History</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>No result to show</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
 		<section th:replace="include/header :: header"></section>
 
 		<div class="album py-5">
@@ -54,7 +76,7 @@
 						</div>
 
 						<div th:if="${session != null && session.auth != null && session.auth.username == book.createdBy}">
-							<button id="see-history" class="btn btn-info col-6">History</button>
+							<button id="see-history" class="btn btn-info col-6" data-toggle="modal" data-target="#history-modal">History</button>
 						</div>
 
 						<div th:if="${session == null || session.auth == null}">
@@ -172,6 +194,33 @@
 							}
 						});
 					});
+					$('#see-history').click(function(e) {
+						console.log('clicked');
+						$.getJSON('/book/' + [[${book.id}]] + '/history', function(res) {
+							$('#history-modal .modal-body').html(makeHtmlForBookHistory(res));
+						});
+					});
+
+					function makeHtmlForBookHistory(data) {
+						var html = '';
+						if (data.length) {
+							data.forEach(function(d) {
+								if ('WAIT_FOR_RESPONSE' === d.requestedStatus) d.requestedStatus = '대여요청';
+								else if ('ON_RESERVED' === d.requestedStatus) d.requestedStatus = '예약';
+								else if ('ON_LOAN' === d.requestedStatus) d.requestedStatus = '대여중';
+
+								html += '<div class="py-2 row"><div class="col-7"><p>REQUEST USER : ';
+								html += d.requestedUser + '</p><p>REQUEST STATUS : ' + d.requestedStatus + '</p></div>';
+								if (d.requestedStatus === '대여요청') {
+									html += '<div class="col-5"><button id="accept-btn" class="btn btn-success" data-id="' + d.bookId + '">Accept</button>';
+									html += '<button id="reject-btn" class="btn btn-outline-secondary" data-id="' + d.bookId + '">Reject</button></div>';
+								}
+								html += '</div>';
+							});
+							html += '</div>';
+						} else html += '<div class="py-2 row"><span class="col-12 text-center font-weight-bold">No result</span></div>';
+						return html;
+					}
 				});
 			</script>
 		</th:block>

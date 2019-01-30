@@ -28,6 +28,10 @@ public class HistoryService {
         return historyMapper.selectHistoryById(id, username);
     }
 
+    public List<BookHistory> selectBookRequestHistoryById(Long id, String username) {
+        return historyMapper.selectBookRequestHistoryById(id, username);
+    }
+
     public void updateBookHistory(Book book, String username) {
         if (book.getOwnerAnswer() == UserAnswer.ACCEPT) {
             book.setStatus(BookStatus.ON_LOAN);
@@ -50,4 +54,5 @@ public class HistoryService {
             historyMapper.updateBookHistoryOnReservedToWaitForResponse(book.getId());
         }
     }
+
 }

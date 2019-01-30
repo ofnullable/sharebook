@@ -36,8 +36,8 @@ public class MyPageRestController {
     }
 
     @GetMapping("/history/{id}")
-    public List<BookHistory> selectBookHistoryById(@PathVariable Long id, Authentication auth) {
-        return historyService.selectHistoryById(id, auth.getName());
+    public List<BookHistory> selectBookRequestHistoryById(@PathVariable Long id, Authentication auth) {
+        return historyService.selectBookRequestHistoryById(id, auth.getName());
     }
 
     @PostMapping("/history/{id}")
