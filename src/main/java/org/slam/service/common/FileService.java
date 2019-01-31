@@ -21,7 +21,6 @@ public class FileService {
 
     private final SessionFactory<FTPFile> sf;
     private static final String INITIAL_PATH = "share/book/";
-    private final FtpUtils ftpUtils = new FtpUtils();
 
     public String send(MultipartFile bookImage) {
         return sendImage(bookImage, this.makePath());
@@ -46,14 +45,15 @@ public class FileService {
             return remoteFilePath;
         } catch (IOException e) {
             e.printStackTrace();
+            log.error("Fail to send file.. PATH : {}, FILENAME : {}", remotePath, bookImage.getOriginalFilename());
         }
         return null;
     }
 
     private String makePath() {
-        var fullPath = new StringBuilder(INITIAL_PATH).append(ftpUtils.makeDirName());
+        var fullPath = new StringBuilder(INITIAL_PATH).append(FtpUtils.makeDirName());
         makeRemoteDir(fullPath.toString());
-        return fullPath.append("/").append(ftpUtils.makeFilename()).append("-").toString();
+        return fullPath.append("/").append(FtpUtils.makeFilename()).append("-").toString();
     }
 
     private void makeRemoteDir(String fullPath) {
@@ -67,14 +67,14 @@ public class FileService {
                     try {
                         session.mkdir(temp.append("/").append(p).toString());
                     } catch (IOException e) {
-                        log.debug("Can not make directory. Path : {}", temp);
                         e.printStackTrace();
+                        log.error("Can not make directory. Path : {}", temp);
                     }
                 });
             }
         } catch (IOException e) {
-            log.debug("Can not check is exists. Path : {}", fullPath);
             e.printStackTrace();
+            log.error("Can not check is exists. Path : {}", fullPath);
         }
     }
 

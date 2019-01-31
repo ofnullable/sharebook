@@ -6,4 +6,6 @@ public interface BookUpdateMapper {
 
     int updateStatus(Book book);
 
+    int conditionalUpdateStatus(Book book);
+
 }

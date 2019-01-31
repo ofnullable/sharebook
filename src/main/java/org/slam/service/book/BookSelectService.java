@@ -16,8 +16,8 @@ public class BookSelectService {
 
     private final BookSelectMapper bookSelectMapper;
 
-    public Book selectBookDetail(Long id) {
-        return Optional.ofNullable(bookSelectMapper.findById(id))
+    public Book selectBookDetail(Long id, String username) {
+        return Optional.ofNullable(bookSelectMapper.findById(id, username))
                 .orElseThrow( () -> new IllegalArgumentException("CAN NOT FOUND BOOK FOR ID : " + id) );
     }
 

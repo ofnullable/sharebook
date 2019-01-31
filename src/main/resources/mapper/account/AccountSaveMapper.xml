@@ -6,7 +6,7 @@
 <mapper namespace="org.slam.mapper.account.AccountSaveMapper">
 
     <insert id="save">
-		INSERT INTO ACCOUNT
+		INSERT INTO ACCOUNT /* accountSaveMapper.save */
 		            (
 		            USERNAME
 		            , PASSWORD

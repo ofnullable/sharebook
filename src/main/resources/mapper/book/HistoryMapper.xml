@@ -6,8 +6,8 @@
 <mapper namespace="org.slam.mapper.book.HistoryMapper">
 
     <select id="selectMatchStatusHistory" resultType="book">
-        SELECT /* selectMatchStatusHistory */
-               ID
+        SELECT /* historyMapper.selectMatchStatusHistory */
+               b.ID
                , TITLE
                , AUTHOR
                , STATUS
@@ -19,5 +19,75 @@
          WHERE REQUESTED_USER = #{username}
            AND REQUESTED_STATUS = #{status}
     </select>
+
+    <select id="selectHistoryById" resultType="bookHistory">
+        SELECT /* historyMapper.selectHistoryById */
+               BOOK_ID
+               , REQUESTED_STATUS
+               , STARTED_AT
+               , ENDED_AT
+               , REQUESTED_USER
+               , REQUESTED_AT
+          FROM BOOK_HISTORY h
+          JOIN BOOK b
+            ON h.BOOK_ID = b.id
+         WHERE BOOK_ID = #{id}
+           AND b.CREATED_BY = #{username}
+      ORDER BY REQUESTED_AT ASC
+         LIMIT 15
+    </select>
+
+    <select id="selectBookRequestHistoryById" resultType="bookHistory">
+        SELECT /* historyMapper.selectBookRequestHistoryById */
+               BOOK_ID
+               , REQUESTED_STATUS
+               , STARTED_AT
+               , ENDED_AT
+               , REQUESTED_USER
+               , REQUESTED_AT
+          FROM BOOK_HISTORY h
+          JOIN BOOK b
+            ON h.BOOK_ID = b.id
+         WHERE BOOK_ID = #{id}
+           AND b.CREATED_BY = #{username}
+           AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED', 'ON_LOAN')
+      ORDER BY REQUESTED_AT ASC
+         LIMIT 15
+    </select>
+
+    <update id="updateBookHistoryToCanceled">
+        UPDATE /* historyMapper.updateBookHistoryToCanceled */
+               BOOK_HISTORY
+           SET REQUESTED_STATUS = CASE
+               WHEN 'WAIT_FOR_RESPONSE' THEN 'CANCELED'
+               WHEN 'ON_RESERVED' THEN 'WAIT_FOR_RESPONSE'
+               ELSE REQUESTED_STATUS
+               END
+               , ENDED_AT = CASE
+               WHEN 'WAIT_FOR_RESPONSE' THEN NOW()
+               END
+         WHERE BOOK_ID = #{id}
+           AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED')
+      ORDER BY REQUESTED_AT ASC
+         LIMIT 2
+    </update>
+    
+    <update id="updateBookHistoryToOnLoan">
+        UPDATE /* historyMapper.updateBookHistoryToOnLoan */
+               BOOK_HISTORY
+           SET REQUESTED_STATUS = #{requestedStatus}
+               , STARTED_AT = NOW()
+         WHERE BOOK_ID = #{bookId}
+           AND REQUESTED_STATUS = 'WAIT_FOR_RESPONSE'
+    </update>
+
+    <update id="updateBookHistoryToAvailable">
+        UPDATE /* historyMapper.updateBookHistoryToAvailable */
+               BOOK_HISTORY
+           SET REQUESTED_STATUS = #{requestedStatus}
+               , ENDED_AT = NOW()
+         WHERE BOOK_ID = #{bookId}
+           AND REQUESTED_STATUS = 'WAIT_FOR_RESPONSE'
+    </update>
 
 </mapper>

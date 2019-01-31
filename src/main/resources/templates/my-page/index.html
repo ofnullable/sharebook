@@ -7,9 +7,40 @@
 			span.badge {
 				line-height: unset;
 			}
+			.col-5 button {
+				width: 100%;
+			}
 		</style>
 	</head>
 	<body>
+        <div class="modal fade" id="history-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Requests for book : </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="p-2 row">
+							<div class="col-7" style="width: 55%;">
+								<p>REQUEST USER : </p>
+								<p>REQUEST STATUS : </p>
+							</div>
+							<div class="col-5">
+								<button class="btn btn-success">Accept</button>
+								<button class="btn btn-outline-secondary">Discard</button>
+							</div>
+						</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                    </div>
+                </div>
+            </div>
+        </div>
 		<section th:replace="include/header :: header"></section>
 		
 		<div class="album py-5">
@@ -22,40 +53,36 @@
 				</nav>
 				<div class="row">
 
-					<th:block th:if="${books.size() != 0}">
-						<div th:each="book : ${books}" class="col-md-4">
-							<div class="card mb-4 shadow-sm">
-								<a th:href="|/book/${book.id}|">
-									<img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22343%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20343%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_167fb304ee1%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A17pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_167fb304ee1%22%3E%3Crect%20width%3D%22343%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22114.21875%22%20y%3D%22120.15%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true">
-								</a>
-								<div class="card-body">
-									<a th:href="|/book/${book.id}|">
-										<p class="card-text" th:text="${book.title}"></p>
-										<p th:text="${book.author}"></p>
-									</a>
-									<div class="d-flex justify-content-between align-items-center">
-										<div class="btn-group">
-											<button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal"
-													data-target="#alarm-modal" th:id="|alarm-${book.id}|">
-												Request
-												<span class="badge badge-pill badge-danger" th:text="${book.waiters}"></span>
-											</button>
-										</div>
-										<small class="text-muted" th:text="${book.createdAt}"></small>
-									</div>
-								</div>
-							</div>
-						</div>
-					</th:block>
-					<th:block th:if="${books.size() == 0}">
-						<div class="col-12 text-center">
-							<p class="font-weight-bold">EMPTY LIST</p>
-							<p>You didn't register any book</p>
-							<span>
-								<a href="/my-page/item/">Let's share your first book!</a>
-							</span>
-						</div>
-					</th:block>
+					<!--<th:block th:if="${books.size() != 0}">-->
+						<!--<div th:each="book : ${books}" class="col-md-4">-->
+							<!--<div class="card mb-4 shadow-sm">-->
+								<!--<a th:href="|/book/${book.id}|">-->
+									<!--<img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22343%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20343%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_167fb304ee1%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A17pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_167fb304ee1%22%3E%3Crect%20width%3D%22343%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22114.21875%22%20y%3D%22120.15%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true">-->
+								<!--</a>-->
+								<!--<div class="card-body">-->
+									<!--<a th:href="|/book/${book.id}|">-->
+										<!--<p class="card-text" th:text="${book.title}"></p>-->
+										<!--<p th:text="${book.author}"></p>-->
+									<!--</a>-->
+									<!--<div class="d-flex justify-content-between align-items-center row">-->
+                                        <!--<button type="button" class="btn btn-sm btn-outline-secondary show-history-btn col-6" th:id="|alarm-${book.id}|">-->
+                                            <!--Requests <span class="badge badge-pill badge-danger" th:text="${book.waiters}"></span>-->
+                                        <!--</button>-->
+										<!--<small class="text-muted text-center col-6" th:text="${#temporals.formatISO(book.createdAt)}"></small>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</th:block>-->
+					<!--<th:block th:if="${books.size() == 0}">-->
+						<!--<div class="col-12 text-center" style="margin: 7rem 0;">-->
+							<!--<p class="font-weight-bold">EMPTY LIST</p>-->
+							<!--<p>You didn't register any book</p>-->
+							<!--<span>-->
+								<!--<a href="/my-page/item/">Let's share your first book!</a>-->
+							<!--</span>-->
+						<!--</div>-->
+					<!--</th:block>-->
 					
 				</div>
 			</div>
@@ -64,50 +91,112 @@
 		<footer th:replace="include/footer :: footer"></footer>
 		<th:block th:replace="include/scripts :: scripts"/>
 		<script type="text/javascript" th:inline="javascript">
-			$('.nav > a').click(function(e) {
-				$('.nav').children().removeClass('active');
-				$(this).addClass('active');
-				getMatchStatusBooks($(this).attr('id'));
-			});
+            $(function(){
+                getMatchStatusBooks('my-books');
+                $('.nav > a').click(function(e) {
+                    $('.nav').children().removeClass('active');
+                    $(this).addClass('active');
+                    getMatchStatusBooks($(this).attr('id'));
+                });
 
-			function getMatchStatusBooks(status) {
-				$.getJSON('/my-page/history/' + status, function(res) {
-					if (status === 'my-books') $('.row').html(makeHtmlForMyItems(res));
-					else $('.row').html(makeHtmlForMatchStatusBooks(res));
+                $('.row').on('click', '.show-history-btn', function(e) {
+                    var id = $(e.target).attr('id').split('-')[1];
+                    getHistoryByBookId(id);
+                });
+
+                var $historyModal = $('#history-modal');
+				$historyModal.on('click', '#accept-btn', function(e) {
+                	var id = $(e.target).data('id');
+					$.ajax({
+						url: '/my-page/history/' + id,
+						type: 'post',
+						data: {ownerAnswer : "ACCEPT"},
+						success: function(res) {
+							console.log(res);
+							getHistoryByBookId(id);
+						}
+					});
 				});
-			}
-			function makeHtmlForMyItems(data) {
-				var html = '';
-				if (data.length) {
-					data.forEach(function(d) {
-						html += '<div class="col-md-4"><div class="card mb-4 shadow-sm"><a href="/book/' + d.id + '">';
-						html += '<img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22343%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20343%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_167fb304ee1%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A17pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_167fb304ee1%22%3E%3Crect%20width%3D%22343%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22114.21875%22%20y%3D%22120.15%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true"></a>';
-						html += '<div class="card-body"><a href="/book/' + d.id + '"><p class="card-text">' + d.title + '</p><p>' + d.author + '</p></a>';
-						html += '<div class="d-flex justify-content-between align-items-center"><div class="btn-group">';
-						html += '<button id="alarm-' + d.id + '" type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#alarm-modal">';
-						html += 'Request<span class="badge badge-pill badge-danger">' + d.waiters;
-						html += '</span></button></div><small class="text-muted">' + d.createdAt + '</small></div></div></div></div>';
+				$historyModal.on('click', '#reject-btn', function(e) {
+					var id = $(e.target).data('id');
+					$.ajax({
+						url: '/my-page/history/' + id,
+						type: 'post',
+						data: {ownerAnswer : "REJECT"},
+						success: function(res) {
+							console.log(res);
+							getHistoryByBookId(id);
+						}
 					});
-				} else html = makeHtmlForEmptyResult();
-				return html;
-			}
-			function makeHtmlForMatchStatusBooks(data) {
-				var html = '';
-				if (data.length) {
-					data.forEach(function(d) {
-						html += '<div class="col-md-4"><div class="card mb-4 shadow-sm"><a href="/book/' + d.id + '">';
-						html += '<img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22343%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20343%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_167fb304ee1%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A17pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_167fb304ee1%22%3E%3Crect%20width%3D%22343%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22114.21875%22%20y%3D%22120.15%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true"></a>';
-						html += '<div class="card-body"><a href="/book/' + d.id + '"><p class="card-text">' + d.title + '</p><p>' + d.author + '</p></a>';
-						html += '<div class="d-flex justify-content-between align-items-center"><div class="btn-group">';
-						html += '<button type="button" class="btn btn-sm btn-outline-secondary">View</button></div>';
-						html += '<small class="text-muted">' + d.createdAt + '</small></div></div></div></div>';
+				});
+
+                function getMatchStatusBooks(status) {
+                    $.getJSON('/my-page/' + status, function(res) {
+                        if (status === 'my-books') $('.row').html(makeHtmlForMyItems(res));
+                        else $('.row').html(makeHtmlForMatchStatusBooks(res));
+                    });
+                }
+                function makeHtmlForMyItems(data) {
+                    var html = '';
+                    if (data.length) {
+                        data.forEach(function(d) {
+                            var tempDate = new Date(d.createdAt);
+                            html += '<div class="col-md-4"><div class="card mb-4 shadow-sm"><a href="/book/' + d.id + '">';
+                            html += '<img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22343%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20343%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_167fb304ee1%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A17pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_167fb304ee1%22%3E%3Crect%20width%3D%22343%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22114.21875%22%20y%3D%22120.15%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true"></a>';
+                            html += '<div class="card-body"><a href="/book/' + d.id + '"><p class="card-text">' + d.title + '</p><p>' + d.author + '</p></a>';
+                            html += '<div class="d-flex justify-content-between align-items-center row">';
+                            html += '<button id="alarm-' + d.id + '" type="button" class="btn btn-sm btn-outline-secondary show-history-btn col-6">';
+                            html += ' Requests <span class="badge badge-pill badge-danger">' + d.waiters + '</span></button>';
+                            html += '<small class="text-muted text-center col-6">' + tempDate.toDateString() + '</small></div></div></div></div>';
+                        });
+                    } else html = '<div class="col-12 text-center" style="margin: 7rem 0;"><p class="font-weight-bold">EMPTY LIST</p><p>You didn`t register any book</p><span><a href="/my-page/item/">Let\'s share your first book!</a></span></div>';
+                    return html;
+                }
+                function makeHtmlForMatchStatusBooks(data) {
+                    var html = '';
+                    if (data.length) {
+                        data.forEach(function(d) {
+                            var tempDate = new Date(d.createdAt);
+                            html += '<div class="col-md-4"><div class="card mb-4 shadow-sm"><a href="/book/' + d.id + '">';
+                            html += '<img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22343%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20343%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_167fb304ee1%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A17pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_167fb304ee1%22%3E%3Crect%20width%3D%22343%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22114.21875%22%20y%3D%22120.15%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true">';
+                            html += '<div class="card-body"><p class="card-text">' + d.title + '</p><p>' + d.author + '</p>';
+                            html += '<div class="d-flex justify-content-between align-items-center row">';
+                            html += '<button type="button" class="btn btn-sm btn-outline-secondary col-6">View</button>';
+                            html += '<small class="text-muted col-6 text-center">' + tempDate.toDateString() + '</small></div></div></a></div></div>';
+                        });
+                    } else html = '<div style="text-align: center; margin: 7rem 0;width: 100%"><h1>No result</h1></div>';
+                    return html;
+                }
+                function getHistoryByBookId(id) {
+					var $historyModal = $('#history-modal');
+
+					$.getJSON('/my-page/history/' + id, function(res) {
+						$historyModal.find('.modal-title').html('Requests for book : ' + id);
+						$historyModal.find('.modal-body').html(makeHtmlForBookHistory(res));
 					});
-				} else html = makeHtmlForEmptyResult();
-				return html;
-			}
-			function makeHtmlForEmptyResult() {
-				return '<div style="text-align: center; margin: 7rem 0;width: 100%"><h1>There is no result</h1></div>';
-			}
+					$historyModal.modal('show');
+				}
+				function makeHtmlForBookHistory(data) {
+                	var html = '';
+					if (data.length) {
+						data.forEach(function(d) {
+							if ('WAIT_FOR_RESPONSE' === d.requestedStatus) d.requestedStatus = '대여요청';
+							else if ('ON_RESERVED' === d.requestedStatus) d.requestedStatus = '예약';
+							else if ('ON_LOAN' === d.requestedStatus) d.requestedStatus = '대여중';
+
+							html += '<div class="py-2 row"><div class="col-7"><p>REQUEST USER : ';
+							html += d.requestedUser + '</p><p>REQUEST STATUS : ' + d.requestedStatus + '</p></div>';
+							if (d.requestedStatus === '대여요청') {
+								html += '<div class="col-5"><button id="accept-btn" class="btn btn-success" data-id="' + d.bookId + '">Accept</button>';
+								html += '<button id="reject-btn" class="btn btn-outline-secondary" data-id="' + d.bookId + '">Reject</button></div>';
+							}
+							html += '</div>';
+						});
+						html += '</div>';
+					} else html += '<div class="py-2 row"><span class="col-12 text-center font-weight-bold">No result</span></div>';
+					return html;
+				}
+            });
 		</script>
 	</body>
 </html>

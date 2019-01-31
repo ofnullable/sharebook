@@ -58,15 +58,7 @@ public class FtpConfig {
         return handler;
     }
 
-//    Can send by gateway with code below too.
-	@Bean
-	@ServiceActivator(inputChannel = "toFtpChannel")
-	public FtpOutboundGateway outboundGateway() {
-		var gw = new FtpOutboundGateway(sessionFactory(), "ls", "payload");
-		gw.setOption(AbstractRemoteFileOutboundGateway.Option.ALL);
-		gw.setOutputChannelName("fromFtpChannel");
-		return gw;
-	}
+    // Can send by gateway with code below too.
 	@Bean
 	public IntegrationFlow outboundFlow() {
 		return IntegrationFlows.from("toFtpChannel")
@@ -76,6 +68,14 @@ public class FtpConfig {
 						.autoCreateDirectory(true)
 						.remoteDirectoryExpression("headers['path']")
 				).get();
+	}
+	@Bean
+	@ServiceActivator(inputChannel = "toFtpChannel")
+	public FtpOutboundGateway outboundGateway() {
+		var gw = new FtpOutboundGateway(sessionFactory(), "ls", "payload");
+		gw.setOption(AbstractRemoteFileOutboundGateway.Option.ALL);
+		gw.setOutputChannelName("fromFtpChannel");
+		return gw;
 	}
     */
 

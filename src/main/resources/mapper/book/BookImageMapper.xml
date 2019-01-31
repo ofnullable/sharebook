@@ -6,7 +6,7 @@
 <mapper namespace="org.slam.mapper.book.BookImageMapper">
 
 	<insert id="save">
-		INSERT INTO BOOK_IMAGE
+		INSERT INTO BOOK_IMAGE /* bookImageMapper.save */
 		            (
 		            BOOK_ID
 		            , IMAGE_URL

@@ -1,15 +1,12 @@
 package org.slam.dto.account;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@NoArgsConstructor
 @Getter @Setter @ToString
+@Builder @NoArgsConstructor @AllArgsConstructor
 public class Account {
 
     private String username;
@@ -19,12 +16,5 @@ public class Account {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private Set<Role> roles;
-
-    public Account(String username, String password, String name, String email) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-    }
 
 }

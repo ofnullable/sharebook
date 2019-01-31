@@ -6,7 +6,7 @@
 <mapper namespace="org.slam.mapper.book.BookSaveMapper">
 
     <insert id="save">
-		INSERT INTO BOOK
+		INSERT INTO BOOK /* bookSaveMapper.save */
 	                (
 		            TITLE
 		            , AUTHOR
@@ -29,7 +29,7 @@
 	</insert>
 
     <insert id="saveAll">
-        INSERT INTO BOOK
+        INSERT INTO BOOK /* bookSaveMapper.saveAll */
                     (
                     TITLE
                     , AUTHOR

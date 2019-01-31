@@ -6,9 +6,24 @@
 <mapper namespace="org.slam.mapper.book.BookUpdateMapper">
 
     <update id="updateStatus">
-        UPDATE BOOK
-           SET STATUS = #{status},
-               MODIFIED_BY = #{modifiedBy}
+        UPDATE /* bookUpdateMapper.updateStatus */
+               BOOK
+           SET STATUS = #{status}
+               , MODIFIED_BY = #{modifiedBy}
+               , MODIFIED_AT = NOW()
+         WHERE ID = #{id}
+    </update>
+
+    <update id="conditionalUpdateStatus">
+        UPDATE /* bookUpdateMapper.conditionalUpdateStatus */
+               BOOK
+           SET STATUS = CASE
+               WHEN EXISTS(SELECT COUNT(*) FROM BOOK_HISTORY WHERE BOOK_ID = #{id} AND REQUESTED_STATUS = 'ON_RESERVED')
+               THEN 'WAIT_FOR_RESPONSE'
+               ELSE 'AVAILABLE'
+               END
+               , MODIFIED_BY = #{modifiedBy}
+               , MODIFIED_AT = NOW()
          WHERE ID = #{id}
     </update>
 

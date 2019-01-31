@@ -53,7 +53,7 @@ public class AccountTest {
 
 	@Test
 	public void accountUpdateTest() {
-		var account = new Account("default", "123", "", "");
+		var account = Account.builder().username("default").password("123").build();
 		accountUpdateService.updatePassword(account);
 	}
 	

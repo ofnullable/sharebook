@@ -2,20 +2,18 @@ package org.slam.web;
 
 import lombok.AllArgsConstructor;
 import org.slam.dto.book.Book;
+import org.slam.dto.book.BookHistory;
 import org.slam.dto.book.BookStatus;
 import org.slam.service.book.BookSelectService;
 import org.slam.service.book.HistoryService;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/my-page/history")
+@RequestMapping("/my-page")
 public class MyPageRestController {
 
     private final BookSelectService bookSelectService;
@@ -35,6 +33,17 @@ public class MyPageRestController {
             default:
                 return null;
         }
+    }
+
+    @GetMapping("/history/{id}")
+    public List<BookHistory> selectBookRequestHistoryById(@PathVariable Long id, Authentication auth) {
+        return historyService.selectBookRequestHistoryById(id, auth.getName());
+    }
+
+    @PostMapping("/history/{id}")
+    public String updateBookHistory(Book book, Authentication auth) {
+        historyService.updateBookHistory(book, auth.getName());
+        return "success";
     }
 
 }

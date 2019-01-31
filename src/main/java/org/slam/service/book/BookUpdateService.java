@@ -17,28 +17,27 @@ public class BookUpdateService {
     private final HistoryMapper historyMapper;
 
     public int loanRequest(Long id, String modifier) {
-        var book = new Book(id, BookStatus.WAIT_FOR_RESPONSE, modifier);
-        return this.changeStatus(book) > 0 ? this.insertHistory(book) > 0 ? 1 : 0 : 0;
+        var book = Book.builder().id(id).status(BookStatus.WAIT_FOR_RESPONSE).modifiedBy(modifier).build();
+        return bookUpdateMapper.updateStatus(book) > 0 ? historyMapper.insertHistory(book) > 0 ? 1 : 0 : 0;
     }
 
     public int reservationRequest(Long id, String modifier) {
-        return historyMapper.insertHistory(new Book(id, BookStatus.ON_RESERVED, modifier));
+        return historyMapper.insertHistory(Book.builder().id(id).status(BookStatus.ON_RESERVED).modifiedBy(modifier).build());
+    }
+
+    public int cancelReservationRequest(Long id, String username) {
+        return historyMapper.cancelReservation(id, username);
     }
 
     public int cancelLoanRequest(Long id, String modifier) {
-        var book = new Book(id, BookStatus.WAIT_FOR_RESPONSE, modifier);
-        var changeResult = this.changeStatus(book);
-        book.setStatus(BookStatus.CANCELED);
-        var insertResult = this.insertHistory(book);
+        var book = Book.builder().id(id).modifiedBy(modifier).build();
+        var changeResult = bookUpdateMapper.conditionalUpdateStatus(book);
+        var insertResult = historyMapper.updateBookHistoryToCanceled(book.getId());
         return changeResult > 0 ? insertResult > 0 ? 1 : 0 : 0;
     }
 
-    private int changeStatus(Book book) {
-        return bookUpdateMapper.updateStatus(book);
-    }
-
-    private int insertHistory(Book book) {
-        return historyMapper.insertHistory(book);
+    public int returnRequest(Long id, String modifier) {
+        return historyMapper.updateBookHistoryToReturnRequest(Book.builder().id(id).status(BookStatus.RETURN_REQUEST).modifiedBy(modifier).build());
     }
 
 }
