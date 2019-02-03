@@ -9,6 +9,7 @@
         <result column="TITLE" property="title"/>
         <result column="AUTHOR" property="author"/>
         <result column="DESCRIPTION" property="description"/>
+		<result column="MAIN_IMAGE" property="mainImage"/>
 		<result column="STATUS" property="status"/>
         <result column="CREATED_BY" property="createdBy"/>
         <result column="CREATED_AT" property="createdAt"/>
@@ -29,9 +30,9 @@
 		       , TITLE
 		       , AUTHOR
 		       , STATUS
+			   , MAIN_IMAGE
 		       , CREATED_BY
 		       , CREATED_AT
-		       , MAIN_IMAGE
 		  FROM BOOK b
 	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
@@ -43,10 +44,10 @@
 		       b.ID
 		       , TITLE
 		       , AUTHOR
+			   , MAIN_IMAGE
 		       , STATUS
 		       , CREATED_BY
 		       , CREATED_AT
-		       , MAIN_IMAGE
 			   , (SELECT COUNT(*)
 			        FROM BOOK_HISTORY h
 			       WHERE b.ID = h.BOOK_ID
@@ -65,6 +66,7 @@
 		       , TITLE
 		       , AUTHOR
 		       , DESCRIPTION
+		       , MAIN_IMAGE
 		       , b.STATUS
 		       , CREATED_BY
 		       , CREATED_AT

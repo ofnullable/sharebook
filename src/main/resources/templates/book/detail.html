@@ -11,6 +11,9 @@
 				border-radius: 9px;
 				min-height: 50px;
 			}
+			.thumbnail {
+				width: 25%;
+			}
 		</style>
 	</head>
 	<body>
@@ -42,12 +45,12 @@
 			<div class="container">
 				<div class="row mb-5">
 					<div class="col-6">
-						<img class="col-md-6 col-12" th:src="@{https://image.aladin.co.kr/product/16234/12/cover/8932035059_1.jpg}" th:alt="${book.title}">
-						<div class="row">
-							<p class="col-4" th:each="image : ${book.images}" th:text="${image.imageUrl}"></p>
-						</div>
+						<img class="img-fluid" th:src="@{|http://img.worksout.co.kr/${book.mainImage}|}" th:alt="${book.title}">
+						<!--<div class="row">-->
+							<!--<p class="col-4" th:each="image : ${book.images}" th:text="${image.imageUrl}"></p>-->
+						<!--</div>-->
 						<div class="images">
-							<img th:each="i : ${book.images}" th:src="@{|http://img.worksout.co.kr/${i.imageUrl}|}" th:alt="${book.title}"/>
+							<img class="thumbnail" th:each="i : ${book.images}" th:src="@{|http://img.worksout.co.kr/${i.imageUrl}|}" th:alt="${book.title}"/>
 						</div>
 					</div>
 					<div class="col-6">
@@ -57,31 +60,31 @@
 
 						<div th:if="${session != null && session.auth != null && session.auth.username != book.createdBy}">
 							<th:block th:if="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE}">
-								<button id="loan-btn" class="btn btn-success col-6" th:text="대여하기"></button>
+								<button id="loan-btn" class="btn btn-success col-md-6 col-12" th:text="대여하기"></button>
 							</th:block>
 							<th:block th:unless="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE}">
 								<th:block th:if="${book.recentLoaner == session.auth.username}">
-									<button th:id="${book.status == T(org.slam.dto.book.BookStatus).ON_LOAN} ? 'return-btn' : 'cancel-btn'" class="btn btn-outline-danger col-6"
+									<button th:id="${book.status == T(org.slam.dto.book.BookStatus).ON_LOAN} ? 'return-btn' : 'cancel-btn'" class="btn btn-outline-danger col-md-6 col-12"
 											th:text="${book.status == T(org.slam.dto.book.BookStatus).ON_LOAN} ? '반납하기' : '신청취소'"></button>
 								</th:block>
 								<th:block th:unless="${book.recentLoaner == session.auth.username}">
 									<th:block th:if="${book.isReserved == false}">
-										<button id="resv-btn" class="btn btn-outline-success col-6">예약하기</button>
+										<button id="resv-btn" class="btn btn-outline-success col-md-6 col-12">예약하기</button>
 									</th:block>
 									<th:block th:unless="${book.isReserved == false}">
-										<button id="resv-cancel-btn" class="btn btn-outline-danger col-6">예약취소</button>
+										<button id="resv-cancel-btn" class="btn btn-outline-danger col-md-6 col-12">예약취소</button>
 									</th:block>
 								</th:block>
 							</th:block>
 						</div>
 
 						<div th:if="${session != null && session.auth != null && session.auth.username == book.createdBy}">
-							<button id="see-history" class="btn btn-info col-6" data-toggle="modal" data-target="#history-modal">History</button>
+							<button id="see-history" class="btn btn-info col-md-6 col-12" data-toggle="modal" data-target="#history-modal">History</button>
 						</div>
 
 						<div th:if="${session == null || session.auth == null}">
 							<a href="/sign-in" data-toggle="tooltip" data-placement="top" title="Sign in first!"
-							   th:class="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE} ? 'btn btn-success col-6' : 'btn btn-outline-success col-6'"
+							   th:class="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE} ? 'btn btn-success col-md-6 col-12' : 'btn btn-outline-success col-md-6 col-12'"
 							   th:text="${book.status == T(org.slam.dto.book.BookStatus).AVAILABLE} ? '대여하기' : '예약하기'"></a>
 						</div>
 						<div th:utext="*{#strings.replace(book.description, T(System).getProperty('line.separator'), '&lt;br/&gt;')}" class="my-3">
@@ -164,7 +167,7 @@
 					});
 
 					$('#cancel-btn').click(function(e) {
-						if (!confirm('해당 도서를 예약하시겠습니까?')) return;
+						if (!confirm('대여요청을 취소하시겠습니까?')) return;
 						$.ajax({
 							url: '/book/cancel/[[${book.id}]]/' + [[${session.auth.username}]],
 							type: 'post',

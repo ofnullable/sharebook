@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Builder @NoArgsConstructor @AllArgsConstructor
 public class BookHistory {
 
+    private Long id;
     private Long bookId;
     private BookStatus requestedStatus;
     private LocalDateTime startedAt;

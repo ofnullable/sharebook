@@ -8,7 +8,7 @@ body {
 }
 .jumbotron {
 	background-color: transparent;
-	padding: 5rem 2rem;
+	padding: 5rem 2rem 1rem;
 }
 .jumbotron > .container {
 	max-width: 40rem;
