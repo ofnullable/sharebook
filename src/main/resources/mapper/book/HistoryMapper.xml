@@ -22,7 +22,8 @@
 
     <select id="selectHistoryById" resultType="bookHistory">
         SELECT /* historyMapper.selectHistoryById */
-               BOOK_ID
+               h.ID
+               , BOOK_ID
                , REQUESTED_STATUS
                , STARTED_AT
                , ENDED_AT
@@ -39,7 +40,8 @@
 
     <select id="selectBookRequestHistoryById" resultType="bookHistory">
         SELECT /* historyMapper.selectBookRequestHistoryById */
-               BOOK_ID
+               h.ID
+               , BOOK_ID
                , REQUESTED_STATUS
                , STARTED_AT
                , ENDED_AT
@@ -77,8 +79,7 @@
                BOOK_HISTORY
            SET REQUESTED_STATUS = #{requestedStatus}
                , STARTED_AT = NOW()
-         WHERE BOOK_ID = #{bookId}
-           AND REQUESTED_STATUS = 'WAIT_FOR_RESPONSE'
+         WHERE ID = #{id}
     </update>
 
     <update id="updateBookHistoryToAvailable">
@@ -86,8 +87,7 @@
                BOOK_HISTORY
            SET REQUESTED_STATUS = #{requestedStatus}
                , ENDED_AT = NOW()
-         WHERE BOOK_ID = #{bookId}
-           AND REQUESTED_STATUS = 'WAIT_FOR_RESPONSE'
+         WHERE ID = #{id}
     </update>
 
 </mapper>

@@ -53,14 +53,16 @@ CREATE TABLE `book_image` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `book_history` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `book_id` bigint(20) unsigned NOT NULL,
   `requested_status` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `started_at` timestamp NULL DEFAULT NULL,
   `ended_at` timestamp NULL DEFAULT NULL,
   `requested_user` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `requested_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
   KEY `fk_book_history_idx` (`book_id`),
   KEY `fk_account_book_history_idx` (`requested_user`),
   CONSTRAINT `fk_account_book_history` FOREIGN KEY (`requested_user`) REFERENCES `account` (`username`),
   CONSTRAINT `fk_book_book_history` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci

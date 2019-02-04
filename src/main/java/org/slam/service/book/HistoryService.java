@@ -38,7 +38,7 @@ public class HistoryService {
             book.setModifiedBy(username);
             bookUpdateMapper.updateStatus(book);
             var history = BookHistory.builder()
-                    .bookId(book.getId())
+                    .id(book.getHistories().get(0).getId())
                     .requestedStatus(BookStatus.ON_LOAN)
                     .build();
             historyMapper.updateBookHistoryToOnLoan(history);
@@ -47,7 +47,7 @@ public class HistoryService {
             book.setModifiedBy(username);
             bookUpdateMapper.updateStatus(book);
             var history = BookHistory.builder()
-                    .bookId(book.getId())
+                    .id(book.getHistories().get(0).getId())
                     .requestedStatus(BookStatus.REJECTED)
                     .build();
             historyMapper.updateBookHistoryToAvailable(history);

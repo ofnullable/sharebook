@@ -2,6 +2,7 @@ package org.slam.handler;
 
 import org.slam.dto.account.AccountDetails;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     }
 
     private void clearPrevAttr(HttpServletRequest req) {
+        req.getSession().removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
         req.getSession().removeAttribute("prev");
     }
 

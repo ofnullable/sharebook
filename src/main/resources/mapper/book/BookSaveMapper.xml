@@ -11,6 +11,7 @@
 		            TITLE
 		            , AUTHOR
 		            , DESCRIPTION
+		            , MAIN_IMAGE
 		            , MODIFIED_BY
 		            , MODIFIED_AT
 		            , CREATED_BY
@@ -21,6 +22,7 @@
 		            #{title}
 		            , #{author}
 		            , #{description}
+		            , #{mainImage}
 		            , #{modifiedBy}
 		            , NOW()
 		            , #{createdBy}
@@ -34,6 +36,7 @@
                     TITLE
                     , AUTHOR
                     , DESCRIPTION
+                    , MAIN_IMAGE
                     , MODIFIED_BY
                     , MODIFIED_AT
                     , CREATED_BY
@@ -45,6 +48,7 @@
                     #{book.title}
                     , #{book.author}
                     , #{book.description}
+                    , #{book.mainImage}
                     , #{book.modifiedBy}
                     , NOW()
                     , #{book.createdBy}

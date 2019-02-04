@@ -68,6 +68,16 @@ public class FileSendTest {
 		long endTime = System.currentTimeMillis();
 		System.out.println("CLIENT SEND TIME : " + (endTime - startTime));
 	}
+
+	@Test
+	public void DIR_EXISTS_TEST() {
+		try ( var session = sf.getSession() ) {
+			System.out.println(session.exists("share/book/12553")); // Read timeout exception!
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/*
 	@Autowired
 	private FtpGateway gw;

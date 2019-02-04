@@ -1,5 +1,6 @@
 package org.slam.config;
 
+import org.slam.handler.AuthFailureHandler;
 import org.slam.handler.AuthSuccessHandler;
 import org.slam.service.account.AccountSelectService;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -12,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
@@ -51,7 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .formLogin()
                     .loginPage("/sign-in")
-                    .successHandler(new AuthSuccessHandler())
+                    .successHandler(authSuccessHandler())
+                    .failureHandler(authFailureHandler())
             .and()
                 .logout()
                     .logoutUrl("/sign-out")
@@ -59,6 +63,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .invalidateHttpSession(true)
             .and()
                 .sessionManagement();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authSuccessHandler() {
+        return new AuthSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authFailureHandler() {
+        return new AuthFailureHandler();
     }
 
     @Bean

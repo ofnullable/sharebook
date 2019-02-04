@@ -44,8 +44,8 @@ public class FileService {
             session.append(bin, remoteFilePath);
             return remoteFilePath;
         } catch (IOException e) {
-            e.printStackTrace();
             log.error("Fail to send file.. PATH : {}, FILENAME : {}", remotePath, bookImage.getOriginalFilename());
+            e.printStackTrace();
         }
         return null;
     }
@@ -58,23 +58,27 @@ public class FileService {
 
     private void makeRemoteDir(String fullPath) {
         var splitPath = fullPath.split("/");
-        try ( var session = sf.getSession() ) {
-            boolean isExists = session.exists(fullPath);
-            log.info("Is exists? Path : {}, result : {}", fullPath, isExists);
-            if (!isExists) {
-                Arrays.stream(splitPath).forEach( p -> {
-                    var temp = new StringBuilder();
-                    try {
-                        session.mkdir(temp.append("/").append(p).toString());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        log.error("Can not make directory. Path : {}", temp);
-                    }
-                });
+        var temp = new StringBuilder();
+        Arrays.stream(splitPath).forEach(p -> {
+            try (var session = sf.getSession()) {
+                log.info("mkdir : {}", temp);
+                session.mkdir(temp.append("/").append(p).toString());
+            } catch (IOException e) {
+                log.error("Can not make directory. Path : {}", temp);
+                e.printStackTrace();
             }
+        });
+    }
+
+    private boolean isDirExist(String filePath) { // if dir not exist, exception occurring
+        try ( var session = sf.getSession() ) {
+            boolean isExists = session.exists(filePath);
+            log.info("Is exists? Path : {}, result : {}", filePath, isExists);
+            return isExists;
         } catch (IOException e) {
+            log.error("Can not check is exists. Path : {}", filePath);
             e.printStackTrace();
-            log.error("Can not check is exists. Path : {}", fullPath);
+            return false;
         }
     }
 
