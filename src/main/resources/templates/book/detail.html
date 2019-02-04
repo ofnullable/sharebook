@@ -45,12 +45,13 @@
 			<div class="container">
 				<div class="row mb-5">
 					<div class="col-6">
-						<img class="img-fluid" th:src="@{|http://img.worksout.co.kr/${book.mainImage}|}" th:alt="${book.title}">
+						<img class="img-fluid main-image" th:src="@{|http://img.worksout.co.kr/${book.mainImage}|}" th:alt="${book.title}">
 						<!--<div class="row">-->
 							<!--<p class="col-4" th:each="image : ${book.images}" th:text="${image.imageUrl}"></p>-->
 						<!--</div>-->
 						<div class="images">
-							<img class="thumbnail" th:each="i : ${book.images}" th:src="@{|http://img.worksout.co.kr/${i.imageUrl}|}" th:alt="${book.title}"/>
+							<img class="thumbnail" th:each="i : ${book.images}" th:src="@{|http://img.worksout.co.kr/${i.imageUrl}|}"
+								 th:alt="${book.title}" th:attr="data-src=${i.imageUrl}"/>
 						</div>
 					</div>
 					<div class="col-6">
@@ -197,11 +198,16 @@
 							}
 						});
 					});
+
 					$('#see-history').click(function(e) {
 						console.log('clicked');
 						$.getJSON('/book/' + [[${book.id}]] + '/history', function(res) {
 							$('#history-modal .modal-body').html(makeHtmlForBookHistory(res));
 						});
+					});
+
+					$('.thumbnail').click(function(e) {
+						$('.main-image').attr('src', e.target.src);
 					});
 
 					function makeHtmlForBookHistory(data) {

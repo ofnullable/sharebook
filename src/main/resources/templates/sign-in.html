@@ -33,12 +33,19 @@
 					<input type="checkbox" class="custom-control-input" id="customCheck1">
 					<label class="custom-control-label" for="customCheck1"> Remember me </label>
 				</div>
-				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-				<a href="/sign-up" class="btn btn-lg btn-link btn-block">Sign up</a>
+                <div class="buttons">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                    <a href="/sign-up" class="btn btn-lg btn-link btn-block">Sign up</a>
+                </div>
 			</form>
 		</div>
 		
 		<footer th:replace="include/footer :: footer"></footer>
 		<th:block th:replace="include/scripts :: scripts"/>
+        <th:block th:if="${AUTHENTICATION_EXCEPTION != null}">
+            <script type="text/javascript" th:inline="javascript">
+                $('.buttons').before('<p style="color: red;">Check your ID or Password again</p>');
+            </script>
+        </th:block>
 	</body>
 </html>
