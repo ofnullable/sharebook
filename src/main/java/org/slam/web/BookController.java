@@ -1,11 +1,14 @@
 package org.slam.web;
 
 import lombok.AllArgsConstructor;
+import org.slam.dto.common.Paginator;
 import org.slam.service.book.BookSelectService;
+import org.slam.service.book.HistoryService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,12 +18,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BookController {
 
     private final BookSelectService bookSelectService;
+    private final HistoryService historyService;
 
     @GetMapping("/{id}")
-    public String getBookDetail(@PathVariable Long id, Model model, Authentication auth) {
+    public String selectBookDetail(@PathVariable Long id, Model model, Authentication auth) {
         if (auth != null) model.addAttribute("book", bookSelectService.selectBookDetail(id, auth.getName()));
         else model.addAttribute("book", bookSelectService.selectBookDetail(id, null));
         return "book/detail";
+    }
+
+    @GetMapping("/{bookId}/histories")
+    public String selectBookHistory(@PathVariable Long bookId, @ModelAttribute Paginator paginator, Authentication auth, Model model) {
+        paginator.setUsername(auth.getName());
+        model.addAttribute("detail", historyService.selectHistoryDetailsByBookId(bookId, paginator));
+        return "book/histories";
     }
 
 }

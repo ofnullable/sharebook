@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <section th:fragment="header" class="jumbotron text-center container">
-	<div th:if="${session != null && session.auth != null}" class="modal fade" id="alarm-modal" tabindex="-1" role="dialog"
+	<div th:if="${session?.auth != null}" class="modal fade" id="alarm-modal" tabindex="-1" role="dialog"
 		 aria-labelledby="alarm-modal" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -23,7 +23,7 @@
 	</div>
 	<div> <!-- class="container" -->
 		<h1 class="jumbotron-heading"><a href="/">Public Share</a></h1>
-		<div th:if="${session != null && session.auth != null}" class="mb-3">
+		<div th:if="${session?.auth != null}" class="mb-3">
 			<div class="clearfix">
 				<a href="/my-page/" class="btn btn-link float-right">MyPage</a>
 				<a href="/sign-out" class="btn text-danger float-right">Sign-out</a>
@@ -36,7 +36,7 @@
 			</div>
 		</div>
 		<!--<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>-->
-		<p th:if="${session == null || session.auth == null}">
+		<p th:if="${session?.auth == null}">
 			<a href="/sign-up" class="btn btn-success my-2">Sign-up!</a>
 			<a href="/sign-in" class="btn btn-outline-secondary my-2">Sign-in</a>
 		</p>
