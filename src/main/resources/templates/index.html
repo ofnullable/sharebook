@@ -6,37 +6,73 @@
 	</head>
 	<body>
 		<section th:replace="include/header :: header"></section>
-		
+
+		<div class="container">
+			<form class="my-1">
+				<label for="searchInput">Search</label>
+				<input id="searchInput" type="text" class="form-control" name="searchText" th:value="${paginator.searchText}" placeholder="Enter title or author">
+			</form>
+		</div>
+
 		<div class="album py-5">
 			<div class="container">
-				<div class="row">
+				<div id="items" class="row">
 					
-					<div th:each="book : ${books}" class="col-md-4">
-						<div class="card mb-4 shadow-sm">
-							<a th:href="|/book/${book.id}|">
-								<img class="card-img-top" th:alt="${book.title}" th:src="@{|http://img.worksout.co.kr/${book.mainImage}|}">
-							</a>
-							<div class="card-body">
-								<a th:href="|/book/${book.id}|">
-									<p class="card-text" th:text="${book.title}"></p>
-									<p th:text="${book.author}"></p>
-								</a>
-								<div class="d-flex justify-content-between align-items-center">
-									<div class="btn-group">
-										<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-										<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-									</div>
-									<small class="text-muted" th:text="${book.createdAt}"></small>
-								</div>
-							</div>
-						</div>
-					</div>
+					<!--<div th:each="book : ${books}" class="col-md-4">-->
+						<!--<div class="card mb-4 shadow-sm">-->
+							<!--<a th:href="|/book/${book.id}|">-->
+								<!--<img class="card-img-top" th:alt="${book.title}" th:src="@{|http://img.worksout.co.kr/${book.mainImage}|}">-->
+							<!--</a>-->
+							<!--<div class="card-body">-->
+								<!--<a th:href="|/book/${book.id}|">-->
+									<!--<p class="card-text" th:text="${book.title}"></p>-->
+									<!--<p th:text="${book.author}"></p>-->
+								<!--</a>-->
+								<!--<div class="d-flex justify-content-between align-items-center">-->
+									<!--<div class="btn-group">-->
+										<!--<button type="button" class="btn btn-sm btn-outline-secondary">View</button>-->
+										<!--<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
+									<!--</div>-->
+									<!--<small class="text-muted" th:text="${book.createdAt}"></small>-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
 					
 				</div>
+                <div id="paginator"></div>
 			</div>
 		</div>
 		
 		<footer th:replace="include/footer :: footer"></footer>
 		<th:block th:replace="include/scripts :: scripts"/>
+        <script src="/js/paginator.js" type="text/javascript"></script>
+        <script type="text/javascript" th:inline="javascript">
+            $(function() {
+                var paginator = [[${paginator}]];
+                var itemList = pageInit([[${books}]], paginator);
+				makeItemHTML(itemList[paginator.page - 1]);
+
+                $('#paginator').on('click', '.page-link[data-page]', function(e) {
+                    history.pushState(null, document.title, '/?page=' + $(e.target).data('page'));
+                    makeItemHTML(itemList[$(e.target).data('page') - 1]);
+                    toggleActive($(e.target.parentElement));
+                });
+
+                function makeItemHTML(arr) {
+					var html = '';
+					for (var i = 0; i < arr.length; i++) {
+						html += '<div class="col-md-4"><div class="card mb-4 shadow-sm">';
+						html += '<a href="/book/' + arr[i].id + '"><img class="card-img-top" alt="' + arr[i].title + '" src="http://img.worksout.co.kr/' + arr[i].mainImage + '"></a>';
+						html += '<div class="card-body"><a href="/book/' + arr[i].id + '">';
+						html += '<p class="card-text">' + arr[i].title + '</p><p>' + arr[i].author + '</p></a>';
+						html += '<div class="d-flex justify-content-between align-items-center"><div class="btn-group">';
+						html += '<button type="button" class="btn btn-sm btn-outline-secondary">View</button><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></div>';
+						html += '<small class="text-muted">' +  arr[i].createdAt + '</small></div></div></div></div>';
+					}
+					$('#items').html(html);
+				}
+            });
+        </script>
 	</body>
 </html>

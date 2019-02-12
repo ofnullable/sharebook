@@ -113,9 +113,6 @@
 						if ( res ) {
 							$(this).val('');
 							afterSendFile(res);
-							if (images.length >= 4) {
-								$('#add-image').hide();
-							}
 							$loadingBox.hide();
 						}
 					}
@@ -141,6 +138,9 @@
 				makeOrSelectImageWrapper($bookForm).append(imgTags);
 				// Append image path
 				$bookForm.append(inputs);
+				if ($('.book-images').length >= 4) {
+					$('#add-image').hide();
+				}
 			}
 			function makeOrSelectImageWrapper($bookForm) {
 				var $images = $('.images');

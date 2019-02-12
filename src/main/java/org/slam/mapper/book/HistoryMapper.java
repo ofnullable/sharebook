@@ -6,17 +6,22 @@ import org.apache.ibatis.annotations.Update;
 import org.slam.dto.book.Book;
 import org.slam.dto.book.BookHistory;
 import org.slam.dto.book.BookStatus;
+import org.slam.dto.common.Paginator;
 
 import java.util.List;
 
 public interface HistoryMapper {
 
+    Integer findTotalCount(@Param("status") BookStatus status, @Param("paginator") Paginator paginator);
+
     @Insert("INSERT INTO BOOK_HISTORY(BOOK_ID, REQUESTED_STATUS, REQUESTED_USER) VALUES(#{id}, #{status}, #{modifiedBy})")
     int insertHistory(Book book);
 
-    List<Book> selectMatchStatusHistory(@Param("status") BookStatus status, @Param("username") String username);
+    List<Book> selectMatchStatusHistory(@Param("status") BookStatus status, @Param("paginator") Paginator paginator);
 
-    List<BookHistory> selectHistoryById(@Param("id") Long id, @Param("username") String username);
+    List<BookHistory> selectHistoryByBookId(@Param("bookId") Long bookId, @Param("username") String username);
+
+    Book selectHistoryDetailsByBookId(@Param("bookId") Long bookId, @Param("paginator") Paginator paginator);
 
     List<BookHistory> selectBookRequestHistoryById(@Param("id") Long id, @Param("username") String username);
 

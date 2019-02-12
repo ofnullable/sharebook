@@ -5,7 +5,6 @@ import org.slam.dto.book.BookHistory;
 import org.slam.service.book.BookUpdateService;
 import org.slam.service.book.HistoryService;
 import org.springframework.security.core.Authentication;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,10 +42,10 @@ public class BookRestController {
         return bookUpdateService.returnRequest(id, username);
     }
 
-    @GetMapping("/{id}/history")
-    public List<BookHistory> selectHistoryById(@PathVariable Long id, Authentication auth) {
-        if (auth != null) return historyService.selectHistoryById(id, auth.getName());
-        else return historyService.selectHistoryById(id, null);
+    @GetMapping("/{bookId}/history")
+    public List<BookHistory> selectHistoryByBookId(@PathVariable Long bookId, Authentication auth) {
+        if (auth != null) return historyService.selectHistoryByBookId(bookId, auth.getName());
+        else return historyService.selectHistoryByBookId(bookId, null);
     }
 
 }

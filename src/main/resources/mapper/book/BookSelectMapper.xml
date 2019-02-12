@@ -4,6 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.slam.mapper.book.BookSelectMapper">
+
+	<select id="findTotalCount" resultType="Integer">
+		SELECT /* bookSelectMapper.findTotalCount */
+		       COUNT(*)
+          FROM BOOK
+         <if test="searchText != null and searchText != ''">
+		 WHERE LOWER(TITLE) LIKE CONCAT(CONCAT('%', #{searchText}), '%')
+		    OR LOWER(AUTHOR) LIKE CONCAT(CONCAT('%', #{searchText}), '%')
+		 </if>
+		 <if test="username != null and username != ''">
+	     WHERE CREATED_BY = #{username}
+		 </if>
+	</select>
+
     <resultMap id="selectBookMap" type="book">
         <id column="ID" property="id"/>
         <result column="TITLE" property="title"/>
@@ -24,19 +38,25 @@
 			<result column="REQUESTED_USER" property="requestedUser"/>
 		</collection>
     </resultMap>
-    <select id="findAll" resultMap="selectBookMap">
+
+	<select id="findAll" resultMap="selectBookMap">
 		SELECT /* bookSelectMapper.findAll */
 		       b.ID
 		       , TITLE
 		       , AUTHOR
 		       , STATUS
-			   , MAIN_IMAGE
+		       , MAIN_IMAGE
 		       , CREATED_BY
 		       , CREATED_AT
 		  FROM BOOK b
 	 LEFT JOIN BOOK_IMAGE i
-		    ON b.ID = i.BOOK_ID
+	   	    ON b.ID = i.BOOK_ID
+		 <if test="searchText != null and searchText != ''">
+	  	 WHERE LOWER(TITLE) LIKE CONCAT(CONCAT('%', #{searchText}), '%')
+			OR LOWER(AUTHOR) LIKE CONCAT(CONCAT('%', #{searchText}), '%')
+		 </if>
 	  ORDER BY ID DESC, ORD_NO ASC
+         LIMIT #{jumpCount}, #{selectCount}
 	</select>
 
     <select id="findAllByOwner" resultMap="selectBookMap">
@@ -56,8 +76,9 @@
 		  FROM BOOK b
 	 LEFT JOIN BOOK_IMAGE i
 		    ON b.ID = i.BOOK_ID
-		 WHERE CREATED_BY = #{owner}
+		 WHERE CREATED_BY = #{username}
 	  ORDER BY ID DESC, ORD_NO ASC
+		 LIMIT #{jumpCount}, #{selectCount}
 	</select>
 
     <select id="findById" resultMap="selectBookMap">

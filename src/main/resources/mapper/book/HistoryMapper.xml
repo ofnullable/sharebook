@@ -5,6 +5,20 @@
 
 <mapper namespace="org.slam.mapper.book.HistoryMapper">
 
+    <select id="findTotalCount" resultType="Integer">
+        SELECT /* historyMapper.findTotalCount */
+               COUNT(*)
+          FROM BOOK_HISTORY
+       <where>
+               <if test="status != null">
+               REQUESTED_STATUS = #{status}
+               </if>
+               <if test="paginator.username != null and paginator.username != ''">
+               AND REQUESTED_USER = #{paginator.username}
+               </if>
+       </where>
+    </select>
+
     <select id="selectMatchStatusHistory" resultType="book">
         SELECT /* historyMapper.selectMatchStatusHistory */
                b.ID
@@ -16,12 +30,13 @@
                , MAIN_IMAGE
           FROM BOOK_HISTORY h
           JOIN BOOK b ON h.BOOK_ID = b.ID
-         WHERE REQUESTED_USER = #{username}
+         WHERE REQUESTED_USER = #{paginator.username}
            AND REQUESTED_STATUS = #{status}
+         LIMIT #{paginator.jumpCount}, #{paginator.selectCount}
     </select>
 
-    <select id="selectHistoryById" resultType="bookHistory">
-        SELECT /* historyMapper.selectHistoryById */
+    <select id="selectHistoryByBookId" resultType="bookHistory">
+        SELECT /* historyMapper.selectHistoryByBookId */
                h.ID
                , BOOK_ID
                , REQUESTED_STATUS
@@ -32,10 +47,10 @@
           FROM BOOK_HISTORY h
           JOIN BOOK b
             ON h.BOOK_ID = b.id
-         WHERE BOOK_ID = #{id}
+         WHERE BOOK_ID = #{bookId}
            AND b.CREATED_BY = #{username}
       ORDER BY REQUESTED_AT ASC
-         LIMIT 15
+         LIMIT 5
     </select>
 
     <select id="selectBookRequestHistoryById" resultType="bookHistory">
@@ -54,7 +69,7 @@
            AND b.CREATED_BY = #{username}
            AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED', 'ON_LOAN')
       ORDER BY REQUESTED_AT ASC
-         LIMIT 15
+         LIMIT 5
     </select>
 
     <update id="updateBookHistoryToCanceled">
@@ -89,5 +104,42 @@
                , ENDED_AT = NOW()
          WHERE ID = #{id}
     </update>
+
+    <resultMap id="historyDetails" type="book">
+        <!--<id column="ID" property="id"/>-->
+        <id column="BOOK_ID" property="id"/>
+        <result column="TITLE" property="title"/>
+        <result column="AUTHOR" property="author"/>
+        <result column="CREATED_BY" property="createdBy"/>
+        <collection property="histories" ofType="bookHistory">
+            <id column="ID" property="id"/>
+            <result column="BOOK_ID" property="bookId"/>
+            <result column="REQUESTED_STATUS" property="requestedStatus"/>
+            <result column="STARTED_AT" property="startedAt"/>
+            <result column="ENDED_AT" property="endedAt"/>
+            <result column="REQUESTED_USER" property="requestedUser"/>
+            <result column="REQUESTED_AT" property="requestedAt"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectHistoryDetailsByBookId" resultMap="historyDetails">
+        SELECT /* historyMapper.selectHistoryByBookId */
+               BOOK_ID
+               , b.TITLE
+               , b.AUTHOR
+               , b.CREATED_BY
+               , h.ID
+               , REQUESTED_STATUS
+               , STARTED_AT
+               , ENDED_AT
+               , REQUESTED_USER
+               , REQUESTED_AT
+          FROM BOOK_HISTORY h
+          JOIN BOOK b
+            ON h.BOOK_ID = b.id
+         WHERE BOOK_ID = #{bookId}
+      ORDER BY REQUESTED_AT ASC
+         LIMIT 10
+    </select>
 
 </mapper>

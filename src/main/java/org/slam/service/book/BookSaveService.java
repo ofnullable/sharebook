@@ -17,7 +17,7 @@ public class BookSaveService {
 
     @Transactional
     public void save(Book book) {
-        if (book.getMainImage() == null) {
+        if (book.getMainImage().isBlank()) {
             book.setMainImage( book.getImages().get(0).getImageUrl() );
         }
         bookSaveMapper.save(book);
