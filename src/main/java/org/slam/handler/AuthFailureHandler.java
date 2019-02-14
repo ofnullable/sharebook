@@ -5,6 +5,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.support.SessionFlashMapManager;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.io.IOException;
 public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse res, AuthenticationException ex) throws IOException {
+    public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse res, AuthenticationException ex) throws IOException, ServletException {
         /*
          * Make flash attribute for sign-in failure
          * @see <a href="https://stackoverflow.com/questions/23844546/flash-attribute-in-custom-authenticationfailurehandler">reference</a>
@@ -24,7 +25,8 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
             var flashMapManager = new SessionFlashMapManager();
             flashMapManager.saveOutputFlashMap(flashMap, req, res);
         }
-        res.sendRedirect("/sign-in?error");
+        setDefaultFailureUrl("/sign-in?error");
+        super.onAuthenticationFailure(req, res, ex);
     }
 
 }
