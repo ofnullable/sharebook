@@ -55,14 +55,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/sign-in")
                     .successHandler(authSuccessHandler())
+//                    .failureForwardUrl("/sign-in?error")
+                    .failureUrl("/sign-in?error")
                     .failureHandler(authFailureHandler())
             .and()
                 .logout()
                     .logoutUrl("/sign-out")
+                    .deleteCookies("JSESSIONID", "SPRING_SECURITY_REMEMBER_ME_COOKIE")
                     .clearAuthentication(true)
                     .invalidateHttpSession(true)
             .and()
-                .sessionManagement();
+                .sessionManagement()
+            .and()
+                .rememberMe()
+                    .key("SECRET_KEY")
+                    .authenticationSuccessHandler(authSuccessHandler())
+                    .tokenValiditySeconds(14 * 24 * 60 * 60);
     }
 
     @Bean
