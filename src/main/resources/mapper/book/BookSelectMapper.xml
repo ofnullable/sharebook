@@ -101,12 +101,12 @@
 		             AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_LOAN')
 		           LIMIT 1
 		         ) AS RECENT_LOANER
-		       <if test="username != null">
+		       <if test="auth != null">
 		       , IF ((SELECT 1
 		                FROM BOOK_HISTORY
 		               WHERE BOOK_ID = #{id}
 		                 AND REQUESTED_STATUS = 'ON_RESERVED'
-		                 AND REQUESTED_USER = #{username}), 1, 0) AS IS_RESERVED
+		                 AND REQUESTED_USER = #{auth.name}), 1, 0) AS IS_RESERVED
                </if>
 		  FROM BOOK b
 	 LEFT JOIN BOOK_IMAGE i

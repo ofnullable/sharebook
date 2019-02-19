@@ -3,6 +3,7 @@ package org.slam.web;
 import lombok.AllArgsConstructor;
 import org.slam.dto.common.Paginator;
 import org.slam.service.book.BookSelectService;
+import org.slam.service.book.CommentService;
 import org.slam.service.book.HistoryService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -17,13 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/book")
 public class BookController {
 
-    private final BookSelectService bookSelectService;
+    private final CommentService commentService;
     private final HistoryService historyService;
+    private final BookSelectService bookSelectService;
 
     @GetMapping("/{id}")
     public String selectBookDetail(@PathVariable Long id, Model model, Authentication auth) {
-        if (auth != null) model.addAttribute("book", bookSelectService.selectBookDetail(id, auth.getName()));
-        else model.addAttribute("book", bookSelectService.selectBookDetail(id, null));
+        model.addAttribute("book", bookSelectService.selectBookDetail(id, auth));
+        model.addAttribute("comments", commentService.selectCommentsByBookId(id));
         return "book/detail";
     }
 

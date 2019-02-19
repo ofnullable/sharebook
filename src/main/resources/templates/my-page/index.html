@@ -150,14 +150,13 @@
                 function makeHtmlForMyItems(data) {
                     var html = '';
 					data.forEach(function(d) {
-						var tempDate = new Date(d.createdAt);
 						html += '<div class="col-md-4"><div class="card mb-4 shadow-sm"><a href="/book/' + d.id + '">';
 						html += '<img class="card-img-top" alt="' + d.title + '" src="http://img.worksout.co.kr/' + d.mainImage + '"></a>';
 						html += '<div class="card-body"><a href="/book/' + d.id + '"><p class="card-text">' + d.title + '</p><p>' + d.author + '</p></a>';
 						html += '<div class="d-flex justify-content-between align-items-center row">';
 						html += '<button id="alarm-' + d.id + '" type="button" class="btn btn-sm btn-outline-secondary show-history-btn col-6">';
 						html += ' New Requests <span class="badge badge-pill badge-danger">' + d.waiters + '</span></button>';
-						html += '<small class="text-muted text-center col-6">' + tempDate.toDateString() + '</small></div></div></div></div>';
+						html += '<small class="text-muted text-center col-6">' + d.createdAt + '</small></div></div></div></div>';
 					});
                     return html;
                 }
@@ -165,13 +164,12 @@
                     var html = '';
                     if (data.length) {
 						data.forEach(function(d) {
-							var tempDate = new Date(d.createdAt);
 							html += '<div class="col-md-4"><div class="card mb-4 shadow-sm"><a href="/book/' + d.id + '">';
 							html += '<img class="card-img-top" alt="' + d.title + '" src="http://img.worksout.co.kr/' + d.mainImage + '">';
 							html += '<div class="card-body"><p class="card-text">' + d.title + '</p><p>' + d.author + '</p>';
 							html += '<div class="d-flex justify-content-between align-items-center row">';
 							html += '<button type="button" class="btn btn-sm btn-outline-secondary col-6">View</button>';
-							html += '<small class="text-muted col-6 text-center">' + tempDate.toDateString() + '</small></div></div></a></div></div>';
+							html += '<small class="text-muted col-6 text-center">' + d.createdAt + '</small></div></div></a></div></div>';
 						});
 					}
                     return html;

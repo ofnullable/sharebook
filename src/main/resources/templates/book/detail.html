@@ -7,15 +7,29 @@
 			#description {
 				resize: none;
 			}
-			#comment-input {
+			.comment-input {
+				flex: 1;
 				margin-bottom: .5rem;
 				padding: .5rem;
 				resize: none;
 				border-radius: 9px;
 				min-height: 50px;
 			}
+			div.align-items-start {
+				padding: 1rem;
+			}
+			textarea + button.btn-success {
+				border-radius: 9px;
+			}
 			.thumbnail {
 				width: 25%;
+			}
+			.comment-text {
+				word-break: break-word;
+				white-space: normal;
+			}
+			small.btn-link {
+				cursor: pointer;
 			}
 		</style>
 	</head>
@@ -42,6 +56,27 @@
             </div>
         </div>
 
+		<div th:if="${session?.auth == null}" class="modal fade" id="alert-modal" tabindex="-1" role="dialog"
+			 aria-labelledby="alert-modal" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">You Need Sign-in!</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body text-center">
+						<p>Need sign in for this action</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" onclick="window.location = '/sign-in';">Go to Sign in page</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<section th:replace="include/header :: header"></section>
 
 		<div class="album py-5">
@@ -62,7 +97,7 @@
 						<span th:text="${book.author}"></span>
 						<p th:text="${book.createdBy}"></p>
 						<!--<div th:utext="*{#strings.replace(book.description, T(System).getProperty('line.separator'), '&lt;br/&gt;')}" class="my-3">-->
-							<!--&lt;!&ndash; for textarea's data.. do i must write like below? &ndash;&gt;-->
+							<!-- for textarea's data.. do i must write like below? -->
 						<!--</div>-->
 						<textarea id="description" class="form-control-plaintext" th:text="${book.description}" disabled></textarea>
 						<script type="text/javascript">
@@ -104,15 +139,26 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="container">
-							<form class="row justify-content-end">
-								<textarea id="comment-input" class="col-12"></textarea>
-								<button class="btn btn-success col-md-1 col-12 mb-3">등록</button>
+							<form id="comment-form" class="row justify-content-end" th:action="@{|/comment/${book.id}|}" method="post">
+								<input type="hidden" name="createdBy" th:value="${session?.auth?.username}">
+								<textarea class="col-12 comment-input" data-toggle="tooltip" name="comment"></textarea>
+								<button id="register-comment" class="btn btn-success col-md-1 col-12" data-toggle="tooltip" style="margin-bottom: .5rem;">등록</button>
 							</form>
-							<div class="row comments bg-light p-3 rounded align-items-start">
-								<img th:src="@{https://placeimg.com/70/70/animals}" style="width: 70px;border-radius: 50%;margin-right: 15px;" alt>
-								<div style="flex: 1;">
-									<p><b>nickname</b> | 2019-01-03</p>
-									<p>Donec id elit non mi porta gravida at eget metus. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Donec ullamcorper nulla non metus auctor fringilla. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis.</p>
+							<div class="comments">
+								<div th:each="comment : ${comments}" class="bg-light row rounded align-items-start" th:style="|padding-left: ${comment.depth * 2}rem|"
+                                     th:attr="data-comment-id=${comment.id}, data-depth=${comment.depth}, data-group-order=${comment.groupOrder}">
+									<img th:src="@{https://placeimg.com/50/50/animals}" style="width: 50px;border-radius: 50%;margin-right: 15px;">
+									<div style="flex: 1;">
+										<p style="margin-bottom: .5rem;">
+											<b th:text="${comment.createdBy}" class="mr-1">nickname</b><span th:if="${book.createdBy == comment.createdBy}" class="badge badge-pill badge-secondary">owner</span> |
+											<span th:text="${comment.createdAt}">2019-01-03</span>
+										</p>
+										<div class="comment-text" th:utext="${comment.comment}"></div>
+										<th:block th:if="${session?.auth}">
+											<small class="mr-3 btn-link add-reply" data-toggle="tooltip">답글달기</small>
+											<small th:if="${session?.auth?.username == comment.createdBy}" class="btn-link text-danger remove-comment">삭제</small>
+										</th:block>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -126,96 +172,189 @@
 		<th:block th:if="${session?.auth != null}">
 			<script type="text/javascript" th:inline="javascript">
 				$(function() {
-					$('#loan-btn').click(function(e) {
+					$('#loan-btn').click(function (e) {
 						if (!confirm('해당 도서를 대여하시겠습니까?')) return;
 						$.ajax({
 							url: '/book/loan/[[${book.id}]]/' + [[${session.auth.username}]],
 							type: 'post',
-							success: function(res) {
+							success: function (res) {
 								if (res) {
 									window.location.reload();
 									alert('Success!');
 								} else {
 									alert('Something went wrong.. try again after few minute');
 								}
+							},
+							error: function (xhr, e) {
+								console.log(xhr);
+								console.log(e);
+								alert('Something went wrong... try again!');
 							}
 						});
 					});
 
-					$('#resv-btn').click(function(e) {
+					$('#resv-btn').click(function (e) {
 						if (!confirm('해당 도서를 예약하시겠습니까?')) return;
 						$.ajax({
 							url: '/book/reservation/[[${book.id}]]/' + [[${session.auth.username}]],
 							type: 'post',
-							success: function(res) {
+							success: function (res) {
 								if (res) {
 									window.location.reload();
 									alert('Success!');
 								} else {
 									alert('Something went wrong.. try again after few minute');
 								}
+							},
+							error: function (xhr, e) {
+								console.log(xhr);
+								console.log(e);
+								alert('Something went wrong... try again!');
 							}
 						});
 					});
 
-					$('#resv-cancel-btn').click(function(e) {
+					$('#resv-cancel-btn').click(function (e) {
 						if (!confirm('해당 도서 예약을 취소하시겠습니까?')) return;
 						$.ajax({
 							url: '/book/cancel-reservation/[[${book.id}]]/' + [[${session.auth.username}]],
 							type: 'post',
-							success: function(res) {
+							success: function (res) {
 								if (res) {
 									window.location.reload();
 									alert('Success!');
 								} else {
 									alert('Something went wrong.. try again after few minute');
 								}
+							},
+							error: function (xhr, e) {
+								console.log(xhr);
+								console.log(e);
+								alert('Something went wrong... try again!');
 							}
 						});
 					});
 
-					$('#cancel-btn').click(function(e) {
+					$('#cancel-btn').click(function (e) {
 						if (!confirm('대여요청을 취소하시겠습니까?')) return;
 						$.ajax({
 							url: '/book/cancel/[[${book.id}]]/' + [[${session.auth.username}]],
 							type: 'post',
-							success: function(res) {
+							success: function (res) {
 								if (res) {
 									window.location.reload();
 									alert('Success!');
 								} else {
 									alert('Something went wrong.. try again after few minute');
 								}
+							},
+							error: function (xhr, e) {
+								console.log(xhr);
+								console.log(e);
+								alert('Something went wrong... try again!');
 							}
 						});
 					});
 
-					$('#return-btn').click(function(e) {
+					$('#return-btn').click(function (e) {
 						if (!confirm('도서를 반납하시겠습니까?')) return;
 						$.ajax({
 							url: '/book/return/[[${book.id}]]/' + [[${session.auth.username}]],
 							type: 'post',
-							success: function(res) {
+							success: function (res) {
 								if (res) {
 									window.location.reload();
 									alert('Success!');
 								} else {
 									alert('Something went wrong.. try again after few minute');
 								}
+							},
+							error: function (xhr, e) {
+								console.log(xhr);
+								console.log(e);
+								alert('Something went wrong... try again!');
 							}
 						});
 					});
 
-					$('#see-history').click(function(e) {
-						$.getJSON('/book/' + [[${book.id}]] + '/history', function(res) {
+					$('#see-history').click(function (e) {
+						$.getJSON('/book/' + [[${book.id}]] + '/history', function (res) {
 							$('#history-modal .modal-body').html(makeHtmlForBookHistory(res));
 						});
+					});
+
+					$('#comment-form').submit(function (e) {
+						e.preventDefault();
+						sendCommentData($(this).serialize());
+					});
+					var $comments = $('.comments');
+					$comments.on('click', '.remove-comment', function (e) {
+						if (!confirm('해당 댓글을 삭제하시겠습니까?')) return;
+						$.ajax({
+							url: '/comment/[[${book.id}]]/' + $(this).parent().parent().data('comment-id'),
+							type: 'delete',
+							success: function (res) {
+								if (res) {
+									window.location.reload();
+								} else {
+									alert('Something went wrong... try again!');
+								}
+							},
+							error: function (xhr, e) {
+								console.log(xhr);
+								console.log(e);
+								alert('Something went wrong... try again!');
+							}
+						});
+					});
+
+					$comments.on('click', '.add-reply', function (e) {
+						var $parent = $(this).parent();
+						if (!$parent.find('textarea').length) {
+							$comments.find('textarea').parent().remove();
+							$parent.append(makeTextareaForAddReply());
+						} else {
+							$parent.find('textarea').focus();
+						}
+					});
+
+					$comments.on('click', '.btn-success', function(e) {
+						var comment = $comments.find('textarea').val();
+						if (!comment || !comment.length) {
+							alert('내용을 입력해주세요.');
+							return;
+						}
+
+						var $dataParent = $(this).parent().parent().parent();
+						var depth = $dataParent.data('depth') + 1;
+						var groupOrder = $dataParent.data('group-order') + 1;
+
+						if (depth > 1) { // 답글의 답글
+							var isOriginComment = true;
+							while (isOriginComment) {
+								if ( $dataParent.data('depth') === 0 ) {
+									isOriginComment = false;
+									break;
+								}
+								$dataParent = $dataParent.prev();
+							}
+						}
+
+						var data = {
+							bookId: [[${book.id}]]
+							, parentId: $dataParent.data('comment-id')
+							, groupOrder: groupOrder
+							, depth: depth
+							, comment: comment.trim()
+							, createdBy: [[${session.auth.username}]]
+						};
+						sendCommentData(data);
 					});
 
 					function makeHtmlForBookHistory(data) {
 						var html = '';
 						if (data.length) {
-							data.forEach(function(d) {
+							data.forEach(function (d) {
 								if ('WAIT_FOR_RESPONSE' === d.requestedStatus) d.requestedStatus = '대여요청';
 								else if ('ON_RESERVED' === d.requestedStatus) d.requestedStatus = '예약';
 								else if ('ON_LOAN' === d.requestedStatus) d.requestedStatus = '대여중';
@@ -232,15 +371,44 @@
 						} else html += '<div class="py-2 row"><span class="col-12 text-center font-weight-bold">No result</span></div>';
 						return html;
 					}
+
+					function sendCommentData(data) {
+						$.ajax({
+							url: '/comment/[[${book.id}]]',
+							data: data,
+							type: 'post',
+							success: function (res) {
+								if (res) {
+									window.location.reload();
+								} else {
+									alert('Something went wrong... try again!');
+								}
+							},
+							error: function (xhr, e) {
+								console.log(xhr);
+								console.log(e);
+								alert('Something went wrong... try again!');
+							}
+						});
+					}
+
+					function makeTextareaForAddReply() {
+						var html = '<div class="row"><textarea class="col-12 comment-input"></textarea>';
+						html += '<button class="btn btn-success col-md-1 col-12" style="margin-bottom: .5rem;font-size: 13px;">등록</button></div>';
+						return html;
+					}
 				});
 			</script>
 		</th:block>
 		<th:block th:unless="${session?.auth != null}">
 			<script type="text/javascript">
-				$('[data-toggle="tooltip"]').tooltip();
+				$('[data-toggle="tooltip"]').click(function(e) {
+					e.preventDefault();
+					$('#alert-modal').modal();
+				}).tooltip();
 			</script>
 		</th:block>
-		<script type="text/javascript">
+		<script type="text/javascript" th:inline="javascript">
 			$('.thumbnail').click(function(e) {
 				$('.main-image').attr('src', e.target.src);
 			});

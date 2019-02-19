@@ -14,14 +14,14 @@ CREATE TABLE `role` (
   `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_ROLE_NAME` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `account_role` (
   `username` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role_id` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`username`,`role_id`),
-  KEY `fk_account_roles_idx` (`username`) /*!80000 INVISIBLE */,
-  KEY `fk_role_roles_idx` (`role_id`) /*!80000 INVISIBLE */,
+  KEY `fk_account_roles_idx` (`username`),
+  KEY `fk_role_roles_idx` (`role_id`),
   CONSTRAINT `fk_account_roles` FOREIGN KEY (`username`) REFERENCES `account` (`username`),
   CONSTRAINT `fk_role_roles` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -42,7 +42,7 @@ CREATE TABLE `book` (
   KEY `fk_created_account_idx` (`created_by`),
   CONSTRAINT `fk_created_account` FOREIGN KEY (`created_by`) REFERENCES `account` (`username`),
   CONSTRAINT `fk_modified_account` FOREIGN KEY (`modified_by`) REFERENCES `account` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `book_image` (
   `book_id` bigint(20) unsigned NOT NULL,
@@ -65,4 +65,15 @@ CREATE TABLE `book_history` (
   KEY `fk_account_book_history_idx` (`requested_user`),
   CONSTRAINT `fk_account_book_history` FOREIGN KEY (`requested_user`) REFERENCES `account` (`username`),
   CONSTRAINT `fk_book_book_history` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `comment` (
+  `id` bigint(20) unsigned NOT NULL,
+  `book_id` bigint(20) unsigned NOT NULL,
+  `parent_id` bigint(20) unsigned DEFAULT NULL,
+  `depth` int(11) unsigned NOT NULL DEFAULT '0',
+  `comment` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_by` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`,`book_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

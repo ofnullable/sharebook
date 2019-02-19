@@ -18,11 +18,10 @@ function makePaginator(paginator) {
     if (paginator.prev) {
         if (paginator.searchText) {
             html += '<li class="page-item"><a class="page-link" href="/?page=' + paginator.prev + '&searchText=' + paginator.searchText;
-            html += '" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>';
         } else {
             html += '<li class="page-item"><a class="page-link" href="/?page=' + paginator.prev;
-            html += '" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>';
         }
+        html += '" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>';
     } else {
         html += '<li class="page-item"><a class="page-link" href="javascript:void(0);" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>';
     }
@@ -42,11 +41,10 @@ function makePaginator(paginator) {
     if (paginator.next) {
         if (paginator.searchText) {
             html += '<li class="page-item"><a class="page-link" href="/?page=' + paginator.next + '&searchText=' + paginator.searchText;
-            html += '" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
         } else {
             html += '<li class="page-item"><a class="page-link" href="/?page=' + paginator.next;
-            html += '" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
         }
+        html += '" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
     } else {
         html += '<li class="page-item"><a class="page-link" href="javascript:void(0);" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
     }

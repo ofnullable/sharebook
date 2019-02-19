@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.slam.dto.book.Book;
 import org.slam.dto.common.Paginator;
 import org.slam.mapper.book.BookSelectMapper;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +20,8 @@ public class BookSelectService {
 
     private final BookSelectMapper bookSelectMapper;
 
-    public Book selectBookDetail(Long id, String username) {
-        return Optional.ofNullable(bookSelectMapper.findById(id, username))
+    public Book selectBookDetail(Long id, Authentication auth) {
+        return Optional.ofNullable(bookSelectMapper.findById(id, auth))
                 .orElseThrow( () -> new IllegalArgumentException("CAN NOT FOUND BOOK FOR ID : " + id) );
     }
 
