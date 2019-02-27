@@ -1,14 +1,14 @@
-function pageInit(list, paginator) {
+function pageInit(list, paginator, isLoadMore) {
     list = spliceItemList(list);
-    makePaginator(paginator);
+    if (list.length && !isLoadMore) makePaginator(paginator);
     return list;
 }
 
-function spliceItemList(arr) {
+function spliceItemList(list) {
     var resultArr = [];
-    var len = arr.length;
+    var len = list.length;
     for (var i = 0; i < Math.ceil(len / 6); i++) {
-        resultArr.push(arr.splice(0, 6));
+        resultArr.push(list.splice(0, 6));
     }
     return resultArr;
 }
@@ -35,7 +35,7 @@ function makePaginator(paginator) {
             }
         }
     } else {
-        html += '<li class="page-item"><a class="page-link" data-page="' + paginator.page + '" href="javascript:void(0);">' + paginator.page + '</a></li>';
+        html += '<li class="page-item active"><a class="page-link" data-page="' + paginator.page + '" href="javascript:void(0);">' + paginator.page + '</a></li>';
     }
 
     if (paginator.next) {

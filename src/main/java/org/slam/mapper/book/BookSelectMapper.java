@@ -15,5 +15,6 @@ public interface BookSelectMapper {
 
     List<Book> findAllByOwner(Paginator paginator);
 
-    Integer findTotalCount(Paginator searchText);
+    Integer findTotalCount(Paginator paginator);
+
 }

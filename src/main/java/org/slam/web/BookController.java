@@ -23,16 +23,16 @@ public class BookController {
     private final BookSelectService bookSelectService;
 
     @GetMapping("/{id}")
-    public String selectBookDetail(@PathVariable Long id, Model model, Authentication auth) {
-        model.addAttribute("book", bookSelectService.selectBookDetail(id, auth));
-        model.addAttribute("comments", commentService.selectCommentsByBookId(id));
+    public String findBookDetail(@PathVariable Long id, Model model, Authentication auth, Paginator paginator) {
+        model.addAttribute("book", bookSelectService.findBookDetail(id, auth));
+//        model.addAttribute("comments", commentService.findCommentsByBookId(id, paginator));
         return "book/detail";
     }
 
     @GetMapping("/{bookId}/histories")
-    public String selectBookHistory(@PathVariable Long bookId, @ModelAttribute Paginator paginator, Authentication auth, Model model) {
+    public String findBookHistory(@PathVariable Long bookId, @ModelAttribute Paginator paginator, Authentication auth, Model model) {
         paginator.setUsername(auth.getName());
-        model.addAttribute("detail", historyService.selectHistoryDetailsByBookId(bookId, paginator));
+        model.addAttribute("detail", historyService.findHistoryDetailsByBookId(bookId, paginator));
         return "book/histories";
     }
 

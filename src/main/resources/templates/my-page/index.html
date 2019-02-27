@@ -118,7 +118,7 @@
 
                 function getMatchStatusBooks(status) {
                 	if (nowStatus === status) {
-                		page = ++page || 1;
+                		page = page ? ++page : 1;
 					} else {
                 		page = 1;
 						nowStatus = status;

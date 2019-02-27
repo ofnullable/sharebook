@@ -5,6 +5,19 @@
 
 <mapper namespace="org.slam.mapper.book.CommentMapper">
 
+    <select id="findTotalCount" resultType="Integer">
+        SELECT /* commentMapper.findTotalCount */
+               COUNT(*)
+          FROM COMMENTS
+         WHERE BOOK_ID = #{bookId}
+          <if test="paginator.searchText != null and paginator.searchText != ''">
+           AND LOWER(COMMENT) LIKE CONCAT(CONCAT('%', #{searchText}), '%')
+          </if>
+          <if test="paginator.username != null and paginator.username != ''">
+           AND CREATED_BY = #{username}
+          </if>
+    </select>
+
     <resultMap id="getCommentsByBookId" type="comment">
         <result column="BOOK_ID" property="bookId"/>
         <result column="ID" property="id"/>
@@ -13,8 +26,8 @@
         <result column="CREATED_BY" property="createdBy"/>
         <result column="CREATED_AT" property="createdAt"/>
     </resultMap>
-    <select id="selectCommentsByBookId" resultMap="getCommentsByBookId">
-        SELECT /* commentMapper.selectCommentsByBookId */
+    <select id="findCommentsByBookId" resultMap="getCommentsByBookId">
+        SELECT /* commentMapper.findCommentsByBookId */
                c2.*
           FROM COMMENTS c1
      LEFT JOIN COMMENTS c2
@@ -22,6 +35,7 @@
          WHERE c1.BOOK_ID = #{bookId}
            AND c2.ID IS NOT NULL
       ORDER BY c1.PARENT_ID DESC, c2.GROUP_ORDER ASC
+         LIMIT #{paginator.jumpCount}, #{paginator.selectCount}
     </select>
 
     <update id="updateGroupOrder">

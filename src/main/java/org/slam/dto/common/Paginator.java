@@ -8,7 +8,7 @@ public class Paginator {
 
     private class PageConstants {
         private static final int ITEM_COUNT = 6;
-        private static final int PAGE_COUNT = 10;
+        private static final int PAGE_COUNT = 5;
     }
 
     private Integer page;
@@ -27,12 +27,12 @@ public class Paginator {
     }
 
     public Integer getJumpCount() {
-        return page > 1 ? ((int) Math.floor((double) (page - 1) / PageConstants.PAGE_COUNT)) * getSelectCount() :
-                ((int) Math.floor((double) page / PageConstants.PAGE_COUNT)) * getSelectCount();
+        return this.page > 1 ? ((int) Math.floor((double) page / PageConstants.ITEM_COUNT)) * getSelectCount() :
+                ((int) Math.floor((double) page / PageConstants.ITEM_COUNT)) * getSelectCount();
     }
 
     public void setSearchText(String searchText) {
-        this.searchText = searchText;
+        this.searchText = searchText.toLowerCase();
     }
 
     public void setUsername(String username) {
@@ -55,7 +55,7 @@ public class Paginator {
 
     private void setup() {
         int totalEnd = (int) Math.ceil((double) total / PageConstants.ITEM_COUNT);
-        int pageEnd = ((int) Math.ceil((double) page / PageConstants.ITEM_COUNT)) * PageConstants.PAGE_COUNT;
+        int pageEnd = ((int) Math.ceil((double) page / PageConstants.PAGE_COUNT)) * PageConstants.PAGE_COUNT;
 
         this.end = totalEnd < pageEnd ? totalEnd : pageEnd;
         this.start = pageEnd - (PageConstants.PAGE_COUNT - 1);

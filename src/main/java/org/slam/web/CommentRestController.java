@@ -2,8 +2,11 @@ package org.slam.web;
 
 import lombok.AllArgsConstructor;
 import org.slam.dto.book.Comment;
+import org.slam.dto.common.Paginator;
 import org.slam.service.book.CommentService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -11,6 +14,11 @@ import org.springframework.web.bind.annotation.*;
 public class CommentRestController {
 
     private final CommentService commentService;
+
+    @GetMapping("/{bookId}")
+    public Map<String, Object> findCommentsByBookId(@PathVariable Long bookId, Paginator paginator) {
+        return commentService.findCommentsByBookId(bookId, paginator);
+    }
 
     @PostMapping("/{bookId}")
     public int insertComment(Comment comment) {

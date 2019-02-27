@@ -3,12 +3,15 @@ package org.slam.mapper.book;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.slam.dto.book.Comment;
+import org.slam.dto.common.Paginator;
 
 import java.util.List;
 
 public interface CommentMapper {
 
-    List<Comment> selectCommentsByBookId(Long bookId);
+    Integer findTotalCount(@Param("bookId") Long bookId, @Param("paginator") Paginator paginator);
+
+    List<Comment> findCommentsByBookId(@Param("bookId") Long bookId, @Param("paginator") Paginator paginator);
 
     void updateGroupOrder(Comment comment);
 

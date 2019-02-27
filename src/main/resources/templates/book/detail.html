@@ -31,6 +31,23 @@
 			small.btn-link {
 				cursor: pointer;
 			}
+			#load-more {
+				text-align: center;
+				cursor: pointer;
+				padding: 1rem 0;
+			}
+			#load-more span::before {
+				opacity: 0;
+				content: '⇣';
+				-webkit-transition: opacity .2s ease-in;
+				-moz-transition: opacity .2s ease-in;
+				-o-transition: opacity .2s ease-in;
+				-ms-transition: opacity .2s ease-in;
+				transition: opacity .2s ease-in;
+			}
+			#load-more:hover span::before {
+				opacity: 1;
+			}
 		</style>
 	</head>
 	<body>
@@ -144,23 +161,8 @@
 								<textarea class="col-12 comment-input" data-toggle="tooltip" name="comment"></textarea>
 								<button id="register-comment" class="btn btn-success col-md-1 col-12" data-toggle="tooltip" style="margin-bottom: .5rem;">등록</button>
 							</form>
-							<div class="comments">
-								<div th:each="comment : ${comments}" class="bg-light row rounded align-items-start" th:style="|padding-left: ${comment.depth * 2}rem|"
-                                     th:attr="data-comment-id=${comment.id}, data-depth=${comment.depth}, data-group-order=${comment.groupOrder}">
-									<img th:src="@{https://placeimg.com/50/50/animals}" style="width: 50px;border-radius: 50%;margin-right: 15px;">
-									<div style="flex: 1;">
-										<p style="margin-bottom: .5rem;">
-											<b th:text="${comment.createdBy}" class="mr-1">nickname</b><span th:if="${book.createdBy == comment.createdBy}" class="badge badge-pill badge-secondary">owner</span> |
-											<span th:text="${comment.createdAt}">2019-01-03</span>
-										</p>
-										<div class="comment-text" th:utext="${comment.comment}"></div>
-										<th:block th:if="${session?.auth}">
-											<small class="mr-3 btn-link add-reply" data-toggle="tooltip">답글달기</small>
-											<small th:if="${session?.auth?.username == comment.createdBy}" class="btn-link text-danger remove-comment">삭제</small>
-										</th:block>
-									</div>
-								</div>
-							</div>
+							<div class="comments"></div>
+							<div id="paginator"></div>
 						</div>
 					</div>
 				</div>
@@ -169,6 +171,7 @@
 		
 		<footer th:replace="include/footer :: footer"></footer>
 		<th:block th:replace="include/scripts :: scripts"/>
+		<script src="/js/paginator.js" type="text/javascript"></script>
 		<th:block th:if="${session?.auth != null}">
 			<script type="text/javascript" th:inline="javascript">
 				$(function() {
@@ -186,8 +189,8 @@
 								}
 							},
 							error: function (xhr, e) {
-								console.log(xhr);
-								console.log(e);
+								console.error(xhr);
+								console.error(e);
 								alert('Something went wrong... try again!');
 							}
 						});
@@ -207,8 +210,8 @@
 								}
 							},
 							error: function (xhr, e) {
-								console.log(xhr);
-								console.log(e);
+								console.error(xhr);
+								console.error(e);
 								alert('Something went wrong... try again!');
 							}
 						});
@@ -228,8 +231,8 @@
 								}
 							},
 							error: function (xhr, e) {
-								console.log(xhr);
-								console.log(e);
+								console.error(xhr);
+								console.error(e);
 								alert('Something went wrong... try again!');
 							}
 						});
@@ -249,8 +252,8 @@
 								}
 							},
 							error: function (xhr, e) {
-								console.log(xhr);
-								console.log(e);
+								console.error(xhr);
+								console.error(e);
 								alert('Something went wrong... try again!');
 							}
 						});
@@ -270,8 +273,8 @@
 								}
 							},
 							error: function (xhr, e) {
-								console.log(xhr);
-								console.log(e);
+								console.error(xhr);
+								console.error(e);
 								alert('Something went wrong... try again!');
 							}
 						});
@@ -283,10 +286,32 @@
 						});
 					});
 
+					function makeHtmlForBookHistory(data) {
+						var html = '';
+						if (data.length) {
+							data.forEach(function (d) {
+								if ('WAIT_FOR_RESPONSE' === d.requestedStatus) d.requestedStatus = '대여요청';
+								else if ('ON_RESERVED' === d.requestedStatus) d.requestedStatus = '예약';
+								else if ('ON_LOAN' === d.requestedStatus) d.requestedStatus = '대여중';
+
+								html += '<div class="py-2 row"><div class="col-7"><p>REQUEST USER : ';
+								html += d.requestedUser + '</p><p>REQUEST STATUS : ' + d.requestedStatus + '</p></div>';
+								if (d.requestedStatus === '대여요청') {
+									html += '<div class="col-5"><button id="accept-btn" class="btn btn-success" data-id="' + d.bookId + '">Accept</button>';
+									html += '<button id="reject-btn" class="btn btn-outline-secondary" data-id="' + d.bookId + '">Reject</button></div>';
+								}
+								html += '</div>';
+							});
+							html += '<a href="/book/' + data[0].bookId + '/histories">View all history</a></div>';
+						} else html += '<div class="py-2 row"><span class="col-12 text-center font-weight-bold">No result</span></div>';
+						return html;
+					}
+
 					$('#comment-form').submit(function (e) {
 						e.preventDefault();
-						sendCommentData($(this).serialize());
+						saveComment($(this).serialize());
 					});
+
 					var $comments = $('.comments');
 					$comments.on('click', '.remove-comment', function (e) {
 						if (!confirm('해당 댓글을 삭제하시겠습니까?')) return;
@@ -296,13 +321,14 @@
 							success: function (res) {
 								if (res) {
 									window.location.reload();
+                                    // TODO: after make comments html by ajax, just call function
 								} else {
 									alert('Something went wrong... try again!');
 								}
 							},
 							error: function (xhr, e) {
-								console.log(xhr);
-								console.log(e);
+								console.error(xhr);
+								console.error(e);
 								alert('Something went wrong... try again!');
 							}
 						});
@@ -348,31 +374,10 @@
 							, comment: comment.trim()
 							, createdBy: [[${session.auth.username}]]
 						};
-						sendCommentData(data);
+						saveComment(data);
 					});
 
-					function makeHtmlForBookHistory(data) {
-						var html = '';
-						if (data.length) {
-							data.forEach(function (d) {
-								if ('WAIT_FOR_RESPONSE' === d.requestedStatus) d.requestedStatus = '대여요청';
-								else if ('ON_RESERVED' === d.requestedStatus) d.requestedStatus = '예약';
-								else if ('ON_LOAN' === d.requestedStatus) d.requestedStatus = '대여중';
-
-								html += '<div class="py-2 row"><div class="col-7"><p>REQUEST USER : ';
-								html += d.requestedUser + '</p><p>REQUEST STATUS : ' + d.requestedStatus + '</p></div>';
-								if (d.requestedStatus === '대여요청') {
-									html += '<div class="col-5"><button id="accept-btn" class="btn btn-success" data-id="' + d.bookId + '">Accept</button>';
-									html += '<button id="reject-btn" class="btn btn-outline-secondary" data-id="' + d.bookId + '">Reject</button></div>';
-								}
-								html += '</div>';
-							});
-							html += '<a href="/book/' + data[0].bookId + '/histories">View all history</a></div>';
-						} else html += '<div class="py-2 row"><span class="col-12 text-center font-weight-bold">No result</span></div>';
-						return html;
-					}
-
-					function sendCommentData(data) {
+					function saveComment(data) {
 						$.ajax({
 							url: '/comment/[[${book.id}]]',
 							data: data,
@@ -385,18 +390,74 @@
 								}
 							},
 							error: function (xhr, e) {
-								console.log(xhr);
-								console.log(e);
+								console.error(xhr);
+								console.error(e);
 								alert('Something went wrong... try again!');
 							}
 						});
 					}
 
-					function makeTextareaForAddReply() {
-						var html = '<div class="row"><textarea class="col-12 comment-input"></textarea>';
-						html += '<button class="btn btn-success col-md-1 col-12" style="margin-bottom: .5rem;font-size: 13px;">등록</button></div>';
+					var page;
+					var itemList = [];
+					var paginator;
+					var isLoadMore = true;
+					getComments();
+
+					$('#paginator').on('click', '[data-page]', function(e) {
+						page = Number(e.target.dataset.page);
+						if (itemList[page]) {
+							$('.comments').append( makeCommentsHtml(itemList[page]) );
+							e.target.dataset.page = ++page;
+						} else {
+						    if (paginator.next && paginator.end >= page) {
+                                getComments(++page);
+                            } else {
+                                $('#paginator').html('');
+                            }
+						}
+					});
+
+					function getComments(page) {
+						page = page || 1;
+						$.getJSON('/comment/[[${book.id}]]?page=' + page, function(res) {
+                            paginator = res['paginator'];
+                            itemList = itemList.concat(pageInit(res['comments'], paginator, isLoadMore));
+                            $('.comments').append( makeCommentsHtml(itemList[page - 1]) );
+                            $('#paginator').html( makeLoadMoreButton(page) );
+						});
+					}
+
+					function makeCommentsHtml(data) {
+						var html = '';
+						data.forEach(function(d) {
+							html += '<div class><div class="bg-light row rounded align-items-start" style="padding-left: ' + d.depth * 2 + 'rem"';
+							html += 'data-comment-id="' + d.id + '" data-depth="' + d.depth + '" data-group-order="' + d.groupOrder + '">';
+							html += '<img src="https://placeimg.com/50/50/animals" alt="Profile image" style="width: 50px;border-radius: 50%;margin-right: 15px;"><div style="flex: 1;">';
+							html += '<p style="margin-bottom: .5rem;"><b class="mr-1">' + d.createdBy + '</b>';
+							if ([[${book.createdBy}]] === d.createdBy) {
+								html += '<span class="badge badge-pill badge-secondary">owner</span> |';
+							}
+							html += '<span>' + d.createdAt + '</span></p><div class="comment-text">' + d.comment + '</div>';
+							if ([[${session?.auth}]]) {
+								html += '<small class="mr-3 btn-link add-reply" data-toggle="tooltip">답글달기</small>';
+								if ([[${session?.auth?.username}]] === d.createdBy) {
+									html += '<small" class="btn-link text-danger remove-comment">삭제</small>';
+								}
+							}
+							html += '</div></div></div>';
+						});
 						return html;
 					}
+
+					function makeLoadMoreButton(page) {
+						return '<nav id="load-more" data-page="' + page + '">Load more <span>  </span></nav>';
+					}
+
+                    function makeTextareaForAddReply() {
+                        var html = '<div class="row"><textarea class="col-12 comment-input"></textarea>';
+                        html += '<button class="btn btn-success col-md-1 col-12" style="margin-bottom: .5rem;font-size: 13px;">등록</button></div>';
+                        return html;
+                    }
 				});
 			</script>
 		</th:block>

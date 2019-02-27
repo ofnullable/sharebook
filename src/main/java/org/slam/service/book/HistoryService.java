@@ -24,22 +24,22 @@ public class HistoryService {
     private final BookUpdateMapper bookUpdateMapper;
     private final HistoryMapper historyMapper;
 
-    public Map<String, Object> selectMatchStatusHistory(BookStatus status, Paginator paginator) {
+    public Map<String, Object> findMatchStatusHistory(BookStatus status, Paginator paginator) {
         var resultMap = new HashMap<String, Object>();
         paginator.setTotal(historyMapper.findTotalCount(status, paginator));
 
         resultMap.put("paginator", paginator);
-        resultMap.put("bookList", historyMapper.selectMatchStatusHistory(status, paginator));
+        resultMap.put("bookList", historyMapper.findMatchStatusHistory(status, paginator));
 
         return resultMap;
     }
 
-    public List<BookHistory> selectHistoryByBookId(Long bookId, String username) {
-        return historyMapper.selectHistoryByBookId(bookId, username);
+    public List<BookHistory> findHistoryByBookId(Long bookId, String username) {
+        return historyMapper.findHistoryByBookId(bookId, username);
     }
 
-    public Book selectHistoryDetailsByBookId(Long bookId, Paginator paginator) {
-        var details = historyMapper.selectHistoryDetailsByBookId(bookId, paginator);
+    public Book findHistoryDetailsByBookId(Long bookId, Paginator paginator) {
+        var details = historyMapper.findHistoryDetailsByBookId(bookId, paginator);
         if (!details.getCreatedBy().equals(paginator.getUsername())) {
             details.setHistories(
                     details.getHistories().stream()
@@ -50,8 +50,8 @@ public class HistoryService {
         return details;
     }
 
-    public List<BookHistory> selectBookRequestHistoryById(Long id, String username) {
-        return historyMapper.selectBookRequestHistoryById(id, username);
+    public List<BookHistory> findBookRequestHistoryById(Long id, String username) {
+        return historyMapper.findBookRequestHistoryById(id, username);
     }
 
     public void updateBookHistory(Book book, String username) {

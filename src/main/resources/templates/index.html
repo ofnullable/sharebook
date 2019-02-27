@@ -51,27 +51,33 @@
             $(function() {
                 var paginator = [[${paginator}]];
                 var itemList = pageInit([[${books}]], paginator);
-				makeItemHTML(itemList[paginator.page - 1]);
+                var pageCount = 5; // $('[data-page]').length;
+                makeItemHTML(itemList[pageToListIndex(paginator.page)]);
 
                 $('#paginator').on('click', '.page-link[data-page]', function(e) {
-                    history.pushState(null, document.title, '/?page=' + $(e.target).data('page'));
-                    makeItemHTML(itemList[$(e.target).data('page') - 1]);
+                	var page = e.target.dataset.page;
+                    history.pushState(null, document.title, '/?page=' + page);
+                    makeItemHTML(itemList[pageToListIndex(page)]);
                     toggleActive($(e.target.parentElement));
                 });
 
-                function makeItemHTML(arr) {
+                function makeItemHTML(list) {
 					var html = '';
-					for (var i = 0; i < arr.length; i++) {
+					for (var i = 0; i < list.length; i++) {
 						html += '<div class="col-md-4"><div class="card mb-4 shadow-sm">';
-						html += '<a href="/book/' + arr[i].id + '"><img class="card-img-top" alt="' + arr[i].title + '" src="http://img.worksout.co.kr/' + arr[i].mainImage + '"></a>';
-						html += '<div class="card-body"><a href="/book/' + arr[i].id + '">';
-						html += '<p class="card-text">' + arr[i].title + '</p><p>' + arr[i].author + '</p></a>';
+						html += '<a href="/book/' + list[i].id + '"><img class="card-img-top" alt="' + list[i].title + '" src="http://img.worksout.co.kr/' + list[i].mainImage + '"></a>';
+						html += '<div class="card-body"><a href="/book/' + list[i].id + '">';
+						html += '<p class="card-text">' + list[i].title + '</p><p>' + list[i].author + '</p></a>';
 						html += '<div class="d-flex justify-content-between align-items-center"><div class="btn-group">';
 						html += '<button type="button" class="btn btn-sm btn-outline-secondary">View</button><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></div>';
-						html += '<small class="text-muted">' +  arr[i].createdAt + '</small></div></div></div></div>';
+						html += '<small class="text-muted">' +  list[i].createdAt + '</small></div></div></div></div>';
 					}
 					$('#items').html(html);
 				}
+
+				function pageToListIndex(page) {
+                    return page % pageCount > 0 ? page % pageCount - 1 : page - 1;
+                }
             });
         </script>
 	</body>
