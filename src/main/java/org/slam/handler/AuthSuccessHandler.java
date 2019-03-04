@@ -25,7 +25,12 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     }
 
     private String getPrevPage(HttpServletRequest req) {
-        return (String) req.getSession().getAttribute("prev");
+        var requestedURL = req.getRequestURL().toString();
+        if (requestedURL.endsWith("/sign-in")) {
+            return (String) req.getSession().getAttribute("prev");
+        } else {
+            return requestedURL;
+        }
     }
 
     private void clearPrevAttr(HttpServletRequest req) {

@@ -17,13 +17,13 @@ public interface HistoryMapper {
     @Insert("INSERT INTO BOOK_HISTORY(BOOK_ID, REQUESTED_STATUS, REQUESTED_USER) VALUES(#{id}, #{status}, #{modifiedBy})")
     int insertHistory(Book book);
 
-    List<Book> selectMatchStatusHistory(@Param("status") BookStatus status, @Param("paginator") Paginator paginator);
+    List<Book> findMatchStatusHistory(@Param("status") BookStatus status, @Param("paginator") Paginator paginator);
 
-    List<BookHistory> selectHistoryByBookId(@Param("bookId") Long bookId, @Param("username") String username);
+    List<BookHistory> findHistoryByBookId(@Param("bookId") Long bookId, @Param("username") String username);
 
-    Book selectHistoryDetailsByBookId(@Param("bookId") Long bookId, @Param("paginator") Paginator paginator);
+    Book findHistoryDetailsByBookId(@Param("bookId") Long bookId, @Param("paginator") Paginator paginator);
 
-    List<BookHistory> selectBookRequestHistoryById(@Param("id") Long id, @Param("username") String username);
+    List<BookHistory> findBookRequestHistoryById(@Param("id") Long id, @Param("username") String username);
 
     void updateBookHistoryToOnLoan(BookHistory history);
 

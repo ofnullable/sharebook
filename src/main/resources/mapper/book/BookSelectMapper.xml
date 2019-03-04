@@ -18,7 +18,7 @@
 		 </if>
 	</select>
 
-    <resultMap id="selectBookMap" type="book">
+    <resultMap id="findBookMap" type="book">
         <id column="ID" property="id"/>
         <result column="TITLE" property="title"/>
         <result column="AUTHOR" property="author"/>
@@ -39,7 +39,7 @@
 		</collection>
     </resultMap>
 
-	<select id="findAll" resultMap="selectBookMap">
+	<select id="findAll" resultMap="findBookMap">
 		SELECT /* bookSelectMapper.findAll */
 		       b.ID
 		       , TITLE
@@ -49,17 +49,15 @@
 		       , CREATED_BY
 		       , CREATED_AT
 		  FROM BOOK b
-	 LEFT JOIN BOOK_IMAGE i
-	   	    ON b.ID = i.BOOK_ID
 		 <if test="searchText != null and searchText != ''">
 	  	 WHERE LOWER(TITLE) LIKE CONCAT(CONCAT('%', #{searchText}), '%')
 			OR LOWER(AUTHOR) LIKE CONCAT(CONCAT('%', #{searchText}), '%')
 		 </if>
-	  ORDER BY ID DESC, ORD_NO ASC
+	  ORDER BY ID DESC
          LIMIT #{jumpCount}, #{selectCount}
 	</select>
 
-    <select id="findAllByOwner" resultMap="selectBookMap">
+    <select id="findAllByOwner" resultMap="findBookMap">
 		SELECT /* bookSelectMapper.findAllByOwner */
 		       b.ID
 		       , TITLE
@@ -74,14 +72,12 @@
 			         AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED')
 			     ) AS WAITERS
 		  FROM BOOK b
-	 LEFT JOIN BOOK_IMAGE i
-		    ON b.ID = i.BOOK_ID
 		 WHERE CREATED_BY = #{username}
-	  ORDER BY ID DESC, ORD_NO ASC
+	  ORDER BY ID DESC
 		 LIMIT #{jumpCount}, #{selectCount}
 	</select>
 
-    <select id="findById" resultMap="selectBookMap">
+    <select id="findById" resultMap="findBookMap">
 		SELECT /* bookSelectMapper.findById */
 		       b.ID
 		       , TITLE
@@ -101,12 +97,12 @@
 		             AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_LOAN')
 		           LIMIT 1
 		         ) AS RECENT_LOANER
-		       <if test="username != null">
+		       <if test="auth != null">
 		       , IF ((SELECT 1
 		                FROM BOOK_HISTORY
 		               WHERE BOOK_ID = #{id}
 		                 AND REQUESTED_STATUS = 'ON_RESERVED'
-		                 AND REQUESTED_USER = #{username}), 1, 0) AS IS_RESERVED
+		                 AND REQUESTED_USER = #{auth.name}), 1, 0) AS IS_RESERVED
                </if>
 		  FROM BOOK b
 	 LEFT JOIN BOOK_IMAGE i

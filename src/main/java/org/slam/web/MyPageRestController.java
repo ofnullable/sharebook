@@ -22,25 +22,25 @@ public class MyPageRestController {
     private final HistoryService historyService;
 
     @GetMapping("/{status}")
-    public Map<String, Object> selectMyItems(@PathVariable String status, Authentication auth, @ModelAttribute("paginator") Paginator paginator) {
+    public Map<String, Object> findMyItems(@PathVariable String status, Authentication auth, @ModelAttribute("paginator") Paginator paginator) {
         paginator.setUsername(auth.getName());
         switch (status) {
             case "my-books" :
-                return bookSelectService.selectBookListByOwner(paginator);
+                return bookSelectService.findBookListByOwner(paginator);
             case "on-loan" :
-                return historyService.selectMatchStatusHistory(BookStatus.ON_LOAN, paginator);
+                return historyService.findMatchStatusHistory(BookStatus.ON_LOAN, paginator);
             case "on-apply" :
-                return historyService.selectMatchStatusHistory(BookStatus.WAIT_FOR_RESPONSE, paginator);
+                return historyService.findMatchStatusHistory(BookStatus.WAIT_FOR_RESPONSE, paginator);
             case "on-resv" :
-                return historyService.selectMatchStatusHistory(BookStatus.ON_RESERVED, paginator);
+                return historyService.findMatchStatusHistory(BookStatus.ON_RESERVED, paginator);
             default:
                 return null;
         }
     }
 
     @GetMapping("/{id}/history")
-    public List<BookHistory> selectBookRequestHistoryById(@PathVariable Long id, Authentication auth) {
-        return historyService.selectBookRequestHistoryById(id, auth.getName());
+    public List<BookHistory> findBookRequestHistoryById(@PathVariable Long id, Authentication auth) {
+        return historyService.findBookRequestHistoryById(id, auth.getName());
     }
 
     @PostMapping("/{id}/history")

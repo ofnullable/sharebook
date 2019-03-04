@@ -44,8 +44,8 @@ public class BookRestController {
 
     @GetMapping("/{bookId}/history")
     public List<BookHistory> selectHistoryByBookId(@PathVariable Long bookId, Authentication auth) {
-        if (auth != null) return historyService.selectHistoryByBookId(bookId, auth.getName());
-        else return historyService.selectHistoryByBookId(bookId, null);
+        if (auth != null) return historyService.findHistoryByBookId(bookId, auth.getName());
+        else return historyService.findHistoryByBookId(bookId, null);
     }
 
 }

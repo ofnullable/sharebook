@@ -3,6 +3,7 @@ package org.slam.dto.book;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter @Setter @ToString
@@ -26,5 +27,13 @@ public class Book {
     private UserAnswer ownerAnswer;
     private List<BookImage> images;
     private List<BookHistory> histories;
+
+    public String getCreatedAt() {
+        if (this.createdAt != null) {
+            return this.createdAt.format(DateTimeFormatter.ofPattern("yy-MM-dd"));
+        } else {
+            return null;
+        }
+    }
 
 }

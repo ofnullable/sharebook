@@ -19,8 +19,8 @@
        </where>
     </select>
 
-    <select id="selectMatchStatusHistory" resultType="book">
-        SELECT /* historyMapper.selectMatchStatusHistory */
+    <select id="findMatchStatusHistory" resultType="book">
+        SELECT /* historyMapper.findMatchStatusHistory */
                b.ID
                , TITLE
                , AUTHOR
@@ -35,7 +35,7 @@
          LIMIT #{paginator.jumpCount}, #{paginator.selectCount}
     </select>
 
-    <select id="selectHistoryByBookId" resultType="bookHistory">
+    <select id="findHistoryByBookId" resultType="bookHistory">
         SELECT /* historyMapper.selectHistoryByBookId */
                h.ID
                , BOOK_ID
@@ -53,7 +53,7 @@
          LIMIT 5
     </select>
 
-    <select id="selectBookRequestHistoryById" resultType="bookHistory">
+    <select id="findBookRequestHistoryById" resultType="bookHistory">
         SELECT /* historyMapper.selectBookRequestHistoryById */
                h.ID
                , BOOK_ID
@@ -122,7 +122,7 @@
         </collection>
     </resultMap>
 
-    <select id="selectHistoryDetailsByBookId" resultMap="historyDetails">
+    <select id="findHistoryDetailsByBookId" resultMap="historyDetails">
         SELECT /* historyMapper.selectHistoryByBookId */
                BOOK_ID
                , b.TITLE

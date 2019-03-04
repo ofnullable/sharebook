@@ -16,7 +16,8 @@ public class MainController {
 
     @GetMapping("/")
     public String sayHello(Model model, @ModelAttribute("paginator") Paginator paginator) {
-        model.addAttribute("books", bookSelectService.selectBookList(paginator));
+        var books = bookSelectService.findBookList(paginator);
+        model.addAttribute("books", books);
         return "index";
     }
 
