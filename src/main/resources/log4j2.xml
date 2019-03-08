@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appenders>
+        <!-- Console Appender -->
+        <console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss a} [%15.15t] %-5level%pid --- %40.40logger{39} : %msg%n"/>
+        </console>
+        <!-- File Appender -->
+        <!--
+        <File name="File" fileName="D:/app.log">
+            <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+        -->
+    </appenders>
+
+    <loggers>
+        <logger name="jdbc" level="OFF"/>
+
+        <logger name="jdbc.sqlonly" level="OFF">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+
+        <logger name="jdbc.sqltiming" level="DEBUG" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+
+        <logger name="jdbc.resultsettable" level="OFF">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </loggers>
+</configuration>
