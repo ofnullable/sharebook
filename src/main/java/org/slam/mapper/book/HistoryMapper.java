@@ -27,7 +27,7 @@ public interface HistoryMapper {
 
     void updateBookHistoryToOnLoan(BookHistory history);
 
-    void updateBookHistoryToAvailable(BookHistory history);
+    void updateBookHistoryStatus(BookHistory history);
 
     @Update("UPDATE BOOK_HISTORY SET REQUESTED_STATUS = 'WAIT_FOR_RESPONSE' " +
             "WHERE BOOK_ID = #{id} AND REQUESTED_STATUS = 'ON_RESERVED' ORDER BY REQUESTED_AT ASC LIMIT 1")

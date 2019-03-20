@@ -67,7 +67,7 @@
             ON h.BOOK_ID = b.id
          WHERE BOOK_ID = #{id}
            AND b.CREATED_BY = #{username}
-           AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED', 'ON_LOAN')
+           AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED', 'ON_LOAN', 'RETURN_REQUEST')
       ORDER BY REQUESTED_AT ASC
          LIMIT 5
     </select>
@@ -97,8 +97,8 @@
          WHERE ID = #{id}
     </update>
 
-    <update id="updateBookHistoryToAvailable">
-        UPDATE /* historyMapper.updateBookHistoryToAvailable */
+    <update id="updateBookHistoryStatus">
+        UPDATE /* historyMapper.updateBookHistoryStatus */
                BOOK_HISTORY
            SET REQUESTED_STATUS = #{requestedStatus}
                , ENDED_AT = NOW()

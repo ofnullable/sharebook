@@ -43,9 +43,10 @@ public class MyPageRestController {
         return historyService.findBookRequestHistoryById(id, auth.getName());
     }
 
-    @PostMapping("/{id}/history")
+    @PatchMapping("/{id}/history")
     public String updateBookHistory(Book book, Authentication auth) {
-        historyService.updateBookHistory(book, auth.getName());
+        System.out.println(book);
+//        historyService.updateBookHistory(book, auth.getName());
         return "success";
     }
 

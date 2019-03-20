@@ -88,20 +88,20 @@
 				$historyModal.on('click', '#accept-btn', function(e) {
 					$.ajax({
 						url: '/my-page/' + $(e.target).data('book-id') + '/history',
-						type: 'post',
-						data: {ownerAnswer : "ACCEPT", "histories[0].id" : $(e.target).data('history-id')},
+						type: 'patch',
+						data: {ownerAnswer : "ACCEPT", "histories[0].id" : $(e.target).data('history-id'), "histories[0].requestedStatus" : $(e.target).data('status')},
 						success: function(res) {
-							res === 'success' ? getHistoryByBookId(id) : alert('Something went wrong.. try again');
+							res === 'success' ? getHistoryByBookId($(e.target).data('book-id')) : alert('Something went wrong.. try again');
 						}
 					});
 				});
 				$historyModal.on('click', '#reject-btn', function(e) {
 					$.ajax({
 						url: '/my-page/' + $(e.target).data('book-id') + '/history',
-						type: 'post',
-						data: {ownerAnswer : "REJECT", "histories[0].id" : $(e.target).data('history-id')},
+						type: 'patch',
+						data: {ownerAnswer : "REJECT", "histories[0].id" : $(e.target).data('history-id'), "histories[0].requestedStatus" : $(e.target).data('status')},
 						success: function(res) {
-							res === 'success' ? getHistoryByBookId(id) : alert('Something went wrong.. try again');
+							res === 'success' ? getHistoryByBookId($(e.target).data('book-id')) : alert('Something went wrong.. try again');
 						}
 					});
 				});
@@ -181,21 +181,34 @@
 						$historyModal.find('.modal-title').html('Requests for book : ' + id);
 						$historyModal.find('.modal-body').html(makeHtmlForBookHistory(res));
 					});
+
 					$historyModal.modal('show');
 				}
 				function makeHtmlForBookHistory(data) {
                 	var html = '';
 					if (data.length) {
 						data.forEach(function(d) {
-							if ('WAIT_FOR_RESPONSE' === d.requestedStatus) d.requestedStatus = '대여요청';
-							else if ('ON_RESERVED' === d.requestedStatus) d.requestedStatus = '예약';
-							else if ('ON_LOAN' === d.requestedStatus) d.requestedStatus = '대여중';
+							var status;
+							switch (d.requestedStatus) {
+								case 'WAIT_FOR_RESPONSE':
+									status = '대여요청';
+									break;
+								case 'ON_RESERVED':
+									status = '예약';
+									break;
+								case 'ON_LOAN':
+									status = '대여중';
+									break;
+								case 'RETURN_REQUEST':
+									status = '반납요청';
+									break;
+							}
 
 							html += '<div class="py-2 row"><div class="col-7"><p>REQUEST USER : ';
-							html += d.requestedUser + '</p><p>REQUEST STATUS : ' + d.requestedStatus + '</p></div>';
-							if (d.requestedStatus === '대여요청') {
-								html += '<div class="col-5"><button id="accept-btn" class="btn btn-success" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '">Accept</button>';
-								html += '<button id="reject-btn" class="btn btn-outline-secondary" data-book-id="' + d.bookId + '" data-id="' + d.id + '">Reject</button></div>';
+							html += d.requestedUser + '</p><p>REQUEST STATUS : ' + status + '</p></div>';
+							if (status === '대여요청' || status === '반납요청') {
+								html += '<div class="col-5"><button id="accept-btn" class="btn btn-success" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Accept</button>';
+								html += '<button id="reject-btn" class="btn btn-outline-secondary" data-book-id="' + d.bookId + '" data-id="' + d.id + '" data-status="' + d.requestedStatus + '">Reject</button></div>';
 							}
 							html += '</div>';
 						});

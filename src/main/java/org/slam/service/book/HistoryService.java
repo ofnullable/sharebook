@@ -55,26 +55,62 @@ public class HistoryService {
     }
 
     public void updateBookHistory(Book book, String username) {
+        // TODO: make method for each status and ownerAnswer
+        /*
+        if (BookStatus.WAIT_FOR_RESPONSE == status) {
+            updateForAnswerAboutLoan(book, username);
+        } else if (BookStatus.RETURN_REQUEST == status) {
+            updateForAnswerAboutReturn(book, username);
+        }
+        */
+    }
+
+    private void updateForAnswerAboutLoan(Book book, String username) {
         if (book.getOwnerAnswer() == UserAnswer.ACCEPT) {
             book.setStatus(BookStatus.ON_LOAN);
-            book.setModifiedBy(username);
-            bookUpdateMapper.updateStatus(book);
-            var history = BookHistory.builder()
-                    .id(book.getHistories().get(0).getId())
-                    .requestedStatus(BookStatus.ON_LOAN)
-                    .build();
+            var history = makeHistoryMatchStatus(book, BookStatus.ON_LOAN);
             historyMapper.updateBookHistoryToOnLoan(history);
         } else {
             book.setStatus(BookStatus.AVAILABLE);
-            book.setModifiedBy(username);
-            bookUpdateMapper.updateStatus(book);
-            var history = BookHistory.builder()
-                    .id(book.getHistories().get(0).getId())
-                    .requestedStatus(BookStatus.REJECTED)
-                    .build();
-            historyMapper.updateBookHistoryToAvailable(history);
+            var history = makeHistoryMatchStatus(book, BookStatus.REJECTED);
+            historyMapper.updateBookHistoryStatus(history);
             historyMapper.updateBookHistoryOnReservedToWaitForResponse(book.getId());
         }
+        updateBookStatus(book, username);
+    }
+
+    private void updateForAnswerAboutReturn(Book book, String username) {
+        if (book.getOwnerAnswer() == UserAnswer.ACCEPT) {
+            book.setStatus(BookStatus.AVAILABLE);
+            var history = makeHistoryMatchStatus(book, BookStatus.ON_LOAN);
+            historyMapper.updateBookHistoryToOnLoan(history);
+        } else {
+            book.setStatus(BookStatus.ON_LOAN);
+            var history = makeHistoryMatchStatus(book, BookStatus.REJECTED);
+            historyMapper.updateBookHistoryStatus(history);
+            historyMapper.updateBookHistoryOnReservedToWaitForResponse(book.getId());
+        }
+    }
+
+    private void updateBookStatus(Book book, String username) {
+        book.setModifiedBy(username);
+        bookUpdateMapper.updateStatus(book);
+    }
+
+    private void updateBookHistoryStatus(BookHistory history) {
+
+    }
+
+    // For next request
+    private void updateNextBookHistoryStatus(Long bookId) {
+
+    }
+
+    private BookHistory makeHistoryMatchStatus(Book book, BookStatus status) {
+        return BookHistory.builder()
+                .id(book.getHistories().get(0).getId())
+                .requestedStatus(status)
+                .build();
     }
 
 }
