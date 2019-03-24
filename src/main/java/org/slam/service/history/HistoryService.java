@@ -1,4 +1,4 @@
-package org.slam.service.book;
+package org.slam.service.history;
 
 import lombok.AllArgsConstructor;
 import org.slam.dto.book.Book;
@@ -52,6 +52,18 @@ public class HistoryService {
 
     public List<BookHistory> findBookRequestHistoryById(Long id, String username) {
         return historyMapper.findBookRequestHistoryById(id, username);
+    }
+
+    public int reservationRequest(Long id, String modifier) {
+        return historyMapper.insertHistory(Book.builder().id(id).status(BookStatus.ON_RESERVED).modifiedBy(modifier).build());
+    }
+
+    public int cancelReservationRequest(Long id, String username) {
+        return historyMapper.cancelReservation(id, username);
+    }
+
+    public int returnRequest(Long id, String modifier) {
+        return historyMapper.updateBookHistoryToReturnRequest(Book.builder().id(id).status(BookStatus.RETURN_REQUEST).modifiedBy(modifier).build());
     }
 
     public void updateBookHistory(Book book, String username) {

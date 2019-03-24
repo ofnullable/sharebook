@@ -21,23 +21,11 @@ public class BookUpdateService {
         return bookUpdateMapper.updateStatus(book) > 0 ? historyMapper.insertHistory(book) > 0 ? 1 : 0 : 0;
     }
 
-    public int reservationRequest(Long id, String modifier) {
-        return historyMapper.insertHistory(Book.builder().id(id).status(BookStatus.ON_RESERVED).modifiedBy(modifier).build());
-    }
-
-    public int cancelReservationRequest(Long id, String username) {
-        return historyMapper.cancelReservation(id, username);
-    }
-
     public int cancelLoanRequest(Long id, String modifier) {
         var book = Book.builder().id(id).modifiedBy(modifier).build();
-        var changeResult = bookUpdateMapper.conditionalUpdateStatus(book);
-        var insertResult = historyMapper.updateBookHistoryToCanceled(book.getId());
-        return changeResult > 0 ? insertResult > 0 ? 1 : 0 : 0;
-    }
-
-    public int returnRequest(Long id, String modifier) {
-        return historyMapper.updateBookHistoryToReturnRequest(Book.builder().id(id).status(BookStatus.RETURN_REQUEST).modifiedBy(modifier).build());
+        return bookUpdateMapper.conditionalUpdateStatus(book) > 0 ?
+                historyMapper.updateBookHistoryToCanceled(book.getId()) > 0 ?
+                        1 : 0 : 0;
     }
 
 }

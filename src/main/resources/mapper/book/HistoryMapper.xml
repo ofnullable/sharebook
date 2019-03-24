@@ -67,7 +67,7 @@
             ON h.BOOK_ID = b.id
          WHERE BOOK_ID = #{id}
            AND b.CREATED_BY = #{username}
-           AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED', 'ON_LOAN', 'RETURN_REQUEST')
+           AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED', 'RETURN_REQUEST')
       ORDER BY REQUESTED_AT ASC
          LIMIT 5
     </select>
@@ -76,13 +76,14 @@
         UPDATE /* historyMapper.updateBookHistoryToCanceled */
                BOOK_HISTORY
            SET REQUESTED_STATUS = CASE
-               WHEN 'WAIT_FOR_RESPONSE' THEN 'CANCELED'
-               WHEN 'ON_RESERVED' THEN 'WAIT_FOR_RESPONSE'
-               ELSE REQUESTED_STATUS
-               END
+                   WHEN REQUESTED_STATUS = 'WAIT_FOR_RESPONSE' THEN 'CANCELED'
+                   WHEN REQUESTED_STATUS = 'ON_RESERVED' THEN 'WAIT_FOR_RESPONSE'
+                   ELSE REQUESTED_STATUS
+                   END
                , ENDED_AT = CASE
-               WHEN 'WAIT_FOR_RESPONSE' THEN NOW()
-               END
+                   WHEN REQUESTED_STATUS = 'CANCELED' THEN NOW()
+                   ELSE ENDED_AT
+                   END
          WHERE BOOK_ID = #{id}
            AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED')
       ORDER BY REQUESTED_AT ASC

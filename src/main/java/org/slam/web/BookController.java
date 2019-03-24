@@ -3,7 +3,7 @@ package org.slam.web;
 import lombok.AllArgsConstructor;
 import org.slam.dto.common.Paginator;
 import org.slam.service.book.BookSelectService;
-import org.slam.service.book.HistoryService;
+import org.slam.service.history.HistoryService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

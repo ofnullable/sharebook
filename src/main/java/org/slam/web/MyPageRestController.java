@@ -6,7 +6,7 @@ import org.slam.dto.book.BookHistory;
 import org.slam.dto.book.BookStatus;
 import org.slam.dto.common.Paginator;
 import org.slam.service.book.BookSelectService;
-import org.slam.service.book.HistoryService;
+import org.slam.service.history.HistoryService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 

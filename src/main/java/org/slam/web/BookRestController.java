@@ -3,7 +3,7 @@ package org.slam.web;
 import lombok.AllArgsConstructor;
 import org.slam.dto.book.BookHistory;
 import org.slam.service.book.BookUpdateService;
-import org.slam.service.book.HistoryService;
+import org.slam.service.history.HistoryService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,12 +24,12 @@ public class BookRestController {
 
     @PostMapping("/reservation/{id}/{username}")
     public int reservationRequest(@PathVariable Long id, @PathVariable String username) {
-        return bookUpdateService.reservationRequest(id, username);
+        return historyService.reservationRequest(id, username);
     }
 
     @PostMapping("/cancel-reservation/{id}/{username}")
     public int cancelReservationRequest(@PathVariable Long id, @PathVariable String username) {
-        return bookUpdateService.cancelReservationRequest(id, username);
+        return historyService.cancelReservationRequest(id, username);
     }
 
     @PostMapping("/cancel/{id}/{username}")
@@ -39,7 +39,7 @@ public class BookRestController {
 
     @PostMapping("/return/{id}/{username}")
     public int returnRequest(@PathVariable Long id, @PathVariable String username) {
-        return bookUpdateService.returnRequest(id, username);
+        return historyService.returnRequest(id, username);
     }
 
     @GetMapping("/{bookId}/history")
