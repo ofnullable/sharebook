@@ -2,7 +2,6 @@ package org.slam.interceptor;
 
 import lombok.AllArgsConstructor;
 import org.slam.dto.account.Account;
-import org.slam.dto.account.AccountDetails;
 import org.slam.service.notice.NoticeService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,7 +9,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 @Component
 @AllArgsConstructor

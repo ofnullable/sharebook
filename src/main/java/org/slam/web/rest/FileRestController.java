@@ -1,4 +1,4 @@
-package org.slam.web;
+package org.slam.web.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;

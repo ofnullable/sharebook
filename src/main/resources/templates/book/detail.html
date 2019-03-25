@@ -281,7 +281,7 @@
 					});
 
 					$('#see-history').click(function (e) {
-						$.getJSON('/book/' + [[${book.id}]] + '/history', function (res) {
+						$.getJSON('/history/' + [[${book.id}]], function (res) {
 							$('#history-modal .modal-body').html(makeHtmlForBookHistory(res));
 						});
 					});

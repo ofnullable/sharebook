@@ -3,7 +3,7 @@ package org.slam.web;
 import lombok.AllArgsConstructor;
 import org.slam.dto.common.Paginator;
 import org.slam.service.book.BookSelectService;
-import org.slam.service.history.HistoryService;
+import org.slam.service.history.HistorySelectService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/book")
 public class BookController {
 
-    private final HistoryService historyService;
+    private final HistorySelectService historySelectService;
     private final BookSelectService bookSelectService;
 
     @GetMapping("/{id}")
@@ -29,7 +29,7 @@ public class BookController {
     @GetMapping("/{bookId}/histories")
     public String findBookHistory(@PathVariable Long bookId, @ModelAttribute Paginator paginator, Authentication auth, Model model) {
         paginator.setUsername(auth.getName());
-        model.addAttribute("detail", historyService.findHistoryDetailsByBookId(bookId, paginator));
+        model.addAttribute("detail", historySelectService.findHistoryDetailsByBookId(bookId, paginator));
         return "book/histories";
     }
 
