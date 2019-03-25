@@ -5,7 +5,6 @@ import org.slam.dto.book.Book;
 import org.slam.dto.book.BookHistory;
 import org.slam.dto.book.BookStatus;
 import org.slam.dto.common.Paginator;
-import org.slam.mapper.book.BookUpdateMapper;
 import org.slam.mapper.history.HistoryMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class HistorySelectService {
 
-    private final BookUpdateMapper bookUpdateMapper;
     private final HistoryMapper historyMapper;
 
     public Map<String, Object> findMatchStatusHistory(BookStatus status, Paginator paginator) {

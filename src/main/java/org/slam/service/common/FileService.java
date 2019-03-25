@@ -70,7 +70,7 @@ public class FileService {
         });
     }
 
-    private boolean isDirExist(String filePath) { // if dir not exist, exception occurring
+    private boolean isDirExist(String filePath) { // if dir not exist, exception occurred
         try ( var session = sf.getSession() ) {
             boolean isExists = session.exists(filePath);
             log.info("Is exists? Path : {}, result : {}", filePath, isExists);

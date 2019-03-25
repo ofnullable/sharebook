@@ -20,7 +20,7 @@ public class NoticeInterceptor extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest req, HttpServletResponse res, Object handler, ModelAndView modelAndView) throws Exception {
         var session = req.getSession(false);
 
-        if (session != null && session.getAttribute("auth") != null && isNotice(modelAndView)) {
+        if (session != null && session.getAttribute("auth") != null && isNoticeExist(modelAndView)) {
             var noticeCount = noticeService.findTotalCount( (Account) session.getAttribute("auth") );
             modelAndView.getModel().put("notices", noticeCount);
         }
@@ -28,13 +28,9 @@ public class NoticeInterceptor extends HandlerInterceptorAdapter {
         super.postHandle(req, res, handler, modelAndView);
     }
 
-    private boolean isNotice(ModelAndView mav) {
-//        if (mav == null) {
-//            return false;
-//        }
-//        if (mav.getModel() == null) {
-//            return false;
-//        }
+    private boolean isNoticeExist(ModelAndView mav) {
+//        if (mav == null) return false;
+//        if (mav.getModel() == null) return false;
 //        return mav.getModel().get("notices") == null;
         return mav != null && mav.getModel() != null && mav.getModel().get("notices") == null;
     }

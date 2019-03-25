@@ -22,7 +22,7 @@ public class BookHistoryService {
 
     public int loanRequest(Long id, String modifier) {
         var book = Book.builder().id(id).status(BookStatus.WAIT_FOR_RESPONSE).modifiedBy(modifier).build();
-        return bookUpdateMapper.updateStatus(book) > 0 ? historyMapper.insertHistory(book) > 0 ? 1 : 0 : 0;
+        return isSuccess(bookUpdateMapper.updateStatus(book), historyMapper.insertHistory(book));
     }
 
     public int cancelLoanRequest(Long id, String modifier) {
