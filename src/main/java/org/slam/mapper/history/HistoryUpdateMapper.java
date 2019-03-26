@@ -7,6 +7,8 @@ import org.slam.dto.book.BookHistory;
 
 public interface HistoryUpdateMapper {
 
+    int updateBookHistoryToCanceled(Long id);
+
     void updateBookHistoryToOnLoan(BookHistory history);
 
     void updateBookHistoryStatus(BookHistory history);
@@ -14,8 +16,6 @@ public interface HistoryUpdateMapper {
     @Update("UPDATE BOOK_HISTORY SET REQUESTED_STATUS = 'WAIT_FOR_RESPONSE' " +
             "WHERE BOOK_ID = #{id} AND REQUESTED_STATUS = 'ON_RESERVED' ORDER BY REQUESTED_AT ASC LIMIT 1")
     void updateBookHistoryOnReservedToWaitForResponse(Long id);
-
-    int updateBookHistoryToCanceled(Long id);
 
     @Update("UPDATE BOOK_HISTORY SET REQUESTED_STATUS = #{status} WHERE BOOK_ID = #{id} AND REQUESTED_STATUS = 'ON_LOAN'")
     int updateBookHistoryToReturnRequest(Book book);

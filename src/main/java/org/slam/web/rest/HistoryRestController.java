@@ -21,7 +21,7 @@ public class HistoryRestController {
     @GetMapping("/{bookId}")
     public List<BookHistory> selectHistoryByBookId(@PathVariable Long bookId, Authentication auth) {
         if (auth != null) return historySelectService.findHistoryByBookId(bookId, auth.getName());
-        else return historySelectService.findHistoryByBookId(bookId, null);
+        else return null;
     }
 
 }

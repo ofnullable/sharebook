@@ -3,10 +3,9 @@ package org.slam.web.rest;
 import lombok.AllArgsConstructor;
 import org.slam.service.bookhistory.BookHistoryService;
 import org.slam.service.history.HistoryUpdateService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -39,6 +38,11 @@ public class BookHistoryRestController {
     @PostMapping("/return/{id}/{username}")
     public int returnRequest(@PathVariable Long id, @PathVariable String username) {
         return historyUpdateService.returnRequest(id, username);
+    }
+
+    @PatchMapping("/{id}/{status}")
+    public ResponseEntity<Integer> requestProceeding() {
+        return new ResponseEntity<>(1, HttpStatus.OK);
     }
 
 }

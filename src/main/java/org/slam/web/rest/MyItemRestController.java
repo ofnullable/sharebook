@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/my-items")
+@RequestMapping("/my-item")
 public class MyItemRestController {
 
     private final BookSelectService bookSelectService;

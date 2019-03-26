@@ -31,10 +31,10 @@ public class BookHistoryService {
     }
 
     private int isSuccess(int... results) {
-        var resultArray = Arrays.stream(results)
-                .filter(r -> r > 0)
-                .toArray();
-        return results.length == resultArray.length ? 1 : 0;
+        for (int i : results) {
+            if (i <= 0) return -1;
+        }
+        return 1;
     }
 
     private int updateToON_LOAN(Book book) {

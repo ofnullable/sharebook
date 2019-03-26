@@ -87,7 +87,7 @@
                 var $historyModal = $('#history-modal');
 				$historyModal.on('click', '#accept-btn', function(e) {
 					$.ajax({
-						url: '/my-items/' + $(e.target).data('book-id') + '/history',
+						url: '/my-item/' + $(e.target).data('book-id') + '/history',
 						type: 'patch',
 						data: {ownerAnswer : "ACCEPT", "histories[0].id" : $(e.target).data('history-id'), "histories[0].requestedStatus" : $(e.target).data('status')},
 						success: function(res) {
@@ -97,7 +97,7 @@
 				});
 				$historyModal.on('click', '#reject-btn', function(e) {
 					$.ajax({
-						url: '/my-items/' + $(e.target).data('book-id') + '/history',
+						url: '/my-item/' + $(e.target).data('book-id') + '/history',
 						type: 'patch',
 						data: {ownerAnswer : "REJECT", "histories[0].id" : $(e.target).data('history-id'), "histories[0].requestedStatus" : $(e.target).data('status')},
 						success: function(res) {
@@ -125,7 +125,7 @@
 						paginator = {};
 						itemList = [];
 					}
-                    $.getJSON('/my-items/' + status + '?page=' + page, function(res) {
+                    $.getJSON('/my-item/' + status + '?page=' + page, function(res) {
                     	// TODO: Find better way..
 						if ( !res['bookList'].length ) {
 							if (status === 'my-books') {
@@ -177,7 +177,7 @@
                 function getHistoryByBookId(id) {
 					var $historyModal = $('#history-modal');
 
-					$.getJSON('/my-items/' + id + '/history', function(res) {
+					$.getJSON('/my-item/' + id + '/history', function(res) {
 						$historyModal.find('.modal-title').html('Requests for book : ' + id);
 						$historyModal.find('.modal-body').html(makeHtmlForBookHistory(res));
 					});

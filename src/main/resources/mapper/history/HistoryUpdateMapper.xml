@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.slam.mapper.history.HistoryUpdateMapper">
+
+    <update id="updateBookHistoryToCanceled">
+        UPDATE /* historyMapper.updateBookHistoryToCanceled */
+               BOOK_HISTORY
+           SET REQUESTED_STATUS = CASE
+                   WHEN REQUESTED_STATUS = 'WAIT_FOR_RESPONSE' THEN 'CANCELED'
+                   WHEN REQUESTED_STATUS = 'ON_RESERVED' THEN 'WAIT_FOR_RESPONSE'
+                   ELSE REQUESTED_STATUS
+               END
+               , ENDED_AT = CASE
+                   WHEN REQUESTED_STATUS = 'CANCELED' THEN NOW()
+                   ELSE ENDED_AT
+               END
+         WHERE BOOK_ID = #{id}
+           AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED')
+      ORDER BY REQUESTED_AT ASC
+         LIMIT 2
+    </update>
+
+    <update id="updateBookHistoryToOnLoan">
+        UPDATE /* historyMapper.updateBookHistoryToOnLoan */
+               BOOK_HISTORY
+           SET REQUESTED_STATUS = #{requestedStatus}
+               , STARTED_AT = NOW()
+         WHERE ID = #{id}
+    </update>
+
+    <update id="updateBookHistoryStatus">
+        UPDATE /* historyMapper.updateBookHistoryStatus */
+               BOOK_HISTORY
+           SET REQUESTED_STATUS = #{requestedStatus}
+               , ENDED_AT = NOW()
+         WHERE ID = #{id}
+    </update>
+
+</mapper>
