@@ -1,6 +1,6 @@
-function pageInit(list, paginator, isLoadMore) {
+function pageInit(list, paginator) {
     list = spliceItemList(list);
-    if (list.length && !isLoadMore) makePaginator(paginator);
+    if (list.length) makePaginator(paginator);
     return list;
 }
 

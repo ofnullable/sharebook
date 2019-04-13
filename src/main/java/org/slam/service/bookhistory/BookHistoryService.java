@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import org.slam.dto.book.Book;
 import org.slam.dto.book.BookStatus;
 import org.slam.mapper.book.BookUpdateMapper;
-import org.slam.mapper.history.HistoryMapper;
+import org.slam.mapper.history.HistorySaveMapper;
 import org.slam.mapper.history.HistoryUpdateMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
+import static org.slam.utils.TransactionUtils.isSuccess;
 
 @Service
 @Transactional
@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class BookHistoryService {
 
     private final BookUpdateMapper bookUpdateMapper;
-    private final HistoryMapper historyMapper;
+    private final HistorySaveMapper historyMapper;
     private final HistoryUpdateMapper historyUpdateMapper;
 
     public int loanRequest(Long id, String modifier) {
@@ -27,14 +27,7 @@ public class BookHistoryService {
 
     public int cancelLoanRequest(Long id, String modifier) {
         var book = Book.builder().id(id).modifiedBy(modifier).build();
-        return isSuccess(bookUpdateMapper.conditionalUpdateStatus(book), historyUpdateMapper.updateBookHistoryToCanceled(book.getId()));
-    }
-
-    private int isSuccess(int... results) {
-        for (int i : results) {
-            if (i <= 0) return -1;
-        }
-        return 1;
+        return isSuccess(bookUpdateMapper.conditionalUpdateStatus(book), historyUpdateMapper.updateBookHistoryToCanceled(book));
     }
 
     private int updateToON_LOAN(Book book) {

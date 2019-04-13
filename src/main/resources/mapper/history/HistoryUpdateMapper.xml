@@ -13,6 +13,7 @@
                    WHEN REQUESTED_STATUS = 'ON_RESERVED' THEN 'WAIT_FOR_RESPONSE'
                    ELSE REQUESTED_STATUS
                END
+               , MODIFIED_BY = #{modifiedBy}
                , ENDED_AT = CASE
                    WHEN REQUESTED_STATUS = 'CANCELED' THEN NOW()
                    ELSE ENDED_AT
@@ -22,7 +23,7 @@
       ORDER BY REQUESTED_AT ASC
          LIMIT 2
     </update>
-
+<!--
     <update id="updateBookHistoryToOnLoan">
         UPDATE /* historyMapper.updateBookHistoryToOnLoan */
                BOOK_HISTORY
@@ -38,5 +39,5 @@
                , ENDED_AT = NOW()
          WHERE ID = #{id}
     </update>
-
+-->
 </mapper>

@@ -400,7 +400,7 @@
 					var page;
 					var itemList = [];
 					var paginator;
-					var isLoadMore = true;
+					// var hasMore = true;
 					getComments();
 
 					$('#paginator').on('click', '[data-page]', function(e) {
@@ -421,7 +421,7 @@
 						page = page || 1;
 						$.getJSON('/comment/[[${book.id}]]?page=' + page, function(res) {
                             paginator = res['paginator'];
-                            itemList = itemList.concat(pageInit(res['comments'], paginator, isLoadMore));
+                            itemList = itemList.concat(pageInit(res['comments'], paginator));
                             $('.comments').append( makeCommentsHtml(itemList[page - 1]) );
                             $('#paginator').html( makeLoadMoreButton(page) );
 						});

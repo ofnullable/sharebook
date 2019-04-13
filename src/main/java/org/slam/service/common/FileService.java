@@ -36,8 +36,7 @@ public class FileService {
     private String sendImage(MultipartFile bookImage, String remotePath) {
         try (
                 var session = sf.getSession();
-                var in = bookImage.getInputStream();
-                var bin = new BufferedInputStream(in)
+                var bin = new BufferedInputStream(bookImage.getInputStream())
         ) {
             var remoteFilePath = remotePath + bookImage.getOriginalFilename();
             log.debug("Send file to remote. Path : {}", remoteFilePath);

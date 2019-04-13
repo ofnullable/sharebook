@@ -1,8 +1,6 @@
 package org.slam.mapper.history;
 
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Update;
 import org.slam.dto.book.Book;
 import org.slam.dto.book.BookHistory;
 import org.slam.dto.book.BookStatus;
@@ -10,12 +8,9 @@ import org.slam.dto.common.Paginator;
 
 import java.util.List;
 
-public interface HistoryMapper {
+public interface HistorySelectMapper {
 
     Integer findTotalCount(@Param("status") BookStatus status, @Param("paginator") Paginator paginator);
-
-    @Insert("INSERT INTO BOOK_HISTORY(BOOK_ID, REQUESTED_STATUS, REQUESTED_USER) VALUES(#{id}, #{status}, #{modifiedBy})")
-    int insertHistory(Book book);
 
     List<Book> findMatchStatusHistory(@Param("status") BookStatus status, @Param("paginator") Paginator paginator);
 

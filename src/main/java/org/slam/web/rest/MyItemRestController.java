@@ -7,6 +7,7 @@ import org.slam.dto.book.BookStatus;
 import org.slam.dto.common.Paginator;
 import org.slam.service.book.BookSelectService;
 import org.slam.service.history.HistorySelectService;
+import org.slam.service.history.HistoryUpdateService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ public class MyItemRestController {
 
     private final BookSelectService bookSelectService;
     private final HistorySelectService historySelectService;
+    private final HistoryUpdateService historyUpdateService;
 
     @GetMapping("/{status}")
     public Map<String, Object> findMyItems(@PathVariable String status, Authentication auth, @ModelAttribute("paginator") Paginator paginator) {
@@ -44,10 +46,8 @@ public class MyItemRestController {
     }
 
     @PatchMapping("/{id}/history")
-    public String updateItemHistory(Book book, Authentication auth) {
-        System.out.println(book);
-//        historyService.updateBookHistory(book, auth.getName());
-        return "success";
+    public int updateItemHistory(Book book) {
+        return historyUpdateService.updateToMatchStatus(book);
     }
 
 }

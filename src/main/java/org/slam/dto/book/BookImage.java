@@ -6,8 +6,8 @@ import lombok.*;
 @Builder @NoArgsConstructor @AllArgsConstructor
 public class BookImage {
 
-    private Long bookId;
-    private String imageUrl;
+    private Long    bookId;
+    private String  imageUrl;
     private Integer ordNo;
 
 }

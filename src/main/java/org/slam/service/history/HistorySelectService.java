@@ -5,7 +5,7 @@ import org.slam.dto.book.Book;
 import org.slam.dto.book.BookHistory;
 import org.slam.dto.book.BookStatus;
 import org.slam.dto.common.Paginator;
-import org.slam.mapper.history.HistoryMapper;
+import org.slam.mapper.history.HistorySelectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,24 +19,24 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class HistorySelectService {
 
-    private final HistoryMapper historyMapper;
+    private final HistorySelectMapper historySelectMapper;
 
     public Map<String, Object> findMatchStatusHistory(BookStatus status, Paginator paginator) {
         var resultMap = new HashMap<String, Object>();
-        paginator.setTotal(historyMapper.findTotalCount(status, paginator));
+        paginator.setTotal(historySelectMapper.findTotalCount(status, paginator));
 
         resultMap.put("paginator", paginator);
-        resultMap.put("bookList", historyMapper.findMatchStatusHistory(status, paginator));
+        resultMap.put("bookList", historySelectMapper.findMatchStatusHistory(status, paginator));
 
         return resultMap;
     }
 
     public List<BookHistory> findHistoryByBookId(Long bookId, String username) {
-        return historyMapper.findHistoryByBookId(bookId, username);
+        return historySelectMapper.findHistoryByBookId(bookId, username);
     }
 
     public Book findHistoryDetailsByBookId(Long bookId, Paginator paginator) {
-        var details = historyMapper.findHistoryDetailsByBookId(bookId, paginator);
+        var details = historySelectMapper.findHistoryDetailsByBookId(bookId, paginator);
         if (!details.getCreatedBy().equals(paginator.getUsername())) {
             details.setHistories(
                     details.getHistories().stream()
@@ -48,7 +48,7 @@ public class HistorySelectService {
     }
 
     public List<BookHistory> findBookRequestHistoryById(Long id, String username) {
-        return historyMapper.findBookRequestHistoryById(id, username);
+        return historySelectMapper.findBookRequestHistoryById(id, username);
     }
 
 }
