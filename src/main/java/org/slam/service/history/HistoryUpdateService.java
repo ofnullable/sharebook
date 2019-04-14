@@ -18,9 +18,9 @@ import static org.slam.utils.TransactionUtils.isSuccess;
 @AllArgsConstructor
 public class HistoryUpdateService {
 
-    private final BookUpdateMapper bookUpdateMapper;
     private final HistorySaveMapper historySaveMapper;
     private final HistoryUpdateMapper historyUpdateMapper;
+    private final BookUpdateMapper bookUpdateMapper;
 
     public int reservationRequest(Long id, String modifier) {
         return historySaveMapper.insertHistory(Book.builder().id(id).status(BookStatus.ON_RESERVED).modifiedBy(modifier).build());
@@ -57,15 +57,15 @@ public class HistoryUpdateService {
     }
 
     private int updateHistoryToReturned(Book book) {
-        return isSuccess(updateToAvailable(book), historyUpdateMapper.updateHistory(makeHistoryMatchStatus(book, BookStatus.RETURNED)));
+        return isSuccess(conditionalUpdate(book), historyUpdateMapper.updateHistory(makeHistoryMatchStatus(book, BookStatus.RETURNED)));
     }
 
     private int updateHistoryToRejected(Book book) {
-        return isSuccess(updateToAvailable(book), historyUpdateMapper.updateHistory(makeHistoryMatchStatus(book, BookStatus.REJECTED)));
+        return isSuccess(conditionalUpdate(book), historyUpdateMapper.updateHistory(makeHistoryMatchStatus(book, BookStatus.REJECTED)));
     }
 
-    private int updateToAvailable(Book book) {
-        return bookUpdateMapper.updateStatus(book);
+    private int conditionalUpdate(Book book) {
+        return bookUpdateMapper.conditionalUpdateStatus(book);
     }
 
     private BookHistory makeHistoryMatchStatus(Book book, BookStatus status) {

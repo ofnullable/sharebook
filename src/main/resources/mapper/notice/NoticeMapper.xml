@@ -15,4 +15,5 @@
             OR (b.CREATED_BY = #{username} AND h.REQUESTED_STATUS = 'RETURN_REQUEST')
             OR (h.REQUESTED_USER = #{username} AND h.REQUESTED_STATUS = 'REJECTED')
     </select>
+
 </mapper>

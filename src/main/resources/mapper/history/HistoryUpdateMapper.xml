@@ -23,21 +23,42 @@
       ORDER BY REQUESTED_AT ASC
          LIMIT 2
     </update>
-<!--
-    <update id="updateBookHistoryToOnLoan">
-        UPDATE /* historyMapper.updateBookHistoryToOnLoan */
+
+    <update id="updateHistory">
+        UPDATE /* historyMapper.updateHistory */
                BOOK_HISTORY
            SET REQUESTED_STATUS = #{requestedStatus}
-               , STARTED_AT = NOW()
+               <choose>
+                   <when test="requestedStatus == 'ON_LOAN'">
+                       , STARTED_AT = NOW()
+                   </when>
+                   <when test="requestedStatus == 'RETURNED' or requestedStatus == 'REJECTED'">
+                       , ENDED_AT = NOW()
+                   </when>
+                   <otherwise>
+
+                   </otherwise>
+               </choose>
+               , MODIFIED_BY = #{modifiedBy}
+               , MODIFIED_AT = NOW()
          WHERE ID = #{id}
     </update>
 
-    <update id="updateBookHistoryStatus">
-        UPDATE /* historyMapper.updateBookHistoryStatus */
-               BOOK_HISTORY
-           SET REQUESTED_STATUS = #{requestedStatus}
-               , ENDED_AT = NOW()
-         WHERE ID = #{id}
-    </update>
--->
+    <!--
+        <update id="updateBookHistoryToOnLoan">
+            UPDATE /* historyMapper.updateBookHistoryToOnLoan */
+                   BOOK_HISTORY
+               SET REQUESTED_STATUS = #{requestedStatus}
+                   , STARTED_AT = NOW()
+             WHERE ID = #{id}
+        </update>
+
+        <update id="updateBookHistoryStatus">
+            UPDATE /* historyMapper.updateBookHistoryStatus */
+                   BOOK_HISTORY
+               SET REQUESTED_STATUS = #{requestedStatus}
+                   , ENDED_AT = NOW()
+             WHERE ID = #{id}
+        </update>
+    -->
 </mapper>
