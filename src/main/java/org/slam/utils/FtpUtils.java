@@ -7,7 +7,6 @@ public class FtpUtils {
 
     /**
      * Make folder name for ftp server
-     *
      * @return String of YEAR + MONTH + DAY
      */
     public static String makeDirName() {
@@ -17,7 +16,6 @@ public class FtpUtils {
 
     /**
      * Make filename for ftp server
-     *
      * @return String of HOUR + MINUTE + SECOND + MILLISECOND (
      */
     public static String makeFilename() {

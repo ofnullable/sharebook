@@ -2,7 +2,6 @@ package org.slam.utils;
 
 public class TransactionUtils {
 
-
     /**
      * @param results count of updated result
      * @return if success all of updates, return 1 else return 0
