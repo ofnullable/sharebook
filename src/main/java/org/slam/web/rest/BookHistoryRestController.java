@@ -1,10 +1,9 @@
 package org.slam.web.rest;
 
 import lombok.AllArgsConstructor;
+import org.slam.dto.book.Book;
 import org.slam.service.bookhistory.BookHistoryService;
 import org.slam.service.history.HistoryUpdateService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -40,9 +39,16 @@ public class BookHistoryRestController {
         return historyUpdateService.returnRequest(id, username);
     }
 
-    @PatchMapping("/{id}/{status}")
-    public ResponseEntity<Integer> requestProceeding() {
-        return new ResponseEntity<>(1, HttpStatus.OK);
+    @PostMapping("/{id}")
+    public int saveRequest(Book book) {
+        System.out.println(book);
+        return 0;
+    }
+
+    @PatchMapping("/{id}")
+    public int updateRequest(Book book) {
+        System.out.println(book);
+        return 0;
     }
 
 }

@@ -19,7 +19,7 @@ public class HistoryRestController {
     private final HistorySelectService historySelectService;
 
     @GetMapping("/{bookId}")
-    public List<BookHistory> selectHistoryByBookId(@PathVariable Long bookId, Authentication auth) {
+    public List<BookHistory> findHistoriesByBookId(@PathVariable Long bookId, Authentication auth) {
         if (auth != null) return historySelectService.findHistoryByBookId(bookId, auth.getName());
         else return null;
     }

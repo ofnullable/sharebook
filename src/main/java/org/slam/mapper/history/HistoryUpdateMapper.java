@@ -7,8 +7,6 @@ import org.slam.dto.book.BookHistory;
 
 public interface HistoryUpdateMapper {
 
-    int updateBookHistoryToCanceled(Book book);
-
     @Update("UPDATE BOOK_HISTORY SET REQUESTED_STATUS = #{status}, MODIFIED_BY = #{modifiedBy} WHERE BOOK_ID = #{id} AND REQUESTED_STATUS = 'ON_LOAN'")
     int updateBookHistoryToReturnRequest(Book book);
 
@@ -16,6 +14,8 @@ public interface HistoryUpdateMapper {
     int cancelReservation(@Param("id") Long id, @Param("username") String username);
 
     int updateHistory(BookHistory history);
+
+    int conditionalUpdateHistory(BookHistory history);
 
     /*
     @Update("UPDATE BOOK_HISTORY SET REQUESTED_STATUS = 'WAIT_FOR_RESPONSE' " +

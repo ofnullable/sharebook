@@ -5,9 +5,9 @@ public enum  BookStatus {
     WAIT_FOR_RESPONSE,
     ON_LOAN,
     ON_RESERVED,
-    LOAN_OVERDUE,
     CANCELED,
     REJECTED,
     RETURN_REQUEST,
-    RETURNED
+    RETURNED,
+    LOAN_OVERDUE
 }

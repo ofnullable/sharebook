@@ -5,45 +5,56 @@
 
 <mapper namespace="org.slam.mapper.history.HistoryUpdateMapper">
 
-    <update id="updateBookHistoryToCanceled">
-        UPDATE /* historyMapper.updateBookHistoryToCanceled */
-               BOOK_HISTORY
-           SET REQUESTED_STATUS = CASE
-                   WHEN REQUESTED_STATUS = 'WAIT_FOR_RESPONSE' THEN 'CANCELED'
-                   WHEN REQUESTED_STATUS = 'ON_RESERVED' THEN 'WAIT_FOR_RESPONSE'
-                   ELSE REQUESTED_STATUS
-               END
-               , MODIFIED_BY = #{modifiedBy}
-               , ENDED_AT = CASE
-                   WHEN REQUESTED_STATUS = 'CANCELED' THEN NOW()
-                   ELSE ENDED_AT
-               END
-         WHERE BOOK_ID = #{id}
-           AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED')
-      ORDER BY REQUESTED_AT ASC
-         LIMIT 2
-    </update>
-
     <update id="updateHistory">
         UPDATE /* historyMapper.updateHistory */
                BOOK_HISTORY
            SET REQUESTED_STATUS = #{requestedStatus}
-               <choose>
-                   <when test="requestedStatus == 'ON_LOAN'">
-                       , STARTED_AT = NOW()
-                   </when>
-                   <when test="requestedStatus == 'RETURNED' or requestedStatus == 'REJECTED'">
-                       , ENDED_AT = NOW()
-                   </when>
-                   <otherwise>
-
-                   </otherwise>
-               </choose>
+               , STARTED_AT = CASE
+                   WHEN STARTED_AT is NULL THEN NOW()
+                   ELSE STARTED_AT
+               END
                , MODIFIED_BY = #{modifiedBy}
                , MODIFIED_AT = NOW()
          WHERE ID = #{id}
+           AND BOOK_ID = #{bookId}
     </update>
 
+    <update id="conditionalUpdateHistory">
+        UPDATE /* historyMapper.conditionalUpdateHistory */
+               BOOK_HISTORY
+           SET REQUESTED_STATUS = CASE
+               <choose>
+                   <when test="requestedStatus.toString() == 'RETURNED'">
+                       WHEN REQUESTED_STATUS = 'RETURN_REQUEST' THEN 'RETURNED'
+                   </when>
+                   <when test="requestedStatus.toString() == 'REJECTED'">
+                       WHEN REQUESTED_STATUS = 'WAIT_FOR_RESPONSE' THEN 'REJECTED'
+                   </when>
+                   <otherwise>
+                       WHEN REQUESTED_STATUS = 'WAIT_FOR_RESPONSE' THEN 'CANCELED'
+                   </otherwise>
+               </choose>
+                   WHEN REQUESTED_STATUS = 'ON_RESERVED' THEN 'WAIT_FOR_RESPONSE'
+                   ELSE REQUESTED_STATUS
+               END
+               , ENDED_AT = CASE
+                   WHEN REQUESTED_STATUS IN ('RETURNED', 'REJECTED', 'CANCELED') THEN NOW()
+                   ELSE ENDED_AT
+               END
+               , MODIFIED_BY = #{modifiedBy}
+               , MODIFIED_AT = NOW()
+         WHERE BOOK_ID = #{bookId}
+               <choose>
+                   <when test="requestedStatus.toString() == 'RETURNED'">
+                       AND REQUESTED_STATUS IN ('RETURN_REQUEST', 'WAIT_FOR_RESPONSE')
+                   </when>
+                   <otherwise>
+                       AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED')
+                   </otherwise>
+               </choose>
+      ORDER BY REQUESTED_AT ASC
+         LIMIT 2
+    </update>
     <!--
         <update id="updateBookHistoryToOnLoan">
             UPDATE /* historyMapper.updateBookHistoryToOnLoan */

@@ -86,7 +86,6 @@
 
 				var $historyModal = $('#history-modal');
 				$historyModal.on('click', '#accept-btn', function(e) {
-					console.log($(e.target));
 					$.ajax({
 						url: '/my-item/' + $(e.target).data('book-id') + '/history',
 						type: 'patch',
@@ -97,13 +96,11 @@
 							"histories[0].requestedStatus" : $(e.target).data('status')
 						},
 						success: function(res) {
-							console.log(res);
-							// res ? getHistoryByBookId($(e.target).data('book-id')) : alert('Something went wrong.. try again');
+							res ? getHistoryByBookId($(e.target).data('book-id')) : alert('Something went wrong.. try again');
 						}
 					});
 				});
 				$historyModal.on('click', '#reject-btn', function(e) {
-					console.log($(e.target));
 					$.ajax({
 						url: '/my-item/' + $(e.target).data('book-id') + '/history',
 						type: 'patch',
@@ -114,8 +111,7 @@
 							"histories[0].requestedStatus" : $(e.target).data('status')
 						},
 						success: function(res) {
-							console.log(res);
-							// res ? getHistoryByBookId($(e.target).data('book-id')) : alert('Something went wrong.. try again');
+							res ? getHistoryByBookId($(e.target).data('book-id')) : alert('Something went wrong.. try again');
 						}
 					});
 				});
