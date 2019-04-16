@@ -35,7 +35,7 @@ public class FileSendTest {
 	}
 	
 	@Test
-	public void CLIENT_BIG_FILE_TEST() throws FileNotFoundException {
+	public void SESSION_BIG_FILE_TEST() throws FileNotFoundException {
 		var file = ResourceUtils.getFile(this.getClass().getResource("/test-image.gif"));
 		long startTime = System.currentTimeMillis();
 		try (
@@ -52,7 +52,7 @@ public class FileSendTest {
 	}
 	
 	@Test
-	public void CLIENT_MULTI_FILE_SEND_TEST() {
+	public void SESSION_MULTI_FILE_SEND_TEST() {
 		long startTime = System.currentTimeMillis();
 		fileList.parallelStream().forEach( f -> {
 			try (

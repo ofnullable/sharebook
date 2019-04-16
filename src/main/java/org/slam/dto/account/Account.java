@@ -9,12 +9,12 @@ import java.util.Set;
 @Builder @NoArgsConstructor @AllArgsConstructor
 public class Account {
 
-    private String username;
-    private String password;
-    private String name;
-    private String email;
+    private String        username;
+    private String        password;
+    private String        name;
+    private String        email;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private Set<Role> roles;
+    private Set<Role>     roles;
 
 }

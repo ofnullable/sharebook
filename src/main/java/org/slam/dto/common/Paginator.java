@@ -19,8 +19,8 @@ public class Paginator {
     private Integer next;
 
     // for search feature
-    private String searchText;
-    private String username;
+    private String  searchText;
+    private String  username;
 
     public Integer getSelectCount() {
         return PageConstants.ITEM_COUNT * PageConstants.PAGE_COUNT;

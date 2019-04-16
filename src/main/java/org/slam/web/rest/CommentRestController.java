@@ -1,4 +1,4 @@
-package org.slam.web;
+package org.slam.web.rest;
 
 import lombok.AllArgsConstructor;
 import org.slam.dto.book.Comment;

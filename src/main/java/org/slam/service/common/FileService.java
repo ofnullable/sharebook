@@ -36,8 +36,7 @@ public class FileService {
     private String sendImage(MultipartFile bookImage, String remotePath) {
         try (
                 var session = sf.getSession();
-                var in = bookImage.getInputStream();
-                var bin = new BufferedInputStream(in)
+                var bin = new BufferedInputStream(bookImage.getInputStream())
         ) {
             var remoteFilePath = remotePath + bookImage.getOriginalFilename();
             log.debug("Send file to remote. Path : {}", remoteFilePath);
@@ -70,7 +69,7 @@ public class FileService {
         });
     }
 
-    private boolean isDirExist(String filePath) { // if dir not exist, exception occurring
+    private boolean isDirExist(String filePath) { // if dir not exist, exception occurred
         try ( var session = sf.getSession() ) {
             boolean isExists = session.exists(filePath);
             log.info("Is exists? Path : {}, result : {}", filePath, isExists);

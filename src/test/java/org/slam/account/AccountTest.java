@@ -12,6 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.UUID;
+
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -40,12 +42,13 @@ public class AccountTest {
 
 	@Test
 	public void signUpTest() throws Exception {
+		String uuid = UUID.randomUUID().toString();
 		mvc.perform(
 				post("/sign-up")
-						.param("username", "test")
+						.param("username", uuid)
 						.param("password", "1234")
 						.param("name", "test_user")
-						.param("email", "test@localhost.com"))
+						.param("email", uuid + "@localhost.com"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/sign-in"))
 				.andDo(print());

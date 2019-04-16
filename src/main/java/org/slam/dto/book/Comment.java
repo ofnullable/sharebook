@@ -9,21 +9,17 @@ import java.time.format.DateTimeFormatter;
 @Builder @NoArgsConstructor @AllArgsConstructor
 public class Comment {
 
-    private Long id;
-    private Long bookId;
-    private Long parentId;
-    private int depth;
-    private int groupOrder;
-    private String comment;
-    private String createdBy;
+    private Long          id;
+    private Long          bookId;
+    private Long          parentId;
+    private int           depth;
+    private int           groupOrder;
+    private String        comment;
+    private String        createdBy;
     private LocalDateTime createdAt;
 
     public String getCreatedAt() {
-        if (this.createdAt != null) {
-            return this.createdAt.format(DateTimeFormatter.ofPattern("yy-MM-dd hh:mm:ss"));
-        } else {
-            return null;
-        }
+        return this.createdAt != null ? this.createdAt.format(DateTimeFormatter.ofPattern("yy-MM-dd hh:mm:ss")) : null;
     }
 
 }

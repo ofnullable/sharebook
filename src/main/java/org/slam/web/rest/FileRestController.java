@@ -1,4 +1,4 @@
-package org.slam.web;
+package org.slam.web.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/files")
 @AllArgsConstructor
-public class FileController {
+public class FileRestController {
 
     private final FileService fileService;
 

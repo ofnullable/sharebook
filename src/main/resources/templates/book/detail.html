@@ -175,11 +175,16 @@
 		<th:block th:if="${session?.auth != null}">
 			<script type="text/javascript" th:inline="javascript">
 				$(function() {
+					
 					$('#loan-btn').click(function (e) {
 						if (!confirm('해당 도서를 대여하시겠습니까?')) return;
 						$.ajax({
-							url: '/book/loan/[[${book.id}]]/' + [[${session.auth.username}]],
+							url: '/book/[[${book.id}]]',
 							type: 'post',
+							data: {
+								modifiedBy: [[${session.auth.username}]],
+								status: 'WAIT_FOR_RESPONSE'
+							},
 							success: function (res) {
 								if (res) {
 									window.location.reload();
@@ -195,12 +200,16 @@
 							}
 						});
 					});
-
+					
 					$('#resv-btn').click(function (e) {
 						if (!confirm('해당 도서를 예약하시겠습니까?')) return;
 						$.ajax({
-							url: '/book/reservation/[[${book.id}]]/' + [[${session.auth.username}]],
+							url: '/book/[[${book.id}]]',
 							type: 'post',
+							data: {
+								modifiedBy: [[${session.auth.username}]],
+								status: 'ON_RESERVED'
+							},
 							success: function (res) {
 								if (res) {
 									window.location.reload();
@@ -216,12 +225,16 @@
 							}
 						});
 					});
-
+					
 					$('#resv-cancel-btn').click(function (e) {
 						if (!confirm('해당 도서 예약을 취소하시겠습니까?')) return;
 						$.ajax({
-							url: '/book/cancel-reservation/[[${book.id}]]/' + [[${session.auth.username}]],
-							type: 'post',
+							url: '/book/[[${book.id}]]',
+							type: 'patch',
+							data: {
+								modifiedBy: [[${session.auth.username}]],
+								status: 'CANCELED'
+							},
 							success: function (res) {
 								if (res) {
 									window.location.reload();
@@ -237,12 +250,16 @@
 							}
 						});
 					});
-
+					
 					$('#cancel-btn').click(function (e) {
 						if (!confirm('대여요청을 취소하시겠습니까?')) return;
 						$.ajax({
-							url: '/book/cancel/[[${book.id}]]/' + [[${session.auth.username}]],
-							type: 'post',
+							url: '/book/[[${book.id}]]',
+							type: 'patch',
+							data: {
+								modifiedBy: [[${session.auth.username}]],
+								status: 'CANCELED'
+							},
 							success: function (res) {
 								if (res) {
 									window.location.reload();
@@ -258,12 +275,16 @@
 							}
 						});
 					});
-
+					
 					$('#return-btn').click(function (e) {
 						if (!confirm('도서를 반납하시겠습니까?')) return;
 						$.ajax({
-							url: '/book/return/[[${book.id}]]/' + [[${session.auth.username}]],
-							type: 'post',
+							url: '/book/[[${book.id}]]',
+							type: 'patch',
+							data: {
+								modifiedBy: [[${session.auth.username}]],
+								status: 'RETURN_REQUEST'
+							},
 							success: function (res) {
 								if (res) {
 									window.location.reload();
@@ -279,13 +300,13 @@
 							}
 						});
 					});
-
+					
 					$('#see-history').click(function (e) {
-						$.getJSON('/book/' + [[${book.id}]] + '/history', function (res) {
+						$.getJSON('/history/' + [[${book.id}]], function (res) {
 							$('#history-modal .modal-body').html(makeHtmlForBookHistory(res));
 						});
 					});
-
+					
 					function makeHtmlForBookHistory(data) {
 						var html = '';
 						if (data.length) {
@@ -293,7 +314,7 @@
 								if ('WAIT_FOR_RESPONSE' === d.requestedStatus) d.requestedStatus = '대여요청';
 								else if ('ON_RESERVED' === d.requestedStatus) d.requestedStatus = '예약';
 								else if ('ON_LOAN' === d.requestedStatus) d.requestedStatus = '대여중';
-
+								
 								html += '<div class="py-2 row"><div class="col-7"><p>REQUEST USER : ';
 								html += d.requestedUser + '</p><p>REQUEST STATUS : ' + d.requestedStatus + '</p></div>';
 								if (d.requestedStatus === '대여요청') {
@@ -306,12 +327,12 @@
 						} else html += '<div class="py-2 row"><span class="col-12 text-center font-weight-bold">No result</span></div>';
 						return html;
 					}
-
+					
 					$('#comment-form').submit(function (e) {
 						e.preventDefault();
 						saveComment($(this).serialize());
 					});
-
+					
 					var $comments = $('.comments');
 					$comments.on('click', '.remove-comment', function (e) {
 						if (!confirm('해당 댓글을 삭제하시겠습니까?')) return;
@@ -320,8 +341,7 @@
 							type: 'delete',
 							success: function (res) {
 								if (res) {
-									window.location.reload();
-                                    // TODO: after make comments html by ajax, just call function
+									getComments(page);
 								} else {
 									alert('Something went wrong... try again!');
 								}
@@ -333,7 +353,7 @@
 							}
 						});
 					});
-
+					
 					$comments.on('click', '.add-reply', function (e) {
 						var $parent = $(this).parent();
 						if (!$parent.find('textarea').length) {
@@ -343,18 +363,18 @@
 							$parent.find('textarea').focus();
 						}
 					});
-
+					
 					$comments.on('click', '.btn-success', function(e) {
 						var comment = $comments.find('textarea').val();
 						if (!comment || !comment.length) {
 							alert('내용을 입력해주세요.');
 							return;
 						}
-
+						
 						var $dataParent = $(this).parent().parent().parent();
 						var depth = $dataParent.data('depth') + 1;
 						var groupOrder = $dataParent.data('group-order') + 1;
-
+						
 						if (depth > 1) { // 답글의 답글
 							var isOriginComment = true;
 							while (isOriginComment) {
@@ -365,7 +385,7 @@
 								$dataParent = $dataParent.prev();
 							}
 						}
-
+						
 						var data = {
 							bookId: [[${book.id}]]
 							, parentId: $dataParent.data('comment-id')
@@ -376,7 +396,7 @@
 						};
 						saveComment(data);
 					});
-
+					
 					function saveComment(data) {
 						$.ajax({
 							url: '/comment/[[${book.id}]]',
@@ -384,7 +404,7 @@
 							type: 'post',
 							success: function (res) {
 								if (res) {
-									window.location.reload();
+									getComments(page);
 								} else {
 									alert('Something went wrong... try again!');
 								}
@@ -396,37 +416,37 @@
 							}
 						});
 					}
-
+					
 					var page;
 					var itemList = [];
 					var paginator;
-					var isLoadMore = true;
+					// var hasMore = true;
 					getComments();
-
+					
 					$('#paginator').on('click', '[data-page]', function(e) {
 						page = Number(e.target.dataset.page);
 						if (itemList[page]) {
 							$('.comments').append( makeCommentsHtml(itemList[page]) );
 							e.target.dataset.page = ++page;
 						} else {
-						    if (paginator.next && paginator.end >= page) {
-                                getComments(++page);
-                            } else {
-                                $('#paginator').html('');
-                            }
+							if (paginator.next && paginator.end >= page) {
+								getComments(++page);
+							} else {
+								$('#paginator').html('');
+							}
 						}
 					});
-
+					
 					function getComments(page) {
 						page = page || 1;
 						$.getJSON('/comment/[[${book.id}]]?page=' + page, function(res) {
-                            paginator = res['paginator'];
-                            itemList = itemList.concat(pageInit(res['comments'], paginator, isLoadMore));
-                            $('.comments').append( makeCommentsHtml(itemList[page - 1]) );
-                            $('#paginator').html( makeLoadMoreButton(page) );
+							paginator = res['paginator'];
+							itemList = itemList.concat(pageInit(res['comments'], paginator));
+							$('.comments').append( makeCommentsHtml(itemList[page - 1]) );
+							$('#paginator').html( makeLoadMoreButton(page) );
 						});
 					}
-
+					
 					function makeCommentsHtml(data) {
 						var html = '';
 						data.forEach(function(d) {
@@ -448,20 +468,20 @@
 						});
 						return html;
 					}
-
+					
 					function makeLoadMoreButton(page) {
 						return '<nav id="load-more" data-page="' + page + '">Load more <span>  </span></nav>';
 					}
-
-                    function makeTextareaForAddReply() {
-                        var html = '<div class="row"><textarea class="col-12 comment-input"></textarea>';
-                        html += '<button class="btn btn-success col-md-1 col-12" style="margin-bottom: .5rem;font-size: 13px;">등록</button></div>';
-                        return html;
-                    }
+					
+					function makeTextareaForAddReply() {
+						var html = '<div class="row"><textarea class="col-12 comment-input"></textarea>';
+						html += '<button class="btn btn-success col-md-1 col-12" style="margin-bottom: .5rem;font-size: 13px;">등록</button></div>';
+						return html;
+					}
 				});
 			</script>
 		</th:block>
-		<th:block th:unless="${session?.auth != null}">
+		<th:block th:unless="${session?.auth == null}">
 			<script type="text/javascript">
 				$('[data-toggle="tooltip"]').click(function(e) {
 					e.preventDefault();

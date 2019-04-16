@@ -19,7 +19,6 @@ public class CommentService {
     public Map<String, Object> findCommentsByBookId(Long bookId, Paginator paginator) {
         var result = new HashMap<String, Object>();
         paginator.setTotal(commentMapper.findTotalCount(bookId, paginator));
-        System.out.println(paginator);
 
         result.put("comments", commentMapper.findCommentsByBookId(bookId, paginator));
         result.put("paginator", paginator);
