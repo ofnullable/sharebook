@@ -37,6 +37,12 @@ public class BookHistoryService {
         );
     }
 
+    // loan / reservation / cancel-reservation / cancel / return
+    public int updateToMatchRequest(Book book) {
+
+        return 0;
+    }
+
     public int updateToMatchResponse(Book book) {
         // 대여요청 수락 || 반납요청 거절의 경우 ON_LOAN 으로 상태 업데이트
         var requestedStatus = book.getHistories().get(0).getRequestedStatus();

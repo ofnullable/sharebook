@@ -1,51 +1,51 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<th:block th:replace="include/head :: head" />
-		<title>Main page :: Public-Share</title>
-	</head>
-	<body>
-		<section th:replace="include/header :: header"></section>
+    <head>
+        <th:block th:replace="include/head :: head" />
+        <title>Main page :: Public-Share</title>
+    </head>
+    <body>
+        <section th:replace="include/header :: header"></section>
 
-		<div class="container">
-			<form class="my-1">
-				<label for="searchInput">Search</label>
-				<input id="searchInput" type="text" class="form-control" name="searchText" th:value="${paginator.searchText}" placeholder="Enter title or author">
-			</form>
-		</div>
+        <div class="container">
+            <form class="my-1">
+                <label for="searchInput">Search</label>
+                <input id="searchInput" type="text" class="form-control" name="searchText" th:value="${paginator.searchText}" placeholder="Enter title or author">
+            </form>
+        </div>
 
-		<div class="album py-5">
-			<div class="container">
-				<div id="items" class="row">
-					
-					<!--<div th:each="book : ${books}" class="col-md-4">-->
-						<!--<div class="card mb-4 shadow-sm">-->
-							<!--<a th:href="|/book/${book.id}|">-->
-								<!--<img class="card-img-top" th:alt="${book.title}" th:src="@{|http://img.worksout.co.kr/${book.mainImage}|}">-->
-							<!--</a>-->
-							<!--<div class="card-body">-->
-								<!--<a th:href="|/book/${book.id}|">-->
-									<!--<p class="card-text" th:text="${book.title}"></p>-->
-									<!--<p th:text="${book.author}"></p>-->
-								<!--</a>-->
-								<!--<div class="d-flex justify-content-between align-items-center">-->
-									<!--<div class="btn-group">-->
-										<!--<button type="button" class="btn btn-sm btn-outline-secondary">View</button>-->
-										<!--<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
-									<!--</div>-->
-									<!--<small class="text-muted" th:text="${book.createdAt}"></small>-->
-								<!--</div>-->
-							<!--</div>-->
-						<!--</div>-->
-					<!--</div>-->
-					
-				</div>
+        <div class="album py-5">
+            <div class="container">
+                <div id="items" class="row">
+
+                    <!--<div th:each="book : ${books}" class="col-md-4">-->
+                        <!--<div class="card mb-4 shadow-sm">-->
+                            <!--<a th:href="|/book/${book.id}|">-->
+                                <!--<img class="card-img-top" th:alt="${book.title}" th:src="@{|http://img.worksout.co.kr/${book.mainImage}|}">-->
+                            <!--</a>-->
+                            <!--<div class="card-body">-->
+                                <!--<a th:href="|/book/${book.id}|">-->
+                                    <!--<p class="card-text" th:text="${book.title}"></p>-->
+                                    <!--<p th:text="${book.author}"></p>-->
+                                <!--</a>-->
+                                <!--<div class="d-flex justify-content-between align-items-center">-->
+                                    <!--<div class="btn-group">-->
+                                        <!--<button type="button" class="btn btn-sm btn-outline-secondary">View</button>-->
+                                        <!--<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
+                                    <!--</div>-->
+                                    <!--<small class="text-muted" th:text="${book.createdAt}"></small>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                </div>
                 <div id="paginator"></div>
-			</div>
-		</div>
-		
-		<footer th:replace="include/footer :: footer"></footer>
-		<th:block th:replace="include/scripts :: scripts"/>
+            </div>
+        </div>
+
+        <footer th:replace="include/footer :: footer"></footer>
+        <th:block th:replace="include/scripts :: scripts"/>
         <script src="/js/paginator.js" type="text/javascript"></script>
         <script type="text/javascript" th:inline="javascript">
             $(function() {
@@ -55,30 +55,30 @@
                 makeItemHTML(itemList[pageToListIndex(paginator.page)]);
 
                 $('#paginator').on('click', '.page-link[data-page]', function(e) {
-                	var page = e.target.dataset.page;
+                    var page = e.target.dataset.page;
                     history.pushState(null, document.title, '/?page=' + page);
                     makeItemHTML(itemList[pageToListIndex(page)]);
                     toggleActive($(e.target.parentElement));
                 });
 
                 function makeItemHTML(list) {
-					var html = '';
-					for (var i = 0; i < list.length; i++) {
-						html += '<div class="col-md-4"><div class="card mb-4 shadow-sm">';
-						html += '<a href="/book/' + list[i].id + '"><img class="card-img-top" alt="' + list[i].title + '" src="http://img.worksout.co.kr/' + list[i].mainImage + '"></a>';
-						html += '<div class="card-body"><a href="/book/' + list[i].id + '">';
-						html += '<p class="card-text">' + list[i].title + '</p><p>' + list[i].author + '</p></a>';
-						html += '<div class="d-flex justify-content-between align-items-center"><div class="btn-group">';
-						html += '<button type="button" class="btn btn-sm btn-outline-secondary">View</button><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></div>';
-						html += '<small class="text-muted">' +  list[i].createdAt + '</small></div></div></div></div>';
-					}
-					$('#items').html(html);
-				}
+                    var html = '';
+                    for (var i = 0; i < list.length; i++) {
+                        html += '<div class="col-md-4"><div class="card mb-4 shadow-sm">';
+                        html += '<a href="/book/' + list[i].id + '"><img class="card-img-top" alt="' + list[i].title + '" src="http://img.worksout.co.kr/' + list[i].mainImage + '"></a>';
+                        html += '<div class="card-body"><a href="/book/' + list[i].id + '">';
+                        html += '<p class="card-text">' + list[i].title + '</p><p>' + list[i].author + '</p></a>';
+                        html += '<div class="d-flex justify-content-between align-items-center"><div class="btn-group">';
+                        html += '<button type="button" class="btn btn-sm btn-outline-secondary">View</button><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></div>';
+                        html += '<small class="text-muted">' +  list[i].createdAt + '</small></div></div></div></div>';
+                    }
+                    $('#items').html(html);
+                }
 
-				function pageToListIndex(page) {
+                function pageToListIndex(page) {
                     return page % pageCount > 0 ? page % pageCount - 1 : page - 1;
                 }
             });
         </script>
-	</body>
+    </body>
 </html>

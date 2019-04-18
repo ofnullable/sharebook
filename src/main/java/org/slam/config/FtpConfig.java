@@ -59,24 +59,24 @@ public class FtpConfig {
     }
 
     // Can send by gateway with code below too.
-	@Bean
-	public IntegrationFlow outboundFlow() {
-		return IntegrationFlows.from("toFtpChannel")
-				.handle(Ftp.outboundAdapter(sessionFactory(), FileExistsMode.REPLACE)
-						.temporaryRemoteDirectory( m -> (String) m.getHeaders().get("path"))
-						.charset("UTF-8")
-						.autoCreateDirectory(true)
-						.remoteDirectoryExpression("headers['path']")
-				).get();
-	}
-	@Bean
-	@ServiceActivator(inputChannel = "toFtpChannel")
-	public FtpOutboundGateway outboundGateway() {
-		var gw = new FtpOutboundGateway(sessionFactory(), "ls", "payload");
-		gw.setOption(AbstractRemoteFileOutboundGateway.Option.ALL);
-		gw.setOutputChannelName("fromFtpChannel");
-		return gw;
-	}
+    @Bean
+    public IntegrationFlow outboundFlow() {
+        return IntegrationFlows.from("toFtpChannel")
+                .handle(Ftp.outboundAdapter(sessionFactory(), FileExistsMode.REPLACE)
+                        .temporaryRemoteDirectory( m -> (String) m.getHeaders().get("path"))
+                        .charset("UTF-8")
+                        .autoCreateDirectory(true)
+                        .remoteDirectoryExpression("headers['path']")
+                ).get();
+    }
+    @Bean
+    @ServiceActivator(inputChannel = "toFtpChannel")
+    public FtpOutboundGateway outboundGateway() {
+        var gw = new FtpOutboundGateway(sessionFactory(), "ls", "payload");
+        gw.setOption(AbstractRemoteFileOutboundGateway.Option.ALL);
+        gw.setOutputChannelName("fromFtpChannel");
+        return gw;
+    }
     */
 
 }

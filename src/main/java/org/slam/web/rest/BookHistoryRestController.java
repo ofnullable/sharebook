@@ -42,13 +42,13 @@ public class BookHistoryRestController {
     @PostMapping("/{id}")
     public int saveRequest(Book book) {
         System.out.println(book);
-        return 0;
+        return bookHistoryService.updateToMatchRequest(book);
     }
 
     @PatchMapping("/{id}")
     public int updateRequest(Book book) {
         System.out.println(book);
-        return 0;
+        return bookHistoryService.updateToMatchRequest(book);
     }
 
 }

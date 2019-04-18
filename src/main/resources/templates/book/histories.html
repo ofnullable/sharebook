@@ -1,47 +1,47 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<th:block th:replace="include/head :: head" />
-		<title>page-title :: Public-Share</title>
-	</head>
-	<body>
-		<section th:replace="include/header :: header"></section>
-		
-		<div class="album py-5">
-			<div class="container">
+    <head>
+        <th:block th:replace="include/head :: head" />
+        <title>page-title :: Public-Share</title>
+    </head>
+    <body>
+        <section th:replace="include/header :: header"></section>
 
-				<div class="book-information">
-					<h1 th:text="|Title : ${detail.title}|"></h1>
-					<span th:text="|Author : ${detail.author}|"></span>
-					<span th:text="|Book Id : ${detail.id}|"></span>
-				</div>
+        <div class="album py-5">
+            <div class="container">
 
-				<h2>Histories</h2>
-				<table width="100%">
-					<thead>
-					<tr>
-						<th>Requested User</th>
-						<th>Status</th>
-						<th>Requested at</th>
-						<th>Started at</th>
-						<th>Ended at</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr th:each="h : ${detail?.histories}">
-						<td th:text="${h.requestedUser}"></td>
-						<td th:text="${h.requestedStatus}"></td>
-						<td th:text="${h.requestedAt}"></td>
-						<td th:text="${h.startedAt}"></td>
-						<td th:text="${h.endedAt}"></td>
-					</tr>
-					</tbody>
-				</table>
+                <div class="book-information">
+                    <h1 th:text="|Title : ${detail.title}|"></h1>
+                    <span th:text="|Author : ${detail.author}|"></span>
+                    <span th:text="|Book Id : ${detail.id}|"></span>
+                </div>
 
-			</div>
-		</div>
-		
-		<footer th:replace="include/footer :: footer"></footer>
-		<th:block th:replace="include/scripts :: scripts"/>
-	</body>
+                <h2>Histories</h2>
+                <table width="100%">
+                    <thead>
+                    <tr>
+                        <th>Requested User</th>
+                        <th>Status</th>
+                        <th>Requested at</th>
+                        <th>Started at</th>
+                        <th>Ended at</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="h : ${detail?.histories}">
+                        <td th:text="${h.requestedUser}"></td>
+                        <td th:text="${h.requestedStatus}"></td>
+                        <td th:text="${h.requestedAt}"></td>
+                        <td th:text="${h.startedAt}"></td>
+                        <td th:text="${h.endedAt}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <footer th:replace="include/footer :: footer"></footer>
+        <th:block th:replace="include/scripts :: scripts"/>
+    </body>
 </html>

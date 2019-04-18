@@ -1,232 +1,232 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<th:block th:replace="include/head :: head" />
-		<title>My page :: Public-Share</title>
-		<style type="text/css">
-			span.badge {
-				line-height: unset;
-			}
-			.col-5 button {
-				width: 100%;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="modal fade" id="history-modal" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Requests for book : </h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body text-center">
-						<div class="p-2 row">
-							<div class="col-7" style="width: 55%;">
-								<p>REQUEST USER : </p>
-								<p>REQUEST STATUS : </p>
-							</div>
-							<div class="col-5">
-								<button class="btn btn-success">Accept</button>
-								<button class="btn btn-outline-secondary">Discard</button>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<!--<button type="button" class="btn btn-primary">Save changes</button>-->
-					</div>
-				</div>
-			</div>
-		</div>
-		<section th:replace="include/header :: header"></section>
-		
-		<div class="album py-5">
-			<div class="container">
-				<div class="clearfix">
-					<a href="/my-page/item/" role="button" aria-pressed="true" class="btn btn-link float-right">Register</a>
-				</div>
-				<nav class="nav nav-pills nav-justified my-3 row">
-					<a id="my-books" class="nav-item nav-link active" href="javascript:void(0)">My books</a>
-					<a id="on-loan" class="nav-item nav-link" href="javascript:void(0)">On Loan</a>
-					<a id="on-apply" class="nav-item nav-link" href="javascript:void(0)">On Apply</a>
-					<a id="on-resv" class="nav-item nav-link" href="javascript:void(0)">On Reservation</a>
-				</nav>
-				<div class="row content">
+    <head>
+        <th:block th:replace="include/head :: head" />
+        <title>My page :: Public-Share</title>
+        <style type="text/css">
+            span.badge {
+                line-height: unset;
+            }
+            .col-5 button {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="modal fade" id="history-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Requests for book : </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="p-2 row">
+                            <div class="col-7" style="width: 55%;">
+                                <p>REQUEST USER : </p>
+                                <p>REQUEST STATUS : </p>
+                            </div>
+                            <div class="col-5">
+                                <button class="btn btn-success">Accept</button>
+                                <button class="btn btn-outline-secondary">Discard</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section th:replace="include/header :: header"></section>
 
-				</div>
-				<div id="paginator"></div>
-			</div>
-		</div>
-		
-		<footer th:replace="include/footer :: footer"></footer>
-		<th:block th:replace="include/scripts :: scripts"/>
-		<script src="/js/paginator.js" type="text/javascript"></script>
-		<script type="text/javascript" th:inline="javascript">
-			$(function(){
-				var page;
-				var nowStatus;
-				var itemList;
-				var paginator;
+        <div class="album py-5">
+            <div class="container">
+                <div class="clearfix">
+                    <a href="/my-page/item/" role="button" aria-pressed="true" class="btn btn-link float-right">Register</a>
+                </div>
+                <nav class="nav nav-pills nav-justified my-3 row">
+                    <a id="my-books" class="nav-item nav-link active" href="javascript:void(0)">My books</a>
+                    <a id="on-loan" class="nav-item nav-link" href="javascript:void(0)">On Loan</a>
+                    <a id="on-apply" class="nav-item nav-link" href="javascript:void(0)">On Apply</a>
+                    <a id="on-resv" class="nav-item nav-link" href="javascript:void(0)">On Reservation</a>
+                </nav>
+                <div class="row content">
 
-				getMatchStatusBooks('my-books');
+                </div>
+                <div id="paginator"></div>
+            </div>
+        </div>
 
-				$('.nav > a').click(function(e) {
-					$('.nav').children().removeClass('active');
-					$(this).addClass('active');
-					getMatchStatusBooks($(this).attr('id'));
-				});
+        <footer th:replace="include/footer :: footer"></footer>
+        <th:block th:replace="include/scripts :: scripts"/>
+        <script src="/js/paginator.js" type="text/javascript"></script>
+        <script type="text/javascript" th:inline="javascript">
+            $(function(){
+                var page;
+                var nowStatus;
+                var itemList;
+                var paginator;
 
-				$('.row.content').on('click', '.show-history-btn', function(e) {
-					var id = $(e.target).attr('id').split('-')[1];
-					getHistoryByBookId(id);
-				});
+                getMatchStatusBooks('my-books');
 
-				var $historyModal = $('#history-modal');
-				$historyModal.on('click', '#accept-btn', function(e) {
-					$.ajax({
-						url: '/my-item/' + $(e.target).data('book-id') + '/history',
-						type: 'patch',
-						data: {
-							ownerAnswer : "ACCEPT",
-							modifiedBy : [[${session?.auth?.username}]],
-							"histories[0].id" : $(e.target).data('history-id'),
-							"histories[0].requestedStatus" : $(e.target).data('status')
-						},
-						success: function(res) {
-							res ? getHistoryByBookId($(e.target).data('book-id')) : alert('Something went wrong.. try again');
-						}
-					});
-				});
-				$historyModal.on('click', '#reject-btn', function(e) {
-					$.ajax({
-						url: '/my-item/' + $(e.target).data('book-id') + '/history',
-						type: 'patch',
-						data: {
-							ownerAnswer : "REJECT",
-							modifiedBy : [[${session?.auth?.username}]],
-							"histories[0].id" : $(e.target).data('history-id'),
-							"histories[0].requestedStatus" : $(e.target).data('status')
-						},
-						success: function(res) {
-							res ? getHistoryByBookId($(e.target).data('book-id')) : alert('Something went wrong.. try again');
-						}
-					});
-				});
+                $('.nav > a').click(function(e) {
+                    $('.nav').children().removeClass('active');
+                    $(this).addClass('active');
+                    getMatchStatusBooks($(this).attr('id'));
+                });
 
-				$('#paginator').on('click', '.page-link[data-page]', function(e) {
-					if ($('#my-books.active').length) {
-						$('.row.content').html( makeHtmlForMyItems(itemList[$(e.target).data('page') - 1]) );
-						toggleActive($(e.target.parentElement));
-					} else {
-						$('.row.content').html( makeHtmlForMatchStatusBooks(itemList[$(e.target).data('page') - 1]) );
-						toggleActive($(e.target.parentElement));
-					}
-				});
+                $('.row.content').on('click', '.show-history-btn', function(e) {
+                    var id = $(e.target).attr('id').split('-')[1];
+                    getHistoryByBookId(id);
+                });
 
-				function getMatchStatusBooks(status) {
-					if (nowStatus === status) {
-						page = page ? ++page : 1;
-					} else {
-						page = 1;
-						nowStatus = status;
-						paginator = {};
-						itemList = [];
-					}
+                var $historyModal = $('#history-modal');
+                $historyModal.on('click', '#accept-btn', function(e) {
+                    $.ajax({
+                        url: '/my-item/' + $(e.target).data('book-id') + '/history',
+                        type: 'patch',
+                        data: {
+                            ownerAnswer : "ACCEPT",
+                            modifiedBy : [[${session?.auth?.username}]],
+                            "histories[0].id" : $(e.target).data('history-id'),
+                            "histories[0].requestedStatus" : $(e.target).data('status')
+                        },
+                        success: function(res) {
+                            res ? getHistoryByBookId($(e.target).data('book-id')) : alert('Something went wrong.. try again');
+                        }
+                    });
+                });
+                $historyModal.on('click', '#reject-btn', function(e) {
+                    $.ajax({
+                        url: '/my-item/' + $(e.target).data('book-id') + '/history',
+                        type: 'patch',
+                        data: {
+                            ownerAnswer : "REJECT",
+                            modifiedBy : [[${session?.auth?.username}]],
+                            "histories[0].id" : $(e.target).data('history-id'),
+                            "histories[0].requestedStatus" : $(e.target).data('status')
+                        },
+                        success: function(res) {
+                            res ? getHistoryByBookId($(e.target).data('book-id')) : alert('Something went wrong.. try again');
+                        }
+                    });
+                });
 
-					$.getJSON('/my-item/' + status + '?page=' + page, function(res) {
-						// TODO: Find better way..
-						if ( !res['bookList'].length ) {
-							if (status === 'my-books') {
-								$('.row.content').html('<div class="col-12 text-center" style="margin: 7rem 0;"><p class="font-weight-bold">EMPTY LIST</p><p>You didn`t register any book</p><span><a href="/my-page/item/">Let\'s share your first book!</a></span></div>');
-							} else {
-								$('.row.content').html('<div style="text-align: center; margin: 7rem 0;width: 100%"><h1>No result</h1></div>');
-							}
-							makePaginatorEmpty();
-							return;
-						}
+                $('#paginator').on('click', '.page-link[data-page]', function(e) {
+                    if ($('#my-books.active').length) {
+                        $('.row.content').html( makeHtmlForMyItems(itemList[$(e.target).data('page') - 1]) );
+                        toggleActive($(e.target.parentElement));
+                    } else {
+                        $('.row.content').html( makeHtmlForMatchStatusBooks(itemList[$(e.target).data('page') - 1]) );
+                        toggleActive($(e.target.parentElement));
+                    }
+                });
 
-						paginator = res['paginator'];
-						itemList = pageInit(res['bookList'], paginator);
+                function getMatchStatusBooks(status) {
+                    if (nowStatus === status) {
+                        page = page ? ++page : 1;
+                    } else {
+                        page = 1;
+                        nowStatus = status;
+                        paginator = {};
+                        itemList = [];
+                    }
 
-						if (status === 'my-books') {
-							$('.row.content').html( makeHtmlForMyItems(itemList[page - 1]) );
-						} else {
-							$('.row.content').html( makeHtmlForMatchStatusBooks(itemList[page - 1]) );
-						}
-					});
-				}
-				function makeHtmlForMyItems(data) {
-					var html = '';
-					data.forEach(function(d) {
-						html += '<div class="col-md-4"><div class="card mb-4 shadow-sm"><a href="/book/' + d.id + '">';
-						html += '<img class="card-img-top" alt="' + d.title + '" src="http://img.worksout.co.kr/' + d.mainImage + '"></a>';
-						html += '<div class="card-body"><a href="/book/' + d.id + '"><p class="card-text">' + d.title + '</p><p>' + d.author + '</p></a>';
-						html += '<div class="d-flex justify-content-between align-items-center row">';
-						html += '<button id="alarm-' + d.id + '" type="button" class="btn btn-sm btn-outline-secondary show-history-btn col-6">';
-						html += ' New Requests <span class="badge badge-pill badge-danger">' + d.waiters + '</span></button>';
-						html += '<small class="text-muted text-center col-6">' + d.createdAt + '</small></div></div></div></div>';
-					});
-					return html;
-				}
-				function makeHtmlForMatchStatusBooks(data) {
-					var html = '';
-					if (data.length) {
-						data.forEach(function(d) {
-							html += '<div class="col-md-4"><div class="card mb-4 shadow-sm"><a href="/book/' + d.id + '">';
-							html += '<img class="card-img-top" alt="' + d.title + '" src="http://img.worksout.co.kr/' + d.mainImage + '">';
-							html += '<div class="card-body"><p class="card-text">' + d.title + '</p><p>' + d.author + '</p>';
-							html += '<div class="d-flex justify-content-between align-items-center row">';
-							html += '<button type="button" class="btn btn-sm btn-outline-secondary col-6">View</button>';
-							html += '<small class="text-muted col-6 text-center">' + d.createdAt + '</small></div></div></a></div></div>';
-						});
-					}
-					return html;
-				}
-				function getHistoryByBookId(id) {
-					var $historyModal = $('#history-modal');
+                    $.getJSON('/my-item/' + status + '?page=' + page, function(res) {
+                        // TODO: Find better way..
+                        if ( !res['bookList'].length ) {
+                            if (status === 'my-books') {
+                                $('.row.content').html('<div class="col-12 text-center" style="margin: 7rem 0;"><p class="font-weight-bold">EMPTY LIST</p><p>You didn`t register any book</p><span><a href="/my-page/item/">Let\'s share your first book!</a></span></div>');
+                            } else {
+                                $('.row.content').html('<div style="text-align: center; margin: 7rem 0;width: 100%"><h1>No result</h1></div>');
+                            }
+                            makePaginatorEmpty();
+                            return;
+                        }
 
-					$.getJSON('/my-item/' + id + '/history', function(res) {
-						$historyModal.find('.modal-title').html('Requests for book : ' + id);
-						$historyModal.find('.modal-body').html(makeHtmlForBookHistory(res));
-					});
+                        paginator = res['paginator'];
+                        itemList = pageInit(res['bookList'], paginator);
 
-					$historyModal.modal('show');
-				}
-				function makeHtmlForBookHistory(data) {
-					var html = '';
-					if (data.length) {
-						data.forEach(function(d) {
-							var status;
-							switch (d.requestedStatus) {
-								case 'WAIT_FOR_RESPONSE':
-									status = '대여요청';
-									break;
-								case 'ON_RESERVED':
-									status = '예약';
-									break;
-								case 'ON_LOAN':
-									status = '대여중';
-									break;
-								case 'RETURN_REQUEST':
-									status = '반납요청';
-									break;
-							}
-							html += '<div class="py-2 row"><div class="col-7"><p>REQUEST USER : ';
-							html += d.requestedUser + '</p><p>REQUEST STATUS : ' + status + '</p></div>';
-							if (status === '대여요청' || status === '반납요청') {
-								html += '<div class="col-5"><button id="accept-btn" class="btn btn-success" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Accept</button>';
-								html += '<button id="reject-btn" class="btn btn-outline-secondary" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Reject</button></div>';
-							}
-							html += '</div>';
-						});
-						html += '<a href="/book/' + data[0].bookId + '/histories">View all history</a></div>';
-					} else html += '<div class="py-2 row"><span class="col-12 text-center font-weight-bold">No result</span></div>';
-					return html;
-				}
-			});
-		</script>
-	</body>
+                        if (status === 'my-books') {
+                            $('.row.content').html( makeHtmlForMyItems(itemList[page - 1]) );
+                        } else {
+                            $('.row.content').html( makeHtmlForMatchStatusBooks(itemList[page - 1]) );
+                        }
+                    });
+                }
+                function makeHtmlForMyItems(data) {
+                    var html = '';
+                    data.forEach(function(d) {
+                        html += '<div class="col-md-4"><div class="card mb-4 shadow-sm"><a href="/book/' + d.id + '">';
+                        html += '<img class="card-img-top" alt="' + d.title + '" src="http://img.worksout.co.kr/' + d.mainImage + '"></a>';
+                        html += '<div class="card-body"><a href="/book/' + d.id + '"><p class="card-text">' + d.title + '</p><p>' + d.author + '</p></a>';
+                        html += '<div class="d-flex justify-content-between align-items-center row">';
+                        html += '<button id="alarm-' + d.id + '" type="button" class="btn btn-sm btn-outline-secondary show-history-btn col-6">';
+                        html += ' New Requests <span class="badge badge-pill badge-danger">' + d.waiters + '</span></button>';
+                        html += '<small class="text-muted text-center col-6">' + d.createdAt + '</small></div></div></div></div>';
+                    });
+                    return html;
+                }
+                function makeHtmlForMatchStatusBooks(data) {
+                    var html = '';
+                    if (data.length) {
+                        data.forEach(function(d) {
+                            html += '<div class="col-md-4"><div class="card mb-4 shadow-sm"><a href="/book/' + d.id + '">';
+                            html += '<img class="card-img-top" alt="' + d.title + '" src="http://img.worksout.co.kr/' + d.mainImage + '">';
+                            html += '<div class="card-body"><p class="card-text">' + d.title + '</p><p>' + d.author + '</p>';
+                            html += '<div class="d-flex justify-content-between align-items-center row">';
+                            html += '<button type="button" class="btn btn-sm btn-outline-secondary col-6">View</button>';
+                            html += '<small class="text-muted col-6 text-center">' + d.createdAt + '</small></div></div></a></div></div>';
+                        });
+                    }
+                    return html;
+                }
+                function getHistoryByBookId(id) {
+                    var $historyModal = $('#history-modal');
+
+                    $.getJSON('/my-item/' + id + '/history', function(res) {
+                        $historyModal.find('.modal-title').html('Requests for book : ' + id);
+                        $historyModal.find('.modal-body').html(makeHtmlForBookHistory(res));
+                    });
+
+                    $historyModal.modal('show');
+                }
+                function makeHtmlForBookHistory(data) {
+                    var html = '';
+                    if (data.length) {
+                        data.forEach(function(d) {
+                            var status;
+                            switch (d.requestedStatus) {
+                                case 'WAIT_FOR_RESPONSE':
+                                    status = '대여요청';
+                                    break;
+                                case 'ON_RESERVED':
+                                    status = '예약';
+                                    break;
+                                case 'ON_LOAN':
+                                    status = '대여중';
+                                    break;
+                                case 'RETURN_REQUEST':
+                                    status = '반납요청';
+                                    break;
+                            }
+                            html += '<div class="py-2 row"><div class="col-7"><p>REQUEST USER : ';
+                            html += d.requestedUser + '</p><p>REQUEST STATUS : ' + status + '</p></div>';
+                            if (status === '대여요청' || status === '반납요청') {
+                                html += '<div class="col-5"><button id="accept-btn" class="btn btn-success" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Accept</button>';
+                                html += '<button id="reject-btn" class="btn btn-outline-secondary" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Reject</button></div>';
+                            }
+                            html += '</div>';
+                        });
+                        html += '<a href="/book/' + data[0].bookId + '/histories">View all history</a></div>';
+                    } else html += '<div class="py-2 row"><span class="col-12 text-center font-weight-bold">No result</span></div>';
+                    return html;
+                }
+            });
+        </script>
+    </body>
 </html>
