@@ -19,7 +19,7 @@
                BOOK
            SET STATUS = CASE
                WHEN EXISTS(SELECT COUNT(*) FROM BOOK_HISTORY WHERE BOOK_ID = #{id} AND REQUESTED_STATUS = 'ON_RESERVED')
-               THEN 'WAIT_FOR_RESPONSE'
+                    THEN 'WAIT_FOR_RESPONSE'
                ELSE 'AVAILABLE'
                END
                , MODIFIED_BY = #{modifiedBy}

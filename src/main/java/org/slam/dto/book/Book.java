@@ -10,20 +10,21 @@ import java.util.List;
 @Builder @NoArgsConstructor @AllArgsConstructor
 public class Book {
 
-    private Long              id;
-    private String            title;
-    private String            author;
-    private String            description;
-    private String            mainImage;
-    private BookStatus        status;
-    private String            modifiedBy;
-    private LocalDateTime     modifiedAt;
-    private String            createdBy;
-    private LocalDateTime     createdAt;
+    private Long          id;
+    private String        title;
+    private String        author;
+    private String        description;
+    private String        mainImage;
+    private BookStatus    status;
+    private String        modifiedBy;
+    private LocalDateTime modifiedAt;
+    private String        createdBy;
+    private LocalDateTime createdAt;
 
     private String            RecentLoaner;
     private Integer           waiters;
     private Boolean           isReserved;
+    private BookStatus        originStatus;
     private OwnerAnswer       ownerAnswer;
     private List<BookImage>   images;
     private List<BookHistory> histories;

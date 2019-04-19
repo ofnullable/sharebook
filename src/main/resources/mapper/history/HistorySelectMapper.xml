@@ -7,69 +7,70 @@
 
     <select id="findTotalCount" resultType="Integer">
         SELECT /* historyMapper.findTotalCount */
-        COUNT(*)
-        FROM BOOK_HISTORY
-        <where>
-            <if test="status != null">
-                REQUESTED_STATUS = #{status}
-            </if>
-            <if test="paginator.username != null and paginator.username != ''">
-                AND REQUESTED_USER = #{paginator.username}
-            </if>
-        </where>
+               COUNT(*)
+          FROM BOOK_HISTORY
+       <where>
+               <if test="status != null">
+                   REQUESTED_STATUS = #{status}
+               </if>
+               <if test="paginator.username != null and paginator.username != ''">
+                   AND REQUESTED_USER = #{paginator.username}
+               </if>
+      </where>
     </select>
 
     <select id="findMatchStatusHistory" resultType="book">
         SELECT /* historyMapper.findMatchStatusHistory */
-            b.ID
-        , TITLE
-        , AUTHOR
-        , STATUS
-        , CREATED_BY
-        , CREATED_AT
-        , MAIN_IMAGE
-            FROM BOOK_HISTORY h
-                 JOIN BOOK b ON h.BOOK_ID = b.ID
-            WHERE REQUESTED_USER = #{paginator.username}
-            AND REQUESTED_STATUS = #{status}
-            LIMIT #{paginator.jumpCount}, #{paginator.selectCount}
+               b.ID
+               , TITLE
+               , AUTHOR
+               , STATUS
+               , CREATED_BY
+               , CREATED_AT
+               , MAIN_IMAGE
+          FROM BOOK_HISTORY h
+          JOIN BOOK b
+            ON h.BOOK_ID = b.ID
+         WHERE REQUESTED_USER = #{paginator.username}
+           AND REQUESTED_STATUS = #{status}
+         LIMIT #{paginator.jumpCount}, #{paginator.selectCount}
     </select>
 
     <select id="findHistoryByBookId" resultType="bookHistory">
         SELECT /* historyMapper.selectHistoryByBookId */
-            h.ID
-        , BOOK_ID
-        , REQUESTED_STATUS
-        , STARTED_AT
-        , ENDED_AT
-        , REQUESTED_USER
-        , REQUESTED_AT
-            FROM BOOK_HISTORY h
-                 JOIN BOOK b
-                      ON h.BOOK_ID = b.id
-            WHERE BOOK_ID = #{bookId}
-            AND b.CREATED_BY = #{username}
-            ORDER BY REQUESTED_AT ASC
-            LIMIT 5
+               h.ID
+               , BOOK_ID
+               , REQUESTED_STATUS
+               , STARTED_AT
+               , ENDED_AT
+               , REQUESTED_USER
+               , REQUESTED_AT
+          FROM BOOK_HISTORY h
+          JOIN BOOK b
+            ON h.BOOK_ID = b.id
+         WHERE BOOK_ID = #{bookId}
+           AND b.CREATED_BY = #{username}
+      ORDER BY REQUESTED_AT ASC
+         LIMIT 5
     </select>
 
     <select id="findBookRequestHistoryById" resultType="bookHistory">
         SELECT /* historyMapper.selectBookRequestHistoryById */
-            h.ID
-        , BOOK_ID
-        , REQUESTED_STATUS
-        , STARTED_AT
-        , ENDED_AT
-        , REQUESTED_USER
-        , REQUESTED_AT
-            FROM BOOK_HISTORY h
-                 JOIN BOOK b
-                      ON h.BOOK_ID = b.id
-            WHERE BOOK_ID = #{id}
-            AND b.CREATED_BY = #{username}
-            AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED', 'RETURN_REQUEST')
-            ORDER BY REQUESTED_AT ASC
-            LIMIT 5
+               h.ID
+               , BOOK_ID
+               , REQUESTED_STATUS
+               , STARTED_AT
+               , ENDED_AT
+               , REQUESTED_USER
+               , REQUESTED_AT
+          FROM BOOK_HISTORY h
+          JOIN BOOK b
+            ON h.BOOK_ID = b.id
+         WHERE BOOK_ID = #{id}
+           AND b.CREATED_BY = #{username}
+           AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_RESERVED', 'RETURN_REQUEST')
+      ORDER BY REQUESTED_AT ASC
+         LIMIT 5
     </select>
 
     <resultMap id="historyDetails" type="book">
@@ -91,22 +92,22 @@
 
     <select id="findHistoryDetailsByBookId" resultMap="historyDetails">
         SELECT /* historyMapper.selectHistoryByBookId */
-            BOOK_ID
-        , b.TITLE
-        , b.AUTHOR
-        , b.CREATED_BY
-        , h.ID
-        , REQUESTED_STATUS
-        , STARTED_AT
-        , ENDED_AT
-        , REQUESTED_USER
-        , REQUESTED_AT
-            FROM BOOK_HISTORY h
-                 JOIN BOOK b
-                      ON h.BOOK_ID = b.id
-            WHERE BOOK_ID = #{bookId}
-            ORDER BY REQUESTED_AT ASC
-            LIMIT 10
+               BOOK_ID
+               , b.TITLE
+               , b.AUTHOR
+               , b.CREATED_BY
+               , h.ID
+               , REQUESTED_STATUS
+               , STARTED_AT
+               , ENDED_AT
+               , REQUESTED_USER
+               , REQUESTED_AT
+          FROM BOOK_HISTORY h
+          JOIN BOOK b
+            ON h.BOOK_ID = b.id
+         WHERE BOOK_ID = #{bookId}
+      ORDER BY REQUESTED_AT ASC
+         LIMIT 10
     </select>
 
 </mapper>

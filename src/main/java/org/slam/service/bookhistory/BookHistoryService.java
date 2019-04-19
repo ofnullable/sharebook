@@ -2,6 +2,7 @@ package org.slam.service.bookhistory;
 
 import lombok.AllArgsConstructor;
 import org.slam.dto.book.Book;
+import org.slam.dto.book.BookHistory;
 import org.slam.dto.book.BookStatus;
 import org.slam.dto.book.OwnerAnswer;
 import org.slam.mapper.book.BookUpdateMapper;
@@ -37,52 +38,81 @@ public class BookHistoryService {
         );
     }
 
-    // loan / reservation / cancel-reservation / cancel / return
+    // WAIT_FOR_RESPONSE, ON_RESERVED, RETURN_REQUEST, CANCELED
     public int updateToMatchRequest(Book book) {
-
-        return 0;
+        System.out.println(book);
+        if (BookStatus.CANCELED == book.getStatus()) {
+            return cancelRequest(book);
+        } else {
+            return requestProcessing(book);
+        }
     }
 
     public int updateToMatchResponse(Book book) {
-        // 대여요청 수락 || 반납요청 거절의 경우 ON_LOAN 으로 상태 업데이트
-        var requestedStatus = book.getHistories().get(0).getRequestedStatus();
         if (
-                (BookStatus.WAIT_FOR_RESPONSE == requestedStatus && OwnerAnswer.ACCEPT == book.getOwnerAnswer())
-                        || (BookStatus.RETURN_REQUEST == requestedStatus && OwnerAnswer.REJECT == book.getOwnerAnswer())
+                (BookStatus.WAIT_FOR_RESPONSE == book.getStatus() && OwnerAnswer.ACCEPT == book.getOwnerAnswer())
+                        || (BookStatus.RETURN_REQUEST == book.getStatus() && OwnerAnswer.REJECT == book.getOwnerAnswer())
         ) {
-            return updateToOnLoan(book);
+            // 대여요청 수락 || 반납요청 거절의 경우 ON_LOAN 으로 상태 업데이트
+            book.setStatus(BookStatus.ON_LOAN);
+            return isSuccess(
+                    bookUpdateMapper.updateStatus(book),
+                    historyUpdateMapper.updateHistory(buildHistory(book, BookStatus.ON_LOAN))
+            );
         } else {
-            return updateMatchStatus(book);
+            // 대여요청 거절 || 반납요청 수락의 경우
+            // `Book`의 상태는 AVAILABLE 또는 WAIT_FOR_RESPONSE,
+            // 'BookHistory'의 상태는 각각 REJECTED, RETURNED 로 변경
+            return isSuccess(
+                    bookUpdateMapper.conditionalUpdateStatus(book),
+                    historyUpdateMapper.conditionalUpdateHistory(setMatchHistory(book))
+            );
         }
     }
 
-    private int updateToOnLoan(Book book) {
-        return isSuccess(
-                bookUpdateMapper.updateStatus(book),
-                historyUpdateMapper.updateHistory(buildHistory(book, BookStatus.ON_LOAN))
-        );
+    private BookHistory setMatchHistory(Book book) {
+        BookHistory result = null;
+        if (BookStatus.WAIT_FOR_RESPONSE == book.getStatus() && OwnerAnswer.REJECT == book.getOwnerAnswer()) {
+            result = buildHistory(book, BookStatus.REJECTED);
+        } else if (BookStatus.RETURN_REQUEST == book.getStatus() && OwnerAnswer.ACCEPT == book.getOwnerAnswer()) {
+            result = buildHistory(book, BookStatus.RETURNED);
+        }
+        return result;
     }
 
-    private int updateMatchStatus(Book book) {
-        // 대여요청 거절 || 반납요청 수락의 경우 `Book`의 상태는 AVAILABLE, 'BookHistory'의 상태는 각각 REJECTED, RETURNED 로 변경
-        var requestedStatus = book.getHistories().get(0).getRequestedStatus();
-        if (BookStatus.WAIT_FOR_RESPONSE == requestedStatus && OwnerAnswer.REJECT == book.getOwnerAnswer()) {
+    private int cancelRequest(Book book) {
+        if (BookStatus.RETURN_REQUEST == book.getOriginStatus()) {
+            // update book && history to ON_LOAN
             return isSuccess(
-                    bookUpdateMapper.conditionalUpdateStatus(book),
-                    historyUpdateMapper.conditionalUpdateHistory(buildHistory(book, BookStatus.REJECTED))
+                    0,
+                    0
             );
-        } else if (BookStatus.RETURN_REQUEST == requestedStatus && OwnerAnswer.ACCEPT == book.getOwnerAnswer()) {
-            return isSuccess(
-                    bookUpdateMapper.conditionalUpdateStatus(book),
-                    historyUpdateMapper.conditionalUpdateHistory(buildHistory(book, BookStatus.RETURNED))
-            );
-        } else if (BookStatus.CANCELED == requestedStatus) {
-            return isSuccess(
-                    bookUpdateMapper.conditionalUpdateStatus(book),
-                    historyUpdateMapper.conditionalUpdateHistory(buildHistory(book, BookStatus.CANCELED))
-            );
+        } else if (BookStatus.ON_RESERVED == book.getOriginStatus()) {
+            // update history only to CANCELED
+            return 0;
+        } else {
+            // conditional update book && history to AVAILABLE or WAIT_FOR_RESPONSE and CANCELED
+            return isSuccess();
         }
-        return 0;
+    }
+
+    private int requestProcessing(Book book) {
+        int result = 0;
+        switch (book.getStatus()) {
+            case WAIT_FOR_RESPONSE:
+            case RETURN_REQUEST:
+                // update book && bookHistory
+                result = isSuccess(
+                        0,
+                        0
+                );
+                break;
+            case ON_RESERVED:
+                // update history only
+                result = 0;
+                break;
+        }
+        return result;
     }
 
 }

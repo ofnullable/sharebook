@@ -41,13 +41,13 @@ public class BookHistoryRestController {
 
     @PostMapping("/{id}")
     public int saveRequest(Book book) {
-        System.out.println(book);
+        System.out.println("DO POST CONTROLLER!");
         return bookHistoryService.updateToMatchRequest(book);
     }
 
     @PatchMapping("/{id}")
     public int updateRequest(Book book) {
-        System.out.println(book);
+        System.out.println("DO PATCH CONTROLLER!");
         return bookHistoryService.updateToMatchRequest(book);
     }
 

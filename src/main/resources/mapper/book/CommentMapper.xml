@@ -31,7 +31,8 @@
                c2.*
           FROM COMMENTS c1
      LEFT JOIN COMMENTS c2
-            ON c1.ID = c2.PARENT_ID
+            ON c1.BOOK_ID = c2.BOOK_ID
+           AND c1.ID = c2.PARENT_ID
          WHERE c1.BOOK_ID = #{bookId}
            AND c2.ID IS NOT NULL
       ORDER BY c1.PARENT_ID DESC, c2.GROUP_ORDER ASC

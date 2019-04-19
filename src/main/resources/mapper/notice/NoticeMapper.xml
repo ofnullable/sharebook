@@ -10,8 +10,7 @@
           FROM BOOK b
           JOIN BOOK_HISTORY h
             ON b.ID = h.BOOK_ID
-         WHERE
-               (b.CREATED_BY = #{username} AND h.REQUESTED_STATUS = 'WAIT_FOR_RESPONSE')
+         WHERE (b.CREATED_BY = #{username} AND h.REQUESTED_STATUS = 'WAIT_FOR_RESPONSE')
             OR (b.CREATED_BY = #{username} AND h.REQUESTED_STATUS = 'RETURN_REQUEST')
             OR (h.REQUESTED_USER = #{username} AND h.REQUESTED_STATUS = 'REJECTED')
     </select>

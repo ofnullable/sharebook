@@ -94,7 +94,7 @@
                          REQUESTED_USER
                     FROM BOOK_HISTORY
                    WHERE BOOK_ID = #{id}
-                     AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_LOAN')
+                     AND REQUESTED_STATUS IN ('WAIT_FOR_RESPONSE', 'ON_LOAN', 'RETURN_REQUEST')
                    LIMIT 1
                  ) AS RECENT_LOANER
                <if test="auth != null">
