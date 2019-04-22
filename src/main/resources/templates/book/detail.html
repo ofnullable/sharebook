@@ -208,13 +208,13 @@
               type: method,
               data: data,
               success: function(res) {
-                console.log(res);
-                // if (res) {
-                //   window.location.reload();
-                //   alert('Success!');
-                // } else {
-                //   alert('Something went wrong.. try again after few minute');
-                // }
+                if (res) {
+                  console.log(res);
+                  window.location.reload();
+                  alert('Success!');
+                } else {
+                  alert('Something went wrong.. try again after few minute');
+                }
               },
               error: function (xhr, e) {
                 console.error(xhr);

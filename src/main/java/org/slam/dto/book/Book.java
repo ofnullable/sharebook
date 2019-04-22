@@ -24,6 +24,7 @@ public class Book {
     private String            RecentLoaner;
     private Integer           waiters;
     private Boolean           isReserved;
+    private Long              myHistoryId;
     private BookStatus        originStatus;
     private OwnerAnswer       ownerAnswer;
     private List<BookImage>   images;
