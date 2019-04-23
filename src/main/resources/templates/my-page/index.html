@@ -94,7 +94,7 @@
               ownerAnswer: "ACCEPT",
               modifiedBy: [[${session?.auth?.username}]],
               status: $(e.target).data('status'),
-              "histories[0].id": $(e.target).data('history-id')
+              requestedHistoryId: $(e.target).data('history-id')
             },
             success: function (res) {
               res ? getHistoryByBookId($(e.target).data('book-id')) : alert('Something went wrong.. try again');
@@ -109,7 +109,7 @@
               ownerAnswer: "REJECT",
               modifiedBy: [[${session?.auth?.username}]],
               status: $(e.target).data('status'),
-              "histories[0].id": $(e.target).data('history-id')
+              requestedHistoryId: $(e.target).data('history-id')
             },
             success: function (res) {
               res ? getHistoryByBookId($(e.target).data('book-id')) : alert('Something went wrong.. try again');

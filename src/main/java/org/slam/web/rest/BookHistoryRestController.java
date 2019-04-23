@@ -25,31 +25,4 @@ public class BookHistoryRestController {
         return bookHistoryService.updateToMatchRequest(book);
     }
 
-    /*
-    @PostMapping("/loan/{id}/{username}")
-    public int loanRequest(@PathVariable Long id, @PathVariable String username) {
-        return bookHistoryService.loanRequest(id, username);
-    }
-
-    @PostMapping("/reservation/{id}/{username}")
-    public int reservationRequest(@PathVariable Long id, @PathVariable String username) {
-        return historyUpdateService.reservationRequest(id, username);
-    }
-
-    @PostMapping("/cancel-reservation/{id}/{username}")
-    public int cancelReservationRequest(@PathVariable Long id, @PathVariable String username) {
-        return historyUpdateService.cancelReservationRequest(id, username);
-    }
-
-    @PostMapping("/cancel/{id}/{username}")
-    public int cancelRequest(@PathVariable Long id, @PathVariable String username) {
-        return bookHistoryService.cancelLoanRequest(id, username);
-    }
-
-    @PostMapping("/return/{id}/{username}")
-    public int returnRequest(@PathVariable Long id, @PathVariable String username) {
-        return historyUpdateService.returnRequest(id, username);
-    }
-    */
-
 }

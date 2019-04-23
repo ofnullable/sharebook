@@ -57,6 +57,10 @@
       #load-more:hover span::before {
         opacity: 1;
       }
+
+      .col-5 button {
+        width: 100%;
+      }
     </style>
   </head>
   <body>
@@ -141,20 +145,18 @@
                     <button class="btn btn-outline-danger col-md-6 col-12" data-type="RETURN_REQUEST" th:case="${T(org.slam.dto.book.BookStatus).ON_LOAN}">
                       반납하기
                     </button>
-                    <button class="btn btn-outline-danger col-md-6 col-12" data-type="CANCELED" th:case="*"> <!-- ${T(org.slam.dto.book.BookStatus).WAIT_FOR_RESPONSE} -->
-                      신청취소
+                    <button class="btn btn-outline-danger col-md-6 col-12" data-type="CANCELED" th:case="${T(org.slam.dto.book.BookStatus).WAIT_FOR_RESPONSE}"> <!-- * -->
+                      대여신청취소
                     </button>
-                    <!--
                     <button class="btn btn-outline-danger col-md-6 col-12" data-type="RETURN_CANCELED" th:case="T(org.slam.dto.book.BookStatus).RETURN_REQUEST">
                       반납취소
                     </button>
-                    -->
                   </th:block>
                 </th:block>
 
                 <th:block th:if="${book.recentLoaner != session.auth.username}">
-                  <button class="btn btn-outline-danger col-md-6 col-12" data-type="CANCELED" th:if="${book.isReserved}">예약취소</button>
-                  <button class="btn btn-outline-success col-md-6 col-12" data-type="ON_RESERVED" th:if="${!book.isReserved}">예약하기</button>
+                  <button class="btn btn-outline-danger col-md-6 col-12" data-type="CANCELED" th:if="${T(org.slam.dto.book.BookStatus).ON_RESERVED == book.originStatus}">예약취소</button>
+                  <button class="btn btn-outline-success col-md-6 col-12" data-type="ON_RESERVED" th:if="${!(T(org.slam.dto.book.BookStatus).ON_RESERVED == book.originStatus)}">예약하기</button>
                 </th:block>
               </th:block>
             </div>
@@ -201,7 +203,7 @@
 
           $('#btn-div button').click(function(e) {
             var data = setRequestData($(e.target).data('type'));
-            var isNewRequest = data.requestedStatus === 'WAIT_FOR_RESPONSE' || data.requestedStatus === 'ON_RESERVED';
+            var isNewRequest = data.status === 'WAIT_FOR_RESPONSE' || data.status === 'ON_RESERVED';
             var method = isNewRequest ? 'post' : 'patch';
             $.ajax({
               url: '/book/' + [[${book.id}]],
@@ -209,7 +211,6 @@
               data: data,
               success: function(res) {
                 if (res) {
-                  console.log(res);
                   window.location.reload();
                   alert('Success!');
                 } else {
@@ -228,134 +229,10 @@
             return {
               modifiedBy: [[${session.auth.username}]],
               status: type,
-              originStatus: [[${book.status}]]
+              originStatus: [[${book.status}]],
+              requestedHistoryId: [[${book.requestedHistoryId}]] || null
             };
           }
-
-          // $('#loan-btn').click(function (e) {
-          //   if (!confirm('해당 도서를 대여하시겠습니까?')) return;
-          //   $.ajax({
-          //     url: '/book/[[${book.id}]]',
-          //     type: 'post',
-          //     data: {
-          //       modifiedBy: [[${session.auth.username}]],
-          //       status: 'WAIT_FOR_RESPONSE'
-          //     },
-          //     success: function (res) {
-          //       if (res) {
-          //         window.location.reload();
-          //         alert('Success!');
-          //       } else {
-          //         alert('Something went wrong.. try again after few minute');
-          //       }
-          //     },
-          //     error: function (xhr, e) {
-          //       console.error(xhr);
-          //       console.error(e);
-          //       alert('Something went wrong... try again!');
-          //     }
-          //   });
-          // });
-          //
-          // $('#resv-btn').click(function (e) {
-          //   if (!confirm('해당 도서를 예약하시겠습니까?')) return;
-          //   $.ajax({
-          //     url: '/book/[[${book.id}]]',
-          //     type: 'post',
-          //     data: {
-          //       modifiedBy: [[${session.auth.username}]],
-          //       status: 'ON_RESERVED'
-          //     },
-          //     success: function (res) {
-          //       if (res) {
-          //         window.location.reload();
-          //         alert('Success!');
-          //       } else {
-          //         alert('Something went wrong.. try again after few minute');
-          //       }
-          //     },
-          //     error: function (xhr, e) {
-          //       console.error(xhr);
-          //       console.error(e);
-          //       alert('Something went wrong... try again!');
-          //     }
-          //   });
-          // });
-          //
-          // $('#resv-cancel-btn').click(function (e) {
-          //   if (!confirm('해당 도서 예약을 취소하시겠습니까?')) return;
-          //   $.ajax({
-          //     url: '/book/[[${book.id}]]',
-          //     type: 'patch',
-          //     data: {
-          //       modifiedBy: [[${session.auth.username}]],
-          //       status: 'CANCELED'
-          //     },
-          //     success: function (res) {
-          //       if (res) {
-          //         window.location.reload();
-          //         alert('Success!');
-          //       } else {
-          //         alert('Something went wrong.. try again after few minute');
-          //       }
-          //     },
-          //     error: function (xhr, e) {
-          //       console.error(xhr);
-          //       console.error(e);
-          //       alert('Something went wrong... try again!');
-          //     }
-          //   });
-          // });
-          //
-          // $('#cancel-btn').click(function (e) {
-          //   if (!confirm('대여요청을 취소하시겠습니까?')) return;
-          //   $.ajax({
-          //     url: '/book/[[${book.id}]]',
-          //     type: 'patch',
-          //     data: {
-          //       modifiedBy: [[${session.auth.username}]],
-          //       status: 'CANCELED'
-          //     },
-          //     success: function (res) {
-          //       if (res) {
-          //         window.location.reload();
-          //         alert('Success!');
-          //       } else {
-          //         alert('Something went wrong.. try again after few minute');
-          //       }
-          //     },
-          //     error: function (xhr, e) {
-          //       console.error(xhr);
-          //       console.error(e);
-          //       alert('Something went wrong... try again!');
-          //     }
-          //   });
-          // });
-          //
-          // $('#return-btn').click(function (e) {
-          //   if (!confirm('도서를 반납하시겠습니까?')) return;
-          //   $.ajax({
-          //     url: '/book/[[${book.id}]]',
-          //     type: 'patch',
-          //     data: {
-          //       modifiedBy: [[${session.auth.username}]],
-          //       status: 'RETURN_REQUEST'
-          //     },
-          //     success: function (res) {
-          //       if (res) {
-          //         window.location.reload();
-          //         alert('Success!');
-          //       } else {
-          //         alert('Something went wrong.. try again after few minute');
-          //       }
-          //     },
-          //     error: function (xhr, e) {
-          //       console.error(xhr);
-          //       console.error(e);
-          //       alert('Something went wrong... try again!');
-          //     }
-          //   });
-          // });
 
           $('#see-history').click(function (e) {
             $.getJSON('/history/' + [[${book.id}]], function (res) {
@@ -367,15 +244,27 @@
             var html = '';
             if (data.length) {
               data.forEach(function (d) {
-                if ('WAIT_FOR_RESPONSE' === d.requestedStatus) d.requestedStatus = '대여요청';
-                else if ('ON_RESERVED' === d.requestedStatus) d.requestedStatus = '예약';
-                else if ('ON_LOAN' === d.requestedStatus) d.requestedStatus = '대여중';
+                var status;
+                switch (d.requestedStatus) {
+                  case 'WAIT_FOR_RESPONSE':
+                    status = '대여요청';
+                    break;
+                  case 'ON_RESERVED':
+                    status = '예약';
+                    break;
+                  case 'ON_LOAN':
+                    status = '대여중';
+                    break;
+                  case 'RETURN_REQUEST':
+                    status = '반납요청';
+                    break;
+                }
 
                 html += '<div class="py-2 row"><div class="col-7"><p>REQUEST USER : ';
-                html += d.requestedUser + '</p><p>REQUEST STATUS : ' + d.requestedStatus + '</p></div>';
-                if (d.requestedStatus === '대여요청') {
-                  html += '<div class="col-5"><button id="accept-btn" class="btn btn-success" data-id="' + d.bookId + '">Accept</button>';
-                  html += '<button id="reject-btn" class="btn btn-outline-secondary" data-id="' + d.bookId + '">Reject</button></div>';
+                html += d.requestedUser + '</p><p>REQUEST STATUS : ' + status + '</p></div>';
+                if (status === '대여요청' || status === '반납요청') {
+                  html += '<div class="col-5"><button id="accept-btn" class="btn btn-success" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Accept</button>';
+                  html += '<button id="reject-btn" class="btn btn-outline-secondary" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Reject</button></div>';
                 }
                 html += '</div>';
               });

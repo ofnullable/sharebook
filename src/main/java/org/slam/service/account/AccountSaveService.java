@@ -17,12 +17,13 @@ public class AccountSaveService {
     private final AccountSaveMapper accountSaveMapper;
     private final AccountRoleMapper accountRoleMapper;
 
+    private static final Long DEFAULT_USER_ROLE = 1L;
+
     @Transactional
     public void save(Account account) {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         accountSaveMapper.save(account);
-        accountRoleMapper.save(account.getUsername(), 1L);
-        // TODO: Make enum for default role value
+        accountRoleMapper.save(account.getUsername(), DEFAULT_USER_ROLE);
     }
 
 }

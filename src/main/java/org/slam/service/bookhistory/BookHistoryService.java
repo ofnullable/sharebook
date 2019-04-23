@@ -10,8 +10,7 @@ import org.slam.mapper.history.HistoryUpdateMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.slam.utils.Builders.buildBook;
-import static org.slam.utils.Builders.buildHistory;
+import static org.slam.utils.Builders.*;
 import static org.slam.utils.TransactionUtils.isSuccess;
 
 @Service
@@ -46,19 +45,18 @@ public class BookHistoryService {
     // RETURN_REQUEST, CANCELED
     public int updateToMatchRequest(Book book) {
         System.out.println(book);
-//        if (BookStatus.RETURN_REQUEST == book.getStatus()) {
-//            return updateToReturnRequest(book);
-//        } else {
-//            // conditional update book, update history
-//            return updateToCanceled(book);
-//        }
-        return 0;
+        if (BookStatus.RETURN_REQUEST == book.getStatus()) {
+            return updateToReturnRequest(book);
+        } else {
+            // conditional update book, update history
+            return updateToCanceled(book);
+        }
     }
 
     private int updateToReturnRequest(Book book) {
         return isSuccess(
                 bookUpdateMapper.updateStatus(book),
-                historyUpdateMapper.updateHistory(buildHistory(book))
+                historyUpdateMapper.updateHistory(buildHistoryWithHistoryId(book))
         );
     }
 
@@ -76,17 +74,17 @@ public class BookHistoryService {
     private int updateToOnLoan(Book book) {
         return isSuccess(
                 bookUpdateMapper.updateStatus(buildBook(book, BookStatus.ON_LOAN)),
-                historyUpdateMapper.updateHistory(buildHistory(book, BookStatus.ON_LOAN))
+                historyUpdateMapper.updateHistory(buildHistoryWithHistoryId(book, BookStatus.ON_LOAN))
         );
     }
 
     private int updateHistoryToCanceled(Book book) {
         if (BookStatus.ON_RESERVED == book.getOriginStatus()) {
-            return historyUpdateMapper.updateHistory(buildHistory(book));
+            return historyUpdateMapper.updateHistory(buildHistoryWithHistoryId(book));
         } else { // book.getOriginStatus == BookStatus.WAIT_FOR_RESPONSE
             return isSuccess(
                     bookUpdateMapper.conditionalUpdateStatus(book),
-                    historyUpdateMapper.conditionalUpdateHistory(buildHistory(book, BookStatus.CANCELED))
+                    historyUpdateMapper.conditionalUpdateHistory(buildHistoryWithHistoryId(book, BookStatus.CANCELED))
             );
         }
     }
@@ -118,34 +116,8 @@ public class BookHistoryService {
                 BookStatus.REJECTED : BookStatus.RETURNED;
         return isSuccess(
                 bookUpdateMapper.conditionalUpdateStatus(book),
-                historyUpdateMapper.conditionalUpdateHistory(buildHistory(book, status))
+                historyUpdateMapper.conditionalUpdateHistory(buildHistoryWithHistoryId(book, status))
         );
     }
-
-    /*
-    private BookHistory setMatchHistory(Book book) {
-        BookHistory result = null;
-        if (BookStatus.WAIT_FOR_RESPONSE == book.getStatus() && OwnerAnswer.REJECT == book.getOwnerAnswer()) {
-            result = buildHistoryWithHistoryId(book, BookStatus.REJECTED);
-        } else if (BookStatus.RETURN_REQUEST == book.getStatus() && OwnerAnswer.ACCEPT == book.getOwnerAnswer()) {
-            result = buildHistoryWithHistoryId(book, BookStatus.RETURNED);
-        }
-        return result;
-    }
-
-    public int loanRequest(Long id, String modifier) {
-        return isSuccess(
-                bookUpdateMapper.updateStatus(buildBook(id, BookStatus.WAIT_FOR_RESPONSE, modifier)),
-                historySaveMapper.insertHistory(buildHistory(id, BookStatus.WAIT_FOR_RESPONSE, modifier))
-        );
-    }
-
-    public int cancelLoanRequest(Long id, String modifier) {
-        return isSuccess(
-                bookUpdateMapper.conditionalUpdateStatus(buildBook(id, null, modifier)),
-                historyUpdateMapper.conditionalUpdateHistory(buildHistory(id, null, modifier))
-        );
-    }
-    */
 
 }
