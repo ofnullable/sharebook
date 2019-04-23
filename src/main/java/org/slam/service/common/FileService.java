@@ -69,6 +69,7 @@ public class FileService {
         });
     }
 
+    /*
     private boolean isDirExist(String filePath) { // if dir not exist, exception occurred
         try ( var session = sf.getSession() ) {
             boolean isExists = session.exists(filePath);
@@ -80,5 +81,6 @@ public class FileService {
             return false;
         }
     }
+    */
 
 }

@@ -1,157 +1,168 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<th:block th:replace="include/head :: head" />
-		<title>Register :: Public-Share</title>
-		<style type="text/css">
-			#description {
-				min-height: 150px;
-				resize: vertical;
-			}
-			.image-area.before {
-				display: flex;
-				width: 100%;
-				min-height: 100px;
-				justify-content: center;
-				align-items: center;
-				border-radius: 5px;
-				border: 2px dashed #0069D9;
-				color: #0069D9;
-				padding: 10px 20px;
-				margin-bottom: 1rem;
-			}
-			.loading-box {
-				opacity: .7;
-				background-color: #FFFFFF;
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				text-align: center;
-			}
-			.loading-box i {
-				position: relative;
-				color: #333333;
-				top: 40%;
-			}
-			.images {
-				width: 100%;
-				margin-bottom: 3rem;
-			}
-			.main {
-				border: 3px solid #28A745;
-				border-radius: 5px;
-			}
-		</style>
-	</head>
-	<body>
-		<section th:replace="include/header :: header"></section>
+  <head>
+    <th:block th:replace="include/head :: head"/>
+    <title>Register :: Public-Share</title>
+    <style type="text/css">
+      #description {
+        min-height: 150px;
+        resize: vertical;
+      }
 
-		<div class="album py-5">
-			<div class="container">
-				<div class="row">
-					
-					<div class="image-area before">
-						<p class="m-0">Upload image</p>
-					</div>
-					
-					<form class="new-book-form w-100 clearfix" action="/my-page/item/" method="post">
-						<input type="hidden" name="createdBy" th:value="${session.auth.username}">
-						<input type="hidden" name="mainImage" value="">
-						<label for="title" class="sr-only">Title</label>
-						<input type="text" name="title" id="title" class="form-control mb-1" placeholder="enter title" required="required" autofocus="autofocus">
-						
-						<label for="author" class="sr-only">Author</label>
-						<input type="text" name="author" id="author" class="form-control mb-1" placeholder="enter author" required="required">
-						
-						<label for="description" class="sr-only">Description</label>
-						<textarea type="email" name="description" id="description" class="form-control mb-1" placeholder="Enter simple description or introduction for this book" required="required"></textarea>
-						
-						<button id="add-image" type="button" class="btn btn-success">Add image</button>
-						<button type="submit" class="btn btn-primary float-right">Register!</button>
-					</form>
-					
-					<form id="file-form" class="d-none">
-						<input name="bookImages" type="file" hidden="hidden" multiple>
-					</form>
-				</div>
-			</div>
-		</div>
-		<div class="loading-box fa-3x" style="display: none;">
-			<i class="fas fa-spinner fa-spin"></i>
-		</div>
-		<footer th:replace="include/footer :: footer"></footer>
-		<th:block th:replace="include/scripts :: scripts"/>
-		<script type="text/javascript">
-			$('#add-image, .image-area').click(function() {
-				$('input[name="bookImages"]').trigger('click');
-			});
-			
-			$('input[name="bookImages"]').change(function() {
-				var fileLength = $(this)[0].files.length;
-				var images = $('.book-images');
-				if ( fileLength > 4 || fileLength + images.length > 4 ) {
-					alert('이미지는 최대 4개까지 선택 가능합니다.');
-					$(this).val('');
-					return false;
-				}
-				var $loadingBox = $('.loading-box');
-				$loadingBox.show();
-				var files = $(this)[0].files;
-				var data = new FormData();
-				Array.from(files).forEach(function(v) {
-					data.append('bookImages', v);
-				});
-				$.ajax({
-					url: "/files/images",
-					type: "post",
-					data: data,
-					processData: false,
-					contentType: false,
-					success: function(res) {
-						if ( res ) {
-							$(this).val('');
-							afterSendFile(res);
-							$loadingBox.hide();
-						}
-					}
-				})
-			});
+      .image-area.before {
+        display: flex;
+        width: 100%;
+        min-height: 100px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        border: 2px dashed #0069D9;
+        color: #0069D9;
+        padding: 10px 20px;
+        margin-bottom: 1rem;
+      }
 
-			$('.row').on('click', 'img', function(e) {
-				$('.row img.main').removeClass('main');
-				$(e.target).addClass('main');
-				$('input[name="mainImage"]').val($(e.target).data('url'));
-			});
+      .loading-box {
+        opacity: .7;
+        background-color: #FFFFFF;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+      }
 
-			function afterSendFile( res ) {
-				$('.image-area').remove();
-				var $bookForm = $('.new-book-form');
-				var imgTags = '', inputs = '';
-				res.forEach(function(item, index) {
-					console.log('item : ', item, ' index : ', index);
-					imgTags += makeImageTags(item);
-					inputs += makeInputTags(item, index);
-				});
-				// Append image tag
-				makeOrSelectImageWrapper($bookForm).append(imgTags);
-				// Append image path
-				$bookForm.append(inputs);
-				if ($('.book-images').length >= 4) {
-					$('#add-image').hide();
-				}
-			}
-			function makeOrSelectImageWrapper($bookForm) {
-				var $images = $('.images');
-				return $images.length ? $images : $bookForm.before('<div class="images"></div>').prev();
-			}
-			function makeImageTags(url) {
-				return '<img class="book-images" src="http://img.worksout.co.kr/' + url + '" style="max-width: 150px;margin-left: 2%;" data-url="' + url + '">';
-			}
-			function makeInputTags(item, index) {
-				return '<input type="hidden" name="images[' + index + '].imageUrl" value="' + item + '">';
-			}
-		</script>
-	</body>
+      .loading-box i {
+        position: relative;
+        color: #333333;
+        top: 40%;
+      }
+
+      .images {
+        width: 100%;
+        margin-bottom: 3rem;
+      }
+
+      .main {
+        border: 3px solid #28A745;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <section th:replace="include/header :: header"></section>
+
+    <div class="album py-5">
+      <div class="container">
+        <div class="row">
+
+          <div class="image-area before">
+            <p class="m-0">Upload image</p>
+          </div>
+
+          <form class="new-book-form w-100 clearfix" action="/my-page/item/" method="post">
+            <input type="hidden" name="createdBy" th:value="${session.auth.username}">
+            <input type="hidden" name="mainImage" value="">
+            <label for="title" class="sr-only">Title</label>
+            <input type="text" name="title" id="title" class="form-control mb-1" placeholder="enter title"
+                   required="required" autofocus="autofocus">
+
+            <label for="author" class="sr-only">Author</label>
+            <input type="text" name="author" id="author" class="form-control mb-1" placeholder="enter author"
+                   required="required">
+
+            <label for="description" class="sr-only">Description</label>
+            <textarea type="email" name="description" id="description" class="form-control mb-1"
+                      placeholder="Enter simple description or introduction for this book" required="required"></textarea>
+
+            <button id="add-image" type="button" class="btn btn-success">Add image</button>
+            <button type="submit" class="btn btn-primary float-right">Register!</button>
+          </form>
+
+          <form id="file-form" class="d-none">
+            <input name="bookImages" type="file" hidden="hidden" multiple>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="loading-box fa-3x" style="display: none;">
+      <i class="fas fa-spinner fa-spin"></i>
+    </div>
+    <footer th:replace="include/footer :: footer"></footer>
+    <th:block th:replace="include/scripts :: scripts"/>
+    <script type="text/javascript">
+      $('#add-image, .image-area').click(function () {
+        $('input[name="bookImages"]').trigger('click');
+      });
+
+      $('input[name="bookImages"]').change(function () {
+        var fileLength = $(this)[0].files.length;
+        var images = $('.book-images');
+        if (fileLength > 4 || fileLength + images.length > 4) {
+          alert('이미지는 최대 4개까지 선택 가능합니다.');
+          $(this).val('');
+          return false;
+        }
+        var $loadingBox = $('.loading-box');
+        $loadingBox.show();
+        var files = $(this)[0].files;
+        var data = new FormData();
+        Array.from(files).forEach(function (v) {
+          data.append('bookImages', v);
+        });
+        $.ajax({
+          url: "/files/images",
+          type: "post",
+          data: data,
+          processData: false,
+          contentType: false,
+          success: function (res) {
+            if (res) {
+              $(this).val('');
+              afterSendFile(res);
+              $loadingBox.hide();
+            }
+          }
+        })
+      });
+
+      $('.row').on('click', 'img', function (e) {
+        $('.row img.main').removeClass('main');
+        $(e.target).addClass('main');
+        $('input[name="mainImage"]').val($(e.target).data('url'));
+      });
+
+      function afterSendFile(res) {
+        $('.image-area').remove();
+        var $bookForm = $('.new-book-form');
+        var imgTags = '', inputs = '';
+        res.forEach(function (item, index) {
+          console.log('item : ', item, ' index : ', index);
+          imgTags += makeImageTags(item);
+          inputs += makeInputTags(item, index);
+        });
+        // Append image tag
+        makeOrSelectImageWrapper($bookForm).append(imgTags);
+        // Append image path
+        $bookForm.append(inputs);
+        if ($('.book-images').length >= 4) {
+          $('#add-image').hide();
+        }
+      }
+
+      function makeOrSelectImageWrapper($bookForm) {
+        var $images = $('.images');
+        return $images.length ? $images : $bookForm.before('<div class="images"></div>').prev();
+      }
+
+      function makeImageTags(url) {
+        return '<img class="book-images" src="http://img.worksout.co.kr/' + url + '" style="max-width: 150px;margin-left: 2%;" data-url="' + url + '">';
+      }
+
+      function makeInputTags(item, index) {
+        return '<input type="hidden" name="images[' + index + '].imageUrl" value="' + item + '">';
+      }
+    </script>
+  </body>
 </html>

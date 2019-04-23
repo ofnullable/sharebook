@@ -6,25 +6,25 @@
 <mapper namespace="org.slam.mapper.book.BookSaveMapper">
 
     <insert id="save">
-		INSERT INTO BOOK /* bookSaveMapper.save */
-	                (
-		            TITLE
-		            , AUTHOR
-		            , DESCRIPTION
-		            , MAIN_IMAGE
-		            , CREATED_BY
-		            , CREATED_AT
-		            )
-		     VALUES
-		            (
-		            #{title}
-		            , #{author}
-		            , #{description}
-		            , #{mainImage}
-		            , #{createdBy}
-		            , NOW()
-		            )
-	</insert>
+        INSERT INTO BOOK /* bookSaveMapper.save */
+                    (
+                    TITLE
+                    , AUTHOR
+                    , DESCRIPTION
+                    , MAIN_IMAGE
+                    , CREATED_BY
+                    , CREATED_AT
+                    )
+             VALUES
+                    (
+                    #{title}
+                    , #{author}
+                    , #{description}
+                    , #{mainImage}
+                    , #{createdBy}
+                    , NOW()
+                    )
+    </insert>
 
     <insert id="saveAll">
         INSERT INTO BOOK /* bookSaveMapper.saveAll */

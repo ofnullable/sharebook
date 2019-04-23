@@ -1,46 +1,50 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<th:block th:replace="include/head :: head" />
-		<title>Sign in :: Public-Share</title>
-		<style type="text/css">
-			.row {
-				width: 100%;
-				height: 100%;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-			.form-user-info {
-				width: 100%;
-				max-width: 330px;
-				padding: 15px;
-				margin: 0 auto;
-			}
-		</style>
-	</head>
-	<body style="height: calc(100vh - 60px);max-height: calc(100vh - 60px);">
-		<div class="row">
-			<form class="form-user-info text-center" action="/sign-in" method="post">
-				<a href="/"><img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"></a>
-				<h1 class="h3 mb-3 font-weight-normal"> sign in </h1>
-				<label for="username" class="sr-only">Email address</label>
-				<input type="text" name="username" id="username" class="form-control mb-1" placeholder="your_id" required="required" autofocus="autofocus">
-				<label for="password" class="sr-only">Password</label>
-				<input type="password" name="password" id="password" class="form-control mb-1" placeholder="password" required="required">
-				
-				<div class="custom-control custom-checkbox mb-3">
-					<input type="checkbox" class="custom-control-input" id="remember-me" name="remember-me">
-					<label class="custom-control-label" for="remember-me"> Remember me </label>
-				</div>
-				<p th:if="${AUTHENTICATION_EXCEPTION}" style="color: red;">Check your ID or Password again</p>
-                <div class="buttons">
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                    <a href="/sign-up" class="btn btn-lg btn-link btn-block">Sign up</a>
-                </div>
-			</form>
-		</div>
-		<footer th:replace="include/footer :: footer"></footer>
-		<th:block th:replace="include/scripts :: scripts"/>
-	</body>
+  <head>
+    <th:block th:replace="include/head :: head"/>
+    <title>Sign in :: Public-Share</title>
+    <style type="text/css">
+      .row {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .form-user-info {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body style="height: calc(100vh - 60px);max-height: calc(100vh - 60px);">
+    <div class="row">
+      <form class="form-user-info text-center" action="/sign-in" method="post">
+        <a href="/"><img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt=""
+                         width="72" height="72"></a>
+        <h1 class="h3 mb-3 font-weight-normal"> sign in </h1>
+        <label for="username" class="sr-only">Email address</label>
+        <input type="text" name="username" id="username" class="form-control mb-1" placeholder="your_id" required="required"
+               autofocus="autofocus">
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" name="password" id="password" class="form-control mb-1" placeholder="password"
+               required="required">
+
+        <div class="custom-control custom-checkbox mb-3">
+          <input type="checkbox" class="custom-control-input" id="remember-me" name="remember-me">
+          <label class="custom-control-label" for="remember-me"> Remember me </label>
+        </div>
+        <p th:if="${AUTHENTICATION_EXCEPTION}" style="color: red;">Check your ID or Password again</p>
+        <div class="buttons">
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+          <a href="/sign-up" class="btn btn-lg btn-link btn-block">Sign up</a>
+        </div>
+      </form>
+    </div>
+    <footer th:replace="include/footer :: footer"></footer>
+    <th:block th:replace="include/scripts :: scripts"/>
+  </body>
 </html>

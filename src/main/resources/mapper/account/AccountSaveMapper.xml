@@ -6,19 +6,19 @@
 <mapper namespace="org.slam.mapper.account.AccountSaveMapper">
 
     <insert id="save">
-		INSERT INTO ACCOUNT /* accountSaveMapper.save */
-		            (
-		            USERNAME
-		            , PASSWORD
-		            , EMAIL
-		            , NAME
-		            )
-		     VALUES (
-		            #{username}
-		            , #{password}
-		            , #{email}
-		            , #{name}
-		            )
-	</insert>
+        INSERT INTO ACCOUNT /* accountSaveMapper.save */
+                    (
+                    USERNAME
+                    , PASSWORD
+                    , EMAIL
+                    , NAME
+                    )
+             VALUES (
+                    #{username}
+                    , #{password}
+                    , #{email}
+                    , #{name}
+                    )
+    </insert>
 
 </mapper>

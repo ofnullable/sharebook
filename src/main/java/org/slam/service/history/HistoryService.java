@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @AllArgsConstructor
-public class HistorySelectService {
+public class HistoryService {
 
     private final HistorySelectMapper historySelectMapper;
 
