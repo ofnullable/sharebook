@@ -85,13 +85,16 @@
           getHistoryByBookId(id);
         });
 
-        var $historyModal = $('#history-modal');
-        $historyModal.on('click', '#accept-btn', function (e) {
+        $('#history-modal').on('click', '.btn', function(e) {
+          var answer;
+          if ($(e.target).hasClass('accept-btn')) answer = 'ACCEPT';
+          else if ($(e.target).hasClass('reject-btn')) answer = 'REJECT';
+          else return;
           $.ajax({
             url: '/my-item/' + $(e.target).data('book-id') + '/history',
             type: 'patch',
             data: {
-              ownerAnswer: "ACCEPT",
+              ownerAnswer: answer,
               modifiedBy: [[${session?.auth?.username}]],
               status: $(e.target).data('status'),
               requestedHistoryId: $(e.target).data('history-id')
@@ -101,22 +104,6 @@
             }
           });
         });
-        $historyModal.on('click', '#reject-btn', function (e) {
-          $.ajax({
-            url: '/my-item/' + $(e.target).data('book-id') + '/history',
-            type: 'patch',
-            data: {
-              ownerAnswer: "REJECT",
-              modifiedBy: [[${session?.auth?.username}]],
-              status: $(e.target).data('status'),
-              requestedHistoryId: $(e.target).data('history-id')
-            },
-            success: function (res) {
-              res ? getHistoryByBookId($(e.target).data('book-id')) : alert('Something went wrong.. try again');
-            }
-          });
-        });
-
         $('#paginator').on('click', '.page-link[data-page]', function (e) {
           if ($('#my-books.active').length) {
             $('.row.content').html(makeHtmlForMyItems(itemList[$(e.target).data('page') - 1]));
@@ -222,8 +209,8 @@
               html += '<div class="py-2 row"><div class="col-7"><p>REQUEST USER : ';
               html += d.requestedUser + '</p><p>REQUEST STATUS : ' + status + '</p></div>';
               if (status === '대여요청' || status === '반납요청') {
-                html += '<div class="col-5"><button id="accept-btn" class="btn btn-success" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Accept</button>';
-                html += '<button id="reject-btn" class="btn btn-outline-secondary" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Reject</button></div>';
+                html += '<div class="col-5"><button class="btn btn-success accept-btn" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Accept</button>';
+                html += '<button class="btn btn-outline-secondary reject-btn" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Reject</button></div>';
               }
               html += '</div>';
             });

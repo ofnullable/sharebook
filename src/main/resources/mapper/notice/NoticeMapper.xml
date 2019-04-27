@@ -12,7 +12,25 @@
             ON b.ID = h.BOOK_ID
          WHERE (b.CREATED_BY = #{username} AND h.REQUESTED_STATUS = 'WAIT_FOR_RESPONSE')
             OR (b.CREATED_BY = #{username} AND h.REQUESTED_STATUS = 'RETURN_REQUEST')
-            OR (h.REQUESTED_USER = #{username} AND h.REQUESTED_STATUS = 'REJECTED')
+            OR (h.REQUESTED_USER = #{username} AND h.REQUESTED_STATUS = 'REJECTED' AND h.IS_CHECKED = false)
+    </select>
+
+    <select id="findByUsername" resultType="bookHistory">
+        SELECT /* historyMapper.selectHistoryByBookId */
+               h.ID
+               , BOOK_ID
+               , REQUESTED_STATUS
+               , STARTED_AT
+               , ENDED_AT
+               , REQUESTED_USER
+               , REQUESTED_AT
+          FROM BOOK_HISTORY h
+          JOIN BOOK b
+            ON h.BOOK_ID = b.id
+         WHERE (b.CREATED_BY = #{username} AND h.REQUESTED_STATUS = 'WAIT_FOR_RESPONSE')
+            OR (b.CREATED_BY = #{username} AND h.REQUESTED_STATUS = 'RETURN_REQUEST')
+            OR (h.REQUESTED_USER = #{username} AND h.REQUESTED_STATUS = 'REJECTED' AND h.IS_CHECKED = false)
+      ORDER BY REQUESTED_AT DESC
     </select>
 
 </mapper>
