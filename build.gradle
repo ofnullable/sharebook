@@ -7,6 +7,8 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
@@ -14,6 +16,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'docker'
 
 group = 'org.slam'
 version = '0.0.1-SNAPSHOT'
@@ -35,9 +38,22 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-log4j2')
     implementation('org.springframework.integration:spring-integration-ftp')
+    implementation('org.projectlombok:lombok')
+    annotationProcessor('org.projectlombok:lombok')
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
     runtimeOnly('mysql:mysql-connector-java')
-    compileOnly('org.projectlombok:lombok')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.springframework.security:spring-security-test')
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+    push = true
+    applicationName = bootJar.baseName
+    dockerfile = file('Dockerfile')
+    doFirst {
+        copy {
+            from jar
+            into stageDir
+        }
+    }
 }

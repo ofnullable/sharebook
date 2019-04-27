@@ -20,6 +20,75 @@
           </div>
         </div>
       </div>
+      <script type="text/javascript" th:inline="javascript">
+        $(function() {
+          var $alarmModal = $('#alarm-modal');
+          $('#alarm-all').click(function() {
+            $.getJSON('/notice/' + [[${session.auth.name}]], function(res) {
+              if (res.length) $alarmModal.find('.modal-body').html(makeAlarmHtml(res));
+            });
+            $alarmModal.modal();
+          });
+          function makeAlarmHtml(res) {
+            var html = '';
+            res.forEach(function(r) {
+              var status;
+              switch (r.requestedStatus) {
+                case 'WAIT_FOR_RESPONSE':
+                  status = '대여요청';
+                  break;
+                case 'ON_RESERVED':
+                  status = '예약';
+                  break;
+                case 'RETURN_REQUEST':
+                  status = '반납요청';
+                  break;
+                case 'REJECTED':
+                  status = '거절';
+                  break;
+              }
+              html += '<div class="py-2 row"><div class="col-7"><p>REQUEST USER : ';
+              html += r.requestedUser + '</p><p>REQUEST STATUS : ' + status + '</p></div>';
+              if (status === '대여요청' || status === '반납요청') {
+                html += '<div class="col-5"><button class="btn btn-success accept-btn" data-book-id="' + r.bookId + '" data-history-id="' + r.id + '" data-status="' + r.requestedStatus + '">Accept</button>';
+                html += '<button class="btn btn-outline-secondary reject-btn" data-book-id="' + r.bookId + '" data-history-id="' + r.id + '" data-status="' + r.requestedStatus + '">Reject</button></div>';
+              } else if (status === '거절') {
+                html += '<div class="col-5"><button class="btn btn-success btn-block check-btn" data-book-id="' + r.bookId + '" data-history-id="' + r.id + '">확인</button></div>';
+              }
+              html += '</div>';
+            });
+            return html;
+          }
+          $alarmModal.on('click', '.check-btn', function(e) {
+            $.ajax({
+              url: '/notice/' + $(e.target).data('history-id'),
+              type: 'patch',
+              success: function(res) {
+                res ? window.location.reload() : alert('Something went wrong.. try again');
+              }
+            });
+          });
+          $alarmModal.on('click', '.btn:not(.check-btn)', function(e) {
+            var answer;
+            if ($(e.target).hasClass('accept-btn')) answer = 'ACCEPT';
+            else if ($(e.target).hasClass('reject-btn')) answer = 'REJECT';
+            else return;
+            $.ajax({
+              url: '/my-item/' + $(e.target).data('book-id') + '/history',
+              type: 'patch',
+              data: {
+                ownerAnswer: answer,
+                modifiedBy: [[${session?.auth?.username}]],
+                status: $(e.target).data('status'),
+                requestedHistoryId: $(e.target).data('history-id')
+              },
+              success: function (res) {
+                res ? window.location.reload() : alert('Something went wrong.. try again');
+              }
+            });
+          });
+        });
+      </script>
     </div>
     <div> <!-- class="container" -->
       <h1 class="jumbotron-heading"><a href="/">Public Share</a></h1>
@@ -29,8 +98,7 @@
           <a href="/sign-out" class="btn text-danger float-right">Sign-out</a>
         </div>
         <div class="alarm clearfix">
-          <button id="alarm-all" type="button" class="btn btn-toolbar float-right" data-toggle="modal"
-                  data-target="#alarm-modal">
+          <button id="alarm-all" type="button" class="btn btn-toolbar float-right">
             Alarm
             <span class="badge badge-pill badge-danger ml-1" style="line-height: unset;" th:text="${notices}">0</span>
           </button>

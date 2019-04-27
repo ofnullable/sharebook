@@ -200,7 +200,6 @@
     <th:block th:if="${session?.auth != null}">
       <script type="text/javascript" th:inline="javascript">
         $(function () {
-
           $('#btn-div button').click(function(e) {
             var data = setRequestData($(e.target).data('type'));
             var isNewRequest = data.status === 'WAIT_FOR_RESPONSE' || data.status === 'ON_RESERVED';
@@ -258,13 +257,16 @@
                   case 'RETURN_REQUEST':
                     status = '반납요청';
                     break;
+                  case 'CANCELED':
+                    status = '취소';
+                    break;
                 }
 
                 html += '<div class="py-2 row"><div class="col-7"><p>REQUEST USER : ';
                 html += d.requestedUser + '</p><p>REQUEST STATUS : ' + status + '</p></div>';
                 if (status === '대여요청' || status === '반납요청') {
-                  html += '<div class="col-5"><button id="accept-btn" class="btn btn-success" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Accept</button>';
-                  html += '<button id="reject-btn" class="btn btn-outline-secondary" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Reject</button></div>';
+                  html += '<div class="col-5"><button class="btn btn-success accept-btn" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Accept</button>';
+                  html += '<button class="btn btn-outline-secondary reject-btn" data-book-id="' + d.bookId + '" data-history-id="' + d.id + '" data-status="' + d.requestedStatus + '">Reject</button></div>';
                 }
                 html += '</div>';
               });
