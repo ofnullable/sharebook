@@ -1,6 +1,5 @@
-FROM adoptopenjdk/openjdk11:latest
+FROM openjdk:11-jre-slim
 
-LABEL maintainer="ofnullable@gmail.com"
 MAINTAINER joonak "ofnullable@gmail.com"
 
 VOLUME /tmp
