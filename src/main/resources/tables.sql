@@ -13,26 +13,26 @@ CREATE TABLE `role` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UK_ROLE_NAME` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  UNIQUE KEY `uk_role_name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `account_role` (
   `username` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role_id` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`username`,`role_id`),
-  KEY `fk_account_roles_idx` (`username`),
-  KEY `fk_role_roles_idx` (`role_id`),
+  KEY `fk_account_roles` (`username`) /*!80000 INVISIBLE */,
+  KEY `fk_role_roles` (`role_id`) /*!80000 INVISIBLE */,
   CONSTRAINT `fk_account_roles` FOREIGN KEY (`username`) REFERENCES `account` (`username`),
   CONSTRAINT `fk_role_roles` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `book` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `author` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `main_image` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'AVAILABLE' COMMENT 'AVAILABLE\nWAIT_FOR_RESPONSE\nON_LOAN\nON_RESERVED\nLOAN_OVERDUE\nCANCELED\nREJECTED\nRETURN_REQUEST\nRETURNED',
+  `title` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `author` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `main_image` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'AVAILABLE' COMMENT 'AVAILABLE\nWAIT_FOR_RESPONSE\nON_RESERVED\nBE_CHECKED_OUT\nLOAN_OVERDUE\nCANCELED',
   `modified_by` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `modified_at` timestamp NULL DEFAULT NULL,
   `created_by` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -55,11 +55,14 @@ CREATE TABLE `book_image` (
 CREATE TABLE `book_history` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `book_id` bigint(20) unsigned NOT NULL,
-  `requested_status` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `requested_status` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `started_at` timestamp NULL DEFAULT NULL,
   `ended_at` timestamp NULL DEFAULT NULL,
-  `requested_user` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `modified_by` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `modified_at` timestamp NULL DEFAULT NULL,
+  `requested_user` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `requested_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_checked` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `fk_book_history_idx` (`book_id`),
   KEY `fk_account_book_history_idx` (`requested_user`),
@@ -67,11 +70,12 @@ CREATE TABLE `book_history` (
   CONSTRAINT `fk_book_book_history` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `comment` (
+CREATE TABLE `comments` (
   `id` bigint(20) unsigned NOT NULL,
   `book_id` bigint(20) unsigned NOT NULL,
   `parent_id` bigint(20) unsigned DEFAULT NULL,
   `depth` int(11) unsigned NOT NULL DEFAULT '0',
+  `group_order` int(11) DEFAULT '0',
   `comment` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_by` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
