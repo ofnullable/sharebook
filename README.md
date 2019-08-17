@@ -12,6 +12,6 @@ BITCAMP에서 진행했던 프로젝트의 REMAKE ver.
 [origin-repository](https://github.com/thdnthdn2/publicshare)  
 [forked-repository](https://github.com/jooonak/publicshare)  
 
-TODO: 
+### TODO: 
   1. Mybatis -> JPA 적용해보기
   2. Template engine 걷어내고 rest api형태로 만들기
