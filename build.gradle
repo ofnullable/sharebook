@@ -1,44 +1,85 @@
-buildscript {
-    ext {
-        springBootVersion = '2.1.1.RELEASE'
-    }
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-
-group = 'org.slam'
+group = 'io.joonak'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 11
+sourceCompatibility = '11'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    implementation.exclude module: 'spring-boot-starter-logging'
+    testImplementation.exclude module: 'junit'
+}
 
 repositories {
     mavenCentral()
 }
 
+def querydslDestDir = "build/generated/sources/apt/main"
+
+querydsl {
+    jpa = true
+    library = 'com.querydsl:querydsl-apt'
+    querydslSourcesDir = querydslDestDir
+}
+
 configurations {
-    compile.exclude module: 'spring-boot-starter-logging'
+    querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', querydslDestDir]
+        }
+    }
+    querydsl {
+        resources {
+            srcDirs = ['build/generated/sources/apt/resources']
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
 }
 
 dependencies {
-    implementation('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
-    implementation('org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16')
-    implementation('org.springframework.boot:spring-boot-starter-security')
-    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
-    implementation('org.springframework.boot:spring-boot-starter-web')
-    implementation('org.springframework.boot:spring-boot-starter-log4j2')
-    implementation('org.springframework.integration:spring-integration-ftp')
-    implementation('org.projectlombok:lombok')
-    annotationProcessor('org.projectlombok:lombok')
-    runtimeOnly('org.springframework.boot:spring-boot-devtools')
-    runtimeOnly('mysql:mysql-connector-java')
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation('org.springframework.security:spring-security-test')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.integration:spring-integration-ftp'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.1'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    implementation 'com.querydsl:querydsl-jpa'
+    compileOnly 'com.querydsl:querydsl-apt'
+
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
+    runtimeOnly 'mysql:mysql-connector-java'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
