@@ -1,4 +1,4 @@
-package org.slam.config;
+package org.slam.config.security;
 
 import org.slam.handler.AuthFailureHandler;
 import org.slam.handler.AuthSuccessHandler;
