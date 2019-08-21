@@ -1,10 +1,12 @@
 package org.slam.account.exception;
 
+import lombok.Getter;
 import org.slam.account.domain.Email;
 
-public class EmailDuplicationException extends RuntimeException {
+@Getter
+public class UsernameDuplicationException extends RuntimeException {
     private Email email;
-    public EmailDuplicationException(Email username) {
-        this.email = username;
+    public UsernameDuplicationException(Email email) {
+        this.email = email;
     }
 }

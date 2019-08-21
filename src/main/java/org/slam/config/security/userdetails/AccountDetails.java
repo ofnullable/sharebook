@@ -1,4 +1,4 @@
-package org.slam.dto.account;
+package org.slam.config.security.userdetails;
 
 import org.slam.account.domain.Account;
 import org.slam.account.domain.Role;
@@ -17,7 +17,7 @@ public class AccountDetails extends User {
     private final Account account;
 
     public AccountDetails(Account account) {
-        super(account.getUsername().getAddress(), account.getPassword(), getAuthorities(account.getRoles()));
+        super(account.getEmail().getAddress(), account.getPassword(), getAuthorities(account.getRoles()));
         this.account = account;
     }
 
