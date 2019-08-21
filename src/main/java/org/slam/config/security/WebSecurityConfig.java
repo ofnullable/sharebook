@@ -1,8 +1,8 @@
-package org.slam.config;
+package org.slam.config.security;
 
-import org.slam.handler.AuthFailureHandler;
-import org.slam.handler.AuthSuccessHandler;
-import org.slam.service.account.AccountSelectService;
+import org.slam.account.service.AccountFindService;
+import org.slam.config.security.handler.AuthFailureHandler;
+import org.slam.config.security.handler.AuthSuccessHandler;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +21,10 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final AccountSelectService accountSelectService;
+    private final AccountFindService accountFindService;
 
-    public WebSecurityConfig(AccountSelectService accountSelectService) {
-        this.accountSelectService = accountSelectService;
+    public WebSecurityConfig(AccountFindService accountFindService) {
+        this.accountFindService = accountFindService;
     }
 
     @Bean
@@ -34,13 +34,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(accountSelectService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(accountFindService).passwordEncoder(passwordEncoder());
     }
 
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-                .antMatchers("/css/**", "/js/**", "/img/**");
+                .antMatchers("/css/**", "/js/**", "/img/**")
+                .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/webjars/**");
     }
 
     @Override

@@ -1,5 +1,7 @@
-package org.slam.dto.account;
+package org.slam.config.security.userdetails;
 
+import org.slam.account.domain.Account;
+import org.slam.account.domain.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -15,8 +17,7 @@ public class AccountDetails extends User {
     private final Account account;
 
     public AccountDetails(Account account) {
-        super(account.getUsername(), account.getPassword(), getAuthorities(account.getRoles()));
-        account.setPassword("[PROTECTED]");
+        super(account.getEmail().getAddress(), account.getPassword(), getAuthorities(account.getRoles()));
         this.account = account;
     }
 
@@ -26,7 +27,7 @@ public class AccountDetails extends User {
 
     private static Collection<? extends GrantedAuthority> getAuthorities(Set<Role> roles) {
         return roles.stream()
-                .map(r -> new SimpleGrantedAuthority( ROLE_PREFIX + r.getName()) )
+                .map(r -> new SimpleGrantedAuthority(ROLE_PREFIX + r.getName()))
                 .collect(Collectors.toList());
     }
 

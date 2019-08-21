@@ -1,6 +1,6 @@
-package org.slam.handler;
+package org.slam.config.security.handler;
 
-import org.slam.dto.account.AccountDetails;
+import org.slam.config.security.userdetails.AccountDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
