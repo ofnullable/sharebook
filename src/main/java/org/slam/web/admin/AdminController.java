@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
-@AllArgsConstructor
-@RequestMapping("/admin/user")
+//@RestController
+//@AllArgsConstructor
+//@RequestMapping("/admin/user")
 public class AdminController {
 
-    private final AccountSelectService accountSelectService;
-
-    @GetMapping("/list")
-    public List<Account> selectAllUser() {
-        return accountSelectService.findAll();
-    }
+//    private final AccountSelectService accountSelectService;
+//
+//    @GetMapping("/list")
+//    public List<Account> selectAllUser() {
+//        return accountSelectService.findAll();
+//    }
 
 }

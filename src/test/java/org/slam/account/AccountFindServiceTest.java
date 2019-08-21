@@ -13,12 +13,13 @@ import org.slam.account.service.AccountFindService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collections;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.slam.testutil.AccountUtils.buildNormalAccount;
 
 @ExtendWith(SpringExtension.class)
 public class AccountFindServiceTest {
@@ -29,11 +30,7 @@ public class AccountFindServiceTest {
     @Mock
     private AccountRepository accountRepository;
 
-    private Account account = Account.builder()
-            .email(Email.of("test@test.com"))
-            .name("test account")
-            .password("test")
-            .build();
+    private Account account = buildNormalAccount();
 
     @Test
     @DisplayName("SECURITY - 이메일이 존재하는 경우 정상작동")
@@ -42,9 +39,10 @@ public class AccountFindServiceTest {
                 .willReturn(Optional.of(account));
 
         // when
-        var result = accountFindService.findByEmail(Email.of("test@test.com"));
+        var result = accountFindService.loadUserByUsername("test@test.com");
 
-        accountEquals(result);
+        assertEquals(account.getEmail().getAddress(), result.getUsername());
+        assertEquals(account.getPassword(), result.getPassword());
     }
 
     @Test
@@ -53,7 +51,7 @@ public class AccountFindServiceTest {
         given(accountRepository.findByEmail(any(Email.class)))
                 .willThrow(UsernameNotFoundException.class);
 
-        assertThrows(UsernameNotFoundException.class, () -> accountFindService.findByEmail(Email.of("test@test.com")));
+        assertThrows(UsernameNotFoundException.class, () -> accountFindService.loadUserByUsername("test@test.com"));
     }
 
     @Test
@@ -77,23 +75,13 @@ public class AccountFindServiceTest {
     }
 
     @Test
-    @DisplayName("이메일이 존재하는 경우 정상작동")
-    public void find_account_by_email() {
-        given(accountRepository.findByEmail(any(Email.class)))
-                .willReturn(Optional.of(account));
+    @DisplayName("계정정보가 없는 경우 빈 리스트")
+    public void find_account_all() {
+        given(accountRepository.findAll())
+                .willReturn(Collections.emptyList());
 
-        var result = accountFindService.findByEmail(Email.of("test@test.com"));
-
-        accountEquals(result);
-    }
-
-    @Test
-    @DisplayName("이메일이 존재하지 않는 경우 AccountNotFoundException")
-    public void find_account_by_email_failure() {
-        given(accountRepository.findByEmail(any(Email.class)))
-                .willThrow(AccountNotFoundException.class);
-
-        assertThrows(AccountNotFoundException.class, () -> accountFindService.findByEmail(Email.of("test@test.com")));
+        var result = accountFindService.findAll();
+        assertEquals(0, result.size());
     }
 
     private void accountEquals(Account result) {

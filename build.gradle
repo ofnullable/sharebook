@@ -64,8 +64,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.integration:spring-integration-ftp'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.1'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.1'
 
     implementation 'com.querydsl:querydsl-jpa'
     compileOnly 'com.querydsl:querydsl-apt'

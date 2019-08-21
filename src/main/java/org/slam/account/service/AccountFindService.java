@@ -32,11 +32,6 @@ public class AccountFindService implements UserDetailsService {
                 .orElseThrow(() -> new AccountNotFoundException(id));
     }
 
-    public Account findByEmail(Email email) {
-        return accountRepository.findByEmail(email)
-                .orElseThrow(() -> new AccountNotFoundException(email));
-    }
-
     public List<Account> findAll() {
         return accountRepository.findAll();
     }
