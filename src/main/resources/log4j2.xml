@@ -1,35 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-    <appenders>
-        <!-- Console Appender -->
-        <console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss a} [%15.15t] %-5level%pid --- %40.40logger{39} : %msg%n"/>
-        </console>
-        <!-- File Appender -->
+<Configuration>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>
+                    %clr{%d{DEFAULT}}{faint} %clr{%5p} %clr{${sys:PID}}{red} %clr{--}{faint} [%clr{%15.15t}{blue}] %clr{%-38.38c{1.}}{yellow} %clr{:}{faint} %m%n%xwEx
+                </Pattern>
+            </PatternLayout>
+        </Console>
         <!--
-        <File name="File" fileName="D:/app.log">
-            <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n"/>
-        </File>
+        <RollingFile name="RollingFile"
+                     fileName="./logs/spring-boot-logger-log4j2.log"
+                     filePattern="./logs/$${date:yyyy-MM}/spring-boot-logger-log4j2-%d{-dd-MMMM-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                rollover on startup, daily and when the file reaches 10 MegaBytes
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
         -->
-    </appenders>
+    </Appenders>
 
-    <loggers>
+    <Loggers>
+        <!-- LOG everything at INFO level -->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <!-- <AppenderRef ref="RollingFile"/> -->
+        </Root>
+
+        <!-- LOG "org.slam*" at TRACE level -->
+        <!-- <Logger name="org.slam" level="trace"></Logger> -->
         <logger name="jdbc" level="OFF"/>
 
-        <logger name="jdbc.sqlonly" level="OFF">
-            <appender-ref ref="STDOUT"/>
-        </logger>
+        <logger name="jdbc.sqlonly" level="OFF"/>
+
+        <logger name="jdbc.resultsettable" level="OFF"/>
 
         <logger name="jdbc.sqltiming" level="DEBUG" additivity="false">
-            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="Console"/>
         </logger>
-
-        <logger name="jdbc.resultsettable" level="OFF">
-            <appender-ref ref="STDOUT"/>
-        </logger>
-
-        <root level="INFO">
-            <appender-ref ref="STDOUT"/>
-        </root>
-    </loggers>
-</configuration>
+    </Loggers>
+</Configuration>
