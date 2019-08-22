@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @MapperScan("org.slam.mapper")
 @SpringBootApplication
-public class PublicShareApplication {
+public class App {
 
     public static void main(String[] args) {
-        SpringApplication.run(PublicShareApplication.class, args);
+        SpringApplication.run(App.class, args);
     }
 
 }

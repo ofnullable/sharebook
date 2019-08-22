@@ -7,12 +7,18 @@ import lombok.NoArgsConstructor;
 import org.slam.account.domain.Account;
 import org.slam.account.domain.Email;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SignUpRequest {
 
+    @Valid
     private Email email;
+    @NotBlank
     private String password;
+    @NotBlank
     private String name;
 
     @Builder
