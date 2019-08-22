@@ -1,10 +1,10 @@
 package org.slam.account.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.slam.account.domain.Account;
 
 import javax.persistence.*;
 
@@ -16,10 +16,11 @@ public class Role {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     private Account account;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private RoleName name;
 
     @Builder

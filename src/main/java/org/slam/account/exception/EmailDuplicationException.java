@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Getter
 @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Email Duplication")
-public class UsernameDuplicationException extends RuntimeException {
+public class EmailDuplicationException extends RuntimeException {
     private Email email;
-    public UsernameDuplicationException(Email email) {
+    public EmailDuplicationException(Email email) {
         this.email = email;
     }
 }

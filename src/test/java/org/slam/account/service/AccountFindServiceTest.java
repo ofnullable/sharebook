@@ -1,4 +1,4 @@
-package org.slam.account;
+package org.slam.account.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,14 +9,14 @@ import org.slam.account.domain.Account;
 import org.slam.account.domain.Email;
 import org.slam.account.exception.AccountNotFoundException;
 import org.slam.account.repository.AccountRepository;
-import org.slam.account.service.AccountFindService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collections;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.slam.testutil.AccountUtils.buildNormalAccount;
