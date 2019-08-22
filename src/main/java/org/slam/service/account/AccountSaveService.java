@@ -5,7 +5,6 @@ import org.slam.dto.account.Account;
 import org.slam.mapper.account.AccountRoleMapper;
 import org.slam.mapper.account.AccountSaveMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor

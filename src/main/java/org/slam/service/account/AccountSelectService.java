@@ -3,8 +3,6 @@ package org.slam.service.account;
 import lombok.AllArgsConstructor;
 import org.slam.dto.account.Account;
 import org.slam.mapper.account.AccountSelectMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
