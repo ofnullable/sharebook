@@ -1,15 +1,15 @@
 package org.slam.mapper.account;
 
-import org.slam.dto.account.Account;
+import org.slam.dto.account.AccountDto;
 
 import java.util.List;
 
 public interface AccountSelectMapper {
 
-    List<Account> findAll();
+    List<AccountDto> findAll();
 
-    Account findById(String username);
+    AccountDto findById(String username);
 
-    void delete(Account account);
+    void delete(AccountDto account);
 
 }

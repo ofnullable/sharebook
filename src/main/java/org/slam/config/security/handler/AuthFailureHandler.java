@@ -1,32 +1,24 @@
 package org.slam.config.security.handler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.web.servlet.FlashMap;
-import org.springframework.web.servlet.support.SessionFlashMapManager;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class AuthFailureHandler implements AuthenticationFailureHandler {
+
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse res, AuthenticationException ex) throws IOException, ServletException {
-        /*
-         * Make flash attribute for sign-in failure
-         * @see <a href="https://stackoverflow.com/questions/23844546/flash-attribute-in-custom-authenticationfailurehandler">reference</a>
-         */
-        if (ex != null) {
-            var flashMap = new FlashMap();
-            flashMap.put("AUTHENTICATION_EXCEPTION", ex.getMessage());
-
-            var flashMapManager = new SessionFlashMapManager();
-            flashMapManager.saveOutputFlashMap(flashMap, req, res);
-        }
-        setDefaultFailureUrl("/sign-in?error");
-        super.onAuthenticationFailure(req, res, ex);
+        log.warn("Authentication Failure: {}", ex.getMessage());
+        res.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
     }
 
 }

@@ -1,7 +1,7 @@
 package org.slam.service.notice;
 
 import lombok.AllArgsConstructor;
-import org.slam.dto.account.Account;
+import org.slam.dto.account.AccountDto;
 import org.slam.dto.book.BookHistory;
 import org.slam.mapper.notice.NoticeMapper;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class NoticeService {
 
     private final NoticeMapper noticeMapper;
 
-    public Integer findTotalCount(Account acc) {
+    public Integer findTotalCount(AccountDto acc) {
         return noticeMapper.findTotalCount(acc);
     }
 

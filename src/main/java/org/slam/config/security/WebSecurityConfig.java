@@ -1,11 +1,15 @@
 package org.slam.config.security;
 
+import lombok.RequiredArgsConstructor;
 import org.slam.account.service.AccountFindService;
+import org.slam.config.security.entrypoint.AuthEntryPoint;
+import org.slam.config.security.filter.CustomAuthenticationFilter;
+import org.slam.config.security.handler.AuthDeniedHandler;
 import org.slam.config.security.handler.AuthFailureHandler;
 import org.slam.config.security.handler.AuthSuccessHandler;
-import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -13,23 +17,50 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AccountFindService accountFindService;
 
-    public WebSecurityConfig(AccountFindService accountFindService) {
-        this.accountFindService = accountFindService;
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new AuthEntryPoint();
+    }
+
+    @Bean
+    public AccessDeniedHandler authDeniedHandler() {
+        return new AuthDeniedHandler();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authSuccessHandler() {
+        return new AuthSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authFailureHandler() {
+        return new AuthFailureHandler();
+    }
+
+    @Bean
+    public UsernamePasswordAuthenticationFilter customAuthenticationFilter() throws Exception {
+        var filter = new CustomAuthenticationFilter();
+        filter.setFilterProcessesUrl("/auth/sign-in");
+        filter.setAuthenticationManager(authenticationManager());
+        return filter;
     }
 
     @Override
@@ -49,15 +80,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .antMatchers("/my-page/**", "/my-item/**", "/book/**/histories").authenticated()
-                    .antMatchers("/**").permitAll()
+                    .antMatchers(HttpMethod.POST, "/account").permitAll()
+                    .antMatchers("/auth/sign-in").permitAll()
+                    .antMatchers("/**").authenticated()
             .and()
+                .exceptionHandling()
+                    .authenticationEntryPoint(authenticationEntryPoint())
+                    .accessDeniedHandler(authDeniedHandler())
+            .and()
+                .addFilter(customAuthenticationFilter())
                 .formLogin()
-                    .loginPage("/sign-in")
+                    .loginProcessingUrl("/auth/sign-in")
                     .successHandler(authSuccessHandler())
-//                    .failureForwardUrl("/sign-in?error")
-                    .failureUrl("/sign-in?error")
                     .failureHandler(authFailureHandler())
             .and()
                 .logout()
@@ -66,27 +100,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .clearAuthentication(true)
                     .invalidateHttpSession(true)
             .and()
-                .sessionManagement()
-            .and()
                 .rememberMe()
                     .key("SECRET_KEY")
                     .authenticationSuccessHandler(authSuccessHandler())
-                    .tokenValiditySeconds(14 * 24 * 60 * 60);
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler authSuccessHandler() {
-        return new AuthSuccessHandler();
-    }
-
-    @Bean
-    public AuthenticationFailureHandler authFailureHandler() {
-        return new AuthFailureHandler();
-    }
-
-    @Bean
-    public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
-        return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
+                    .tokenValiditySeconds(7 * 24 * 60 * 60); // 1 week
     }
 
 }
