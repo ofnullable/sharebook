@@ -21,6 +21,7 @@ public class Role {
     private Account account;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private RoleName name;
 
     @Builder
