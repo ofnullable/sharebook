@@ -2,14 +2,14 @@ package org.slam.mapper.notice;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
-import org.slam.dto.account.Account;
+import org.slam.dto.account.AccountDto;
 import org.slam.dto.book.BookHistory;
 
 import java.util.List;
 
 public interface NoticeMapper {
 
-    Integer findTotalCount(Account acc);
+    Integer findTotalCount(AccountDto acc);
 
     List<BookHistory> findByUsername(String username);
 
