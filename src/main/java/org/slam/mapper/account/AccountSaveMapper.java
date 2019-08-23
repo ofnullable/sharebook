@@ -1,9 +1,9 @@
 package org.slam.mapper.account;
 
-import org.slam.dto.account.Account;
+import org.slam.dto.account.AccountDto;
 
 public interface AccountSaveMapper {
 
-    void save(Account account);
+    void save(AccountDto account);
 
 }

@@ -21,10 +21,10 @@ public class AccountFindService implements UserDetailsService {
     private final AccountRepository accountRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         return accountRepository.findByEmail(Email.of(username))
                 .map(AccountDetails::new)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+                .orElseThrow(() -> new AccountNotFoundException(username));
     }
 
     public Account findById(Long id) {

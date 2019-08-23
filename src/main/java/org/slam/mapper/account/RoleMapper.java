@@ -1,19 +1,19 @@
 package org.slam.mapper.account;
 
 import org.apache.ibatis.annotations.Insert;
-import org.slam.dto.account.Role;
+import org.slam.dto.account.RoleDto;
 
 public interface RoleMapper {
 
     @Insert("INSERT INTO ROLE (ID, NAME) VALUES (#{id}, #{name})")
-    void save(Role role);
+    void save(RoleDto role);
 
     /*
     @Select("SELECT ID, NAME FROM ROLE WHERE ID = #{id}")
-    Role findById(Long id);
+    RoleDto findById(Long id);
 
     @Select("SELECT ID, NAME FROM ROLE")
-    List<Role> findAll();
+    List<RoleDto> findAll();
     */
 
 }

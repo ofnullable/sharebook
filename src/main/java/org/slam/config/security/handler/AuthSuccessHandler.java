@@ -1,41 +1,33 @@
 package org.slam.config.security.handler;
 
-import org.slam.config.security.userdetails.AccountDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.WebAttributes;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Optional;
 
-public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class AuthSuccessHandler implements AuthenticationSuccessHandler {
+
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException {
-        setAuthInfoToSession(req, auth);
-        String prev = getPrevPage(req);
-        clearPrevAttr(req);
-        res.sendRedirect(Optional.ofNullable(prev).orElse("/"));
+        log.debug("Authentication success: {}", auth.getDetails());
+        clearAuthFailAttribute(req); // clear authentication fail attribute
+        // redirect
     }
 
-    private void setAuthInfoToSession(HttpServletRequest req, Authentication auth) {
-        req.getSession().setAttribute("auth", ((AccountDetails) auth.getPrincipal()).getAccount());
-    }
-
-    private String getPrevPage(HttpServletRequest req) {
-        var requestedURL = req.getRequestURL().toString();
-        if (requestedURL.endsWith("/sign-in")) {
-            return (String) req.getSession().getAttribute("prev");
-        } else {
-            return requestedURL;
+    private void clearAuthFailAttribute(HttpServletRequest req) {
+        HttpSession session = req.getSession(false);
+        if (session == null) {
+            return;
         }
-    }
-
-    private void clearPrevAttr(HttpServletRequest req) {
-        req.getSession().removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-        req.getSession().removeAttribute("prev");
+        session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
     }
 
 }

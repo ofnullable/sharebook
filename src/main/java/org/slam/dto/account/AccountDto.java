@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Getter @Setter @ToString
 @Builder @NoArgsConstructor @AllArgsConstructor
-public class Account {
+public class AccountDto {
 
     private String        username;
     private String        password;
@@ -15,6 +15,6 @@ public class Account {
     private String        email;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private Set<Role>     roles;
+    private Set<RoleDto> roleDtos;
 
 }

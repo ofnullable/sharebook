@@ -4,7 +4,7 @@ import lombok.*;
 
 @Getter @Setter @ToString
 @Builder @NoArgsConstructor @AllArgsConstructor
-public class Role {
+public class RoleDto {
 
     private Long   id;
     private String name;
