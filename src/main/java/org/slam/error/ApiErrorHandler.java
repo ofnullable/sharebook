@@ -1,41 +1,46 @@
 package org.slam.error;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slam.account.exception.AccountNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@Slf4j
-@ResponseBody
-@ControllerAdvice
-public class ApiErrorHandler {
+@RestControllerAdvice
+public class ApiErrorHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(BindException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ApiError handelBindException(BindException e) {
-        log.warn("handle BindException");
-        final var fieldErrors = getFieldErrors(e.getBindingResult());
-        return bindErrorWithFieldErrors(ErrorCode.INVALID_INPUT_VALUE, fieldErrors);
+    private Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @ExceptionHandler(AccountNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ApiError handleAccountNotFoundException(AccountNotFoundException e) {
+        if (e.getId() != null) {
+            log.debug("No Such Account. ID: {}", e.getId());
+        }
+        if (e.getUsername() != null) {
+            log.debug("No Such Account. Username: {}", e.getUsername());
+        }
+        return bindError(ErrorCode.ACCOUNT_NOT_FOUND);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ApiError handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.warn(e.getMessage());
-        final var fieldErrors = getFieldErrors(e.getBindingResult());
-        return bindErrorWithFieldErrors(ErrorCode.INVALID_INPUT_VALUE, fieldErrors);
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.debug("handle MethodArgumentNotValidException: {}", ex.getBindingResult());
+        final var fieldErrors = getFieldErrors(ex.getBindingResult());
+        return buildResponseEntity(bindErrorWithFieldErrors(ErrorCode.INVALID_INPUT_VALUE, fieldErrors));
     }
 
     private List<ApiError.FieldError> getFieldErrors(BindingResult bindingResult) {
@@ -48,7 +53,7 @@ public class ApiErrorHandler {
                 ).collect(toList());
     }
 
-    private ResponseEntity<Object> buildResponse(ApiError apiError) {
+    private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 
