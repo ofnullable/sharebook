@@ -2,11 +2,11 @@ package org.slam.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.slam.account.service.AccountFindService;
-import org.slam.config.security.entrypoint.AuthEntryPoint;
 import org.slam.config.security.filter.CustomAuthenticationFilter;
 import org.slam.config.security.handler.AuthDeniedHandler;
 import org.slam.config.security.handler.AuthFailureHandler;
 import org.slam.config.security.handler.AuthSuccessHandler;
+import org.slam.config.security.handler.UnauthorizedHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -36,8 +36,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint() {
-        return new AuthEntryPoint();
+    public AuthenticationEntryPoint unauthorizedHandler() {
+        return new UnauthorizedHandler();
     }
 
     @Bean
@@ -57,9 +57,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public UsernamePasswordAuthenticationFilter customAuthenticationFilter() throws Exception {
-        var filter = new CustomAuthenticationFilter();
+        var filter = new CustomAuthenticationFilter(authenticationManager());
+
         filter.setFilterProcessesUrl("/auth/sign-in");
-        filter.setAuthenticationManager(authenticationManager());
+
+        filter.setAuthenticationSuccessHandler(authSuccessHandler());
+        filter.setAuthenticationFailureHandler(authFailureHandler());
+
+        // check authenticationManager
+        filter.afterPropertiesSet();
+
         return filter;
     }
 
@@ -79,20 +86,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .httpBasic()
+            .and()
                 .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/account").permitAll()
-                    .antMatchers("/auth/sign-in").permitAll()
-                    .antMatchers("/**").authenticated()
+                    .antMatchers("/error").permitAll()
+                    .anyRequest().authenticated()
             .and()
                 .exceptionHandling()
-                    .authenticationEntryPoint(authenticationEntryPoint())
+                    .authenticationEntryPoint(unauthorizedHandler())
                     .accessDeniedHandler(authDeniedHandler())
             .and()
                 .addFilter(customAuthenticationFilter())
                 .formLogin()
                     .loginProcessingUrl("/auth/sign-in")
-                    .successHandler(authSuccessHandler())
-                    .failureHandler(authFailureHandler())
+                    .permitAll()
             .and()
                 .logout()
                     .logoutUrl("/sign-out")
