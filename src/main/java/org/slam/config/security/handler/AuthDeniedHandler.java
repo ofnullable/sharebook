@@ -17,7 +17,7 @@ public class AuthDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest req, HttpServletResponse res, AccessDeniedException e) throws IOException, ServletException {
-        log.warn("Access Denied, {}", e.getMessage());
+        log.debug("access denied, {}", e.getMessage());
         res.sendError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase());
     }
 

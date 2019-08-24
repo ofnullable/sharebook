@@ -17,9 +17,10 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException {
-        log.debug("Authentication success: {}", auth.getDetails());
+        log.debug("authentication success: {}", auth.getDetails());
         clearAuthFailAttribute(req); // clear authentication fail attribute
         // redirect
+        res.setStatus(HttpServletResponse.SC_OK);
     }
 
     private void clearAuthFailAttribute(HttpServletRequest req) {

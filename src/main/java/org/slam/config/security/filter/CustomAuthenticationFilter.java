@@ -3,11 +3,11 @@ package org.slam.config.security.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.slam.config.security.userdetails.SignInRequest;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,13 +20,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     private String password;
     private ObjectMapper mapper = new ObjectMapper();
 
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+        super.setAuthenticationManager(authenticationManager);
+    }
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
         readBody(req);
-
-        if (StringUtils.isEmpty(username) || password == null) {
-            return null;
-        }
 
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
 
@@ -37,8 +37,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     }
 
     private void readBody(HttpServletRequest req) {
-        try {
-            var stringified = IOUtils.toString(req.getReader());
+        try (BufferedReader reader = req.getReader()) {
+            var stringified = IOUtils.toString(reader);
             var body = mapper.readValue(stringified, SignInRequest.class);
             setFields(body);
         } catch (IOException e) {
@@ -48,7 +48,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     private void setFields(SignInRequest body) {
         this.username = body.getUsername() == null ? "" : body.getUsername().trim();
-        this.password = body.getPassword();
+        this.password = body.getPassword() == null ? "" : body.getPassword();
     }
 
 }
