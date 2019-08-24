@@ -1,6 +1,7 @@
 package org.slam.account.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slam.account.domain.Account;
 import org.slam.account.domain.Email;
 import org.slam.account.exception.AccountNotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountFindService implements UserDetailsService {
@@ -21,10 +23,14 @@ public class AccountFindService implements UserDetailsService {
     private final AccountRepository accountRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        return accountRepository.findByEmail(Email.of(username))
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        final var email = Email.of(username);
+        return accountRepository.findByEmail(email)
                 .map(AccountDetails::new)
-                .orElseThrow(() -> new AccountNotFoundException(username));
+                .orElseThrow(() -> {
+                    log.debug("There is no result for username: {}", username);
+                    return new UsernameNotFoundException("No such account: " + username, new AccountNotFoundException(username));
+                });
     }
 
     public Account findById(Long id) {
