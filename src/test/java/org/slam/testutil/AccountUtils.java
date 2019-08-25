@@ -8,15 +8,15 @@ public class AccountUtils {
 
     public static Account buildNormalAccount() {
         return Account.builder()
-                .email(Email.of("test@test.com"))
-                .name("test account")
+                .email(Email.of("test1@asd.com"))
                 .password("test")
+                .name("test user1")
                 .build();
     }
 
-    public static SignUpRequest buildNormalSignUpRequest() {
+    public static SignUpRequest buildNormalSignUpRequest(String email) {
         return SignUpRequest.builder()
-                .email(Email.of("test@test.com"))
+                .email(Email.of(email))
                 .name("test account")
                 .password("test")
                 .build();

@@ -1,12 +1,16 @@
 package org.slam.account.dto;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.slam.account.domain.Account;
 import org.slam.account.domain.Role;
 
 import java.util.Set;
 
-@Getter
+@Getter @ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AccountResponse {
 
     private String email;

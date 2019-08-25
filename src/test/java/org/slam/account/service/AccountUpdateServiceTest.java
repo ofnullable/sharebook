@@ -1,5 +1,6 @@
 package org.slam.account.service;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
@@ -23,8 +25,9 @@ public class AccountUpdateServiceTest {
     private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @Test
+    @DisplayName("비밀번호 업데이트")
     public void password_update() {
-        given(accountUpdateService.updatePassword(any(Long.class), any(String.class)))
+        given(accountUpdateService.updatePassword(any(Long.class), anyString()))
                 .willReturn(account);
 
         var result = accountUpdateService.updatePassword(1L, "test");
