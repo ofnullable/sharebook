@@ -1,7 +1,5 @@
 package org.slam.config.security.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slam.error.ApiError;
 import org.slam.error.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,26 +12,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static org.slam.config.security.handler.HandlerUtils.errorToString;
+
 public class AuthFailureHandler implements AuthenticationFailureHandler {
 
-    private ObjectMapper mapper = new ObjectMapper();
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse res, AuthenticationException e) throws IOException, ServletException {
         log.debug("authentication failure: {}", e.getMessage());
 
-        final var errorCode = ErrorCode.BAD_CREDENTIALS;
-        final var error = ApiError.builder()
-                .status(errorCode.getStatus())
-                .code(errorCode.getCode())
-                .path(req.getRequestURI())
-                .message(errorCode.getMessage())
-                .build();
+        final var stringifiedError = errorToString(ErrorCode.BAD_CREDENTIALS, req.getRequestURI());
 
-        res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        res.setStatus(res.SC_BAD_REQUEST);
         res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        res.getWriter().write(mapper.writeValueAsString(error));
+        res.getWriter().write(stringifiedError);
         res.flushBuffer();
     }
 

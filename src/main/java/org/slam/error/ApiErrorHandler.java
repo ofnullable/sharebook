@@ -47,6 +47,7 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
         log.debug("handle MethodArgumentNotValidException: {}", ex.getBindingResult());
         final var fieldErrors = getFieldErrors(ex.getBindingResult());
         return buildResponseEntity(bindErrorWithFieldErrors(ErrorCode.INVALID_INPUT_VALUE, fieldErrors, request));
@@ -63,14 +64,13 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-        return new ResponseEntity<>(apiError, apiError.getStatus());
+        return new ResponseEntity<>(apiError, HttpStatus.valueOf(apiError.getStatus()));
     }
 
     private ApiError bindError(ErrorCode errorCode, WebRequest request) {
         var req = ((ServletWebRequest) request).getRequest();
         return ApiError.builder()
                 .status(errorCode.getStatus())
-                .code(errorCode.getCode())
                 .message(errorCode.getMessage())
                 .path(req.getRequestURI())
                 .build();
@@ -80,7 +80,6 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
         var req = ((ServletWebRequest) request).getRequest();
         return ApiError.builder()
                 .status(errorCode.getStatus())
-                .code(errorCode.getCode())
                 .message(errorCode.getMessage())
                 .path(req.getRequestURI())
                 .errors(errors)
