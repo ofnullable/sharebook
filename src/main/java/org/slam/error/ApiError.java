@@ -16,13 +16,15 @@ public class ApiError {
     private HttpStatus status;
     private String code;
     private String message;
+    private String path;
     private List<FieldError> errors;
 
     @Builder
-    public ApiError(int status, String code, String message, List<FieldError> errors) {
+    public ApiError(int status, String code, String message, String path, List<FieldError> errors) {
         this.status = HttpStatus.valueOf(status);
         this.code = code;
         this.message = message;
+        this.path = path;
         this.errors = initErrors(errors);
     }
 

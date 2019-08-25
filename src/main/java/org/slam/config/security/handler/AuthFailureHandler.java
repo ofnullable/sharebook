@@ -27,6 +27,7 @@ public class AuthFailureHandler implements AuthenticationFailureHandler {
         final var error = ApiError.builder()
                 .status(errorCode.getStatus())
                 .code(errorCode.getCode())
+                .path(req.getRequestURI())
                 .message(errorCode.getMessage())
                 .build();
 
