@@ -13,6 +13,7 @@ import org.slam.account.exception.AccountNotFoundException;
 import org.slam.account.exception.EmailDuplicationException;
 import org.slam.account.service.AccountFindService;
 import org.slam.account.service.AccountSaveService;
+import org.slam.error.ApiErrorHandler;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -46,6 +47,7 @@ public class AccountControllerTest {
     public void setup() {
         this.mvc = MockMvcBuilders
                 .standaloneSetup(accountController)
+                .setControllerAdvice(ApiErrorHandler.class)
                 .build();
     }
 
@@ -97,7 +99,7 @@ public class AccountControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(buildNormalSignUpRequest()))
         )
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isConflict())
                 .andDo(print());
     }
 
