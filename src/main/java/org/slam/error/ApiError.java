@@ -13,16 +13,16 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApiError {
 
-    private HttpStatus status;
-    private String code;
+    private int status;
     private String message;
+    private String path;
     private List<FieldError> errors;
 
     @Builder
-    public ApiError(int status, String code, String message, List<FieldError> errors) {
-        this.status = HttpStatus.valueOf(status);
-        this.code = code;
+    public ApiError(int status, String message, String path, List<FieldError> errors) {
+        this.status = status;
         this.message = message;
+        this.path = path;
         this.errors = initErrors(errors);
     }
 

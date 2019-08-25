@@ -90,7 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/account").permitAll()
-                    .antMatchers("/error").permitAll()
+//                    .antMatchers("/error").permitAll()
                     .anyRequest().authenticated()
             .and()
                 .exceptionHandling()

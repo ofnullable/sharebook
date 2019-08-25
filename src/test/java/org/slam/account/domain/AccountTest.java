@@ -36,6 +36,7 @@ public class AccountTest {
     }
 
     @Test
+    @DisplayName("비밀번호 업데이트")
     public void update_password_test() {
         account.updatePassword("modifyTest");
         assertTrue(account.getPassword().startsWith("{bcrypt}"));
