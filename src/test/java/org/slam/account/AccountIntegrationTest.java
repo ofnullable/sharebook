@@ -148,7 +148,7 @@ public class AccountIntegrationTest {
     public void update_password_with_auth() throws Exception {
         mvc.perform(patch("/account/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content("newPassword")
+                .content("test")
         )
                 .andExpect(status().isOk())
                 .andDo(print());
