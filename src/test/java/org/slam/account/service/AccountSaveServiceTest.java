@@ -30,7 +30,7 @@ public class AccountSaveServiceTest {
     @Mock
     private AccountRepository accountRepository;
 
-    SignUpRequest signUpRequest = buildNormalSignUpRequest();
+    SignUpRequest signUpRequest = buildNormalSignUpRequest("test@test.com");
 
     @Test
     @DisplayName("회원가입")

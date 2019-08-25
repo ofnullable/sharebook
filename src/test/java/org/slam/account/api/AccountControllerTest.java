@@ -13,6 +13,7 @@ import org.slam.account.exception.AccountNotFoundException;
 import org.slam.account.exception.EmailDuplicationException;
 import org.slam.account.service.AccountFindService;
 import org.slam.account.service.AccountSaveService;
+import org.slam.account.service.AccountUpdateService;
 import org.slam.error.ApiErrorHandler;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -20,10 +21,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.slam.testutil.AccountUtils.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,6 +43,9 @@ public class AccountControllerTest {
 
     @Mock
     private AccountSaveService accountSaveService;
+
+    @Mock
+    private AccountUpdateService accountUpdateService;
 
     @BeforeEach
     public void setup() {
@@ -83,7 +87,7 @@ public class AccountControllerTest {
 
         mvc.perform(post("/account")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(buildNormalSignUpRequest()))
+                .content(mapper.writeValueAsString(buildNormalSignUpRequest("test1@asd.com")))
         )
                 .andExpect(status().isCreated())
                 .andDo(print());
@@ -97,7 +101,7 @@ public class AccountControllerTest {
 
         mvc.perform(post("/account")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(buildNormalSignUpRequest()))
+                .content(mapper.writeValueAsString(buildNormalSignUpRequest("test1@asd.com")))
         )
                 .andExpect(status().isConflict())
                 .andDo(print());
@@ -114,6 +118,34 @@ public class AccountControllerTest {
                 .content(mapper.writeValueAsString(buildInvalidSignUpRequest()))
         )
                 .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("비밀번호 변경 요청")
+    public void update_password() throws Exception {
+        given(accountUpdateService.updatePassword(any(Long.class), anyString()))
+                .willReturn(account);
+
+        mvc.perform(patch("/account/1")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content("newPassword")
+        )
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 계정 비밀번호 변경 요청 - 404")
+    public void invalid_update_password() throws Exception {
+        given(accountUpdateService.updatePassword(any(Long.class), anyString()))
+                .willThrow(AccountNotFoundException.class);
+
+        mvc.perform(patch("/account/1")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content("newPassword")
+        )
+                .andExpect(status().isNotFound())
                 .andDo(print());
     }
 
