@@ -1,8 +1,6 @@
 package org.slam.config.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slam.account.dto.AccountResponse;
-import org.slam.config.security.userdetails.AccountDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
