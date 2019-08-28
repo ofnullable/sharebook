@@ -4,19 +4,18 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.slam.common.entity.Auditable;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Account {
+public class Account extends Auditable<String> {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,17 +23,13 @@ public class Account {
     @Embedded
     private Email email;
 
+    @NotBlank
     @Column(nullable = false)
     private String password;
 
+    @NotBlank
     @Column(nullable = false)
     private String name;
-
-    @LastModifiedDate
-    private LocalDateTime modifiedAt;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Role> roles = new HashSet<>();
