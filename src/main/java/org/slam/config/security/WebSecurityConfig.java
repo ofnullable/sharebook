@@ -78,6 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
+                .antMatchers("/error") // spring boot default error handler
                 .antMatchers("/css/**", "/js/**", "/img/**")
                 .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/webjars/**");
     }
@@ -90,7 +91,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/account").permitAll()
-//                    .antMatchers("/error").permitAll()
                     .anyRequest().authenticated()
             .and()
                 .exceptionHandling()
