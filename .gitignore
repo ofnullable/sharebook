@@ -1,10 +1,10 @@
-# Personal Information
 ftp.properties
-**/application.properties
+.next/
+node_modules/
 
-.gradle
-/build/
-!gradle/wrapper/gradle-wrapper.jar
+server/.gradle
+server/build/
+!server/gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###
 .apt_generated
@@ -16,11 +16,11 @@ ftp.properties
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-/out/
+server/.idea
+server/*.iws
+server/*.iml
+server/*.ipr
+server/out/
 
 ### NetBeans ###
 /nbproject/private/

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.slam.publicshare.mapper.book.BookSaveMapper">
+
+    <insert id="save">
+        INSERT INTO BOOK /* bookSaveMapper.save */
+                    (
+                    TITLE
+                    , AUTHOR
+                    , DESCRIPTION
+                    , MAIN_IMAGE
+                    , CREATED_BY
+                    , CREATED_AT
+                    )
+             VALUES
+                    (
+                    #{title}
+                    , #{author}
+                    , #{description}
+                    , #{mainImage}
+                    , #{createdBy}
+                    , NOW()
+                    )
+    </insert>
+
+    <insert id="saveAll">
+        INSERT INTO BOOK /* bookSaveMapper.saveAll */
+                    (
+                    TITLE
+                    , AUTHOR
+                    , DESCRIPTION
+                    , MAIN_IMAGE
+                    , CREATED_BY
+                    , CREATED_AT
+                    )
+             VALUES
+                    <foreach collection="books" item="book" separator=",">
+                    (
+                    #{book.title}
+                    , #{book.author}
+                    , #{book.description}
+                    , #{book.mainImage}
+                    , #{book.createdBy}
+                    , NOW()
+                    )
+                    </foreach>
+    </insert>
+
+</mapper>
