@@ -2,7 +2,7 @@ package org.slam.publicshare.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.slam.publicshare.account.service.AccountFindService;
-import org.slam.publicshare.config.security.filter.CustomAuthenticationFilter;
+import org.slam.publicshare.config.security.filter.RestAuthenticationFilter;
 import org.slam.publicshare.config.security.handler.AuthDeniedHandler;
 import org.slam.publicshare.config.security.handler.AuthFailureHandler;
 import org.slam.publicshare.config.security.handler.AuthSuccessHandler;
@@ -56,8 +56,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public UsernamePasswordAuthenticationFilter customAuthenticationFilter() throws Exception {
-        var filter = new CustomAuthenticationFilter(authenticationManager());
+    public RestAuthenticationFilter authenticationFilter() throws Exception {
+        var filter = new RestAuthenticationFilter(authenticationManager());
 
         filter.setFilterProcessesUrl("/auth/sign-in");
 
@@ -97,7 +97,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .authenticationEntryPoint(unauthorizedHandler())
                     .accessDeniedHandler(authDeniedHandler())
             .and()
-                .addFilter(customAuthenticationFilter())
+                .addFilter(authenticationFilter())
                 .formLogin()
                     .loginProcessingUrl("/auth/sign-in")
                     .permitAll()

@@ -14,13 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class RestAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private String username;
     private String password;
     private ObjectMapper mapper = new ObjectMapper();
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public RestAuthenticationFilter(AuthenticationManager authenticationManager) {
         super.setAuthenticationManager(authenticationManager);
     }
 
