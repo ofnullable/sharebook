@@ -1,6 +1,5 @@
 # Personal Information
 ftp.properties
-**/application.properties
 
 .gradle
 /build/
