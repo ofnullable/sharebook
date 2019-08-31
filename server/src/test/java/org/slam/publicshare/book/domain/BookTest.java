@@ -18,8 +18,8 @@ public class BookTest {
             .build();
 
     private List<BookImage> images = List.of(
-            BookImage.builder().imageUrl("share/book/20190830/214213721-close.png").orderNo(0).build(),
-            BookImage.builder().imageUrl("share/book/20190830/214213721-next.png").orderNo(1).build()
+            BookImage.builder().imageUrl("share/book/20190830/214213721-close.png").sortNo(0).build(),
+            BookImage.builder().imageUrl("share/book/20190830/214213721-next.png").sortNo(1).build()
     );
 
     @Test
@@ -32,14 +32,14 @@ public class BookTest {
     }
 
     @Test
-    @DisplayName("Image 하나 추가")
+    @DisplayName("BookImage 추가")
     public void add_image() {
         book.addImage(images.get(0));
         assertEquals(book.getImages().size(), 1);
     }
 
     @Test
-    @DisplayName("Image 리스트 추가")
+    @DisplayName("BookImage 리스트 추가")
     public void add_images() {
         book.addImages(images);
         assertEquals(book.getImages().size(), 2);

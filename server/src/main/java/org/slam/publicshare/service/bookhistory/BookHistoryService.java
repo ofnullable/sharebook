@@ -44,7 +44,6 @@ public class BookHistoryService {
 
     // RETURN_REQUEST, CANCELED
     public int updateToMatchRequest(Book book) {
-        System.out.println(book);
         if (BookStatus.RETURN_REQUEST == book.getStatus()) {
             return updateToReturnRequest(book);
         } else {

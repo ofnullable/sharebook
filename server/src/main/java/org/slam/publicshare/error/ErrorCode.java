@@ -14,6 +14,8 @@ public enum ErrorCode {
     ACCOUNT_NOT_FOUND(404, "No such account"),
     EMAIL_DUPLICATION(409, "Email duplication"),
 
+    BOOK_NOT_FOUND(404, "No such book"),
+
     INVALID_INPUT_VALUE(400, "Invalid value"),
     KEY_DUPLICATION(409, "Key duplication");
 

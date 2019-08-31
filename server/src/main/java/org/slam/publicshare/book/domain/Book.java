@@ -9,13 +9,15 @@ import org.slam.publicshare.common.entity.Auditable;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Book extends Auditable {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -33,7 +35,8 @@ public class Book extends Auditable {
     @Column(nullable = false)
     private String owner;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OrderBy("sortNo ASC")
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<BookImage> images = new ArrayList<>();
 
     @Builder
@@ -46,10 +49,12 @@ public class Book extends Auditable {
     }
 
     public void addImages(List<BookImage> images) {
-        this.images.addAll(images);
+
+        this.images.addAll(images.stream().peek(i -> i.addBook(this)).collect(Collectors.toList()));
     }
 
     public void addImage(BookImage image) {
+        image.addBook(this);
         this.images.add(image);
     }
 

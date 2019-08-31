@@ -1,7 +1,8 @@
 package org.slam.publicshare.error;
 
-import org.slam.publicshare.account.exception.AccountNotFoundException;
+import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.account.exception.EmailDuplicationException;
+import org.slam.publicshare.book.exception.NoSuchBookException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -25,9 +26,9 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @ExceptionHandler(AccountNotFoundException.class)
+    @ExceptionHandler(NoSuchAccountException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected ApiError handleAccountNotFoundException(AccountNotFoundException e, WebRequest request) {
+    protected ApiError handleNoSuchAccountException(NoSuchAccountException e, WebRequest request) {
         if (e.getId() != null) {
             log.debug("No Such Account. ID: {}", e.getId());
         }
@@ -42,6 +43,13 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     protected ApiError handleEmailDuplicationException(EmailDuplicationException e, WebRequest request) {
         log.debug("Duplicate email: {}", e.getEmail());
         return bindError(ErrorCode.EMAIL_DUPLICATION, request);
+    }
+
+    @ExceptionHandler(NoSuchBookException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ApiError handleNoSuchBookException(NoSuchBookException e, WebRequest request) {
+        log.debug("No Such Book. ID: {}", e.getId());
+        return bindError(ErrorCode.BOOK_NOT_FOUND, request);
     }
 
     @Override

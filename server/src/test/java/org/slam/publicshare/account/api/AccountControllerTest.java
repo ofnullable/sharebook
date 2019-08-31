@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.slam.publicshare.account.domain.Account;
 import org.slam.publicshare.account.dto.SignUpRequest;
-import org.slam.publicshare.account.exception.AccountNotFoundException;
+import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.account.exception.EmailDuplicationException;
 import org.slam.publicshare.account.service.AccountFindService;
 import org.slam.publicshare.account.service.AccountSaveService;
@@ -72,7 +72,7 @@ public class AccountControllerTest {
     @DisplayName("존재하지 않는 계정조회 - 404")
     public void find_account_by_id_failure() throws Exception {
         given(accountFindService.findById(any(Long.class)))
-                .willThrow(AccountNotFoundException.class);
+                .willThrow(NoSuchAccountException.class);
 
         mvc.perform(get("/account/1"))
                 .andExpect(status().isNotFound())
@@ -139,7 +139,7 @@ public class AccountControllerTest {
     @DisplayName("존재하지 않는 계정 비밀번호 변경 요청 - 404")
     public void invalid_update_password() throws Exception {
         given(accountUpdateService.updatePassword(any(Long.class), anyString()))
-                .willThrow(AccountNotFoundException.class);
+                .willThrow(NoSuchAccountException.class);
 
         mvc.perform(patch("/account/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
