@@ -25,7 +25,7 @@ public class FileController {
     }
 
     @PostMapping("/images")
-    public List<String> saveFiles(@RequestParam MultipartFile[] images) {
+    public List<String> saveFiles(@RequestParam List<MultipartFile> images) {
         Assert.notEmpty(images, "Image file can not be null");
         return fileService.sendAll(images);
     }

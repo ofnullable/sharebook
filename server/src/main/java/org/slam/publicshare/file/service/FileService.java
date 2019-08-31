@@ -2,7 +2,6 @@ package org.slam.publicshare.file.service;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.net.ftp.FTPFile;
-import org.slam.publicshare.file.utils.FtpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.file.remote.session.SessionFactory;
@@ -15,6 +14,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.slam.publicshare.file.utils.FtpUtils.makeDirName;
+import static org.slam.publicshare.file.utils.FtpUtils.makeFilename;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +31,9 @@ public class FileService {
         return sendImage(bookImage, this.makePath());
     }
 
-    public List<String> sendAll(MultipartFile[] bookImages) {
+    public List<String> sendAll(List<MultipartFile> bookImages) {
         var remotePath = this.makePath();
-        return Arrays.asList(bookImages).parallelStream()
+        return bookImages.parallelStream()
                 .map(bookImage -> sendImage(bookImage, remotePath))
                 .collect(Collectors.toList());
     }
@@ -53,9 +55,9 @@ public class FileService {
     }
 
     private String makePath() {
-        var fullPath = new StringBuilder(INITIAL_PATH).append(FtpUtils.makeDirName());
+        var fullPath = new StringBuilder(INITIAL_PATH).append(makeDirName());
         makeRemoteDir(fullPath.toString());
-        return fullPath.append("/").append(FtpUtils.makeFilename()).append("-").toString();
+        return fullPath.append("/").append(makeFilename()).append("-").toString();
     }
 
     private void makeRemoteDir(String fullPath) {
@@ -63,7 +65,7 @@ public class FileService {
         var temp = new StringBuilder();
         Arrays.stream(splitPath).forEach(p -> {
             try (var session = sf.getSession()) {
-                log.info("mkdir : {}", temp);
+                log.debug("mkdir : {}", temp);
                 if (!p.equals(" ") || !StringUtils.isEmpty(p)) {
                     session.mkdir(temp.append("/").append(p).toString());
                 }
