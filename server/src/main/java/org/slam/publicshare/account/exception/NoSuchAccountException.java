@@ -3,13 +3,13 @@ package org.slam.publicshare.account.exception;
 import lombok.Getter;
 
 @Getter
-public class AccountNotFoundException extends RuntimeException {
+public class NoSuchAccountException extends RuntimeException {
     private Long id;
     private String username;
-    public AccountNotFoundException(Long id) {
+    public NoSuchAccountException(Long id) {
         this.id = id;
     }
-    public AccountNotFoundException(String username) {
+    public NoSuchAccountException(String username) {
         this.username = username;
     }
 }

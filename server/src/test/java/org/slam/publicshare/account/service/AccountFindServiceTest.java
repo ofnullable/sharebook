@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.slam.publicshare.account.domain.Account;
 import org.slam.publicshare.account.domain.Email;
-import org.slam.publicshare.account.exception.AccountNotFoundException;
+import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.account.repository.AccountRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -69,9 +69,9 @@ public class AccountFindServiceTest {
     @DisplayName("아이디(PK)가 존재하지 않는 경우 AccountNotFoundException")
     public void find_account_by_id_failure() {
         given(accountRepository.findById(any(Long.class)))
-                .willThrow(AccountNotFoundException.class);
+                .willThrow(NoSuchAccountException.class);
 
-        assertThrows(AccountNotFoundException.class, () -> accountFindService.findById(1L));
+        assertThrows(NoSuchAccountException.class, () -> accountFindService.findById(1L));
     }
 
     @Test

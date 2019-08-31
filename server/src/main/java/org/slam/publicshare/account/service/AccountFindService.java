@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slam.publicshare.account.domain.Account;
 import org.slam.publicshare.account.domain.Email;
-import org.slam.publicshare.account.exception.AccountNotFoundException;
+import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.account.repository.AccountRepository;
 import org.slam.publicshare.config.security.userdetails.AccountDetails;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,13 +29,13 @@ public class AccountFindService implements UserDetailsService {
                 .map(AccountDetails::new)
                 .orElseThrow(() -> {
                     log.debug("There is no result for username: {}", username);
-                    return new UsernameNotFoundException("No such account: " + username, new AccountNotFoundException(username));
+                    return new UsernameNotFoundException("No such account: " + username, new NoSuchAccountException(username));
                 });
     }
 
     public Account findById(Long id) {
         return accountRepository.findById(id)
-                .orElseThrow(() -> new AccountNotFoundException(id));
+                .orElseThrow(() -> new NoSuchAccountException(id));
     }
 
     public List<Account> findAll() {
