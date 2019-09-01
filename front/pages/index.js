@@ -1,37 +1,24 @@
 import React from 'react';
-import Nav from '../components/nav';
-import styled from 'styled-components';
-
-const Title = styled.h1`
-  color: red;
-  text-align: center;
-`;
+import Link from 'next/link';
 
 const Home = () => (
   <div>
-    <Title>Hi</Title>
-
-    <Nav />
-
     <div className='hero'>
-      <h1 className='title'>Welcome to Next.js!</h1>
-      <p className='description'>
-        To get started, edit <code>pages/index.js</code> and save to reload.
-      </p>
+      <h1 className='title'>Welcome to Public Share!</h1>
 
       <div className='row'>
-        <a className='card' href='https://github.com/zeit/next.js#setup'>
+        <button className='card'>
           <h3>Getting Started &rarr;</h3>
           <p>Learn more about Next.js on GitHub and in their examples.</p>
-        </a>
-        <a className='card' href='https://github.com/zeit/next.js/tree/master/examples'>
+        </button>
+        <button className='card'>
           <h3>Examples &rarr;</h3>
           <p>Find other example boilerplates on the Next.js GitHub.</p>
-        </a>
-        <a className='card' href='https://github.com/zeit/next.js'>
+        </button>
+        <button className='card'>
           <h3>Create Next App &rarr;</h3>
           <p>Was this tool helpful? Let us know how we can improve it!</p>
-        </a>
+        </button>
       </div>
     </div>
 
@@ -43,7 +30,7 @@ const Home = () => (
       .title {
         margin: 0;
         width: 100%;
-        padding-top: 80px;
+        padding-top: 1em;
         line-height: 1.15;
         font-size: 48px;
       }
@@ -66,22 +53,22 @@ const Home = () => (
         color: #434343;
         border: 1px solid #9b9b9b;
       }
-      .card:hover {
-        border-color: #067df7;
-      }
       .card h3 {
         margin: 0;
-        color: #067df7;
         font-size: 18px;
       }
       .card p {
         margin: 0;
         padding: 12px 0 0;
-        font-size: 13px;
+        font-size: 14px;
         color: #333;
       }
     `}</style>
   </div>
 );
+
+Home.getInitialProps = async context => {
+  console.log(context);
+};
 
 export default Home;
