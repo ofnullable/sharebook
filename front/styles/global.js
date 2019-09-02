@@ -20,11 +20,19 @@ export const Button = styled.button`
   text-align: center;
 `;
 
+export const CenteredDiv = styled.div`
+  text-align: center;
+`;
+
+export const InputGroup = styled.div`
+  margin: 15px 0;
+`;
+
 export const GlobalStyle = createGlobalStyle`
   ${normalize}
 
   .container {
-    ${device.desktops`
+    ${device.laptops`
       max-width: 1140px;
       margin: 0 auto;
     `}
@@ -37,13 +45,26 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
 
+  h1 {
+    ${device.laptops`
+      font-size: 2em;
+    `};
+    ${device.mobiles`
+      font-size: 1.5em;
+    `};
+  }
+
+  form {
+    text-align: left;
+  }
+
   input {
     width: 100%;
-    padding: 3px 10px;
+    padding: 5px 10px;
     border-radius: 5px;
-    border: 1px solid ${COLOR_SCHEME.border};
+    border: 1px solid ${COLOR_SCHEME.gray};
     &:read-only {
-      background: ${COLOR_SCHEME.gray};
+      background: ${COLOR_SCHEME.lightGray};
     }
   }
 `;

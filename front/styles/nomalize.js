@@ -21,7 +21,6 @@ export const normalize = css`
     box-sizing: border-box;
   }
   h1 {
-    font-size: 2em;
     margin: 0.67em 0;
   }
   hr {

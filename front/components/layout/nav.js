@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { HeaderNav } from './nav.styled';
+import { HeaderNav, Homepage } from './Nav.styled';
 
 const Nav = () => {
   const router = useRouter();
@@ -32,7 +32,10 @@ const Nav = () => {
       <ul>
         <li>
           <Link href='/'>
-            <a>Home</a>
+            <Homepage>
+              <i className='material-icons'>share</i>
+              <span>PublicShare</span>
+            </Homepage>
           </Link>
         </li>
         {renderSecondMenu()}

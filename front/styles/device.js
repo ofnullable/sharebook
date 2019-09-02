@@ -13,7 +13,7 @@ const desktops = styles => `
 ##Screen = B/w 1025px to 1280px
 */
 const laptops = styles => `
-  @media (min-width: 1025px) and (max-width: 1280px) {
+  @media (min-width: 1025px) {
     ${styles}
   }
 `;

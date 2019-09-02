@@ -1,36 +1,53 @@
-import React, { useState } from 'react';
-import { SignInForm, SignInFormWrapper } from '../styles/signin.styled';
-import { Button } from '../styles/global';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+
+import { useInput } from '../components/utils/Input';
+import { signInRequest } from '../redux/actions/userActions';
+
+import { CenteredDiv, InputGroup, Button } from '../styles/global';
+import { SignInForm } from '../styles/pages/signin.styled';
 
 function SignIn() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, usernameHandler] = useInput();
+  const [password, passwordHandler] = useInput();
+  const dispatch = useDispatch();
 
   const handleSubmit = e => {
     e.preventDefault();
-  };
 
-  const handleUsernameChange = e => {
-    setUsername(e.target.value);
-  };
-
-  const handlePasswordChange = e => {
-    setPassword(e.target.value);
+    dispatch(signInRequest({ username, password }));
   };
 
   return (
-    <SignInFormWrapper>
-      <h1>Share your books!</h1>
+    <CenteredDiv>
+      <h1>Sign in to PublicShare</h1>
       <SignInForm onSubmit={handleSubmit}>
-        <label htmlFor='username'>username</label>
-        <input id='username' type='text' value={username} onChange={handleUsernameChange} />
-        <label htmlFor='password'>password</label>
-        <input id='password' type='password' value={password} onChange={handlePasswordChange} />
+        <InputGroup>
+          <label htmlFor='username'>Username</label>
+          <input
+            required
+            id='username'
+            type='text'
+            value={username}
+            onChange={usernameHandler}
+            placeholder='your@email.com'
+          />
+        </InputGroup>
+        <InputGroup>
+          <label htmlFor='password'>Password</label>
+          <input
+            required
+            id='password'
+            type='password'
+            value={password}
+            onChange={passwordHandler}
+          />
+        </InputGroup>
         <Button _color='primary' type='submit'>
-          Sign In
+          Sign in
         </Button>
       </SignInForm>
-    </SignInFormWrapper>
+    </CenteredDiv>
   );
 }
 
