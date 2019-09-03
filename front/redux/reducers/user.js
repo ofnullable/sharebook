@@ -1,35 +1,31 @@
+import produce from 'immer';
+
 import { SIGN_IN_REQUEST, SIGN_IN_SUCCESS, SIGN_IN_FAILURE } from '../actionTypes';
 
 const initial = {
-  user: {
-    id: 0,
-    username: '',
-  },
+  user: {},
   isSignedIn: false,
   isProceeding: false,
-  error: '',
+  error: {},
 };
 
 export default (state = initial, action) => {
-  switch (action.type) {
-    case SIGN_IN_REQUEST:
-      return {
-        ...state,
-        isProceeding: true,
-      };
-    case SIGN_IN_SUCCESS:
-      return {
-        ...state,
-        isProceeding: false,
-      };
-    case SIGN_IN_FAILURE:
-      return {
-        ...state,
-        isProceeding: false,
-      };
-    default:
-      return {
-        ...state,
-      };
-  }
+  return produce(state, draft => {
+    switch (action.type) {
+      case SIGN_IN_REQUEST:
+        draft.isProceeding = true;
+        break;
+      case SIGN_IN_SUCCESS:
+        draft.user = action.data;
+        draft.isSignedIn = true;
+        draft.isProceeding = false;
+        break;
+      case SIGN_IN_FAILURE:
+        draft.error = action.error;
+        draft.isProceeding = false;
+        break;
+      default:
+        break;
+    }
+  });
 };

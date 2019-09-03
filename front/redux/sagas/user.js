@@ -1,6 +1,7 @@
 import { fork, put, takeLatest, call, all } from 'redux-saga/effects';
 import { SIGN_IN_REQUEST } from '../actionTypes';
 import { signInApi } from '../api/user';
+import { signInSuccess, signInFailure } from '../actions/userActions';
 
 export default function*() {
   yield all([fork(watchSignInRequest)]);
@@ -10,8 +11,10 @@ function* watchSignInRequest() {
 }
 function* signIn({ payload }) {
   try {
-    console.log(payload);
     const response = yield call(signInApi, payload);
-    console.log('response', response);
-  } catch (e) {}
+    yield put(signInSuccess(response.data));
+  } catch (e) {
+    console.error(e);
+    yield put(signInFailure(e.response.data));
+  }
 }

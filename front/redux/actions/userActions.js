@@ -8,10 +8,12 @@ export const signInRequest = ({ username, password }) => ({
   },
 });
 
-export const signInSuccess = () => ({
+export const signInSuccess = data => ({
   type: SIGN_IN_SUCCESS,
+  data,
 });
 
-export const signInFailure = () => ({
+export const signInFailure = error => ({
   type: SIGN_IN_FAILURE,
+  error,
 });
