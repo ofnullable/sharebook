@@ -9,7 +9,6 @@ import org.slam.publicshare.account.domain.Account;
 import org.slam.publicshare.account.domain.Email;
 import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.account.repository.AccountRepository;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collections;
@@ -34,7 +33,7 @@ public class AccountFindServiceTest {
 
     @Test
     @DisplayName("SECURITY - 이메일이 존재하는 경우 정상작동")
-    public void load_account_by_username() {
+    public void load_account_by_email() {
         given(accountRepository.findByEmail(any(Email.class)))
                 .willReturn(Optional.of(account));
 
@@ -46,12 +45,12 @@ public class AccountFindServiceTest {
     }
 
     @Test
-    @DisplayName("SECURITY - 이메일이 존재하지 않는 경우 UsernameNotFoundException")
+    @DisplayName("SECURITY - 이메일이 존재하지 않는 경우 NoSuchAccountException")
     public void load_account_by_username_failure() {
         given(accountRepository.findByEmail(any(Email.class)))
-                .willThrow(UsernameNotFoundException.class);
+                .willThrow(NoSuchAccountException.class);
 
-        assertThrows(UsernameNotFoundException.class, () -> accountFindService.loadUserByUsername("test@test.com"));
+        assertThrows(NoSuchAccountException.class, () -> accountFindService.loadUserByUsername("test@test.com"));
     }
 
     @Test

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slam.publicshare.account.domain.Account;
-import org.slam.publicshare.account.domain.RoleName;
 import org.slam.publicshare.config.security.userdetails.SignInRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,7 +31,6 @@ public class AccountIntegrationTest {
     private MockMvc mvc;
 
     private Account defaultAccount = buildNormalAccount();
-    private String defaultRoleName = RoleName.BASIC.name();
     private ObjectMapper mapper = new ObjectMapper();
 
     @Test

@@ -2,7 +2,6 @@ package org.slam.publicshare;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slam.publicshare.App;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -12,7 +11,7 @@ public class AppTests {
 
 	@Test
 	public void contextLoads() {
-		App.main(new String[]{});
+
 	}
 
 }
