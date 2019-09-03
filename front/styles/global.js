@@ -20,8 +20,16 @@ export const Button = styled.button`
   text-align: center;
 `;
 
-export const CenteredDiv = styled.div`
+export const CenterAligned = styled.div`
   text-align: center;
+`;
+
+export const RightAligned = styled.div`
+  text-align: right;
+`;
+
+export const LeftAligned = styled.div`
+  text-align: left;
 `;
 
 export const InputGroup = styled.div`

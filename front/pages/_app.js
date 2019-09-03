@@ -13,8 +13,7 @@ import { GlobalStyle } from '../styles/global';
 class PublicShare extends App {
   static async getInitialProps({ Component, ctx }) {
     const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
-
-    if (ctx.isServer && cookie) {
+    if (cookie) {
       axios.defaults.headers.cookie = cookie;
     }
 

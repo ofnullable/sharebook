@@ -12,7 +12,7 @@ const Nav = () => {
     if (router.pathname === '/signin') {
       return (
         <li>
-          <Link href='/join'>
+          <Link href='/join' prefetch={false}>
             <a>Sign Up</a>
           </Link>
         </li>
@@ -20,7 +20,7 @@ const Nav = () => {
     }
     return (
       <li>
-        <Link href='/signin'>
+        <Link href='/signin' prefetch={false}>
           <a>Sign In</a>
         </Link>
       </li>
@@ -31,7 +31,7 @@ const Nav = () => {
     <HeaderNav>
       <ul>
         <li>
-          <Link href='/'>
+          <Link href='/' prefetch={false}>
             <Homepage>
               <i className='material-icons'>share</i>
               <span>PublicShare</span>

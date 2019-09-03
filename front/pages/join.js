@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SignUpForm } from '../styles/pages/join.styled';
-import { Button, CenteredDiv, InputGroup } from '../styles/global';
+import { Button, CenterAligned, InputGroup, RightAligned } from '../styles/global';
 import { useInput } from '../components/utils/Input';
 
 function Join() {
@@ -22,7 +22,7 @@ function Join() {
   };
 
   return (
-    <CenteredDiv>
+    <CenterAligned>
       <h1>Join - Share your books!</h1>
       <SignUpForm onSubmit={handleSubmit}>
         <InputGroup>
@@ -75,11 +75,13 @@ function Join() {
             onChange={handlePasswordCheckChange}
           />
         </InputGroup>
-        <Button _color='primary' type='submit'>
-          Sign In
-        </Button>
+        <RightAligned>
+          <Button _color='primary' type='submit'>
+            Sign Up
+          </Button>
+        </RightAligned>
       </SignUpForm>
-    </CenteredDiv>
+    </CenterAligned>
   );
 }
 

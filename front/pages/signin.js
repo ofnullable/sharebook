@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useInput } from '../components/utils/Input';
 import { signInRequest } from '../redux/actions/userActions';
 
-import { CenteredDiv, InputGroup, Button } from '../styles/global';
+import { CenterAligned, InputGroup, Button, RightAligned } from '../styles/global';
 import { SignInForm } from '../styles/pages/signin.styled';
 
 function SignIn() {
@@ -19,7 +19,7 @@ function SignIn() {
   };
 
   return (
-    <CenteredDiv>
+    <CenterAligned>
       <h1>Sign in to PublicShare</h1>
       <SignInForm onSubmit={handleSubmit}>
         <InputGroup>
@@ -43,11 +43,13 @@ function SignIn() {
             onChange={passwordHandler}
           />
         </InputGroup>
-        <Button _color='primary' type='submit'>
-          Sign in
-        </Button>
+        <RightAligned>
+          <Button _color='primary' type='submit'>
+            Sign in
+          </Button>
+        </RightAligned>
       </SignInForm>
-    </CenteredDiv>
+    </CenterAligned>
   );
 }
 
