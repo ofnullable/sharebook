@@ -5,11 +5,12 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon",
-    "build": "next build",
-    "prestart": "npm run build",
-    "start": "next start"
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build",
+    "prestart": "cross-env NODE_ENV=production next build",
+    "start": "cross-env NODE_ENV=production next start"
   },
   "dependencies": {
+    "@next/bundle-analyzer": "^9.0.5",
     "axios": "^0.19.0",
     "cross-env": "^5.2.0",
     "fastify": "^2.7.1",
@@ -26,7 +27,9 @@
     "styled-components": "^4.3.2"
   },
   "devDependencies": {
+    "babel-plugin-module-resolver": "^3.2.0",
     "babel-plugin-styled-components": "^1.10.6",
+    "compression-webpack-plugin": "^3.0.0",
     "nodemon": "^1.19.1",
     "webpack": "^4.39.3"
   }

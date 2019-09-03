@@ -7,6 +7,7 @@ import org.slam.publicshare.config.security.handler.RestAccessDeniedHandler;
 import org.slam.publicshare.config.security.handler.RestAuthFailureHandler;
 import org.slam.publicshare.config.security.handler.RestAuthSuccessHandler;
 import org.slam.publicshare.config.security.handler.RestUnauthorizedHandler;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,6 +23,9 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -62,6 +66,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return new HttpStatusReturningLogoutSuccessHandler();
+    }
+
+    @Bean
     public RestAuthenticationFilter authenticationFilter() throws Exception {
         var filter = new RestAuthenticationFilter(authenticationManager());
 
@@ -88,6 +97,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          return new CorsFilter(source);
      }
 
+    @Bean
+    public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
+        return  new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
@@ -99,7 +113,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring()
                 .antMatchers("/error")                  // spring boot default error handler
-                .antMatchers(HttpMethod.OPTIONS, "/**") // for preflight request
                 .antMatchers("/css/**", "/js/**", "/img/**")
                 .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/webjars/**");
     }
@@ -114,6 +127,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/account").permitAll()
+                    .antMatchers(HttpMethod.GET, "/book**").permitAll()
                     .anyRequest().authenticated()
             .and()
                 .exceptionHandling()
@@ -125,7 +139,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
             .and()
                 .logout()
-                    .logoutUrl("/sign-out")
+                    .logoutUrl("/auth/sign-out")
+                    .logoutSuccessHandler(logoutSuccessHandler())
                     .deleteCookies("JSESSIONID", "SPRING_SECURITY_REMEMBER_ME_COOKIE")
                     .clearAuthentication(true)
                     .invalidateHttpSession(true)
@@ -133,7 +148,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                     .key("PUBLIC_SHARE_SECRET_KEY")
                     .authenticationSuccessHandler(authSuccessHandler())
-                    .tokenValiditySeconds(7 * 24 * 60 * 60); // 1 week
+                    .tokenValiditySeconds(7 * 24 * 60 * 60) // 1 week
+            .and()
+                .sessionManagement();
     }
 
 }

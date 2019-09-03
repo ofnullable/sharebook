@@ -1,29 +1,43 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import Link from 'next/link';
+import Router from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useInput } from '../components/utils/Input';
-import { signInRequest } from '../redux/actions/userActions';
+import { useInput } from '@components/utils/Input';
+import { signInRequest } from '@redux/actions/userActions';
 
-import { CenterAligned, InputGroup, Button, RightAligned } from '../styles/global';
-import { SignInForm } from '../styles/pages/signin.styled';
+import {
+  CenterAlignDiv,
+  InputGroup,
+  Button,
+  SpinIcon,
+  CenterForm,
+  ButtonLink,
+} from '@styles/global';
 
 function SignIn() {
   const [username, usernameHandler] = useInput();
   const [password, passwordHandler] = useInput();
+  const { isSignedIn, isLoading } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   const handleSubmit = e => {
     e.preventDefault();
-
     dispatch(signInRequest({ username, password }));
   };
 
+  useEffect(() => {
+    if (isSignedIn) {
+      Router.push('/');
+    }
+  }, [isSignedIn]);
+
   return (
-    <CenterAligned>
-      <h1>Sign in to PublicShare</h1>
-      <SignInForm onSubmit={handleSubmit}>
+    <CenterAlignDiv>
+      <h1>로그인</h1>
+      <CenterForm onSubmit={handleSubmit}>
         <InputGroup>
-          <label htmlFor='username'>Username</label>
+          <label htmlFor='username'>이메일</label>
           <input
             required
             id='username'
@@ -34,7 +48,7 @@ function SignIn() {
           />
         </InputGroup>
         <InputGroup>
-          <label htmlFor='password'>Password</label>
+          <label htmlFor='password'>비밀번호</label>
           <input
             required
             id='password'
@@ -43,13 +57,24 @@ function SignIn() {
             onChange={passwordHandler}
           />
         </InputGroup>
-        <RightAligned>
+        <CenterAlignDiv>
           <Button _color='primary' type='submit'>
-            Sign in
+            {isLoading ? (
+              <SpinIcon size='14px' className='material-icons'>
+                autorenew
+              </SpinIcon>
+            ) : (
+              '로그인'
+            )}
           </Button>
-        </RightAligned>
-      </SignInForm>
-    </CenterAligned>
+        </CenterAlignDiv>
+        <CenterAlignDiv>
+          <Link href='/join' prefetch={false}>
+            <ButtonLink>아직 회원이 아니신가요?</ButtonLink>
+          </Link>
+        </CenterAlignDiv>
+      </CenterForm>
+    </CenterAlignDiv>
   );
 }
 

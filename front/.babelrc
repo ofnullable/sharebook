@@ -1,6 +1,18 @@
 {
   "presets": ["next/babel"],
   "plugins": [
-    ["babel-plugin-styled-components", { "ssr": true, "displayName": false, "preprocess": false }]
+    ["babel-plugin-styled-components", { "ssr": true, "displayName": false, "preprocess": false }],
+    [
+      "module-resolver",
+      {
+        "root": ["./"],
+        "alias": {
+          "@components": "./components",
+          "@styles": "./styles",
+          "@redux": "./redux",
+          "@utils": "./utils"
+        }
+      }
+    ]
   ]
 }

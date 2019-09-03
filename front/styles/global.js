@@ -1,12 +1,13 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, keyframes } from 'styled-components';
 import device from './device';
 import { transition } from './mixins';
 import { normalize } from './nomalize';
 import { COLOR_SCHEME } from './colors';
 
 const buttonColor = props => `
-  color: ${COLOR_SCHEME.white};
-  background-color: ${COLOR_SCHEME[`${props._color}`]};
+  color: ${props._color ? COLOR_SCHEME.white : COLOR_SCHEME.primary};
+  border: 1px solid ${COLOR_SCHEME[`${props._color}`] || 'white'};
+  background-color: ${COLOR_SCHEME[`${props._color}`] || 'white'};
 `;
 
 export const Button = styled.button`
@@ -14,26 +15,61 @@ export const Button = styled.button`
   ${buttonColor};
   cursor: pointer;
   display: inline-block;
-  padding: 5px 15px;
-  border: 1px solid;
+  padding: 3px 15px;
   border-radius: 5px;
   text-align: center;
 `;
 
-export const CenterAligned = styled.div`
+export const ButtonLink = Button.withComponent('a');
+
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+`;
+
+export const SpinIcon = styled.i`
+  animation: ${spin} 1s infinite linear;
+  font-size: ${props => props.size};
+`;
+
+export const CenterAlignDiv = styled.div`
+  padding-top: 15px;
   text-align: center;
 `;
 
-export const RightAligned = styled.div`
+export const RightAlignDiv = styled.div`
+  padding-top: 15px;
   text-align: right;
 `;
 
-export const LeftAligned = styled.div`
+export const LeftAlignDiv = styled.div`
+  padding-top: 15px;
   text-align: left;
 `;
 
+export const CenterForm = styled.form`
+  ${device.laptops`
+    max-width: 500px;
+  `}
+  ${device.tablets`
+    max-width: 350px;
+  `}
+  ${device.mobiles`
+    width: 100%;
+  `}
+  margin: 0 auto;
+  overflow: auto;
+`;
+
 export const InputGroup = styled.div`
-  margin: 15px 0;
+  padding-bottom: 15px;
+  & > label .import {
+    color: ${COLOR_SCHEME.red};
+  }
 `;
 
 export const GlobalStyle = createGlobalStyle`
@@ -43,6 +79,11 @@ export const GlobalStyle = createGlobalStyle`
     ${device.laptops`
       max-width: 1140px;
       margin: 0 auto;
+    `}
+    ${device.tablets`
+      max-width: 770px;
+      margin: 0 auto;
+      padding:15px;
     `}
     ${device.mobiles`
       padding:15px;
@@ -56,6 +97,9 @@ export const GlobalStyle = createGlobalStyle`
   h1 {
     ${device.laptops`
       font-size: 2em;
+    `};
+    ${device.tablets`
+      font-size: 1.7em;
     `};
     ${device.mobiles`
       font-size: 1.5em;

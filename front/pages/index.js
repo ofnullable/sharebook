@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { loadBookListRequest } from '@redux/actions/bookActions';
+
 const Home = () => (
   <div>
     <div className='hero'>
@@ -66,8 +68,8 @@ const Home = () => (
   </div>
 );
 
-Home.getInitialProps = async context => {
-  console.log(context);
+Home.getInitialProps = async ctx => {
+  ctx.store.dispatch(loadBookListRequest());
 };
 
 export default Home;

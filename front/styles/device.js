@@ -19,31 +19,21 @@ const laptops = styles => `
 `;
 
 /* 
-##Device = Tablets, Ipads (portrait)
-##Screen = B/w 768px to 1024px
+##Device = Tablets (include low resolution Tablets), Ipads (Portrait), Mobiles (Landscape)
+##Screen = B/w 481px to 1024px
 */
 const tablets = styles => `
-  @media (min-width: 768px) and (max-width: 1024px) {
-    ${styles}
-  }
-`;
-
-/* 
-##Device = Tablets, Ipads (landscape)
-##Screen = B/w 768px to 1024px
-*/
-const landTablets = styles => `
-  @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  @media (min-width: 481px) and (max-width: 1024px) {
     ${styles}
   }
 `;
 
 /* 
 ##Device = Most of the Smartphones Mobiles (Portrait)
-##Screen = B/w 320px to 479px
+##Screen = B/w 320px to 480px
 */
 const mobiles = styles => `
-  @media (min-width: 320px) and (max-width: 767px) {
+  @media (min-width: 320px) and (max-width: 480px) {
     ${styles}
   }
 `;
@@ -52,6 +42,5 @@ export default {
   desktops,
   laptops,
   tablets,
-  landTablets,
   mobiles,
 };
