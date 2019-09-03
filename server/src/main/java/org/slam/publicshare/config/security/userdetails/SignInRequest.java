@@ -17,4 +17,5 @@ public class SignInRequest {
         this.username = username;
         this.password = password;
     }
+
 }

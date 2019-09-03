@@ -1,7 +1,7 @@
 package org.slam.publicshare.error;
 
-import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.account.exception.EmailDuplicationException;
+import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.book.exception.NoSuchBookException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

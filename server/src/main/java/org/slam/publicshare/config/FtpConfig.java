@@ -1,8 +1,9 @@
 package org.slam.publicshare.config;
 
-import lombok.extern.log4j.Log4j2;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,10 +12,12 @@ import org.springframework.integration.file.remote.session.CachingSessionFactory
 import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
 
-@Log4j2
+
 @Configuration
 @PropertySource("classpath:/properties/ftp.properties")
 public class FtpConfig {
+
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Value("${ftp.host}")
     private String FTP_HOST;
