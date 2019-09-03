@@ -2,7 +2,7 @@ import { css } from 'styled-components';
 
 export const normalize = css`
   html {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1;
     -webkit-text-size-adjust: 100%;
   }
@@ -10,7 +10,7 @@ export const normalize = css`
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Fira Mono', monospace, 'Do Hyeon', sans-serif;
+    font-family: 'Do Hyeon', monospace, sans-serif;
   }
   body {
     border: none;
