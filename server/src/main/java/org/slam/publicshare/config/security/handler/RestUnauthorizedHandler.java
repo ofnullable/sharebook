@@ -4,8 +4,8 @@ import org.slam.publicshare.error.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,19 +14,19 @@ import java.io.IOException;
 
 import static org.slam.publicshare.config.security.handler.HandlerUtils.errorToString;
 
-public class AuthDeniedHandler implements AccessDeniedHandler {
+public class RestUnauthorizedHandler implements AuthenticationEntryPoint {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public void handle(HttpServletRequest req, HttpServletResponse res, AccessDeniedException e) throws IOException, ServletException {
-        log.debug("access denied, {}", e.getMessage());
+    public void commence(HttpServletRequest req, HttpServletResponse res, AuthenticationException e) throws IOException, ServletException {
+        log.debug("unauthorized entry: {}", e.getMessage());
 
-        var stringifiedError = errorToString(ErrorCode.ACCESS_DENIED, req.getRequestURI());
+        final var error = errorToString(ErrorCode.UNAUTHORIZED, req.getRequestURI());
 
-        res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        res.setStatus(res.SC_UNAUTHORIZED);
         res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        res.getWriter().write(stringifiedError);
+        res.getWriter().write(error);
         res.flushBuffer();
     }
 
