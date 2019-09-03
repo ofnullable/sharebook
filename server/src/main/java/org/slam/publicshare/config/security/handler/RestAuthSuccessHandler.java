@@ -15,25 +15,25 @@ import java.io.IOException;
 
 import static org.slam.publicshare.config.security.handler.HandlerUtils.authToString;
 
-public class AuthSuccessHandler implements AuthenticationSuccessHandler {
+public class RestAuthSuccessHandler implements AuthenticationSuccessHandler {
 
     private ObjectMapper mapper = new ObjectMapper();
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException {
-        log.debug("authentication success: {}", auth.getName());
-        clearAuthFailAttribute(req); // clear authentication fail attribute
+    public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication authentication) throws IOException {
+        log.debug("authentication success: {}", authentication.getName());
+        clearSessionAttribute(req); // clear authentication fail attribute
 
-        final var stringifiedAuth = authToString(auth);
+        final var auth = authToString(authentication);
 
-        res.setStatus(HttpServletResponse.SC_OK);
+        res.setStatus(res.SC_OK);
         res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        res.getWriter().write(stringifiedAuth);
+        res.getWriter().write(auth);
         res.flushBuffer();
     }
 
-    private void clearAuthFailAttribute(HttpServletRequest req) {
+    private void clearSessionAttribute(HttpServletRequest req) {
         HttpSession session = req.getSession(false);
         if (session == null) {
             return;

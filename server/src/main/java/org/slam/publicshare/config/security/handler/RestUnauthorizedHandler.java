@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import static org.slam.publicshare.config.security.handler.HandlerUtils.errorToString;
 
-public class UnauthorizedHandler implements AuthenticationEntryPoint {
+public class RestUnauthorizedHandler implements AuthenticationEntryPoint {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -22,11 +22,11 @@ public class UnauthorizedHandler implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest req, HttpServletResponse res, AuthenticationException e) throws IOException, ServletException {
         log.debug("unauthorized entry: {}", e.getMessage());
 
-        final var stringifiedError = errorToString(ErrorCode.UNAUTHORIZED, req.getRequestURI());
+        final var error = errorToString(ErrorCode.UNAUTHORIZED, req.getRequestURI());
 
         res.setStatus(res.SC_UNAUTHORIZED);
         res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        res.getWriter().write(stringifiedError);
+        res.getWriter().write(error);
         res.flushBuffer();
     }
 

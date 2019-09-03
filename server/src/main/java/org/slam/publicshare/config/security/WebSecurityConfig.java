@@ -3,10 +3,10 @@ package org.slam.publicshare.config.security;
 import lombok.RequiredArgsConstructor;
 import org.slam.publicshare.account.service.AccountFindService;
 import org.slam.publicshare.config.security.filter.RestAuthenticationFilter;
-import org.slam.publicshare.config.security.handler.AuthDeniedHandler;
-import org.slam.publicshare.config.security.handler.AuthFailureHandler;
-import org.slam.publicshare.config.security.handler.AuthSuccessHandler;
-import org.slam.publicshare.config.security.handler.UnauthorizedHandler;
+import org.slam.publicshare.config.security.handler.RestAccessDeniedHandler;
+import org.slam.publicshare.config.security.handler.RestAuthFailureHandler;
+import org.slam.publicshare.config.security.handler.RestAuthSuccessHandler;
+import org.slam.publicshare.config.security.handler.RestUnauthorizedHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,6 +22,12 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -37,48 +43,63 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationEntryPoint unauthorizedHandler() {
-        return new UnauthorizedHandler();
+        return new RestUnauthorizedHandler();
     }
 
     @Bean
     public AccessDeniedHandler authDeniedHandler() {
-        return new AuthDeniedHandler();
+        return new RestAccessDeniedHandler();
     }
 
     @Bean
     public AuthenticationSuccessHandler authSuccessHandler() {
-        return new AuthSuccessHandler();
+        return new RestAuthSuccessHandler();
     }
 
     @Bean
     public AuthenticationFailureHandler authFailureHandler() {
-        return new AuthFailureHandler();
+        return new RestAuthFailureHandler();
     }
 
     @Bean
     public RestAuthenticationFilter authenticationFilter() throws Exception {
         var filter = new RestAuthenticationFilter(authenticationManager());
 
-        filter.setFilterProcessesUrl("/auth/sign-in");
+        filter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/auth/sign-in", "POST"));
 
         filter.setAuthenticationSuccessHandler(authSuccessHandler());
         filter.setAuthenticationFailureHandler(authFailureHandler());
 
-        // check authenticationManager
+        // check authenticationManager is set
         filter.afterPropertiesSet();
 
         return filter;
     }
 
+     @Bean
+     public CorsFilter corsFilter() {
+         var source = new UrlBasedCorsConfigurationSource();
+         var config = new CorsConfiguration();
+         config.setAllowedOrigins(List.of("*", "http://localhost:3010"));
+         config.addAllowedMethod("*");
+         config.addAllowedHeader("*");
+         config.setAllowCredentials(true);
+         source.registerCorsConfiguration("/**", config);
+         return new CorsFilter(source);
+     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(accountFindService).passwordEncoder(passwordEncoder());
+        auth
+                .userDetailsService(accountFindService)
+                .passwordEncoder(passwordEncoder());
     }
 
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-                .antMatchers("/error") // spring boot default error handler
+                .antMatchers("/error")                  // spring boot default error handler
+                .antMatchers(HttpMethod.OPTIONS, "/**") // for preflight request
                 .antMatchers("/css/**", "/js/**", "/img/**")
                 .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/webjars/**");
     }
@@ -86,6 +107,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .addFilter(corsFilter())
+                .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .httpBasic()
             .and()
@@ -97,7 +120,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .authenticationEntryPoint(unauthorizedHandler())
                     .accessDeniedHandler(authDeniedHandler())
             .and()
-                .addFilter(authenticationFilter())
                 .formLogin()
                     .loginProcessingUrl("/auth/sign-in")
                     .permitAll()
@@ -109,7 +131,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .invalidateHttpSession(true)
             .and()
                 .rememberMe()
-                    .key("SECRET_KEY")
+                    .key("PUBLIC_SHARE_SECRET_KEY")
                     .authenticationSuccessHandler(authSuccessHandler())
                     .tokenValiditySeconds(7 * 24 * 60 * 60); // 1 week
     }

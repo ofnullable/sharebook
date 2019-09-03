@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import static org.slam.publicshare.config.security.handler.HandlerUtils.errorToString;
 
-public class AuthFailureHandler implements AuthenticationFailureHandler {
+public class RestAuthFailureHandler implements AuthenticationFailureHandler {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -22,11 +22,11 @@ public class AuthFailureHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse res, AuthenticationException e) throws IOException, ServletException {
         log.debug("authentication failure: {}", e.getMessage());
 
-        final var stringifiedError = errorToString(ErrorCode.BAD_CREDENTIALS, req.getRequestURI());
+        final var error = errorToString(ErrorCode.BAD_CREDENTIALS, req.getRequestURI());
 
         res.setStatus(res.SC_BAD_REQUEST);
         res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        res.getWriter().write(stringifiedError);
+        res.getWriter().write(error);
         res.flushBuffer();
     }
 

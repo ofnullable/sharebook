@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import static org.slam.publicshare.config.security.handler.HandlerUtils.errorToString;
 
-public class AuthDeniedHandler implements AccessDeniedHandler {
+public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -22,11 +22,11 @@ public class AuthDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest req, HttpServletResponse res, AccessDeniedException e) throws IOException, ServletException {
         log.debug("access denied, {}", e.getMessage());
 
-        var stringifiedError = errorToString(ErrorCode.ACCESS_DENIED, req.getRequestURI());
+        final var error = errorToString(ErrorCode.ACCESS_DENIED, req.getRequestURI());
 
-        res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        res.setStatus(res.SC_FORBIDDEN);
         res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        res.getWriter().write(stringifiedError);
+        res.getWriter().write(error);
         res.flushBuffer();
     }
 
