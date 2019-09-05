@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 import { signOutRequest } from '@redux/actions/userActions';
 
-import { HeaderNav, Homepage } from './Nav.styled';
+import { HeaderNav, HomepageLink, Homepage } from './Nav.styled';
 
 const Nav = () => {
   const { isSignedIn } = useSelector(state => state.user);
@@ -16,8 +16,7 @@ const Nav = () => {
     dispatch(signOutRequest());
   };
 
-  const renderSecondMenu = () => {
-    // better way..
+  const getSecondMenu = () => {
     if (router.pathname === '/signin') {
       return;
     }
@@ -37,21 +36,37 @@ const Nav = () => {
     );
   };
 
-  return (
-    <HeaderNav>
-      <ul>
-        <li>
-          <Link href='/' prefetch={false}>
+  const renderMenu = () => {
+    const secondMenu = getSecondMenu();
+    if (router.pathname === '/') {
+      return (
+        <ul>
+          <li>
             <Homepage>
               <i className='material-icons'>share</i>
               <span>PublicShare</span>
             </Homepage>
+          </li>
+          {secondMenu}
+        </ul>
+      );
+    }
+    return (
+      <ul>
+        <li>
+          <Link href='/' prefetch={false}>
+            <HomepageLink>
+              <i className='material-icons'>share</i>
+              <span>PublicShare</span>
+            </HomepageLink>
           </Link>
         </li>
-        {renderSecondMenu()}
+        {secondMenu}
       </ul>
-    </HeaderNav>
-  );
+    );
+  };
+
+  return <HeaderNav>{renderMenu()}</HeaderNav>;
 };
 
 export default Nav;
