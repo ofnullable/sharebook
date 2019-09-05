@@ -5,14 +5,15 @@ import org.slam.publicshare.book.dto.BookResponse;
 import org.slam.publicshare.book.dto.SaveBookRequest;
 import org.slam.publicshare.book.service.BookFindService;
 import org.slam.publicshare.book.service.BookSaveService;
+import org.slam.publicshare.common.dto.PageableRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,10 +25,9 @@ public class BookController {
     private final BookFindService bookFindService;
 
     @GetMapping("/books")
-    public List<BookResponse> findAll() {
-        return bookFindService.findAll().parallelStream()
-                .map(BookResponse::new)
-                .collect(Collectors.toList());
+    public Page<BookResponse> findAll(@Nullable final String searchText, @Valid final PageableRequest pageableRequest) {
+        return bookFindService.findAll(searchText, pageableRequest)
+                .map(BookResponse::new);
     }
 
     @PostMapping("/book")

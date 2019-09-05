@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.slam.publicshare.common.entity.Auditable;
 
 import javax.persistence.*;
@@ -36,6 +38,7 @@ public class Book extends Auditable {
     private String owner;
 
     @OrderBy("sortNo ASC")
+    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "book", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<BookImage> images = new ArrayList<>();
 
@@ -49,7 +52,6 @@ public class Book extends Auditable {
     }
 
     public void addImages(List<BookImage> images) {
-
         this.images.addAll(images.stream().peek(i -> i.addBook(this)).collect(Collectors.toList()));
     }
 
