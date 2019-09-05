@@ -11,7 +11,14 @@ app.prepare().then(() => {
 
   fastify.register(require('fastify-static'), {
     root: path.join(__dirname, 'static'),
-    prefix: '/static/',
+    prefix: '/static',
+  });
+
+  fastify.get('/book/:id', async (req, reply) => {
+    const id = req.params.id;
+    return app.render(req.req, reply.res, '/book', { id }).then(() => {
+      reply.sent = true;
+    });
   });
 
   fastify.get('*', (req, reply) => {
