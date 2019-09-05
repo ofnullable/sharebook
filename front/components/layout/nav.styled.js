@@ -31,7 +31,7 @@ export const HeaderNav = styled.nav`
   }
 `;
 
-export const Homepage = styled.a`
+export const HomepageLink = styled.a`
   ${device.laptops`
     & span, & i {
       font-size: 1.5em;
@@ -65,4 +65,8 @@ export const Homepage = styled.a`
       vertical-align: middle;
     }
   `}
+  color: white;
+  cursor: pointer;
 `;
+
+export const Homepage = HomepageLink.withComponent('div');

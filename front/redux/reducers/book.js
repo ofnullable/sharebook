@@ -1,10 +1,17 @@
 import produce from 'immer';
 
 import { BOOK } from '@redux/actionTypes';
+import Book from '../../pages/book';
 
 const initial = {
   list: {
     data: [],
+    isLast: false,
+    isLoading: false,
+    error: {},
+  },
+  detail: {
+    data: {},
     isLoading: false,
     error: {},
   },
@@ -19,11 +26,25 @@ export default (state = initial, action) => {
         break;
       case BOOK.LOAD_BOOK_LIST_SUCCESS:
         draft.list.data = action.data;
+        draft.list.isLast = action.isLast;
         draft.list.isLoading = false;
         break;
       case BOOK.LOAD_BOOK_LIST_FAILURE:
         draft.list.error = action.error;
         draft.list.isLoading = false;
+        break;
+
+      case BOOK.LOAD_BOOK_REQUEST:
+        draft.detail.isLoading = true;
+        draft.detail.error = {};
+        break;
+      case BOOK.LOAD_BOOK_SUCCESS:
+        draft.detail.isLoading = false;
+        draft.detail.data = action.data;
+        break;
+      case BOOK.LOAD_BOOK_FAILURE:
+        draft.detail.isLoading = false;
+        draft.detail.error = action.error;
         break;
 
       default:

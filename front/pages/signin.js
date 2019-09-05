@@ -60,7 +60,7 @@ function SignIn() {
         <CenterAlignDiv>
           <Button _color='primary' type='submit'>
             {isLoading ? (
-              <SpinIcon size='14px' className='material-icons'>
+              <SpinIcon _size='14px' className='material-icons'>
                 autorenew
               </SpinIcon>
             ) : (

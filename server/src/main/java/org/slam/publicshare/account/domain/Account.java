@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.slam.publicshare.common.entity.Auditable;
+import org.slam.publicshare.common.domain.Auditable;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 import javax.persistence.*;

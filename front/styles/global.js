@@ -33,7 +33,9 @@ const spin = keyframes`
 
 export const SpinIcon = styled.i`
   animation: ${spin} 1s infinite linear;
-  font-size: ${props => props.size};
+  font-size: ${props => props._size};
+  color: ${props => COLOR_SCHEME[`${props._color}`] || 'inherit'};
+  vertical-align: middle;
 `;
 
 export const CenterAlignDiv = styled.div`
@@ -74,10 +76,10 @@ export const InputGroup = styled.div`
 
 export const GlobalStyle = createGlobalStyle`
   ${normalize}
-
+  
   .container {
     ${device.laptops`
-      max-width: 1140px;
+      max-width: 1080px;
       margin: 0 auto;
     `}
     ${device.tablets`
@@ -89,11 +91,9 @@ export const GlobalStyle = createGlobalStyle`
       padding:15px;
     `}
   }
-
   ul {
     padding: 0;
   }
-
   h1 {
     ${device.laptops`
       font-size: 2em;
@@ -104,12 +104,22 @@ export const GlobalStyle = createGlobalStyle`
     ${device.mobiles`
       font-size: 1.5em;
     `};
+    &.title {
+      ${device.laptops`
+        font-size: 3em;
+      `};
+      ${device.tablets`
+        font-size: 2.5em;
+      `};
+      width: 100%;
+      margin: 0;
+      padding-top: 1em;
+      text-align: center;
+    }
   }
-
   form {
     text-align: left;
   }
-
   input {
     width: 100%;
     padding: 5px 10px;

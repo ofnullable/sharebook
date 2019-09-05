@@ -8,17 +8,16 @@ const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = withBundleAnalyzer({
   webpack(config) {
-    const plugins = [
-      ...config.plugins,
-      // new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /^\.\/ko$/),
-    ];
+    // config.plugins = [
+    //   ...config.plugins,
+    //    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /^\.\/ko$/),
+    // ];
     if (isProd) {
-      plugins.push(new CompressionPlugin()); // main.js.gz
+      config.plugins.push(new CompressionPlugin()); // main.js.gz
     }
 
     config = {
       ...config,
-      plugins,
       mode: isProd ? 'production' : 'development',
       devtool: isProd ? 'hidden-source-map' : 'eval',
       node: {
