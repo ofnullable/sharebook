@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -53,21 +53,19 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-
-        log.debug("handle MethodArgumentNotValidException: {}", ex.getBindingResult());
+    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.debug("handle BindException: {}", ex.getBindingResult());
         final var fieldErrors = getFieldErrors(ex.getBindingResult());
-        return buildResponseEntity(bindErrorWithFieldErrors(ErrorCode.INVALID_INPUT_VALUE, fieldErrors, request));
+        return buildResponseEntity(bindErrorWithFields(ErrorCode.INVALID_INPUT_VALUE, fieldErrors, request));
     }
 
     private List<ApiError.FieldError> getFieldErrors(BindingResult bindingResult) {
         return bindingResult.getFieldErrors().parallelStream()
                 .map(e -> ApiError.FieldError.builder()
-                           .field(e.getField())
-                           .reason(e.getDefaultMessage())
-                           .value(e.getRejectedValue())
-                           .build()
+                        .field(e.getField())
+                        .reason(e.getDefaultMessage())
+                        .value(e.getRejectedValue())
+                        .build()
                 ).collect(toList());
     }
 
@@ -84,7 +82,7 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
                 .build();
     }
 
-    private ApiError bindErrorWithFieldErrors(ErrorCode errorCode, List<ApiError.FieldError> errors, WebRequest request) {
+    private ApiError bindErrorWithFields(ErrorCode errorCode, List<ApiError.FieldError> errors, WebRequest request) {
         var req = ((ServletWebRequest) request).getRequest();
         return ApiError.builder()
                 .status(errorCode.getStatus())

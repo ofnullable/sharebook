@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.slam.publicshare.book.domain.Book;
 import org.slam.publicshare.book.exception.NoSuchBookException;
 import org.slam.publicshare.book.repository.BookRepository;
+import org.slam.publicshare.common.dto.PageableRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +19,11 @@ public class BookFindService {
                 .orElseThrow(() -> new NoSuchBookException(id));
     }
 
-    public List<Book> findAll() {
-        return bookRepository.findAll();
+    public Page<Book> findAll(String searchText, PageableRequest pageableRequest) {
+        if (searchText == null) {
+            return bookRepository.findAll(pageableRequest.of());
+        }
+        return bookRepository.findByTitleContaining(searchText, pageableRequest.of());
     }
+
 }
