@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.slam.publicshare.common.entity.Auditable;
+import org.slam.publicshare.common.domain.Auditable;
 
 import javax.persistence.*;
 import java.util.ArrayList;

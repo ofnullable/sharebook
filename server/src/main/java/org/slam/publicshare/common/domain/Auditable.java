@@ -1,4 +1,4 @@
-package org.slam.publicshare.common.entity;
+package org.slam.publicshare.common.domain;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;
