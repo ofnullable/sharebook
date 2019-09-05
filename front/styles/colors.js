@@ -160,7 +160,7 @@ const colors = {
 };
 
 export const COLOR_SCHEME = {
-  white: colors.gray[1],
+  white: colors.gray[0],
   lightGray: colors.gray[2],
   gray: colors.gray[4],
   red: colors.red[6],
