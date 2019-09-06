@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { useInput } from '@components/utils/Input';
 
-import { Button, CenterAlignDiv, InputGroup, CenterForm } from '@styles/global';
+import { Button, CenterDiv, InputGroup, CenterForm } from '@styles/global';
 
 function Join() {
   const [username, usernameHandler] = useInput();
@@ -26,8 +26,8 @@ function Join() {
   };
 
   return (
-    <CenterAlignDiv>
-      <h1>회원가입</h1>
+    <CenterDiv>
+      <h1 className='title'>회원가입</h1>
       <CenterForm onSubmit={handleSubmit}>
         <InputGroup>
           <label htmlFor='username'>
@@ -79,7 +79,7 @@ function Join() {
             onChange={handlePasswordCheckChange}
           />
         </InputGroup>
-        <CenterAlignDiv>
+        <CenterDiv>
           <Button _color='primary' type='submit'>
             {isLoading ? (
               <SpinIcon _size='14px' className='material-icons'>
@@ -89,9 +89,9 @@ function Join() {
               '회원가입'
             )}
           </Button>
-        </CenterAlignDiv>
+        </CenterDiv>
       </CenterForm>
-    </CenterAlignDiv>
+    </CenterDiv>
   );
 }
 

@@ -2,20 +2,15 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { loadBookRequest } from '@redux/actions/bookActions';
+import BookDetail from '@components/BookDetail';
 
-const Book = ({ id }) => {
+const Book = () => {
   const { data } = useSelector(state => state.book.detail);
 
   return (
-    <div>
-      <h1 className='title'>{data.title}</h1>
-      <div>
-        <img src={`https://placeimg.com/540/500/animals`} alt='' style={{ display: 'block' }} />
-      </div>
-      <p>{`${data.author} | ${data.publisher}`}</p>
-      <span>{data.createdAt}</span>
-      <div>{data.description}</div>
-    </div>
+    <>
+      <BookDetail detail={data} />
+    </>
   );
 };
 

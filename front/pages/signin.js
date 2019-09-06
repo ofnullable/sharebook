@@ -6,14 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useInput } from '@components/utils/Input';
 import { signInRequest } from '@redux/actions/userActions';
 
-import {
-  CenterAlignDiv,
-  InputGroup,
-  Button,
-  SpinIcon,
-  CenterForm,
-  ButtonLink,
-} from '@styles/global';
+import { CenterDiv, InputGroup, Button, SpinIcon, CenterForm, ButtonLink } from '@styles/global';
 
 function SignIn() {
   const [username, usernameHandler] = useInput();
@@ -33,8 +26,8 @@ function SignIn() {
   }, [isSignedIn]);
 
   return (
-    <CenterAlignDiv>
-      <h1>로그인</h1>
+    <CenterDiv>
+      <h1 className='title'>로그인</h1>
       <CenterForm onSubmit={handleSubmit}>
         <InputGroup>
           <label htmlFor='username'>이메일</label>
@@ -57,24 +50,26 @@ function SignIn() {
             onChange={passwordHandler}
           />
         </InputGroup>
-        <CenterAlignDiv>
-          <Button _color='primary' type='submit'>
-            {isLoading ? (
+        <CenterDiv>
+          {isLoading ? (
+            <Button _color='primary' type='submit' disabled>
               <SpinIcon _size='14px' className='material-icons'>
                 autorenew
               </SpinIcon>
-            ) : (
-              '로그인'
-            )}
-          </Button>
-        </CenterAlignDiv>
-        <CenterAlignDiv>
+            </Button>
+          ) : (
+            <Button _color='primary' type='submit'>
+              로그인
+            </Button>
+          )}
+        </CenterDiv>
+        <CenterDiv>
           <Link href='/join' prefetch={false}>
             <ButtonLink>아직 회원이 아니신가요?</ButtonLink>
           </Link>
-        </CenterAlignDiv>
+        </CenterDiv>
       </CenterForm>
-    </CenterAlignDiv>
+    </CenterDiv>
   );
 }
 

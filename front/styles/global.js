@@ -38,17 +38,17 @@ export const SpinIcon = styled.i`
   vertical-align: middle;
 `;
 
-export const CenterAlignDiv = styled.div`
+export const CenterDiv = styled.div`
   padding-top: 15px;
   text-align: center;
 `;
 
-export const RightAlignDiv = styled.div`
+export const RightDiv = styled.div`
   padding-top: 15px;
   text-align: right;
 `;
 
-export const LeftAlignDiv = styled.div`
+export const LeftDiv = styled.div`
   padding-top: 15px;
   text-align: left;
 `;
@@ -76,19 +76,16 @@ export const InputGroup = styled.div`
 
 export const GlobalStyle = createGlobalStyle`
   ${normalize}
-  
   .container {
     ${device.laptops`
       max-width: 1080px;
       margin: 0 auto;
     `}
     ${device.tablets`
-      max-width: 770px;
-      margin: 0 auto;
-      padding:15px;
+      padding: 0 15px;
     `}
     ${device.mobiles`
-      padding:15px;
+      padding: 0 20px;
     `}
   }
   ul {
