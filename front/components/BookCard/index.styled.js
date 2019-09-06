@@ -16,16 +16,17 @@ export const Card = styled.div`
     width: 48%;
     margin: 1%;
   `};
-  display: inline-block;
   color: initial;
-  border-radius: 10px;
+  text-align: left;
+  display: inline-block;
+  border-radius: 5px;
   border: 1px solid rgba(0, 0, 0, 0.125);
   background-color: ${COLOR_SCHEME.white};
 
   & img {
     width: 100%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
   }
 `;
 
@@ -33,7 +34,7 @@ export const CardBody = styled.div`
   padding: 10px;
   & .card-title {
     ${device.laptops`
-      font-size: 1.5em;
+      font-size: 1.7em;
     `};
     ${device.tablets`
       font-size: 1.5em; 
@@ -41,10 +42,10 @@ export const CardBody = styled.div`
     ${device.mobiles`
       font-size: 1.2em;
     `};
-    margin: 0.5em;
+    margin: 0.5em 0;
   }
   & .description {
-    margin: 0.5em;
+    margin: 0.5em 0;
     color: ${COLOR_SCHEME.border};
     overflow: hidden;
     white-space: nowrap;

@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { Card, CardBody } from './BookCard.styled';
+import { Card, CardBody } from './index.styled';
 
 function BookCard({ data }) {
   return (
@@ -12,7 +12,7 @@ function BookCard({ data }) {
     >
       <a>
         <Card>
-          <img src='/static/no-image.png' />
+          <img src='https://placeimg.com/350/400/animals' />
           <CardBody>
             <h2 className='card-title'>{data.title}</h2>
             <p className='description'>{`${data.author} | ${data.publisher}`}</p>

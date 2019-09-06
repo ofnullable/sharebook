@@ -7,7 +7,7 @@ export const SearchForm = styled.form`
     max-width: 60%;
   `}
   ${device.tablets`
-    max-width: 80%;
+    max-width: calc(720px - 2%);
   `}
   ${device.mobiles`
     width: 100%;

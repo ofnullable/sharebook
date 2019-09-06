@@ -19,21 +19,21 @@ const laptops = styles => `
 `;
 
 /* 
-##Device = Tablets (include low resolution Tablets), Ipads (Portrait), Mobiles (Landscape)
-##Screen = B/w 481px to 1024px
+##Device = Tablets (include low resolution Tablets), Ipads (Portrait)
+##Screen = B/w 768px to 1024px
 */
 const tablets = styles => `
-  @media (min-width: 481px) and (max-width: 1024px) {
+  @media (min-width: 768px) and (max-width: 1024px) {
     ${styles}
   }
 `;
 
 /* 
-##Device = Most of the Smartphones Mobiles (Portrait)
-##Screen = B/w 320px to 480px
+##Device = Most of the Smartphones Mobiles (Portrait), Mobiles (Landscape)
+##Screen = B/w 320px to 767px
 */
 const mobiles = styles => `
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 767px) {
     ${styles}
   }
 `;
