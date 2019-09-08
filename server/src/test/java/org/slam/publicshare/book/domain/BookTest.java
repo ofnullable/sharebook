@@ -3,8 +3,6 @@ package org.slam.publicshare.book.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BookTest {
@@ -15,12 +13,10 @@ public class BookTest {
             .publisher("test")
             .description("book for test!")
             .owner("test1@asd.com")
+            .imageUrl("")
             .build();
 
-    private List<BookImage> images = List.of(
-            BookImage.builder().imageUrl("share/book/20190830/214213721-close.png").sortNo(0).build(),
-            BookImage.builder().imageUrl("share/book/20190830/214213721-next.png").sortNo(1).build()
-    );
+    private BookCategory category = BookCategory.of("운영체제");
 
     @Test
     @DisplayName("Builder로 인스턴스 생성")
@@ -32,17 +28,10 @@ public class BookTest {
     }
 
     @Test
-    @DisplayName("BookImage 추가")
-    public void add_image() {
-        book.addImage(images.get(0));
-        assertEquals(book.getImages().size(), 1);
-    }
-
-    @Test
-    @DisplayName("BookImage 리스트 추가")
-    public void add_images() {
-        book.addImages(images);
-        assertEquals(book.getImages().size(), 2);
+    @DisplayName("도서 카테고리 추가")
+    public void book_set_category_test() {
+        book.setCategory(category);
+        assertEquals(book.getCategory().getName(), category.getName());
     }
 
 }

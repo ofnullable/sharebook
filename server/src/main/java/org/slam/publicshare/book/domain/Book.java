@@ -4,14 +4,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.slam.publicshare.common.domain.Auditable;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -31,33 +26,30 @@ public class Book extends Auditable {
     @Column(nullable = false)
     private String publisher;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, optional = false)
+    private BookCategory category;
+
     @Column(nullable = false)
     private String description;
 
     @Column(nullable = false)
     private String owner;
 
-    @OrderBy("sortNo ASC")
-    @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<BookImage> images = new ArrayList<>();
+    @Column(nullable = false)
+    private String imageUrl;
 
     @Builder
-    public Book(String title, String author, String publisher, String description, String owner) {
+    public Book(String title, String author, String publisher, String description, String owner, String imageUrl) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.description = description;
         this.owner = owner;
+        this.imageUrl = imageUrl;
     }
 
-    public void addImages(List<BookImage> images) {
-        this.images.addAll(images.stream().peek(i -> i.addBook(this)).collect(Collectors.toList()));
-    }
-
-    public void addImage(BookImage image) {
-        image.addBook(this);
-        this.images.add(image);
+    public void setCategory(BookCategory category) {
+        this.category = category;
     }
 
 }
