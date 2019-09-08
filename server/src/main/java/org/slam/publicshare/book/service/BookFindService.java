@@ -23,7 +23,7 @@ public class BookFindService {
         if (searchText == null) {
             return bookRepository.findAll(pageableRequest.of());
         }
-        return bookRepository.findByTitleContaining(searchText, pageableRequest.of());
+        return bookRepository.findByTitleContainingIgnoreCase(searchText, pageableRequest.of());
     }
 
 }

@@ -127,7 +127,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/account").permitAll()
-                    .antMatchers(HttpMethod.GET, "/book/**", "/books/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/**").permitAll()
                     .anyRequest().authenticated()
             .and()
                 .exceptionHandling()

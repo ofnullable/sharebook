@@ -2,7 +2,6 @@ import { css } from 'styled-components';
 
 export const normalize = css`
   html {
-    font-size: 16px;
     line-height: 1;
     -webkit-text-size-adjust: 100%;
   }
