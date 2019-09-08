@@ -16,7 +16,7 @@ function* watchLoadBookListRequest() {
 function* loadBookList({ page, size, searchText }) {
   try {
     const response = yield call(loadBookListApi, { page, size, searchText });
-    yield put(loadBookListSuccess(response.data.content, response.data.last));
+    yield put(loadBookListSuccess(response.data));
   } catch (e) {
     console.error(e);
     yield put(loadBookListFailure((e.response && e.response.data) || e));

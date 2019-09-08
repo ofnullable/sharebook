@@ -12,10 +12,10 @@ function BookCard({ data }) {
     >
       <a>
         <Card>
-          <img src='https://placeimg.com/350/400/animals' />
+          <img src={`${data.imageUrl}`} />
           <CardBody>
             <h2 className='card-title'>{data.title}</h2>
-            <p className='description'>{`${data.author} | ${data.publisher}`}</p>
+            <p className='description'>{`${data.category} | ${data.author} | ${data.publisher}`}</p>
             <span>{data.createdAt}</span>
           </CardBody>
         </Card>

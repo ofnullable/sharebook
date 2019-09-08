@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import {
   BookDetailHeader,
@@ -9,8 +10,36 @@ import {
 import { Button, SpinIcon } from '@styles/global';
 
 function BookDetail({ detail }) {
+  const { user } = useSelector(state => state.user);
+
   const handleButtonClick = e => {
     console.log(e);
+  };
+
+  const renderButton = () => {
+    if (detail.isLoading) {
+      return (
+        <Button _color='primary' disabled>
+          <SpinIcon _size='16px' className='material-icons'>
+            autorenew
+          </SpinIcon>
+        </Button>
+      );
+    }
+
+    if (user.id) {
+      return (
+        <Button _color='primary' onClick={handleButtonClick}>
+          대여신청
+        </Button>
+      );
+    } else {
+      return (
+        <Button _color='primary' onClick={handleButtonClick}>
+          로그인하기
+        </Button>
+      );
+    }
   };
 
   return (
@@ -21,20 +50,11 @@ function BookDetail({ detail }) {
       <BookDetailWrapper>
         <BookInfoWrapper>
           <h1>{detail.title}</h1>
-          <p>{`${detail.author} | ${detail.publisher} | ${detail.createdAt}`}</p>
+          <p>{`${detail.category} | ${detail.author} | ${detail.publisher}`}</p>
+          <span>{detail.createdAt}</span>
           <div>{detail.description}</div>
         </BookInfoWrapper>
-        {detail.isLoading ? (
-          <Button _color='primary' disabled>
-            <SpinIcon _size='16px' className='material-icons'>
-              autorenew
-            </SpinIcon>
-          </Button>
-        ) : (
-          <Button _color='primary' onClick={handleButtonClick}>
-            대여신청
-          </Button>
-        )}
+        {renderButton()}
       </BookDetailWrapper>
     </BookDetailHeader>
   );

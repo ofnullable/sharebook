@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import device from '@styles/device';
+import { COLOR_SCHEME } from '@styles/colors';
 
 export const BookDetailHeader = styled.article`
   ${device.laptops`
@@ -8,7 +9,7 @@ export const BookDetailHeader = styled.article`
     padding: 50px 0;
   `};
   ${device.tablets`
-    width: 100%;
+    width: 90%;
     padding: 50px 0;
   `};
   ${device.mobiles`
@@ -83,5 +84,8 @@ export const BookInfoWrapper = styled.div`
   }
   & p {
     margin: 0 0 0.5em;
+  }
+  & span {
+    color: ${COLOR_SCHEME.darkGray};
   }
 `;

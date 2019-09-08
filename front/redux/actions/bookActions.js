@@ -7,10 +7,9 @@ export const loadBookListRequest = (page = 1, size = 10, searchText = '') => ({
   searchText,
 });
 
-export const loadBookListSuccess = (data, isLast) => ({
+export const loadBookListSuccess = data => ({
   type: BOOK.LOAD_BOOK_LIST_SUCCESS,
   data,
-  isLast,
 });
 
 export const loadBookListFailure = error => ({
