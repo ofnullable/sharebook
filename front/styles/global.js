@@ -76,6 +76,17 @@ export const InputGroup = styled.div`
 
 export const GlobalStyle = createGlobalStyle`
   ${normalize}
+  html {
+    ${device.laptops`
+      font-size: 16px;
+    `};
+    ${device.tablets`
+      font-size: 16px; 
+    `};
+    ${device.mobiles`
+      font-size: 14px;
+    `};
+  }
   .container {
     ${device.laptops`
       max-width: 1080px;

@@ -12,9 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookSaveService {
 
     private final BookRepository bookRepository;
+    private final BookCategoryFindService bookCategoryFindService;
 
     @Transactional
     public Book save(SaveBookRequest dto) {
+        var book = dto.toEntity();
+        var category = bookCategoryFindService.findByName(dto.getCategory());
+        book.setCategory(category);
         return bookRepository.save(dto.toEntity());
     }
 

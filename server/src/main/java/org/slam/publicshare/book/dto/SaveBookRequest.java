@@ -1,14 +1,17 @@
 package org.slam.publicshare.book.dto;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.slam.publicshare.book.domain.Book;
-import org.slam.publicshare.book.domain.BookImage;
+import org.slam.publicshare.book.domain.BookCategory;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
-@Getter @ToString
+@Getter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SaveBookRequest {
 
@@ -25,32 +28,34 @@ public class SaveBookRequest {
     private String description;
 
     @NotBlank
+    private String category;
+
+    @NotBlank
     @javax.validation.constraints.Email(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
     private String owner;
 
     @NotEmpty
-    private List<BookImage> images;
+    private String imageUrl;
 
-    @Builder
-    public SaveBookRequest(String title, String author, String publisher, String description, String owner, List<BookImage> images) {
+    public SaveBookRequest(String title, String author, String publisher, String category, String description, String owner, String imageUrl) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
+        this.category = category;
         this.description = description;
         this.owner = owner;
-        this.images = images;
+        this.imageUrl = imageUrl;
     }
 
     public Book toEntity() {
-        var entity = Book.builder()
+        return Book.builder()
                 .title(title)
                 .author(author)
                 .publisher(publisher)
                 .description(description)
                 .owner(owner)
+                .imageUrl(imageUrl)
                 .build();
-        entity.addImages(images);
-        return entity;
     }
 
 }

@@ -40,13 +40,13 @@ export const CardBody = styled.div`
       font-size: 1.5em; 
     `};
     ${device.mobiles`
-      font-size: 1.2em;
+      font-size: 16px;
     `};
     margin: 0.5em 0;
   }
   & .description {
     margin: 0.5em 0;
-    color: ${COLOR_SCHEME.border};
+    color: ${COLOR_SCHEME.darkGray};
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -55,7 +55,7 @@ export const CardBody = styled.div`
     float: right;
     font-size: 12px;
     margin: 0.5em;
-    color: ${COLOR_SCHEME.border};
+    color: ${COLOR_SCHEME.darkGray};
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

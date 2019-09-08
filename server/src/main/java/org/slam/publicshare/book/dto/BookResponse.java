@@ -4,11 +4,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.slam.publicshare.book.domain.Book;
-import org.slam.publicshare.book.domain.BookImage;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,9 +15,10 @@ public class BookResponse {
     private String title;
     private String author;
     private String publisher;
+    private String category;
     private String description;
     private String owner;
-    private List<String> images;
+    private String imageUrl;
     private LocalDateTime modifiedAt;
     private String modifiedBy;
     private LocalDateTime createdAt;
@@ -31,12 +29,14 @@ public class BookResponse {
         this.title = book.getTitle();
         this.author = book.getAuthor();
         this.publisher = book.getPublisher();
+        this.category = book.getCategory().getName();
         this.description = book.getDescription();
         this.owner = book.getOwner();
-        this.images = book.getImages().stream().map(BookImage::getImageUrl).collect(Collectors.toList());
+        this.imageUrl = book.getImageUrl();
         this.modifiedAt = book.getModifiedAt();
         this.modifiedBy = book.getModifiedBy();
         this.createdAt = book.getCreatedAt();
         this.createdBy = book.getCreatedBy();
     }
+
 }

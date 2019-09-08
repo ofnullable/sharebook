@@ -25,8 +25,10 @@ export default (state = initial, action) => {
         draft.list.error = {};
         break;
       case BOOK.LOAD_BOOK_LIST_SUCCESS:
-        draft.list.data = action.data;
-        draft.list.isLast = action.isLast;
+        console.log(action.data);
+        draft.list.data = action.data.content;
+        draft.list.isLast = action.data.last;
+        draft.list.totalPages = action.data.totalPages;
         draft.list.isLoading = false;
         break;
       case BOOK.LOAD_BOOK_LIST_FAILURE:
