@@ -88,4 +88,7 @@ export const BookInfoWrapper = styled.div`
   & span {
     color: ${COLOR_SCHEME.darkGray};
   }
+  & div {
+    margin: 0.5em 0;
+  }
 `;

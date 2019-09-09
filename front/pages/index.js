@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import BookCard from '@components/BookCard';
 import SearchBar from '@components/SearchBar';
 import { loadBookListRequest } from '@redux/actions/bookActions';
+
 import { CenterDiv, SpinIcon } from '@styles/global';
 import { CardWrapper } from '@styles/pages/index.styled';
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useInput } from '@components/utils/Input';
+import { useInput } from '@components/utils/InputUtils';
+import { loadBookListRequest } from '@redux/actions/bookActions';
 
 import { SearchForm } from './index.styled';
 import { Button, SpinIcon } from '@styles/global';
-import { loadBookListRequest } from '@redux/actions/bookActions';
 
 function SearchBar() {
   const [searchText, handleSearchTextChange] = useInput();
