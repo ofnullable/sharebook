@@ -24,7 +24,7 @@ public class PageableRequest {
     public void setSize(int size) {
         int DEFAULT_LIMIT = 10;
         int MAXIMUM_LIMIT = 50;
-        this.size = size < MAXIMUM_LIMIT ? size : DEFAULT_LIMIT;
+        this.size = size <= MAXIMUM_LIMIT ? size : DEFAULT_LIMIT;
     }
 
     public void setSortBy(String sortBy) {

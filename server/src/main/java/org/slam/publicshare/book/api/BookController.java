@@ -30,6 +30,12 @@ public class BookController {
                 .map(BookResponse::new);
     }
 
+    @GetMapping("/books/{category}")
+    public Page<BookResponse> findAllByCategory(@PathVariable String category, @Valid final PageableRequest pageableRequest) {
+        return bookFindService.findAllByCategory(category, pageableRequest)
+                .map(BookResponse::new);
+    }
+
     @PostMapping("/book")
     @ResponseStatus(HttpStatus.CREATED)
     public BookResponse save(@RequestBody @Valid SaveBookRequest dto) {

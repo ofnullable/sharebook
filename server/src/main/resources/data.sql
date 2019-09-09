@@ -59,3 +59,39 @@ INSERT INTO share_jpa.book(title, author, publisher, category_id, description, i
 VALUES ("두근두근 파이썬", "천인국", "생능출판사", 3,"description ", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
 INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
 VALUES ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description ", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("두근두근 파이썬", "천인국", "생능출판사", 3,"description ", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description ", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("두근두근 파이썬", "천인국", "생능출판사", 3,"description ", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description ", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("두근두근 파이썬", "천인국", "생능출판사", 3,"description ", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description ", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("두근두근 파이썬", "천인국", "생능출판사", 3,"description ", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, image_url, owner, created_at, created_by, modified_at, modified_by)
+VALUES ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", "https://placeimg.com/200/300/animals", "test1@asd.com", now(), "test1@asd.com", now(), "test1@asd.com");

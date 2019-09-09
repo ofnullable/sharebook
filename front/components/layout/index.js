@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Nav from './nav';
+import Nav from './Nav';
 
 function Layout({ children }) {
   return (

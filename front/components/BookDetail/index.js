@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 import {
@@ -11,8 +12,9 @@ import { Button, SpinIcon } from '@styles/global';
 
 function BookDetail({ detail }) {
   const { user } = useSelector(state => state.user);
+  const router = useRouter();
 
-  const handleButtonClick = e => {
+  const handleRequest = e => {
     console.log(e);
   };
 
@@ -29,13 +31,13 @@ function BookDetail({ detail }) {
 
     if (user.id) {
       return (
-        <Button _color='primary' onClick={handleButtonClick}>
+        <Button _color='primary' onClick={handleRequest}>
           대여신청
         </Button>
       );
     } else {
       return (
-        <Button _color='primary' onClick={handleButtonClick}>
+        <Button _color='primary' onClick={() => router.push('/signin')}>
           로그인하기
         </Button>
       );

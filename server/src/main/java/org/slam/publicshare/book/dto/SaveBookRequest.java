@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.slam.publicshare.book.domain.Book;
-import org.slam.publicshare.book.domain.BookCategory;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;

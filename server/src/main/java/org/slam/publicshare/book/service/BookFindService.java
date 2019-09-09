@@ -26,4 +26,8 @@ public class BookFindService {
         return bookRepository.findByTitleContainingIgnoreCase(searchText, pageableRequest.of());
     }
 
+    public Page<Book> findAllByCategory(String category, PageableRequest pageableRequest) {
+        return bookRepository.findAllByCategoryName(category, pageableRequest.of());
+    }
+
 }
