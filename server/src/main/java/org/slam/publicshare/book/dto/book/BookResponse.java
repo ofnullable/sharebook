@@ -1,4 +1,4 @@
-package org.slam.publicshare.book.dto;
+package org.slam.publicshare.book.dto.book;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class BookResponse {
         this.publisher = book.getPublisher();
         this.category = book.getCategory().getName();
         this.description = book.getDescription();
-        this.owner = book.getOwner();
+        this.owner = book.getOwner().getName();
         this.imageUrl = book.getImageUrl();
         this.modifiedAt = book.getModifiedAt();
         this.modifiedBy = book.getModifiedBy();

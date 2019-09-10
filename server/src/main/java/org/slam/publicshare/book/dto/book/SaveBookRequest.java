@@ -1,16 +1,16 @@
-package org.slam.publicshare.book.dto;
+package org.slam.publicshare.book.dto.book;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.slam.publicshare.account.domain.Account;
 import org.slam.publicshare.book.domain.Book;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SaveBookRequest {
 
@@ -29,30 +29,26 @@ public class SaveBookRequest {
     @NotBlank
     private String category;
 
-    @NotBlank
-    @javax.validation.constraints.Email(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
-    private String owner;
-
     @NotEmpty
     private String imageUrl;
 
-    public SaveBookRequest(String title, String author, String publisher, String category, String description, String owner, String imageUrl) {
+    @Builder
+    public SaveBookRequest(String title, String author, String publisher, String description, String category, String imageUrl) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
-        this.category = category;
         this.description = description;
-        this.owner = owner;
+        this.category = category;
         this.imageUrl = imageUrl;
     }
 
-    public Book toEntity() {
+    public Book toEntity(Account account) {
         return Book.builder()
                 .title(title)
                 .author(author)
                 .publisher(publisher)
                 .description(description)
-                .owner(owner)
+                .owner(account)
                 .imageUrl(imageUrl)
                 .build();
     }
