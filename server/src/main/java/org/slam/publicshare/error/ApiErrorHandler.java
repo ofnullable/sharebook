@@ -3,11 +3,13 @@ package org.slam.publicshare.error;
 import org.slam.publicshare.account.exception.EmailDuplicationException;
 import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.book.exception.NoSuchBookException;
+import org.slam.publicshare.book.exception.NoSuchCategoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,8 +50,22 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NoSuchBookException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ApiError handleNoSuchBookException(NoSuchBookException e, WebRequest request) {
-        log.debug("No Such Book. ID: {}", e.getId());
+        log.debug("No Such Book. id: {}", e.getId());
         return bindError(ErrorCode.BOOK_NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(NoSuchCategoryException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ApiError handleNoSuchCategoryException(NoSuchCategoryException e, WebRequest request) {
+        log.debug("No Such Category. name: {}", e.getName());
+        return bindError(ErrorCode.CATEGORY_NOT_FOUND, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.debug("handle BindException: {}", ex.getBindingResult());
+        final var fieldErrors = getFieldErrors(ex.getBindingResult());
+        return buildResponseEntity(bindErrorWithFields(ErrorCode.INVALID_INPUT_VALUE, fieldErrors, request));
     }
 
     @Override

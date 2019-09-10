@@ -1,14 +1,13 @@
 package org.slam.publicshare.common.dto;
 
 import lombok.Getter;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Getter
-public class PageableRequest {
+public class PageRequest {
 
     @NotNull
     private Integer page;
@@ -22,9 +21,9 @@ public class PageableRequest {
     }
 
     public void setSize(int size) {
-        int DEFAULT_LIMIT = 10;
-        int MAXIMUM_LIMIT = 50;
-        this.size = size <= MAXIMUM_LIMIT ? size : DEFAULT_LIMIT;
+        int DEFAULT_SIZE = 10;
+        int MAXIMUM_SIZE = 50;
+        this.size = size > MAXIMUM_SIZE ? DEFAULT_SIZE : size;
     }
 
     public void setSortBy(String sortBy) {
@@ -35,11 +34,11 @@ public class PageableRequest {
         this.direction = direction;
     }
 
-    public PageRequest of() {
+    public org.springframework.data.domain.PageRequest of() {
         if (direction == null) {
             direction = Sort.Direction.DESC;
         }
-        return PageRequest.of(page - 1, size, Sort.by(direction, Objects.requireNonNullElse(sortBy, "id")));
+        return org.springframework.data.domain.PageRequest.of(page - 1, size, Sort.by(direction, Objects.requireNonNullElse(sortBy, "id")));
     }
 
 }
