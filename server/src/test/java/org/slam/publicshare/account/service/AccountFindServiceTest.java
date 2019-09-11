@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.slam.publicshare.testutil.AccountUtils.buildNormalAccount;
+import static org.slam.publicshare.account.utils.AccountUtils.buildNormalAccount;
 
 @ExtendWith(SpringExtension.class)
 public class AccountFindServiceTest {
@@ -46,7 +46,7 @@ public class AccountFindServiceTest {
 
     @Test
     @DisplayName("SECURITY - 이메일이 존재하지 않는 경우 NoSuchAccountException")
-    public void load_account_by_username_failure() {
+    public void load_account_by_username_with_invalid_email() {
         given(accountRepository.findByEmail(any(Email.class)))
                 .willThrow(NoSuchAccountException.class);
 
@@ -66,7 +66,7 @@ public class AccountFindServiceTest {
 
     @Test
     @DisplayName("아이디(PK)가 존재하지 않는 경우 AccountNotFoundException")
-    public void find_account_by_id_failure() {
+    public void find_account_by_id_with_invalid_id() {
         given(accountRepository.findById(any(Long.class)))
                 .willThrow(NoSuchAccountException.class);
 

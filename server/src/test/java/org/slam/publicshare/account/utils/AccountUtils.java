@@ -1,4 +1,4 @@
-package org.slam.publicshare.testutil;
+package org.slam.publicshare.account.utils;
 
 import org.slam.publicshare.account.domain.Account;
 import org.slam.publicshare.account.domain.Email;
@@ -9,8 +9,8 @@ public class AccountUtils {
     public static Account buildNormalAccount() {
         return Account.builder()
                 .email(Email.of("test1@asd.com"))
-                .password("test")
                 .name("test user1")
+                .password("{noop}test")
                 .build();
     }
 
@@ -18,7 +18,7 @@ public class AccountUtils {
         return SignUpRequest.builder()
                 .email(Email.of(email))
                 .name("test account")
-                .password("test")
+                .password("{noop}test")
                 .build();
     }
 
@@ -26,7 +26,7 @@ public class AccountUtils {
         return SignUpRequest.builder()
                 .email(Email.of("invalid.com"))
                 .name("test account")
-                .password("test")
+                .password("{noop}test")
                 .build();
     }
 
