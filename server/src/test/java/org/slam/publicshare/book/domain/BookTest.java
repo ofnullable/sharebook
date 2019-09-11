@@ -2,21 +2,29 @@ package org.slam.publicshare.book.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slam.publicshare.account.domain.Account;
+import org.slam.publicshare.account.domain.Email;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BookTest {
+
+    private Account account = Account.builder()
+            .email(Email.of("test1@asd.com"))
+            .name("test")
+            .password("{noop}test")
+            .build();
 
     private Book book = Book.builder()
             .title("test book")
             .author("author")
             .publisher("test")
             .description("book for test!")
-            .owner("test1@asd.com")
+            .owner(account)
             .imageUrl("")
             .build();
 
-    private BookCategory category = BookCategory.of("운영체제");
+    private Category category = Category.of("운영체제");
 
     @Test
     @DisplayName("Builder로 인스턴스 생성")
