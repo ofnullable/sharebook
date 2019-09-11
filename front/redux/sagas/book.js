@@ -1,25 +1,47 @@
 import { fork, put, takeLatest, call, all, throttle } from 'redux-saga/effects';
 
 import { BOOK } from '@redux/actionTypes';
-import { loadBookListApi } from '@redux/api/book';
-import { loadBookListSuccess, loadBookListFailure } from '@redux/actions/bookActions';
-import { loadBookApi } from '../api/book';
-import { loadBookSuccess, loadBookFailure } from '../actions/bookActions';
+import { loadBookListApi, loadBookListByCategoryApi, loadBookApi } from '@redux/api/book';
+import {
+  loadBookListSuccess,
+  loadBookListFailure,
+  loadBookListByCategorySuccess,
+  loadBookListByCategoryFailure,
+  loadBookSuccess,
+  loadBookFailure,
+} from '@redux/actions/bookActions';
 
 export default function*() {
-  yield all([fork(watchLoadBookListRequest), fork(watchLoadBookRequest)]);
+  yield all([
+    fork(watchLoadBookListRequest),
+    fork(watchLoadBookListByCategoryRequest),
+    fork(watchLoadBookRequest),
+  ]);
 }
 
 function* watchLoadBookListRequest() {
   yield takeLatest(BOOK.LOAD_BOOK_LIST_REQUEST, loadBookList);
 }
-function* loadBookList({ page, size, searchText }) {
+function* loadBookList({ searchText, page, size }) {
   try {
-    const response = yield call(loadBookListApi, { page, size, searchText });
+    const response = yield call(loadBookListApi, { searchText, page, size });
     yield put(loadBookListSuccess(response.data));
   } catch (e) {
     console.error(e);
     yield put(loadBookListFailure((e.response && e.response.data) || e));
+  }
+}
+
+function* watchLoadBookListByCategoryRequest() {
+  yield takeLatest(BOOK.LOAD_BOOK_LIST_BY_CATEGORY_REQUEST, loadBookListByCategory);
+}
+function* loadBookListByCategory({ page, size, category }) {
+  try {
+    const response = yield call(loadBookListByCategoryApi, { page, size, category });
+    yield put(loadBookListByCategorySuccess(response.data));
+  } catch (e) {
+    console.error((e.response && e.response.data) || e);
+    yield put(loadBookListByCategoryFailure((e.response && e.response.data) || e));
   }
 }
 

@@ -1,28 +1,30 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import Router from 'next/router';
 
-import { useInput } from '@components/utils/InputUtils';
-import { loadBookListRequest } from '@redux/actions/bookActions';
+import CategoryButton from '@components/SearchBar/CategoryButton';
+import { useInput } from '@utils/InputUtils';
 
-import { SearchForm } from './index.styled';
-import { Button, SpinIcon } from '@styles/global';
+import { SearchForm, SearchButton } from './index.styled';
+import { SpinIcon } from '@styles/global';
 
 function SearchBar() {
-  const [searchText, handleSearchTextChange] = useInput();
+  const [searchText, handleSearchTextChange, setSearchText] = useInput();
   const { isLoading } = useSelector(state => state.book.list);
-  const dispatch = useDispatch();
+  const categoryList = useSelector(state => state.category.list);
 
   const handleSearch = e => {
     e.preventDefault();
     if (!isLoading) {
-      dispatch(loadBookListRequest(1, 10, searchText));
+      Router.push({ pathname: '/', query: { searchText } }, `/?searchText=${searchText}`);
+      setSearchText('');
     }
   };
 
   return (
     <SearchForm onSubmit={handleSearch}>
-      <input type='text' value={searchText} onChange={handleSearchTextChange}></input>
-      <Button _color='primary'>
+      <input type='text' value={searchText} onChange={handleSearchTextChange} />
+      <SearchButton _color='primary' className='searchButton'>
         {isLoading ? (
           <SpinIcon _size='16px' className='material-icons'>
             autorenew
@@ -30,7 +32,11 @@ function SearchBar() {
         ) : (
           '검색'
         )}
-      </Button>
+      </SearchButton>
+      {!categoryList.isLoading && [
+        <CategoryButton key='ALL' name='ALL' />,
+        ...categoryList.data.map(c => <CategoryButton key={c.id} name={c.name} />),
+      ]}
     </SearchForm>
   );
 }

@@ -53,7 +53,7 @@ function BookDetail({ detail }) {
         <BookInfoWrapper>
           <h1>{detail.title}</h1>
           <p>{`${detail.category} | ${detail.author} | ${detail.publisher}`}</p>
-          <span>{detail.createdAt}</span>
+          <span>{`${detail.owner} | ${detail.createdAt}`}</span>
           <div>{detail.description}</div>
         </BookInfoWrapper>
         {renderButton()}

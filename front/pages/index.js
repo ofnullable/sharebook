@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import BookCard from '@components/BookCard';
 import SearchBar from '@components/SearchBar';
-import { loadBookListRequest } from '@redux/actions/bookActions';
+import { loadBookListRequest, loadBookListByCategoryRequest } from '@redux/actions/bookActions';
+import { loadCategoryListRequest } from '@redux/actions/categoryActions';
 
 import { CenterDiv, SpinIcon } from '@styles/global';
 import { CardWrapper } from '@styles/pages/index.styled';
 
 const Home = () => {
-  const { isLoading, data } = useSelector(state => state.book.list);
+  const { isLoading, data, page } = useSelector(state => state.book.list);
+
+  useEffect(() => {
+    console.log(page);
+    // window scroll event for infinite scroll
+  }, [page]);
 
   const renderPosts = () => {
     if (isLoading) {
@@ -42,8 +48,23 @@ const Home = () => {
   );
 };
 
-Home.getInitialProps = async ctx => {
-  ctx.store.dispatch(loadBookListRequest());
+Home.getInitialProps = async ({ query, store }) => {
+  const categoryList = store.getState().category.list;
+  if (!categoryList.length) {
+    store.dispatch(loadCategoryListRequest());
+  }
+
+  const searchText = query.searchText;
+  if (searchText) {
+    store.dispatch(loadBookListRequest(searchText));
+    return;
+  }
+  const category = query.category;
+  if (!category || category === 'ALL') {
+    store.dispatch(loadBookListRequest());
+  } else {
+    store.dispatch(loadBookListByCategoryRequest(category));
+  }
 };
 
 export default Home;
