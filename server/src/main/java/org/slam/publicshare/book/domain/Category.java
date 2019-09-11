@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BookCategory extends Auditable {
+public class Category extends Auditable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,13 +20,13 @@ public class BookCategory extends Auditable {
 
     private boolean display;
 
-    private BookCategory(String name) {
+    private Category(String name) {
         this.name = name;
         this.display = false;
     }
 
-    public static BookCategory of(String name) {
-        return new BookCategory(name);
+    public static Category of(String name) {
+        return new Category(name);
     }
 
 }

@@ -1,8 +1,9 @@
 package org.slam.publicshare.book.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slam.publicshare.account.service.AccountFindService;
 import org.slam.publicshare.book.domain.Book;
-import org.slam.publicshare.book.dto.SaveBookRequest;
+import org.slam.publicshare.book.dto.book.SaveBookRequest;
 import org.slam.publicshare.book.repository.BookRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,14 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookSaveService {
 
     private final BookRepository bookRepository;
-    private final BookCategoryFindService bookCategoryFindService;
+    private final CategoryFindService categoryFindService;
+    private final AccountFindService accountFindService;
 
     @Transactional
-    public Book save(SaveBookRequest dto) {
-        var book = dto.toEntity();
-        var category = bookCategoryFindService.findByName(dto.getCategory());
+    public Book save(SaveBookRequest dto, Long accountId) {
+        var account = accountFindService.findById(accountId);
+        var category = categoryFindService.findByName(dto.getCategory());
+        var book = dto.toEntity(account);
         book.setCategory(category);
-        return bookRepository.save(dto.toEntity());
+        return bookRepository.save(book);
     }
 
 }

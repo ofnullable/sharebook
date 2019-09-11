@@ -17,7 +17,7 @@ public class Role {
     private Long id;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Account account;
 
     @Column(nullable = false)

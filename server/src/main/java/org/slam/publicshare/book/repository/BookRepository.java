@@ -1,6 +1,7 @@
 package org.slam.publicshare.book.repository;
 
 import org.slam.publicshare.book.domain.Book;
+import org.slam.publicshare.book.domain.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -15,6 +16,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findByTitleContainingIgnoreCase(String searchText, Pageable pageable);
 
     @EntityGraph(attributePaths = "category")
-    Page<Book> findAllByCategoryName(String category, Pageable pageable);
+    Page<Book> findAllByCategory(Category category, Pageable pageable);
 
 }

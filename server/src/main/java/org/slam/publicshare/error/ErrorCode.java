@@ -16,9 +16,12 @@ public enum ErrorCode {
 
     BOOK_NOT_FOUND(404, "No such book"),
 
+    CATEGORY_NOT_FOUND(404, "No such category"),
+
     INVALID_INPUT_VALUE(400, "Invalid value"),
     KEY_DUPLICATION(409, "Key duplication");
 
     private final int status;
     private final String message;
+
 }
