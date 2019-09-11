@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 public class BookFindService {
 
     private final BookRepository bookRepository;
-    private final CategoryFindService categoryFindService;
 
     public Book findById(Long id) {
         return bookRepository.findById(id)
@@ -28,8 +27,7 @@ public class BookFindService {
     }
 
     public Page<Book> findAllByCategory(String categoryName, PageRequest pageRequest) {
-        var category = categoryFindService.findByName(categoryName);
-        return bookRepository.findAllByCategory(category, pageRequest.of());
+        return bookRepository.findAllByCategoryName(categoryName, pageRequest.of());
     }
 
 }
