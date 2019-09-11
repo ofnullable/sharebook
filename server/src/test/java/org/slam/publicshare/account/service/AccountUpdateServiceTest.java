@@ -26,7 +26,7 @@ public class AccountUpdateServiceTest {
 
     @Test
     @DisplayName("비밀번호 업데이트")
-    public void password_update() {
+    public void update_password() {
         given(accountUpdateService.updatePassword(any(Long.class), anyString()))
                 .willReturn(account);
 

@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.hamcrest.Matchers.is;
-import static org.slam.publicshare.testutil.AccountUtils.*;
+import static org.slam.publicshare.account.utils.AccountUtils.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -41,7 +41,7 @@ public class AccountIntegrationTest {
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        resultMatch(resultAction);
+        assertEmailAndName(resultAction);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("정상적인 로그인 요청")
-    public void sign_in_request() throws Exception {
+    public void sign_in() throws Exception {
         var signInRequest = SignInRequest.builder()
                 .username("test1@asd.com")
                 .password("test")
@@ -70,12 +70,12 @@ public class AccountIntegrationTest {
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        resultMatch(resultAction);
+        assertEmailAndName(resultAction);
     }
 
     @Test
     @DisplayName("존재하지 않는 계정으로 로그인 요청 - 400")
-    public void bad_credentials_sign_in_request() throws Exception {
+    public void sign_in_with_bad_credential() throws Exception {
         var signInRequest = SignInRequest.builder()
                 .username("invalidUsername")
                 .password("test")
@@ -94,7 +94,7 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("정상적인 회원가입 요청")
-    public void sign_up_request() throws Exception {
+    public void sign_up() throws Exception {
         var signUpRequest = buildNormalSignUpRequest("test@test.com");
 
         mvc.perform(post("/account")
@@ -107,7 +107,7 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("중복된 이메일로 회원가입 요청 - 409")
-    public void duplicated_sign_up_request() throws Exception {
+    public void sign_up_with_duplicated_email() throws Exception {
         var signUpRequest = buildNormalSignUpRequest("test1@asd.com");
 
         mvc.perform(post("/account")
@@ -123,7 +123,7 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("유효하지 않은 이메일로 회원가입 요청 - 400")
-    public void invalid_sign_up_request() throws Exception {
+    public void sign_up_with_invalid_email() throws Exception {
         var signUpRequest = buildInvalidSignUpRequest();
 
         mvc.perform(post("/account")
@@ -153,7 +153,7 @@ public class AccountIntegrationTest {
     @Test
     @WithMockUser(username = "test1@asd.com", roles = "BASIC")
     @DisplayName("인증 후 존재하지 않는 계정 비밀번호 업데이트")
-    public void invalid_update_password_with_auth() throws Exception {
+    public void update_password_with_invalid_account_with_auth() throws Exception {
         mvc.perform(patch("/account/10")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("newPassword")
@@ -173,7 +173,7 @@ public class AccountIntegrationTest {
                 .andDo(print());
     }
 
-    private void resultMatch(ResultActions actions) throws Exception {
+    private void assertEmailAndName(ResultActions actions) throws Exception {
         actions
                 .andExpect(jsonPath("$.email", is(defaultAccount.getEmail().getAddress())))
                 .andExpect(jsonPath("$.name", is(defaultAccount.getName())));

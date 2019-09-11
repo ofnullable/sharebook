@@ -21,7 +21,7 @@ public class PageRequest {
     }
 
     public void setSize(int size) {
-        int DEFAULT_SIZE = 10;
+        int DEFAULT_SIZE = 12;
         int MAXIMUM_SIZE = 50;
         this.size = size > MAXIMUM_SIZE ? DEFAULT_SIZE : size;
     }

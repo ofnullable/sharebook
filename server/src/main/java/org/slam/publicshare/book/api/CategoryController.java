@@ -5,9 +5,8 @@ import org.slam.publicshare.book.dto.category.CategoryResponse;
 import org.slam.publicshare.book.dto.category.SaveCategoryRequest;
 import org.slam.publicshare.book.service.CategoryFindService;
 import org.slam.publicshare.book.service.CategorySaveService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,7 +28,8 @@ public class CategoryController {
     }
 
     @PostMapping("/category")
-    public CategoryResponse save(@Valid SaveCategoryRequest dto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public CategoryResponse save(@RequestBody @Valid SaveCategoryRequest dto) {
         return new CategoryResponse(categorySaveService.save(dto));
     }
 

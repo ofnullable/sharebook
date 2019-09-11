@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.slam.publicshare.testutil.AccountUtils.*;
+import static org.slam.publicshare.account.utils.AccountUtils.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,6 +51,7 @@ public class AccountControllerTest {
     public void setup() {
         this.mvc = MockMvcBuilders
                 .standaloneSetup(accountController)
+                .alwaysDo(print())
                 .setControllerAdvice(ApiErrorHandler.class)
                 .build();
     }
@@ -64,19 +65,17 @@ public class AccountControllerTest {
                 .willReturn(account);
 
         mvc.perform(get("/account/1"))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("존재하지 않는 계정조회 - 404")
-    public void find_account_by_id_failure() throws Exception {
+    public void find_account_by_invalid_id() throws Exception {
         given(accountFindService.findById(any(Long.class)))
                 .willThrow(NoSuchAccountException.class);
 
         mvc.perform(get("/account/1"))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -89,8 +88,7 @@ public class AccountControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(buildNormalSignUpRequest("test1@asd.com")))
         )
-                .andExpect(status().isCreated())
-                .andDo(print());
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -103,8 +101,7 @@ public class AccountControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(buildNormalSignUpRequest("test1@asd.com")))
         )
-                .andExpect(status().isConflict())
-                .andDo(print());
+                .andExpect(status().isConflict());
     }
 
     @Test
@@ -117,8 +114,7 @@ public class AccountControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(buildInvalidSignUpRequest()))
         )
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -131,8 +127,7 @@ public class AccountControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("newPassword")
         )
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -145,8 +140,7 @@ public class AccountControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("newPassword")
         )
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
 }

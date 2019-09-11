@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.slam.publicshare.testutil.AccountUtils.buildNormalSignUpRequest;
+import static org.slam.publicshare.account.utils.AccountUtils.buildNormalSignUpRequest;
 
 @ExtendWith(SpringExtension.class)
 public class AccountSaveServiceTest {
@@ -34,7 +34,7 @@ public class AccountSaveServiceTest {
 
     @Test
     @DisplayName("회원가입")
-    public void account_save() {
+    public void save_account() {
         given(accountRepository.save(any(Account.class)))
                 .willReturn(signUpRequest.toEntity());
 
@@ -46,7 +46,7 @@ public class AccountSaveServiceTest {
 
     @Test
     @DisplayName("중복된 이메일로 회원가입")
-    public void account_save_duplicated() {
+    public void save_account_with_duplicated_email() {
         given(accountFindService.existedEmail(any(Email.class)))
                 .willReturn(true);
 
