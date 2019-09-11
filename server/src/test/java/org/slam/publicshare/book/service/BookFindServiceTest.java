@@ -6,9 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.slam.publicshare.book.domain.Book;
-import org.slam.publicshare.book.domain.Category;
 import org.slam.publicshare.book.exception.NoSuchBookException;
-import org.slam.publicshare.book.exception.NoSuchCategoryException;
 import org.slam.publicshare.book.repository.BookRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -87,29 +85,20 @@ public class BookFindServiceTest {
 
         var result = bookFindService.findAll("test title", buildPageable(100));
 
-        assertEquals(result.getSize(), 10);
+        assertEquals(result.getSize(), 12);
     }
 
     @Test
-    @DisplayName("존재하는 카테고리로 조회하는 경우 정상작동")
+    @DisplayName("카테고리 내 도서 페이지 요청")
     public void find_book_by_category() {
         given(categoryFindService.findByName(any(String.class)))
                 .willReturn(buildCategory());
-        given(bookRepository.findAllByCategory(any(Category.class), any(Pageable.class)))
+        given(bookRepository.findAllByCategoryName(any(String.class), any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
         var result = bookFindService.findAllByCategory("운영체제", buildPageable(10));
 
         assertEquals(result.getSize(), 10);
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 카테고리로 조회하는 경우 - NoSuchCategoryException")
-    public void find_book_by_not_exist_category() {
-        given(categoryFindService.findByName(any(String.class)))
-                .willThrow(NoSuchCategoryException.class);
-
-        assertThrows(NoSuchCategoryException.class, () -> bookFindService.findAllByCategory("OS", buildPageable(10)));
     }
 
 }
