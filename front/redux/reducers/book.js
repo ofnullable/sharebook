@@ -1,11 +1,12 @@
 import produce from 'immer';
 
 import { BOOK } from '@redux/actionTypes';
-import Book from '../../pages/book';
 
 const initial = {
   list: {
     data: [],
+    page: 1,
+    totalPages: 1,
     isLast: false,
     isLoading: false,
     error: {},
@@ -21,17 +22,20 @@ export default (state = initial, action) => {
   return produce(state, draft => {
     switch (action.type) {
       case BOOK.LOAD_BOOK_LIST_REQUEST:
+      case BOOK.LOAD_BOOK_LIST_BY_CATEGORY_REQUEST:
+        draft.list.page = action.page ? action.page : 1;
         draft.list.isLoading = true;
         draft.list.error = {};
         break;
       case BOOK.LOAD_BOOK_LIST_SUCCESS:
-        console.log(action.data);
+      case BOOK.LOAD_BOOK_LIST_BY_CATEGORY_SUCCESS:
         draft.list.data = action.data.content;
         draft.list.isLast = action.data.last;
         draft.list.totalPages = action.data.totalPages;
         draft.list.isLoading = false;
         break;
       case BOOK.LOAD_BOOK_LIST_FAILURE:
+      case BOOK.LOAD_BOOK_LIST_BY_CATEGORY_FAILURE:
         draft.list.error = action.error;
         draft.list.isLoading = false;
         break;
