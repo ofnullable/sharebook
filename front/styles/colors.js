@@ -166,7 +166,7 @@ export const COLOR_SCHEME = {
   darkGray: colors.gray[6],
   red: colors.red[6],
   primary: colors.green[4],
-  secondery: colors.orange[4],
+  secondery: colors.yellow[6],
 };
 
 export default colors;
