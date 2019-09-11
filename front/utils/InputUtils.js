@@ -5,5 +5,5 @@ export const useInput = (initialValue = '') => {
   const handler = useCallback(e => {
     setter(e.target.value);
   }, []);
-  return [value, handler];
+  return [value, handler, setter];
 };

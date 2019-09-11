@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { useInput } from '@components/utils/InputUtils';
+import { useInput } from '@utils/InputUtils';
 
 import { Button, CenterDiv, InputGroup, CenterForm } from '@styles/global';
 
