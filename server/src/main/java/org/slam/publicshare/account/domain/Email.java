@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 public class Email {
 
     @NotBlank
-    @javax.validation.constraints.Email(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
+    @javax.validation.constraints.Email(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")
     @Column(name = "email", unique = true, nullable = false)
     private String address;
 

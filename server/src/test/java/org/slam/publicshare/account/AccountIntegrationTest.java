@@ -134,7 +134,7 @@ public class AccountIntegrationTest {
                 .andExpect(jsonPath("$.status", is(400)))
                 .andExpect(jsonPath("$.message", is("Invalid value")))
                 .andExpect(jsonPath("$.path", is("/account")))
-                .andExpect(jsonPath("$.errors[0].field", is("email.address")))
+                .andExpect(jsonPath("$.errors['email.address']", is("must be a well-formed email address")))
                 .andDo(print());
     }
 
