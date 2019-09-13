@@ -48,7 +48,7 @@ PublicShare.getInitialProps = async ({ Component, ctx }) => {
   }
   const state = ctx.store.getState();
 
-  if (loadUserNeeded && !state.user.isSignedIn) {
+  if (loadUserNeeded && !state.user.user.isSignedIn) {
     ctx.store.dispatch(loadUserRequest());
   }
 

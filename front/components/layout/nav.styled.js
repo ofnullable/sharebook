@@ -20,13 +20,17 @@ export const HeaderNav = styled.nav`
     justify-content: space-between;
     background-color: ${COLOR_SCHEME.primary};
     & li {
+      color: ${COLOR_SCHEME.white};
       display: flex;
       padding: 6px 8px;
       align-items: center;
     }
     & a {
-      color: ${COLOR_SCHEME.white};
+      color: inherit;
       vertical-align: middle;
+    }
+    & div {
+      display: flex;
     }
   }
 `;

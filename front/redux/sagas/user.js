@@ -2,6 +2,8 @@ import { fork, put, takeLatest, call, all } from 'redux-saga/effects';
 
 import { USER } from '@redux/actionTypes';
 import {
+  signUpSuccess,
+  signUpFailure,
   signInSuccess,
   signInFailure,
   signOutSuccess,
@@ -9,18 +11,36 @@ import {
   loadUserSuccess,
   loadUserFailure,
 } from '@redux/actions/userActions';
-import { signInApi, loadUserApi, signOutApi } from '@redux/api/user';
+import { signUpApi, signInApi, loadUserApi, signOutApi } from '@redux/api/user';
 
 export default function*() {
-  yield all([fork(watchSignInRequest), fork(watchLoadUserRequest), fork(watchSignOutRequest)]);
+  yield all([
+    fork(watchSignUpRequest),
+    fork(watchSignInRequest),
+    fork(watchLoadUserRequest),
+    fork(watchSignOutRequest),
+  ]);
+}
+
+function* watchSignUpRequest() {
+  yield takeLatest(USER.SIGN_UP_REQUEST, signUp);
+}
+function* signUp({ user }) {
+  try {
+    const response = yield call(signUpApi, user);
+    yield put(signUpSuccess(response.data));
+  } catch (e) {
+    console.error(e);
+    yield put(signUpFailure((e.response && e.response.data) || e.response));
+  }
 }
 
 function* watchSignInRequest() {
   yield takeLatest(USER.SIGN_IN_REQUEST, signIn);
 }
-function* signIn({ payload }) {
+function* signIn({ user }) {
   try {
-    const response = yield call(signInApi, payload);
+    const response = yield call(signInApi, user);
     yield put(signInSuccess(response.data));
   } catch (e) {
     console.error(e);

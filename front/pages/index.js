@@ -7,7 +7,7 @@ import { loadBookListRequest, loadBookListByCategoryRequest } from '@redux/actio
 import { loadCategoryListRequest } from '@redux/actions/categoryActions';
 
 import { CenterDiv, SpinIcon } from '@styles/global';
-import { CardWrapper } from '@styles/pages/index.styled';
+import { CardWrapper } from '@styles/pages/index';
 
 const Home = () => {
   const { isLoading, data, page } = useSelector(state => state.book.list);

@@ -8,7 +8,6 @@ import org.slam.publicshare.account.domain.Account;
 import org.slam.publicshare.book.domain.Book;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,7 +28,7 @@ public class SaveBookRequest {
     @NotBlank
     private String category;
 
-    @NotEmpty
+    @NotBlank
     private String imageUrl;
 
     @Builder

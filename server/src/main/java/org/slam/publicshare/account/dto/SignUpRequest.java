@@ -9,6 +9,7 @@ import org.slam.publicshare.account.domain.Email;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,6 +17,7 @@ public class SignUpRequest {
 
     @Valid
     private Email email;
+    @Size(min = 6, max = 20)
     @NotBlank
     private String password;
     @NotBlank

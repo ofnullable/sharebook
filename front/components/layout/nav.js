@@ -5,10 +5,10 @@ import Link from 'next/link';
 
 import { signOutRequest } from '@redux/actions/userActions';
 
-import { HeaderNav, HomepageLink, Homepage } from './Nav.styled';
+import { HeaderNav, HomepageLink } from './Nav.styled';
 
 const Nav = () => {
-  const { isSignedIn } = useSelector(state => state.user);
+  const { isSignedIn } = useSelector(state => state.user.user);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -17,9 +17,10 @@ const Nav = () => {
   };
 
   const getSecondMenu = () => {
-    if (router.pathname === '/signin') {
+    if (router.pathname === '/signin' || router.pathname === '/join') {
       return;
     }
+
     if (isSignedIn) {
       return (
         <li onClick={handleSignOut}>
@@ -27,31 +28,26 @@ const Nav = () => {
         </li>
       );
     }
+
     return (
-      <li>
-        <Link href='/signin' prefetch={false}>
-          <a>로그인</a>
-        </Link>
-      </li>
+      <div>
+        <li>
+          <Link href='/signin' prefetch={false}>
+            <a>로그인</a>
+          </Link>
+        </li>
+        <li>|</li>
+        <li>
+          <Link href='/join' prefetch={false}>
+            <a>회원가입</a>
+          </Link>
+        </li>
+      </div>
     );
   };
 
-  const renderMenu = () => {
-    const secondMenu = getSecondMenu();
-    if (router.pathname === '/') {
-      return (
-        <ul>
-          <li>
-            <Homepage>
-              <i className='material-icons'>share</i>
-              <span>PublicShare</span>
-            </Homepage>
-          </li>
-          {secondMenu}
-        </ul>
-      );
-    }
-    return (
+  return (
+    <HeaderNav>
       <ul>
         <li>
           <Link href='/' prefetch={false}>
@@ -61,12 +57,10 @@ const Nav = () => {
             </HomepageLink>
           </Link>
         </li>
-        {secondMenu}
+        {getSecondMenu()}
       </ul>
-    );
-  };
-
-  return <HeaderNav>{renderMenu()}</HeaderNav>;
+    </HeaderNav>
+  );
 };
 
 export default Nav;

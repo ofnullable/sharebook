@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -19,9 +20,9 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.List;
+import java.util.Map;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 @RestControllerAdvice
 public class ApiErrorHandler extends ResponseEntityExceptionHandler {
@@ -75,14 +76,9 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(bindErrorWithFields(ErrorCode.INVALID_INPUT_VALUE, fieldErrors, request));
     }
 
-    private List<ApiError.FieldError> getFieldErrors(BindingResult bindingResult) {
-        return bindingResult.getFieldErrors().parallelStream()
-                .map(e -> ApiError.FieldError.builder()
-                        .field(e.getField())
-                        .reason(e.getDefaultMessage())
-                        .value(e.getRejectedValue())
-                        .build()
-                ).collect(toList());
+    private Map<String, String> getFieldErrors(BindingResult bindingResult) {
+        return bindingResult.getFieldErrors().stream()
+                .collect(toMap(FieldError::getField, FieldError::getDefaultMessage));
     }
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
@@ -98,7 +94,7 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
                 .build();
     }
 
-    private ApiError bindErrorWithFields(ErrorCode errorCode, List<ApiError.FieldError> errors, WebRequest request) {
+    private ApiError bindErrorWithFields(ErrorCode errorCode, Map<String, String> errors, WebRequest request) {
         var req = ((ServletWebRequest) request).getRequest();
         return ApiError.builder()
                 .status(errorCode.getStatus())
