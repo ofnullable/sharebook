@@ -1,7 +1,11 @@
 import axios from 'axios';
 
-export const signInApi = payload => {
-  return axios.post('/auth/sign-in', payload, { withCredentials: true });
+export const signUpApi = user => {
+  return axios.post('/account', user, { withCredentials: true });
+};
+
+export const signInApi = user => {
+  return axios.post('/auth/sign-in', user, { withCredentials: true });
 };
 
 export const signOutApi = () => {

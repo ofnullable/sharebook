@@ -9,21 +9,22 @@ import { signInRequest } from '@redux/actions/userActions';
 import { CenterDiv, InputGroup, Button, SpinIcon, CenterForm, ButtonLink } from '@styles/global';
 
 function SignIn() {
-  const [username, usernameHandler] = useInput();
+  const { isSignedIn, isLoading } = useSelector(state => state.user.user);
+  const { data } = useSelector(state => state.user.join);
+  const [username, usernameHandler] = useInput(data && data.email);
   const [password, passwordHandler] = useInput();
-  const { isSignedIn, isLoading } = useSelector(state => state.user);
   const dispatch = useDispatch();
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    dispatch(signInRequest({ username, password }));
-  };
 
   useEffect(() => {
     if (isSignedIn) {
       Router.back();
     }
   }, [isSignedIn]);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    dispatch(signInRequest({ username: username.trim().toLowerCase(), password }));
+  };
 
   return (
     <CenterDiv>
@@ -34,7 +35,7 @@ function SignIn() {
           <input
             required
             id='username'
-            type='text'
+            type='email'
             value={username}
             onChange={usernameHandler}
             placeholder='your@email.com'

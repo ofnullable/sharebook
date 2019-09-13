@@ -1,9 +1,27 @@
 import { USER } from '@redux/actionTypes';
 
+export const signUpRequest = ({ email, name, password }) => ({
+  type: USER.SIGN_UP_REQUEST,
+  user: {
+    email,
+    name,
+    password,
+  },
+});
+
+export const signUpSuccess = data => ({
+  type: USER.SIGN_UP_SUCCESS,
+  data,
+});
+export const signUpFailure = error => ({
+  type: USER.SIGN_UP_FAILURE,
+  error,
+});
+
 export const signInRequest = ({ username, password }) => ({
   type: USER.SIGN_IN_REQUEST,
-  payload: {
-    username,
+  user: {
+    username: username.trim().toLowerCase(),
     password,
   },
 });
