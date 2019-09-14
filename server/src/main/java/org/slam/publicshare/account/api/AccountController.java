@@ -1,14 +1,14 @@
 package org.slam.publicshare.account.api;
 
 import lombok.RequiredArgsConstructor;
+import org.slam.publicshare.account.domain.Account;
 import org.slam.publicshare.account.dto.AccountResponse;
 import org.slam.publicshare.account.dto.SignUpRequest;
 import org.slam.publicshare.account.service.AccountFindService;
 import org.slam.publicshare.account.service.AccountSaveService;
 import org.slam.publicshare.account.service.AccountUpdateService;
-import org.slam.publicshare.config.security.userdetails.AccountDetails;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,9 +28,8 @@ public class AccountController {
     }
 
     @GetMapping("/account/{id}")
-    public AccountResponse findAccountById(@PathVariable Long id, Authentication auth) {
+    public AccountResponse findAccountById(@PathVariable Long id, @AuthenticationPrincipal(expression = "account") Account account) {
         if (id == 0) { // id가 0이면 현재 세션의 account를 돌려준다.
-            var account = ((AccountDetails) auth.getPrincipal()).getAccount();
             return new AccountResponse(account);
         }
         return new AccountResponse(accountFindService.findById(id));

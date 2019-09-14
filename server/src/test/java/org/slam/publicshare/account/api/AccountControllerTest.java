@@ -14,22 +14,20 @@ import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.account.service.AccountFindService;
 import org.slam.publicshare.account.service.AccountSaveService;
 import org.slam.publicshare.account.service.AccountUpdateService;
-import org.slam.publicshare.error.ApiErrorHandler;
+import org.slam.publicshare.config.WithAuthenticationPrincipal;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.slam.publicshare.account.utils.AccountUtils.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-public class AccountControllerTest {
+public class AccountControllerTest extends WithAuthenticationPrincipal {
 
     private MockMvc mvc;
 
@@ -49,14 +47,20 @@ public class AccountControllerTest {
 
     @BeforeEach
     public void setup() {
-        this.mvc = MockMvcBuilders
-                .standaloneSetup(accountController)
-                .alwaysDo(print())
-                .setControllerAdvice(ApiErrorHandler.class)
-                .build();
+        this.mvc = super.setup(accountController);
     }
 
     private Account account = buildNormalAccount();
+
+    @Test
+    @DisplayName("현재 세션에 있는 계정조회")
+    public void get_my_account() throws Exception {
+        given(accountFindService.findById(any(Long.class)))
+                .willReturn(account);
+
+        mvc.perform(get("/account/0"))
+                .andExpect(status().isOk());
+    }
 
     @Test
     @DisplayName("존재하는 계정조회")
