@@ -11,8 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.slam.publicshare.book.utils.CategoryUtils.buildCategory;
@@ -39,7 +38,7 @@ public class CategoryFindServiceTest {
     }
 
     @Test
-    @DisplayName("카테고리가 존재하는 경우 정상작동")
+    @DisplayName("카테고리가 존재하는 경우")
     public void find_category_by_name() {
         given(categoryRepository.findByNameAndDisplayIsTrue(any(String.class)))
                 .willReturn(Optional.of(buildCategory()));
@@ -47,6 +46,7 @@ public class CategoryFindServiceTest {
         var result = categoryFindService.findByName("운영체제");
 
         assertEquals(result.getName(), "운영체제");
+        assertFalse(result.isDisplay());
     }
 
     @Test

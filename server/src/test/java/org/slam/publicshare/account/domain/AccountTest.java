@@ -15,6 +15,15 @@ public class AccountTest {
             .build();
 
     @Test
+    @DisplayName("Email객체에서 Id, Host 추출")
+    public void  email_method_test() {
+        var email = Email.of("test@test.com");
+
+        assertEquals(email.getId(), "test");
+        assertEquals(email.getHost(), "test.com");
+    }
+
+    @Test
     @DisplayName("Builder로 인스턴스 생성")
     public void account_builder_test() {
         assertEquals(account.getEmail().getAddress(), "asd@asd.com");

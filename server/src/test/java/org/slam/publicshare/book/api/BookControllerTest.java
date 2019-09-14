@@ -148,7 +148,8 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
                 .willReturn(buildNormalPageBook());
 
         // path variable에 한글
-        mvc.perform(get("/books/category/운영체제?page=1&size=10").characterEncoding("UTF-8"))
+        mvc.perform(get("/books/category/운영체제?page=1&size=10")
+                .characterEncoding("UTF-8"))
                 .andExpect(status().isOk());
     }
 
@@ -159,7 +160,8 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
                 .willThrow(NoSuchCategoryException.class);
 
         // path variable에 한글
-        mvc.perform(get("/books/category/카테고리?page=1&size=10").characterEncoding("UTF-8"))
+        mvc.perform(get("/books/category/카테고리?page=1&size=10")
+                .characterEncoding("UTF-8"))
                 .andExpect(status().isNotFound());
     }
 

@@ -1,14 +1,11 @@
 package org.slam.publicshare.book.dto.book;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.slam.publicshare.book.domain.Book;
 
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookResponse {
 
     private Long id;

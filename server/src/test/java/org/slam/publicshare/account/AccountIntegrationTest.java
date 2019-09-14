@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -35,7 +36,7 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("인증 후 계정 조회")
-    @WithMockUser(username = "test1@asd.com", roles = {"BASIC"})
+    @WithUserDetails("test1@asd.com")
     public void get_account_with_auth() throws Exception {
         var resultAction = mvc.perform(get("/account/1"))
                 .andExpect(status().isOk())
