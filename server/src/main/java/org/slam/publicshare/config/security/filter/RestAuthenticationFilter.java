@@ -47,7 +47,7 @@ public class RestAuthenticationFilter extends UsernamePasswordAuthenticationFilt
     }
 
     private void setFields(SignInRequest body) {
-        this.username = body.getUsername() == null ? "" : body.getUsername().trim();
+        this.username = body.getUsername() == null ? "" : body.getUsername();
         this.password = body.getPassword() == null ? "" : body.getPassword();
     }
 
