@@ -23,13 +23,14 @@ export default (state = initial, action) => {
     switch (action.type) {
       case BOOK.LOAD_BOOK_LIST_REQUEST:
       case BOOK.LOAD_BOOK_LIST_BY_CATEGORY_REQUEST:
+        draft.list.data = !action.page || action.page === 1 ? [] : draft.list.data;
         draft.list.page = action.page ? action.page : 1;
         draft.list.isLoading = true;
         draft.list.error = {};
         break;
       case BOOK.LOAD_BOOK_LIST_SUCCESS:
       case BOOK.LOAD_BOOK_LIST_BY_CATEGORY_SUCCESS:
-        draft.list.data = action.data.content;
+        draft.list.data = draft.list.data.concat(action.data.content);
         draft.list.isLast = action.data.last;
         draft.list.totalPages = action.data.totalPages;
         draft.list.isLoading = false;

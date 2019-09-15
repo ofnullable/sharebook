@@ -1,7 +1,12 @@
 import { fork, put, takeLatest, call, all, throttle } from 'redux-saga/effects';
 
 import { BOOK } from '@redux/actionTypes';
-import { loadBookListApi, loadBookListByCategoryApi, loadBookApi } from '@redux/api/book';
+import {
+  loadBookListApi,
+  loadBookListByCategoryApi,
+  loadBookApi,
+  borrowBookApi,
+} from '@redux/api/book';
 import {
   loadBookListSuccess,
   loadBookListFailure,
@@ -9,6 +14,8 @@ import {
   loadBookListByCategoryFailure,
   loadBookSuccess,
   loadBookFailure,
+  borrowBookSuccess,
+  borrowBookFailure,
 } from '@redux/actions/bookActions';
 
 export default function*() {
@@ -16,11 +23,12 @@ export default function*() {
     fork(watchLoadBookListRequest),
     fork(watchLoadBookListByCategoryRequest),
     fork(watchLoadBookRequest),
+    fork(watchBorrowBookRequest),
   ]);
 }
 
 function* watchLoadBookListRequest() {
-  yield takeLatest(BOOK.LOAD_BOOK_LIST_REQUEST, loadBookList);
+  yield throttle(500, BOOK.LOAD_BOOK_LIST_REQUEST, loadBookList);
 }
 function* loadBookList({ searchText, page, size }) {
   try {
@@ -55,5 +63,18 @@ function* loadBook({ id }) {
   } catch (e) {
     console.error(e);
     yield put(loadBookFailure((e.response && e.response.data) || e));
+  }
+}
+
+function* watchBorrowBookRequest() {
+  yield takeLatest(BOOK.BORROW_BOOK_REQUEST, borrowBook);
+}
+function* borrowBook({ id }) {
+  try {
+    const response = yield call(borrowBookApi, id);
+    yield put(borrowBookSuccess(response.data));
+  } catch (e) {
+    console.error(e);
+    yield put(borrowBookFailure((e.response && e.response.data) || e));
   }
 }

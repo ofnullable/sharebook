@@ -1,15 +1,12 @@
 package org.slam.publicshare.error;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApiError {
 
     private int status;

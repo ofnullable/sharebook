@@ -14,7 +14,7 @@ public class SignInRequest {
 
     @Builder
     public SignInRequest(String username, String password) {
-        this.username = username;
+        this.username = username != null ? username.trim().toLowerCase() : null;
         this.password = password;
     }
 

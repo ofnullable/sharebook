@@ -20,7 +20,7 @@ public class BookFindService {
     }
 
     public Page<Book> findAll(String searchText, PageRequest pageRequest) {
-        if (searchText == null) {
+        if (searchText == null || searchText.equals("")) {
             return bookRepository.findAll(pageRequest.of());
         }
         return bookRepository.findByTitleContainingIgnoreCase(searchText, pageRequest.of());

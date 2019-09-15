@@ -1,41 +1,35 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import BookCard from '@components/BookCard';
 import SearchBar from '@components/SearchBar';
 import { loadBookListRequest, loadBookListByCategoryRequest } from '@redux/actions/bookActions';
 import { loadCategoryListRequest } from '@redux/actions/categoryActions';
 
-import { CenterDiv, SpinIcon } from '@styles/global';
+import { CenterDiv, SpinIcon, ModalOverlay, LoadingIconWrapper } from '@styles/global';
 import { CardWrapper } from '@styles/pages/index';
 
 const Home = () => {
-  const { isLoading, data, page } = useSelector(state => state.book.list);
+  const { isLoading, data, page, isLast } = useSelector(state => state.book.list);
+  const dispatch = useDispatch();
+
+  const handleScroll = () => {
+    const scrollTop = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+    const clientHeight = document.documentElement.clientHeight;
+    const scrollHeight =
+      Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - clientHeight;
+
+    if (!isLast && scrollHeight === scrollTop && scrollTop) {
+      dispatch(loadBookListRequest('', page + 1));
+    }
+  };
 
   useEffect(() => {
-    console.log(page);
-    // window scroll event for infinite scroll
-  }, [page]);
-
-  const renderPosts = () => {
-    if (isLoading) {
-      return (
-        <CenterDiv>
-          <SpinIcon _size='48px' _color='primary' className='material-icons'>
-            autorenew
-          </SpinIcon>
-        </CenterDiv>
-      );
-    }
-    if (data.length) {
-      return data.map(d => <BookCard key={d.id} data={d} />);
-    }
-    return (
-      <CenterDiv>
-        <p>도서가 존재하지 않습니다.</p>
-      </CenterDiv>
-    );
-  };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [page, isLast]);
 
   return (
     <>
@@ -43,7 +37,26 @@ const Home = () => {
 
       <SearchBar />
 
-      <CardWrapper>{renderPosts()}</CardWrapper>
+      {isLoading && (
+        <>
+          <ModalOverlay />
+          <LoadingIconWrapper>
+            <SpinIcon _size='100px' _color='primary' className='material-icons'>
+              autorenew
+            </SpinIcon>
+          </LoadingIconWrapper>
+        </>
+      )}
+
+      <CardWrapper>
+        {data.length ? (
+          data.map(d => <BookCard key={d.id} data={d} />)
+        ) : (
+          <CenterDiv>
+            <p>도서가 존재하지 않습니다.</p>
+          </CenterDiv>
+        )}
+      </CardWrapper>
     </>
   );
 };

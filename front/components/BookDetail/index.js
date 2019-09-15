@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import {
   BookDetailHeader,
@@ -12,9 +12,10 @@ import { Button, SpinIcon } from '@styles/global';
 
 function BookDetail({ detail }) {
   const { user } = useSelector(state => state.user);
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  const handleRequest = e => {
+  const handleBorrow = e => {
     console.log(e);
   };
 
@@ -29,9 +30,9 @@ function BookDetail({ detail }) {
       );
     }
 
-    if (user.id) {
+    if (user.data.id) {
       return (
-        <Button _color='primary' onClick={handleRequest}>
+        <Button _color='primary' onClick={handleBorrow}>
           대여신청
         </Button>
       );
@@ -47,7 +48,7 @@ function BookDetail({ detail }) {
   return (
     <BookDetailHeader>
       <BookImageWrapper>
-        <img src={`https://placeimg.com/200/300/animals`} alt='' />
+        <img src={detail.imageUrl} alt={detail.title} />
       </BookImageWrapper>
       <BookDetailWrapper>
         <BookInfoWrapper>

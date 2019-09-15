@@ -21,11 +21,11 @@ public class Email {
     private String address;
 
     private Email(String address) {
-        this.address = address;
+        this.address = address.trim().toLowerCase();
     }
 
     public static Email of(String address) {
-        return new Email(address);
+        return new Email(address.trim().toLowerCase());
     }
 
     public String getHost() {

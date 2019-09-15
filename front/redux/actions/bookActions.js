@@ -48,3 +48,18 @@ export const loadBookFailure = error => ({
   type: BOOK.LOAD_BOOK_FAILURE,
   error,
 });
+
+export const borrowBookRequest = id => ({
+  type: BOOK.BORROW_BOOK_REQUEST,
+  id,
+});
+
+export const borrowBookSuccess = data => ({
+  type: BOOK.BORROW_BOOK_SUCCESS,
+  data,
+});
+
+export const borrowBookFailure = error => ({
+  type: BOOK.BORROW_BOOK_FAILURE,
+  error,
+});

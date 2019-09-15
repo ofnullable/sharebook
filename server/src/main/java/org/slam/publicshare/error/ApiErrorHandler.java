@@ -34,8 +34,7 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     protected ApiError handleNoSuchAccountException(NoSuchAccountException e, WebRequest request) {
         if (e.getId() != null) {
             log.debug("No Such Account. ID: {}", e.getId());
-        }
-        if (e.getUsername() != null) {
+        } else {
             log.debug("No Such Account. Username: {}", e.getUsername());
         }
         return bindError(ErrorCode.ACCOUNT_NOT_FOUND, request);
