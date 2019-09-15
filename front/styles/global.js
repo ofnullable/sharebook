@@ -74,6 +74,32 @@ export const InputGroup = styled.div`
   }
 `;
 
+export const ModalOverlay = styled(CenterDiv)`
+  position: fixed;
+  opacity: 0.5;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  z-index: 1001;
+  background-color: ${COLOR_SCHEME.lightGray};
+`;
+
+export const Modal = styled.div``;
+
+export const LoadingIconWrapper = styled.div`
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  z-index: 1002;
+`;
+
 export const GlobalStyle = createGlobalStyle`
   ${normalize}
   html {
