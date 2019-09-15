@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.slam.publicshare.book.utils.BookUtils.*;
 import static org.slam.publicshare.book.utils.CategoryUtils.buildCategory;
-import static org.slam.publicshare.common.utils.PageRequestUtils.buildPageable;
+import static org.slam.publicshare.common.utils.PageRequestUtils.buildPageRequest;
 
 @ExtendWith(SpringExtension.class)
 public class BookFindServiceTest {
@@ -61,7 +61,7 @@ public class BookFindServiceTest {
         given(bookRepository.findAll(any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
-        var result = bookFindService.findAll(null, buildPageable(10));
+        var result = bookFindService.findAll(null, buildPageRequest(10));
 
         assertEquals(result.getSize(), 10);
     }
@@ -72,7 +72,7 @@ public class BookFindServiceTest {
         given(bookRepository.findByTitleContainingIgnoreCase(any(String.class), any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
-        var result = bookFindService.findAll("test title", buildPageable(10));
+        var result = bookFindService.findAll("test title", buildPageRequest(10));
 
         assertEquals(result.getSize(), 10);
     }
@@ -83,7 +83,7 @@ public class BookFindServiceTest {
         given(bookRepository.findByTitleContainingIgnoreCase(any(String.class), any(Pageable.class)))
                 .willReturn(buildIrregularPageBook());
 
-        var result = bookFindService.findAll("test title", buildPageable(100));
+        var result = bookFindService.findAll("test title", buildPageRequest(100));
 
         assertEquals(result.getSize(), 12);
     }
@@ -96,7 +96,7 @@ public class BookFindServiceTest {
         given(bookRepository.findAllByCategoryName(any(String.class), any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
-        var result = bookFindService.findAllByCategory("운영체제", buildPageable(10));
+        var result = bookFindService.findAllByCategory("운영체제", buildPageRequest(10));
 
         assertEquals(result.getSize(), 10);
     }

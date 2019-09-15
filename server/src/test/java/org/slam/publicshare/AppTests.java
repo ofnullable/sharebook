@@ -9,9 +9,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AppTests {
 
-	@Test
-	public void contextLoads() {
-
-	}
+    @Test
+    public void contextLoads() {
+        App.main(new String[]{});
+    }
 
 }

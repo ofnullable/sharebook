@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slam.publicshare.account.domain.Account;
+import org.slam.publicshare.account.dto.SignUpRequest;
 import org.slam.publicshare.config.security.userdetails.SignInRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -85,6 +86,44 @@ public class AccountIntegrationTest {
         mvc.perform(post("/auth/sign-in")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(signInRequest))
+        )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status", is(400)))
+                .andExpect(jsonPath("$.message", is("Username and/or Password did not match")))
+                .andExpect(jsonPath("$.path", is("/auth/sign-in")))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("데이터를 전송하지 않은 로그인 요청 - 400")
+    public void sign_in_with_null_credential() throws Exception {
+        var signInRequest = SignInRequest.builder()
+                .username(null)
+                .password(null)
+                .build();
+
+        mvc.perform(post("/auth/sign-in")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(signInRequest))
+        )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status", is(400)))
+                .andExpect(jsonPath("$.message", is("Username and/or Password did not match")))
+                .andExpect(jsonPath("$.path", is("/auth/sign-in")))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("유효하지 않은 데이터로 로그인 요청 - 400")
+    public void sign_in_with_invalid_parameter() throws Exception {
+        var signUpRequest = SignUpRequest.builder()
+                .email(null)
+                .password(null)
+                .build();
+
+        mvc.perform(post("/auth/sign-in")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(signUpRequest))
         )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status", is(400)))
