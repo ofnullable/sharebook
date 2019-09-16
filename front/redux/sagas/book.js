@@ -5,7 +5,7 @@ import {
   loadBookListApi,
   loadBookListByCategoryApi,
   loadBookApi,
-  borrowBookApi,
+  rentBookApi,
 } from '@redux/api/book';
 import {
   loadBookListSuccess,
@@ -14,8 +14,8 @@ import {
   loadBookListByCategoryFailure,
   loadBookSuccess,
   loadBookFailure,
-  borrowBookSuccess,
-  borrowBookFailure,
+  rentBookSuccess,
+  rentBookFailure,
 } from '@redux/actions/bookActions';
 
 export default function*() {
@@ -23,7 +23,7 @@ export default function*() {
     fork(watchLoadBookListRequest),
     fork(watchLoadBookListByCategoryRequest),
     fork(watchLoadBookRequest),
-    fork(watchBorrowBookRequest),
+    fork(watchRentBookRequest),
   ]);
 }
 
@@ -66,15 +66,16 @@ function* loadBook({ id }) {
   }
 }
 
-function* watchBorrowBookRequest() {
-  yield takeLatest(BOOK.BORROW_BOOK_REQUEST, borrowBook);
+function* watchRentBookRequest() {
+  yield takeLatest(BOOK.RENT_BOOK_REQUEST, RentBook);
 }
-function* borrowBook({ id }) {
+function* RentBook({ id }) {
   try {
-    const response = yield call(borrowBookApi, id);
-    yield put(borrowBookSuccess(response.data));
+    console.log(id);
+    const response = yield call(rentBookApi, id);
+    yield put(rentBookSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(borrowBookFailure((e.response && e.response.data) || e));
+    yield put(rentBookFailure((e.response && e.response.data) || e));
   }
 }

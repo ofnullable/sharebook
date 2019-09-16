@@ -2,6 +2,8 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { rentBookRequest } from '@redux/actions/bookActions';
+
 import {
   BookDetailHeader,
   BookImageWrapper,
@@ -15,8 +17,8 @@ function BookDetail({ detail }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const handleBorrow = e => {
-    console.log(e);
+  const handleRent = () => {
+    dispatch(rentBookRequest(detail.id));
   };
 
   const renderButton = () => {
@@ -32,7 +34,7 @@ function BookDetail({ detail }) {
 
     if (user.data.id) {
       return (
-        <Button _color='primary' onClick={handleBorrow}>
+        <Button _color='primary' onClick={handleRent}>
           대여신청
         </Button>
       );

@@ -55,9 +55,6 @@ public class AccountControllerTest extends WithAuthenticationPrincipal {
     @Test
     @DisplayName("현재 세션에 있는 계정조회")
     public void get_my_account() throws Exception {
-        given(accountFindService.findById(any(Long.class)))
-                .willReturn(account);
-
         mvc.perform(get("/account/0"))
                 .andExpect(status().isOk());
     }

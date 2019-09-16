@@ -1,6 +1,5 @@
 package org.slam.publicshare.config.security.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -17,7 +16,6 @@ import static org.slam.publicshare.config.security.handler.HandlerUtils.authToSt
 
 public class RestAuthSuccessHandler implements AuthenticationSuccessHandler {
 
-    private ObjectMapper mapper = new ObjectMapper();
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
