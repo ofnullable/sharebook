@@ -41,7 +41,7 @@ const PublicShare = ({ Component, pageProps, store }) => {
 
 PublicShare.getInitialProps = async ({ Component, ctx }) => {
   const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
-  const loadUserNeeded = ctx.isServer && ['/signin', '/join'].includes(ctx.req.url);
+  const loadUserNeeded = ctx.isServer && !['/signin', '/join'].includes(ctx.req.url);
 
   if (cookie) {
     axios.defaults.headers.cookie = cookie;

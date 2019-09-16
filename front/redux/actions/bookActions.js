@@ -49,17 +49,17 @@ export const loadBookFailure = error => ({
   error,
 });
 
-export const borrowBookRequest = id => ({
-  type: BOOK.BORROW_BOOK_REQUEST,
+export const rentBookRequest = id => ({
+  type: BOOK.RENT_BOOK_REQUEST,
   id,
 });
 
-export const borrowBookSuccess = data => ({
-  type: BOOK.BORROW_BOOK_SUCCESS,
+export const rentBookSuccess = data => ({
+  type: BOOK.RENT_BOOK_SUCCESS,
   data,
 });
 
-export const borrowBookFailure = error => ({
-  type: BOOK.BORROW_BOOK_FAILURE,
+export const rentBookFailure = error => ({
+  type: BOOK.RENT_BOOK_FAILURE,
   error,
 });

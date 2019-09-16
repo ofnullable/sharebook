@@ -36,6 +36,25 @@ public class AccountIntegrationTest {
     private ObjectMapper mapper = new ObjectMapper();
 
     @Test
+    @DisplayName("로그인 후 현재 계정 조회")
+    @WithUserDetails("test1@asd.com")
+    public void get_current_account_with_auth() throws Exception {
+        var resultAction = mvc.perform(get("/account/0"))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        assertEmailAndName(resultAction);
+    }
+
+    @Test
+    @DisplayName("로그인 하지않고 현재 계정 조회")
+    public void get_current_account_with_no_auth() throws Exception {
+        mvc.perform(get("/account/0"))
+                .andExpect(status().isUnauthorized())
+                .andDo(print());
+    }
+
+    @Test
     @DisplayName("인증 후 계정 조회")
     @WithUserDetails("test1@asd.com")
     public void get_account_with_auth() throws Exception {

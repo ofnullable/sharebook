@@ -19,6 +19,6 @@ export const loadBookApi = id => {
   return axios.get(`/book/${id}`, { withCredentials: true });
 };
 
-export const borrowBookApi = id => {
-  return axios.post(`/book/history/${id}`, {}, { withCredentials: true });
+export const rentBookApi = id => {
+  return axios.post(`/book/${id}/rent`, {}, { withCredentials: true });
 };
