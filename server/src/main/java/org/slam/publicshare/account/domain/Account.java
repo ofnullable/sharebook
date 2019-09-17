@@ -4,15 +4,12 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.slam.publicshare.book.domain.Book;
 import org.slam.publicshare.common.domain.Auditable;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,11 +31,8 @@ public class Account extends Auditable {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Role> roles = new HashSet<>();
-
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<Book> books = new ArrayList<>();
 
     @Builder
     public Account(Email email, String password, String name) {
@@ -53,10 +47,6 @@ public class Account extends Auditable {
 
     public void updatePassword(String password) {
         this.password = encodePassword(password);
-    }
-
-    public void addBook(Book book) {
-        this.books.add(book);
     }
 
     private Role buildRole(RoleName roleName) {
