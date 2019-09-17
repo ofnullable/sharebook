@@ -20,7 +20,7 @@ public class CategoryController {
     private final CategorySaveService categorySaveService;
 
     @GetMapping("/categories")
-    public List<CategoryResponse> findAll() {
+    public List<CategoryResponse> findAllCategory() {
         var display = true;
         return categoryFindService.findAllByDisplay(display).stream()
                 .map(CategoryResponse::new)
@@ -29,7 +29,7 @@ public class CategoryController {
 
     @PostMapping("/category")
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryResponse save(@RequestBody @Valid SaveCategoryRequest dto) {
+    public CategoryResponse saveCategory(@RequestBody @Valid SaveCategoryRequest dto) {
         return new CategoryResponse(categorySaveService.save(dto));
     }
 

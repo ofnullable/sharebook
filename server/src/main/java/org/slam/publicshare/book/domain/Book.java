@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.slam.publicshare.account.domain.Account;
+import org.slam.publicshare.book.converter.BookStatusConverter;
 import org.slam.publicshare.common.domain.Auditable;
 
 import javax.persistence.*;
@@ -26,11 +27,13 @@ public class Book extends Auditable {
     @Column(nullable = false)
     private String publisher;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Category category;
 
-    @Column(nullable = false)
     private String description;
+
+    @Convert(converter = BookStatusConverter.class)
+    private BookStatus status;
 
     @ManyToOne(optional = false)
     private Account owner;
@@ -39,11 +42,13 @@ public class Book extends Auditable {
     private String imageUrl;
 
     @Builder
-    public Book(String title, String author, String publisher, String description, Account owner, String imageUrl) {
+    public Book(String title, String author, String publisher, Category category, String description, BookStatus status, Account owner, String imageUrl) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
+        this.category = category;
         this.description = description;
+        this.status = status;
         this.setOwner(owner);
         this.imageUrl = imageUrl;
     }
@@ -54,7 +59,14 @@ public class Book extends Auditable {
 
     public void setOwner(Account owner) {
         this.owner = owner;
-        owner.addBook(this);
+    }
+
+    public void rent() {
+        this.status = BookStatus.UNAVAILABLE;
+    }
+
+    public void returned() {
+        this.status = BookStatus.AVAILABLE;
     }
 
 }

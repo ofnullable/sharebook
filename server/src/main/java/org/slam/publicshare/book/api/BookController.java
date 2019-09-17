@@ -24,23 +24,23 @@ public class BookController {
 
     @PostMapping("/book")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookResponse save(@RequestBody @Valid SaveBookRequest dto, @AuthenticationPrincipal(expression = "account") Account account) {
-        return new BookResponse(bookSaveService.save(dto, account.getId()));
+    public BookResponse saveBook(@RequestBody @Valid SaveBookRequest dto, @AuthenticationPrincipal(expression = "account") Account account) {
+        return new BookResponse(bookSaveService.save(dto, account));
     }
 
     @GetMapping("/book/{id}")
-    public BookResponse findById(@PathVariable Long id) {
+    public BookResponse findBookById(@PathVariable Long id) {
         return new BookResponse(bookFindService.findById(id));
     }
 
     @GetMapping("/books")
-    public Page<BookResponse> findAll(@Nullable final String searchText, @Valid final PageRequest pageRequest) {
+    public Page<BookResponse> findAllBook(@Nullable final String searchText, @Valid final PageRequest pageRequest) {
         return bookFindService.findAll(searchText, pageRequest)
                 .map(BookResponse::new);
     }
 
     @GetMapping("/books/category/{category}")
-    public Page<BookResponse> findAllByCategory(@PathVariable String category, @Valid final PageRequest pageRequest) {
+    public Page<BookResponse> findAllBookByCategory(@PathVariable String category, @Valid final PageRequest pageRequest) {
         return bookFindService.findAllByCategory(category, pageRequest)
                 .map(BookResponse::new);
     }
