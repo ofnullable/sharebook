@@ -1,12 +1,7 @@
 import { fork, put, takeLatest, call, all, throttle } from 'redux-saga/effects';
 
 import { BOOK } from '@redux/actionTypes';
-import {
-  loadBookListApi,
-  loadBookListByCategoryApi,
-  loadBookApi,
-  rentBookApi,
-} from '@redux/api/book';
+import { loadBookListApi, loadBookListByCategoryApi, loadBookApi } from '@redux/api/book';
 import {
   loadBookListSuccess,
   loadBookListFailure,
@@ -14,8 +9,6 @@ import {
   loadBookListByCategoryFailure,
   loadBookSuccess,
   loadBookFailure,
-  rentBookSuccess,
-  rentBookFailure,
 } from '@redux/actions/bookActions';
 
 export default function*() {
@@ -23,7 +16,6 @@ export default function*() {
     fork(watchLoadBookListRequest),
     fork(watchLoadBookListByCategoryRequest),
     fork(watchLoadBookRequest),
-    fork(watchRentBookRequest),
   ]);
 }
 
@@ -63,19 +55,5 @@ function* loadBook({ id }) {
   } catch (e) {
     console.error(e);
     yield put(loadBookFailure((e.response && e.response.data) || e));
-  }
-}
-
-function* watchRentBookRequest() {
-  yield takeLatest(BOOK.RENT_BOOK_REQUEST, RentBook);
-}
-function* RentBook({ id }) {
-  try {
-    console.log(id);
-    const response = yield call(rentBookApi, id);
-    yield put(rentBookSuccess(response.data));
-  } catch (e) {
-    console.error(e);
-    yield put(rentBookFailure((e.response && e.response.data) || e));
   }
 }

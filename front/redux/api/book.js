@@ -18,7 +18,3 @@ export const loadBookListByCategoryApi = ({ category, page, size }) => {
 export const loadBookApi = id => {
   return axios.get(`/book/${id}`, { withCredentials: true });
 };
-
-export const rentBookApi = id => {
-  return axios.post(`/book/${id}/rent`, {}, { withCredentials: true });
-};

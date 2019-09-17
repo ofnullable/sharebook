@@ -6,7 +6,8 @@ axios.defaults.baseURL = 'http://localhost:8081';
 import user from './user';
 import book from './book';
 import category from './category';
+import rental from './rental';
 
 export default function*() {
-  yield all([fork(user), fork(book), fork(category)]);
+  yield all([fork(user), fork(book), fork(category), fork(rental)]);
 }
