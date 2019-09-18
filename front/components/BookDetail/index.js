@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { rentBookRequest } from '@redux/actions/bookActions';
+import { rentalBookRequest } from '@redux/actions/rentalActions';
 
 import {
   BookDetailHeader,
@@ -18,7 +18,7 @@ function BookDetail({ detail }) {
   const router = useRouter();
 
   const handleRent = () => {
-    dispatch(rentBookRequest(detail.id));
+    dispatch(rentalBookRequest(detail.id));
   };
 
   const renderButton = () => {

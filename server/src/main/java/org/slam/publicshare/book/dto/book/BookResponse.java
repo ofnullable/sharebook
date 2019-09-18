@@ -2,6 +2,7 @@ package org.slam.publicshare.book.dto.book;
 
 import lombok.Getter;
 import org.slam.publicshare.book.domain.Book;
+import org.slam.publicshare.book.domain.BookStatus;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +15,7 @@ public class BookResponse {
     private String publisher;
     private String category;
     private String description;
+    private BookStatus status;
     private String owner;
     private String imageUrl;
     private LocalDateTime modifiedAt;
@@ -28,6 +30,7 @@ public class BookResponse {
         this.publisher = book.getPublisher();
         this.category = book.getCategory().getName();
         this.description = book.getDescription();
+        this.status = book.getStatus();
         this.owner = book.getOwner().getName();
         this.imageUrl = book.getImageUrl();
         this.modifiedAt = book.getModifiedAt();

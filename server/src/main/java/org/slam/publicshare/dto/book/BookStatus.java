@@ -1,6 +1,6 @@
 package org.slam.publicshare.dto.book;
 
-public enum  BookStatus {
+public enum BookStatus {
     AVAILABLE,
     WAIT_FOR_RESPONSE,
     ON_LOAN,

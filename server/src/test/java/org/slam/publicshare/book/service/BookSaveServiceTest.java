@@ -46,18 +46,9 @@ public class BookSaveServiceTest {
         given(bookRepository.save(any(Book.class)))
                 .willReturn(book);
 
-        var result = bookSaveService.save(buildSaveBookRequest(), 0L);
+        var result = bookSaveService.save(buildSaveBookRequest(), buildNormalAccount());
 
         equalBook(result, book);
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 회원이 도서 등록하는 경우 - NoSuchAccountException")
-    public void save_book_with_invalid_account() {
-        given(accountFindService.findById(any(Long.class)))
-                .willThrow(NoSuchAccountException.class);
-
-        assertThrows(NoSuchAccountException.class, () -> bookSaveService.save(buildSaveBookRequest(), 0L));
     }
 
     @Test
@@ -68,7 +59,7 @@ public class BookSaveServiceTest {
         given(categoryFindService.findByName(any(String.class)))
                 .willThrow(NoSuchCategoryException.class);
 
-        assertThrows(NoSuchCategoryException.class, () -> bookSaveService.save(buildSaveBookRequest(), 0L));
+        assertThrows(NoSuchCategoryException.class, () -> bookSaveService.save(buildSaveBookRequest(), buildNormalAccount()));
     }
 
 }

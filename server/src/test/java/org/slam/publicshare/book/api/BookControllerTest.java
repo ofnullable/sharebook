@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.slam.publicshare.account.domain.Account;
 import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.book.domain.Book;
 import org.slam.publicshare.book.dto.book.SaveBookRequest;
@@ -75,7 +76,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
     @Test
     @DisplayName("도서 등록")
     public void save_book() throws Exception {
-        given(bookSaveService.save(any(SaveBookRequest.class), any(Long.class)))
+        given(bookSaveService.save(any(SaveBookRequest.class), any(Account.class)))
                 .willReturn(book);
 
         mvc.perform(post("/book")
@@ -87,7 +88,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
     @Test
     @DisplayName("존재하지 않는 계정으로 도서 등록하는 경우 - 404")
     public void save_book_with_invalid_account() throws Exception {
-        given(bookSaveService.save(any(SaveBookRequest.class), any(Long.class)))
+        given(bookSaveService.save(any(SaveBookRequest.class), any(Account.class)))
                 .willThrow(NoSuchAccountException.class);
 
         mvc.perform(post("/book")
@@ -100,7 +101,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
     @Test
     @DisplayName("존재하지 않는 카테고리로 도서 등록하는 경우 - 404")
     public void save_book_with_invalid_category() throws Exception {
-        given(bookSaveService.save(any(SaveBookRequest.class), any(Long.class)))
+        given(bookSaveService.save(any(SaveBookRequest.class), any(Account.class)))
                 .willThrow(NoSuchCategoryException.class);
 
         mvc.perform(post("/book")
