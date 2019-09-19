@@ -17,6 +17,6 @@ function* loadCategoryList() {
     yield put(loadCategoryListSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(loadCategoryListFailure((e.response && e.response.data) || e));
+    yield put(loadCategoryListFailure(e.response.data || e));
   }
 }

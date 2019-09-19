@@ -28,7 +28,7 @@ function* loadBookList({ searchText, page, size }) {
     yield put(loadBookListSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(loadBookListFailure((e.response && e.response.data) || e));
+    yield put(loadBookListFailure(e.response.data || e));
   }
 }
 
@@ -40,8 +40,8 @@ function* loadBookListByCategory({ page, size, category }) {
     const response = yield call(loadBookListByCategoryApi, { page, size, category });
     yield put(loadBookListByCategorySuccess(response.data));
   } catch (e) {
-    console.error((e.response && e.response.data) || e);
-    yield put(loadBookListByCategoryFailure((e.response && e.response.data) || e));
+    console.error(e);
+    yield put(loadBookListByCategoryFailure(e.response.data || e));
   }
 }
 
@@ -54,6 +54,6 @@ function* loadBook({ id }) {
     yield put(loadBookSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(loadBookFailure((e.response && e.response.data) || e));
+    yield put(loadBookFailure(e.response.data || e));
   }
 }
