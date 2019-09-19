@@ -42,3 +42,9 @@ export const loadBookFailure = error => ({
   type: BOOK.LOAD_BOOK_FAILURE,
   error,
 });
+
+export const changeBookStatus = (id, status) => ({
+  type: BOOK.CHANGE_BOOK_STATUS,
+  id,
+  status,
+});

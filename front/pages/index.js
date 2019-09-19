@@ -9,7 +9,7 @@ import { loadCategoryListRequest } from '@redux/actions/categoryActions';
 import { CenterDiv, SpinIcon, ModalOverlay, LoadingIconWrapper } from '@styles/global';
 import { CardWrapper } from '@styles/pages/index';
 
-const Home = () => {
+const Home = ({ category }) => {
   const { isLoading, data, page, isLast } = useSelector(state => state.book.list);
   const dispatch = useDispatch();
 
@@ -20,6 +20,10 @@ const Home = () => {
       Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - clientHeight;
 
     if (!isLast && scrollHeight === scrollTop && scrollTop) {
+      if (category) {
+        dispatch(loadBookListByCategoryRequest(category, page + 1));
+        return;
+      }
       dispatch(loadBookListRequest('', page + 1));
     }
   };
@@ -70,14 +74,16 @@ Home.getInitialProps = async ({ query, store }) => {
   const searchText = query.searchText;
   if (searchText) {
     store.dispatch(loadBookListRequest(searchText));
-    return;
+    return { category: null };
   }
   const category = query.category;
   if (!category || category === 'ALL') {
     store.dispatch(loadBookListRequest());
   } else {
     store.dispatch(loadBookListByCategoryRequest(category));
+    return { category };
   }
+  return { category: null };
 };
 
 export default Home;

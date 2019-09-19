@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { signOutRequest } from '@redux/actions/userActions';
 
-import { HeaderNav, HomepageLink } from './Nav.styled';
+import { HeaderNav, HeaderMenu, HeaderMenuGroup, HomepageLink } from './Nav.styled';
 
 const Nav = () => {
   const { isSignedIn } = useSelector(state => state.user.user);
@@ -23,40 +23,38 @@ const Nav = () => {
 
     if (isSignedIn) {
       return (
-        <li onClick={handleSignOut}>
+        <HeaderMenu onClick={handleSignOut}>
           <a>로그아웃</a>
-        </li>
+        </HeaderMenu>
       );
     }
 
     return (
-      <div>
-        <li>
+      <HeaderMenu>
+        <HeaderMenuGroup>
           <Link href='/signin' prefetch={false}>
             <a>로그인</a>
           </Link>
-        </li>
-        <li>|</li>
-        <li>
+          <span>|</span>
           <Link href='/join' prefetch={false}>
             <a>회원가입</a>
           </Link>
-        </li>
-      </div>
+        </HeaderMenuGroup>
+      </HeaderMenu>
     );
   };
 
   return (
     <HeaderNav>
       <ul>
-        <li>
+        <HeaderMenu>
           <Link href='/' prefetch={false}>
             <HomepageLink>
               <i className='material-icons'>share</i>
               <span>PublicShare</span>
             </HomepageLink>
           </Link>
-        </li>
+        </HeaderMenu>
         {getSecondMenu()}
       </ul>
     </HeaderNav>

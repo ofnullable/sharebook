@@ -1,0 +1,4 @@
+export const BOOK_STATUS = {
+  AVAILABLE: 'AVAILABLE',
+  UNAVAILABLE: 'UNAVAILABLE',
+};

@@ -54,6 +54,11 @@ export default (state = initial, action) => {
         draft.detail.error = action.error;
         break;
 
+      case BOOK.CHANGE_BOOK_STATUS:
+        if (draft.detail.data.id === action.id) {
+          draft.detail.data.status = action.status;
+        }
+
       default:
         break;
     }

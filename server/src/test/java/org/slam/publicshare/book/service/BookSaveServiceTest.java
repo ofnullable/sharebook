@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.account.service.AccountFindService;
 import org.slam.publicshare.book.domain.Book;
 import org.slam.publicshare.book.exception.NoSuchCategoryException;

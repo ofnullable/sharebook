@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { rentalBookRequest } from '@redux/actions/rentalActions';
+import { BOOK_STATUS } from '@utils/consts';
 
 import {
   BookDetailHeader,
@@ -14,6 +15,7 @@ import { Button, SpinIcon } from '@styles/global';
 
 function BookDetail({ detail }) {
   const { user } = useSelector(state => state.user);
+
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -33,11 +35,19 @@ function BookDetail({ detail }) {
     }
 
     if (user.data.id) {
-      return (
-        <Button _color='primary' onClick={handleRent}>
-          대여신청
-        </Button>
-      );
+      if (detail.status === BOOK_STATUS.AVAILABLE) {
+        return (
+          <Button _color='primary' onClick={handleRent}>
+            대여신청
+          </Button>
+        );
+      } else {
+        return (
+          <Button _color='gray' disabled>
+            대여불가
+          </Button>
+        );
+      }
     } else {
       return (
         <Button _color='primary' onClick={() => router.push('/signin')}>
