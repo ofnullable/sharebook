@@ -61,12 +61,8 @@ public class Book extends Auditable {
         this.owner = owner;
     }
 
-    public void rent() {
-        this.status = BookStatus.UNAVAILABLE;
-    }
-
-    public void returned() {
-        this.status = BookStatus.AVAILABLE;
+    public void changeStatus(BookStatus status) {
+        this.status = status;
     }
 
 }
