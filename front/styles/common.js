@@ -41,6 +41,12 @@ export const SpinIcon = styled.i`
 export const CenterDiv = styled.div`
   padding-top: 15px;
   text-align: center;
+  &::after,
+  &::before {
+    content: '';
+    clear: both;
+    display: block;
+  }
 `;
 
 export const RightDiv = styled.div`

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import device from '@styles/device';
-import { Button } from '@styles/global';
+import { Button } from '@styles/common';
 
 export const SearchForm = styled.form`
   ${device.laptops`

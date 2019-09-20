@@ -9,7 +9,7 @@ import { loadUserRequest } from '@redux/actions/userActions';
 import Layout from '@components/layout';
 import store from '@redux/store';
 
-import { GlobalStyle } from '@styles/global';
+import { GlobalStyle } from '@styles/common';
 
 const title = 'public-share';
 const description = 'share your books!';

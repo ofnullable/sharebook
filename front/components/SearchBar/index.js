@@ -6,7 +6,7 @@ import CategoryButton from '@components/SearchBar/CategoryButton';
 import { useInput } from '@utils/InputUtils';
 
 import { SearchForm, SearchButton } from './index.styled';
-import { SpinIcon } from '@styles/global';
+import { SpinIcon } from '@styles/common';
 
 function SearchBar() {
   const [searchText, handleSearchTextChange, setSearchText] = useInput();

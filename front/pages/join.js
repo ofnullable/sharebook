@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useInput } from '@utils/InputUtils';
 import { signUpRequest } from '@redux/actions/userActions';
 
-import { Button, SpinIcon, CenterDiv, InputGroup, CenterForm, ButtonLink } from '@styles/global';
+import { Button, SpinIcon, CenterDiv, InputGroup, CenterForm, ButtonLink } from '@styles/common';
 import { ErrorText } from '@styles/pages/join';
 
 function Join() {
