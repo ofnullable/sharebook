@@ -4,7 +4,6 @@ import device from '@styles/device';
 import { COLOR_SCHEME } from '@styles/colors';
 
 export const HeaderNav = styled.nav`
-  text-align: center;
   & > ul {
     ${device.laptops`
       padding: 15px;
@@ -26,23 +25,10 @@ export const HeaderMenu = styled.li`
   color: ${COLOR_SCHEME.white};
   display: inline-block;
   padding: 6px 8px;
-  &:last-child {
-    float: right;
-    & a {
-      ${device.laptops`
-        line-height: 1.5;
-      `}
-      ${device.tablets`
-        line-height: 1.3;
-      `}
-    }
-  }
-  &:first-child {
-    float: left;
-  }
+  float: ${props => props._float};
   & a {
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: sub;
     color: inherit;
   }
 `;
@@ -53,12 +39,7 @@ export const HeaderMenuGroup = styled.div`
   vertical-align: middle;
   & span {
     padding: 0 10px;
-    ${device.laptops`
-      line-height: 1.5;
-    `}
-    ${device.tablets`
-      line-height: 1.3;
-    `}
+    vertical-align: sub;
   }
 `;
 

@@ -40,9 +40,27 @@ public class Rental extends AbstractAggregateRoot<Rental> {
         this.accountId = accountId;
     }
 
-    public void addHistory(RentalStatus status) {
-        this.histories.add(buildRentHistory(status));
-        registerMatchEvent(status);
+    public void rental() {
+        this.histories.add(buildRentHistory(RentalStatus.REQUESTED));
+        registerEvent(new RentalEvent(this));
+    }
+
+    public void accept() {
+        this.startedAt = LocalDateTime.now();
+        this.histories.add(buildRentHistory(RentalStatus.ON_RENTAL));
+        registerEvent(new RentalEvent(this));
+    }
+
+    public void reject() {
+        this.endedAt = LocalDateTime.now();
+        this.histories.add(buildRentHistory(RentalStatus.REJECTED));
+        registerEvent(new ReturnEvent(this));
+    }
+
+    public void returned() {
+        this.endedAt = LocalDateTime.now();
+        this.histories.add(buildRentHistory(RentalStatus.RETURNED));
+        registerEvent(new ReturnEvent(this));
     }
 
     private RentalHistory buildRentHistory(RentalStatus status) {
@@ -50,13 +68,6 @@ public class Rental extends AbstractAggregateRoot<Rental> {
                 .rental(this)
                 .status(status)
                 .build();
-    }
-
-    private void registerMatchEvent(RentalStatus status) {
-        if (status == RentalStatus.REQUESTED || status == RentalStatus.ON_RENTAL)
-            registerEvent(new RentalEvent(this));
-        else
-            registerEvent(new ReturnEvent(this));
     }
 
 }

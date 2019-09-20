@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { COLOR_SCHEME } from '@styles/colors';
-import { Button } from '@styles/global';
+import { Button } from '@styles/common';
 
 export const Category = styled(Button)`
   padding: 7px;

@@ -6,7 +6,7 @@ import SearchBar from '@components/SearchBar';
 import { loadBookListRequest, loadBookListByCategoryRequest } from '@redux/actions/bookActions';
 import { loadCategoryListRequest } from '@redux/actions/categoryActions';
 
-import { CenterDiv, SpinIcon, ModalOverlay, LoadingIconWrapper } from '@styles/global';
+import { CenterDiv, SpinIcon, ModalOverlay, LoadingIconWrapper } from '@styles/common';
 import { CardWrapper } from '@styles/pages/index';
 
 const Home = ({ category }) => {

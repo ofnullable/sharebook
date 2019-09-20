@@ -37,7 +37,7 @@ public class RentalController {
 
     @PostMapping("/rental/{bookId}")
     public RentalResponse rentalRequest(@PathVariable Long bookId, @AuthenticationPrincipal(expression = "account") Account account) {
-        return new RentalResponse(rentalSaveService.save(bookId, account.getId()));
+        return new RentalResponse(rentalSaveService.rentalRequest(bookId, account.getId()));
     }
 
 }

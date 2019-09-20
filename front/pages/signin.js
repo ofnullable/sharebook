@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useInput } from '@utils/InputUtils';
 import { signInRequest } from '@redux/actions/userActions';
 
-import { CenterDiv, InputGroup, Button, SpinIcon, CenterForm, ButtonLink } from '@styles/global';
+import { CenterDiv, InputGroup, Button, SpinIcon, CenterForm, ButtonLink } from '@styles/common';
 
 function SignIn() {
   const { isSignedIn, isLoading } = useSelector(state => state.user.user);

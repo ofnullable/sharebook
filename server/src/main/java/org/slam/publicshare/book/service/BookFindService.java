@@ -7,6 +7,7 @@ import org.slam.publicshare.book.repository.BookRepository;
 import org.slam.publicshare.common.dto.PageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -20,14 +21,14 @@ public class BookFindService {
     }
 
     public Page<Book> findAll(String searchText, PageRequest pageRequest) {
-        if (searchText == null || searchText.equals("")) {
-            return bookRepository.findAll(pageRequest.of());
+        if (StringUtils.isEmpty(searchText)) {
+            return bookRepository.findAllByOrderByStatus(pageRequest.of());
         }
-        return bookRepository.findByTitleContainingIgnoreCase(searchText, pageRequest.of());
+        return bookRepository.findALlByTitleContainingIgnoreCaseOrderByStatus(searchText, pageRequest.of());
     }
 
     public Page<Book> findAllByCategory(String categoryName, PageRequest pageRequest) {
-        return bookRepository.findAllByCategoryName(categoryName, pageRequest.of());
+        return bookRepository.findAllByCategoryNameOrderByStatus(categoryName, pageRequest.of());
     }
 
 }
