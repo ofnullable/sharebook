@@ -69,7 +69,7 @@ public class BookFindServiceTest {
     @Test
     @DisplayName("도서 제목 검색 요청")
     public void book_list_pagination_by_title() {
-        given(bookRepository.findByTitleContainingIgnoreCase(any(String.class), any(Pageable.class)))
+        given(bookRepository.findALlByTitleContainingIgnoreCaseOrderByStatus(any(String.class), any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
         var result = bookFindService.findAll("test title", buildPageRequest(10));
@@ -80,7 +80,7 @@ public class BookFindServiceTest {
     @Test
     @DisplayName("비정상적인 사이즈로 요청시 요청 사이즈 10으로 고정")
     public void book_list_irregular_size_pagination() {
-        given(bookRepository.findByTitleContainingIgnoreCase(any(String.class), any(Pageable.class)))
+        given(bookRepository.findALlByTitleContainingIgnoreCaseOrderByStatus(any(String.class), any(Pageable.class)))
                 .willReturn(buildIrregularPageBook());
 
         var result = bookFindService.findAll("test title", buildPageRequest(100));
@@ -93,7 +93,7 @@ public class BookFindServiceTest {
     public void find_book_by_category() {
         given(categoryFindService.findByName(any(String.class)))
                 .willReturn(buildCategory());
-        given(bookRepository.findAllByCategoryName(any(String.class), any(Pageable.class)))
+        given(bookRepository.findAllByCategoryNameOrderByStatus(any(String.class), any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
         var result = bookFindService.findAllByCategory("운영체제", buildPageRequest(10));

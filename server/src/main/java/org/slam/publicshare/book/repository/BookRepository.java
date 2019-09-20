@@ -9,12 +9,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     @EntityGraph(attributePaths = "category")
-    Page<Book> findAll(Pageable pageable);
+    Page<Book> findAllByOrderByStatus(Pageable pageable);
 
     @EntityGraph(attributePaths = "category")
-    Page<Book> findByTitleContainingIgnoreCase(String searchText, Pageable pageable);
+    Page<Book> findALlByTitleContainingIgnoreCaseOrderByStatus(String searchText, Pageable pageable);
 
     @EntityGraph(attributePaths = "category")
-    Page<Book> findAllByCategoryName(String categoryName, Pageable pageable);
+    Page<Book> findAllByCategoryNameOrderByStatus(String categoryName, Pageable pageable);
 
 }
