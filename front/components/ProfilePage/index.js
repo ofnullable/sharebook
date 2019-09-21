@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import { LeftMenu, MenuItem, WithLeftMenu } from '@styles/pages/mypage';
+import { LeftMenu, MenuItem, WithLeftMenu } from './index.styled';
 import { CenterDiv } from '@styles/common';
 
 const menu = {
@@ -12,14 +12,14 @@ const menu = {
 };
 const activeStyle = { backgroundColor: '#e9ecef' };
 
-function MyPage() {
+const ProfilePage = () => {
   const [active, setActive] = useState('profile');
   const { isSignedIn, isLoading } = useSelector(state => state.user.user);
   const router = useRouter();
 
   useEffect(() => {
     if (!isLoading && !isSignedIn) {
-      router.back();
+      router.push('/signin');
     }
   }, [isLoading, isSignedIn]);
 
@@ -43,8 +43,6 @@ function MyPage() {
       <WithLeftMenu>등록한 도서 목록</WithLeftMenu>
     </CenterDiv>
   );
-}
+};
 
-MyPage.getInitialProps = async ctx => {};
-
-export default MyPage;
+export default ProfilePage;

@@ -6,7 +6,7 @@ import { rentalBookRequest } from '@redux/actions/rentalActions';
 
 import { Button } from '@styles/common';
 
-function RentalButton({ detail, histories }) {
+const RentalButton = ({ detail, histories }) => {
   const dispatch = useDispatch();
 
   const handleRent = () => {
@@ -32,6 +32,6 @@ function RentalButton({ detail, histories }) {
       대여불가
     </Button>
   );
-}
+};
 
 export default RentalButton;

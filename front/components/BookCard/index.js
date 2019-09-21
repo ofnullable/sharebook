@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { Card, CardBody } from './index.styled';
 
-function BookCard({ data }) {
+const BookCard = ({ data }) => {
   return (
     <Link
       href={{ pathname: '/book', query: { id: data.id } }}
@@ -22,6 +22,6 @@ function BookCard({ data }) {
       </a>
     </Link>
   );
-}
+};
 
 export default BookCard;

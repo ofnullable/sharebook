@@ -12,7 +12,7 @@ import {
 } from './index.styled';
 import { Button } from '@styles/common';
 
-function BookDetail({ detail }) {
+const BookPage = ({ detail }) => {
   const { user } = useSelector(state => state.user);
   const { histories } = useSelector(state => state.rental);
 
@@ -50,6 +50,6 @@ function BookDetail({ detail }) {
       </BookDetailWrapper>
     </BookDetailHeader>
   );
-}
+};
 
-export default BookDetail;
+export default BookPage;

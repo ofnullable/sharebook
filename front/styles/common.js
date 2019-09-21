@@ -80,7 +80,7 @@ export const InputGroup = styled.div`
   }
 `;
 
-export const ModalOverlay = styled(CenterDiv)`
+export const ScreenOverlay = styled(CenterDiv)`
   position: fixed;
   opacity: 0.5;
   height: 100vh;
