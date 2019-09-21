@@ -1,9 +1,9 @@
 import React from 'react';
 import Router from 'next/router';
 
-import { Category } from './CategoryButton.styled';
+import { Category } from './index.styled';
 
-function CategoryButton({ name }) {
+const CategoryButton = ({ name }) => {
   const handleCategoryClick = () => {
     Router.push({ pathname: '/', query: { category: name } }, `/?category=${name}`);
   };
@@ -13,6 +13,6 @@ function CategoryButton({ name }) {
       {name}
     </Category>
   );
-}
+};
 
 export default CategoryButton;
