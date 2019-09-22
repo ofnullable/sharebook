@@ -58,7 +58,7 @@ const Nav = () => {
         {getSecondMenu()}
         {isSignedIn && (
           <HeaderMenu _float='right'>
-            <Link href='/mypage' prefetch={false}>
+            <Link href='/profile' prefetch={false}>
               <a>마이페이지</a>
             </Link>
           </HeaderMenu>

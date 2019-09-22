@@ -2,6 +2,7 @@ package org.slam.publicshare.rental.service;
 
 import lombok.RequiredArgsConstructor;
 import org.slam.publicshare.rental.domain.Rental;
+import org.slam.publicshare.rental.exception.NoSuchRentalException;
 import org.slam.publicshare.rental.repository.RentalRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,4 +21,10 @@ public class RentalFindService {
     public List<Rental> findByBookId(Long bookId) {
         return rentalRepository.findAllByBookIdOrderByIdDesc(bookId);
     }
+
+    public Rental findById(Long rentalId) {
+        return rentalRepository.findById(rentalId)
+                .orElseThrow(() -> new NoSuchRentalException(rentalId));
+    }
+
 }

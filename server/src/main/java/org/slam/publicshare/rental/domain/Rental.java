@@ -47,8 +47,7 @@ public class Rental extends AbstractAggregateRoot<Rental> {
 
     public void accept() {
         this.startedAt = LocalDateTime.now();
-        this.histories.add(buildRentHistory(RentalStatus.ON_RENTAL));
-        registerEvent(new RentalEvent(this));
+        this.histories.add(buildRentHistory(RentalStatus.ACCEPTED));
     }
 
     public void reject() {

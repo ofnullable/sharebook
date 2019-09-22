@@ -16,6 +16,14 @@ const initial = {
     isLoading: false,
     error: {},
   },
+  myBookList: {
+    data: [],
+    page: 1,
+    totalPages: 1,
+    isLast: false,
+    isLoading: false,
+    error: {},
+  },
 };
 
 export default (state = initial, action) => {

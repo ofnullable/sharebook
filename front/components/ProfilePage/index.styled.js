@@ -16,7 +16,6 @@ export const LeftMenu = styled.aside`
 export const MenuItem = styled.li`
   cursor: pointer;
   padding: 15px;
-  margin-bottom: 5px;
   border-radius: 5px;
   &:hover {
     background-color: ${COLOR_SCHEME.lightGray};
@@ -26,4 +25,5 @@ export const MenuItem = styled.li`
 export const WithLeftMenu = styled.div`
   width: 75%;
   float: left;
+  text-align: left;
 `;

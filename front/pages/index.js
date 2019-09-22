@@ -9,7 +9,7 @@ const Home = ({ category }) => {
 };
 
 Home.getInitialProps = async ({ query, store }) => {
-  const categoryList = store.getState().category.list;
+  const categoryList = store.getState().category.list.data;
   if (!categoryList.length) {
     store.dispatch(loadCategoryListRequest());
   }
