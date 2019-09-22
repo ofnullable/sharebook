@@ -60,13 +60,14 @@ const HomePage = ({ category }) => {
       )}
 
       <CardWrapper>
-        {data.length ? (
-          data.map(d => <BookCard key={d.id} data={d} />)
-        ) : (
-          <CenterDiv>
-            <p>도서가 존재하지 않습니다.</p>
-          </CenterDiv>
-        )}
+        {!isLoading &&
+          (data.length ? (
+            data.map(d => <BookCard key={d.id} data={d} />)
+          ) : (
+            <CenterDiv>
+              <p>도서가 존재하지 않습니다.</p>
+            </CenterDiv>
+          ))}
       </CardWrapper>
     </>
   );

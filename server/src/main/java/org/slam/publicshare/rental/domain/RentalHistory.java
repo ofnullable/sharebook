@@ -63,7 +63,7 @@ public class RentalHistory extends Auditable {
     }
 
     private boolean isRented(RentalStatus lastStatus) {
-        return lastStatus == RentalStatus.ON_RENTAL;
+        return lastStatus == RentalStatus.ACCEPTED;
     }
 
 }
