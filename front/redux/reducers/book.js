@@ -16,7 +16,7 @@ const initial = {
     isLoading: false,
     error: {},
   },
-  myBookList: {
+  myBooks: {
     data: [],
     page: 1,
     totalPages: 1,
@@ -60,6 +60,23 @@ export default (state = initial, action) => {
       case BOOK.LOAD_BOOK_FAILURE:
         draft.detail.isLoading = false;
         draft.detail.error = action.error;
+        break;
+
+      case BOOK.LOAD_MY_BOOK_LIST_REQUEST:
+        draft.myBooks.data = !action.page || action.page === 1 ? [] : draft.list.data;
+        draft.myBooks.page = action.page ? action.page : 1;
+        draft.myBooks.isLoading = true;
+        draft.myBooks.error = {};
+        break;
+      case BOOK.LOAD_MY_BOOK_LIST_SUCCESS:
+        draft.myBooks.data = draft.myBooks.data.concat(action.data.content);
+        draft.myBooks.isLast = action.data.last;
+        draft.myBooks.totalPages = action.data.totalPages;
+        draft.myBooks.isLoading = false;
+        break;
+      case BOOK.LOAD_MY_BOOK_LIST_FAILURE:
+        draft.myBooks.error = action.error;
+        draft.myBooks.isLoading = false;
         break;
 
       case BOOK.CHANGE_BOOK_STATUS:

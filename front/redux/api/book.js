@@ -18,3 +18,7 @@ export const loadBookListByCategoryApi = ({ category, page, size }) => {
 export const loadBookApi = id => {
   return axios.get(`/book/${id}`, { withCredentials: true });
 };
+
+export const loadMyBookListApi = ({ page, size }) => {
+  return axios.get(`/account/0/books?page=${page}&size=${size}`, { withCredentials: true });
+};
