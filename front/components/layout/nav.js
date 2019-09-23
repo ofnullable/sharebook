@@ -22,11 +22,7 @@ const Nav = () => {
     }
 
     if (isSignedIn) {
-      return (
-        <HeaderMenu onClick={handleSignOut} _float='right'>
-          <a>로그아웃</a>
-        </HeaderMenu>
-      );
+      return;
     }
 
     return (
@@ -58,7 +54,7 @@ const Nav = () => {
         {getSecondMenu()}
         {isSignedIn && (
           <HeaderMenu _float='right'>
-            <Link href='/profile' prefetch={false}>
+            <Link href='/settings/profile' prefetch={false}>
               <a>마이페이지</a>
             </Link>
           </HeaderMenu>

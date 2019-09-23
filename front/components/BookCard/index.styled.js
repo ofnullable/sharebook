@@ -16,7 +16,7 @@ export const Card = styled.div`
     width: 48%;
     margin: 1%;
   `};
-  color: initial;
+  color: ${COLOR_SCHEME.black};
   text-align: left;
   display: inline-block;
   border-radius: 5px;

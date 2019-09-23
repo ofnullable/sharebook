@@ -1,17 +1,15 @@
 import React from 'react';
-import Router from 'next/router';
+import Link from 'next/link';
 
 import { Category } from './index.styled';
 
 const CategoryButton = ({ name }) => {
-  const handleCategoryClick = () => {
-    Router.push({ pathname: '/', query: { category: name } }, `/?category=${name}`);
-  };
-
   return (
-    <Category type='button' onClick={handleCategoryClick}>
-      {name}
-    </Category>
+    <Link href={`/?category=${name}`} prefetch={false}>
+      <a>
+        <Category type='button'>{name}</Category>
+      </a>
+    </Link>
   );
 };
 

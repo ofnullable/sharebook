@@ -6,8 +6,14 @@ import CategoryButton from './CategoryButton';
 import BookCard from '@components/BookCard';
 import { loadBookListRequest, loadBookListByCategoryRequest } from '@redux/actions/bookActions';
 
-import { ConditionWrapper, CardWrapper } from './index.styled';
-import { CenterDiv, SpinIcon, ScreenOverlay, LoadingIconWrapper } from '@styles/common';
+import { ConditionWrapper } from './index.styled';
+import {
+  CardWrapper,
+  CenterDiv,
+  SpinIcon,
+  ScreenOverlay,
+  LoadingIconWrapper,
+} from '@styles/common';
 
 const HomePage = ({ category }) => {
   const { isLoading, data, page, isLast } = useSelector(state => state.book.list);
