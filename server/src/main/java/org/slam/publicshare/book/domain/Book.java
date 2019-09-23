@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.slam.publicshare.account.domain.Account;
-import org.slam.publicshare.book.converter.BookStatusConverter;
+import org.slam.publicshare.book.domain.converter.BookStatusConverter;
 import org.slam.publicshare.common.domain.Auditable;
 
 import javax.persistence.*;
@@ -49,16 +49,12 @@ public class Book extends Auditable {
         this.category = category;
         this.description = description;
         this.status = status;
-        this.setOwner(owner);
+        this.owner = owner;
         this.imageUrl = imageUrl;
     }
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public void setOwner(Account owner) {
-        this.owner = owner;
     }
 
     public void changeStatus(BookStatus status) {

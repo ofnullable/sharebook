@@ -14,10 +14,3 @@ export const ConditionWrapper = styled.div`
   `}
   margin: 1em auto;
 `;
-
-export const CardWrapper = styled.section`
-  ${device.tablets`
-    max-width: 720px;
-    margin: 0 auto;
-  `}
-`;

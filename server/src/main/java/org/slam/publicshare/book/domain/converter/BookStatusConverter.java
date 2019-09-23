@@ -1,4 +1,4 @@
-package org.slam.publicshare.book.converter;
+package org.slam.publicshare.book.domain.converter;
 
 import org.slam.publicshare.book.domain.BookStatus;
 

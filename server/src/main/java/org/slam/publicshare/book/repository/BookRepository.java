@@ -17,4 +17,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @EntityGraph(attributePaths = "category")
     Page<Book> findAllByCategoryNameOrderByStatus(String categoryName, Pageable pageable);
 
+    @EntityGraph(attributePaths = "category")
+    Page<Book> findAllByOwnerId(Long ownerId, Pageable pageable);
+
 }

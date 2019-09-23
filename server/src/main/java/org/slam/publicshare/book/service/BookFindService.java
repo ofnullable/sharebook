@@ -31,4 +31,8 @@ public class BookFindService {
         return bookRepository.findAllByCategoryNameOrderByStatus(categoryName, pageRequest.of());
     }
 
+    public Page<Book> findByOwner(Long accountId, PageRequest pageRequest) {
+        return bookRepository.findAllByOwnerId(accountId, pageRequest.of());
+    }
+
 }

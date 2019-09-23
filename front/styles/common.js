@@ -38,6 +38,13 @@ export const SpinIcon = styled.i`
   vertical-align: middle;
 `;
 
+export const CardWrapper = styled.section`
+  ${device.tablets`
+    max-width: 720px;
+    margin: 0 auto;
+  `}
+`;
+
 export const CenterDiv = styled.div`
   padding-top: 15px;
   text-align: center;
@@ -118,8 +125,10 @@ export const GlobalStyle = createGlobalStyle`
     ${device.mobiles`
       font-size: 14px;
     `};
+    color: ${COLOR_SCHEME.black};
   }
   .container {
+    display: block;
     ${device.laptops`
       max-width: 1080px;
       margin: 0 auto;
@@ -168,5 +177,9 @@ export const GlobalStyle = createGlobalStyle`
     &:read-only {
       background: ${COLOR_SCHEME.lightGray};
     }
+  }
+  ::selection {
+    color: ${COLOR_SCHEME.white};
+    background-color: ${COLOR_SCHEME.secondery};    
   }
 `;

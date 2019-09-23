@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import { COLOR_SCHEME } from '@styles/colors';
 
+export const Title = styled.h1`
+  display: inline-block;
+  margin: 0.7rem 1%;
+`;
+
 export const LeftMenu = styled.aside`
   width: 22%;
   margin-right: 3%;
@@ -13,7 +18,10 @@ export const LeftMenu = styled.aside`
   }
 `;
 
-export const MenuItem = styled.li`
+export const MenuItem = styled.a`
+  display: block;
+  text-align: left;
+  color: ${COLOR_SCHEME.black};
   cursor: pointer;
   padding: 15px;
   border-radius: 5px;

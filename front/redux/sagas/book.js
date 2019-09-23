@@ -1,7 +1,12 @@
-import { fork, put, takeLatest, call, all, throttle } from 'redux-saga/effects';
+import { fork, put, takeLatest, call, all, throttle, select } from 'redux-saga/effects';
 
 import { BOOK } from '@redux/actionTypes';
-import { loadBookListApi, loadBookListByCategoryApi, loadBookApi } from '@redux/api/book';
+import {
+  loadBookListApi,
+  loadBookListByCategoryApi,
+  loadBookApi,
+  loadMyBookListApi,
+} from '@redux/api/book';
 import {
   loadBookListSuccess,
   loadBookListFailure,
@@ -9,6 +14,8 @@ import {
   loadBookListByCategoryFailure,
   loadBookSuccess,
   loadBookFailure,
+  loadMyBookListSuccess,
+  loadMyBookListFailure,
 } from '@redux/actions/bookActions';
 
 export default function*() {
@@ -16,6 +23,7 @@ export default function*() {
     fork(watchLoadBookListRequest),
     fork(watchLoadBookListByCategoryRequest),
     fork(watchLoadBookRequest),
+    fork(watchLoadMyBookListRequest),
   ]);
 }
 
@@ -55,5 +63,18 @@ function* loadBook({ id }) {
   } catch (e) {
     console.error(e);
     yield put(loadBookFailure(e.response.data || e));
+  }
+}
+
+function* watchLoadMyBookListRequest() {
+  yield throttle(500, BOOK.LOAD_MY_BOOK_LIST_REQUEST, loadMyBookList);
+}
+function* loadMyBookList({ page, size }) {
+  try {
+    const response = yield call(loadMyBookListApi, { page, size });
+    yield put(loadMyBookListSuccess(response.data));
+  } catch (e) {
+    console.error(e);
+    yield put(loadMyBookListFailure(e.response.data || e));
   }
 }

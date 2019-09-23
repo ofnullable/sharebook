@@ -43,6 +43,20 @@ export const loadBookFailure = error => ({
   error,
 });
 
+export const loadMyBookListRequest = (page = 1, size = 12) => ({
+  type: BOOK.LOAD_MY_BOOK_LIST_REQUEST,
+  page,
+  size,
+});
+export const loadMyBookListSuccess = data => ({
+  type: BOOK.LOAD_MY_BOOK_LIST_SUCCESS,
+  data,
+});
+export const loadMyBookListFailure = error => ({
+  type: BOOK.LOAD_MY_BOOK_LIST_FAILURE,
+  error,
+});
+
 export const changeBookStatus = (id, status) => ({
   type: BOOK.CHANGE_BOOK_STATUS,
   id,

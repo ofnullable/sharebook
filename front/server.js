@@ -21,6 +21,13 @@ app.prepare().then(() => {
     });
   });
 
+  fastify.get('/settings/:menu', async (req, reply) => {
+    const menu = req.params.menu;
+    return app.render(req.req, reply.res, '/settings', { menu }).then(() => {
+      reply.sent = true;
+    });
+  });
+
   fastify.get('*', (req, reply) => {
     return app.handleRequest(req.req, reply.res).then(() => {
       reply.sent = true;
