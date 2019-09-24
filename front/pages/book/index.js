@@ -6,9 +6,9 @@ import { loadRentalInfoRequest } from '@redux/actions/rentalActions';
 import BookPage from '@components/BookPage';
 
 const Book = () => {
-  const { data } = useSelector(state => state.book.detail);
+  const { data, error } = useSelector(state => state.book.detail);
 
-  return <BookPage detail={data} />;
+  return <BookPage detail={data} error={error} />;
 };
 
 Book.getInitialProps = async ({ query, store }) => {

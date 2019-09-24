@@ -20,10 +20,36 @@ export const HeaderNav = styled.nav`
     background-color: ${COLOR_SCHEME.primary};
   }
 `;
+export const HamburgerMenu = styled.li`
+  ${device.laptops`
+    display: none;
+  `};
+  ${device.tablets`
+    display: none;
+  `};
+  ${device.mobiles`
+    display: inline-block;
+    vertical-align: middle;
+  `};
+  padding: 5px;
+  width: 30px;
+  cursor: pointer;
+  & span {
+    display: block;
+    border: 1px solid ${COLOR_SCHEME.white};
+    &:first-child {
+      margin-bottom: 3px;
+    }
+    &:last-child {
+      margin-top: 3px;
+    }
+  }
+`;
 
 export const HeaderMenu = styled.li`
   color: ${COLOR_SCHEME.white};
   display: inline-block;
+  vertical-align: middle;
   padding: 6px 8px;
   float: ${props => props._float};
   & a {
@@ -44,12 +70,12 @@ export const HeaderMenuGroup = styled.div`
 `;
 
 export const HomepageLink = styled.a`
+  color: white;
+  cursor: pointer;
+
   ${device.laptops`
     & span, & i {
       font-size: 1.5em;
-    }
-    & span {
-      vertical-align: middle;
     }
     & i {
       vertical-align: middle;
@@ -60,9 +86,6 @@ export const HomepageLink = styled.a`
     & span, & i {
       font-size: 20px;
     }
-    & span {
-      vertical-align: middle;
-    }
     & i {
       vertical-align: middle;
       padding-right: .3em;
@@ -71,14 +94,15 @@ export const HomepageLink = styled.a`
   ${device.mobiles`
     & span {
       font-size: 18px;
-      vertical-align: middle;
     }
     & i {
       display: none;
     }
   `}
-  color: white;
-  cursor: pointer;
+  & span {
+    display: inline-block;
+    vertical-align: middle;
+  }
 `;
 
 export const Homepage = HomepageLink.withComponent('div');

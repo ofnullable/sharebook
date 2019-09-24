@@ -14,6 +14,12 @@ app.prepare().then(() => {
     prefix: '/static',
   });
 
+  fastify.get('/book/register', async (req, reply) => {
+    return app.handleRequest(req.req, reply.res).then(() => {
+      reply.sent = true;
+    });
+  });
+
   fastify.get('/book/:id', async (req, reply) => {
     const id = req.params.id;
     return app.render(req.req, reply.res, '/book', { id }).then(() => {

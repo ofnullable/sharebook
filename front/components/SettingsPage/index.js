@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 
 import Profile from './Profile';
 import Books from './Books';
 import Rentals from './Rentals';
+import { HamburgerContext } from '@utils/context';
 
-import { LeftMenu, MenuItem, WithLeftMenu } from './index.styled';
+import { LeftMenu, MenuItem, MenuCloseArea, WithLeftMenu } from './index.styled';
 import { CenterDiv } from '@styles/common';
 
 const menus = {
@@ -18,19 +17,16 @@ const menus = {
 const activeStyle = { backgroundColor: '#e9ecef' };
 
 const SettingsPage = ({ menu }) => {
-  const { isSignedIn, isLoading } = useSelector(state => state.user.user);
-  const router = useRouter();
+  const [active, setActive] = useContext(HamburgerContext);
 
-  useEffect(() => {
-    if (!isLoading && !isSignedIn) {
-      router.push('/signin');
-    }
-  }, [isLoading, isSignedIn]);
+  const handleMenuClose = () => {
+    setActive(false);
+  };
 
   return (
     <CenterDiv>
-      <LeftMenu>
-        <h2>My page</h2>
+      <LeftMenu className={active ? 'active' : ''} onClick={handleMenuClose}>
+        <h2>Settings</h2>
         <ul>
           {Object.keys(menus).map(m => {
             return (
@@ -41,6 +37,7 @@ const SettingsPage = ({ menu }) => {
           })}
         </ul>
       </LeftMenu>
+      <MenuCloseArea onClick={handleMenuClose} />
       <WithLeftMenu>{menus[menu].component}</WithLeftMenu>
     </CenterDiv>
   );

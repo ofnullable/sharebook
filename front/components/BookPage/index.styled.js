@@ -40,7 +40,6 @@ export const BookImageWrapper = styled.section`
   text-align: center;
   & img {
     border-radius: 5px;
-    max-width: 100%;
     vertical-align: bottom;
   }
 `;

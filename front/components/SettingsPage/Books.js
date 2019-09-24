@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
 import BookCard from '@components/BookCard';
@@ -19,7 +20,11 @@ const Books = () => {
     <>
       <HeaderWrapper>
         <Title>도서관리</Title>
-        <RegisterButton _color='primary'>도서등록</RegisterButton>
+        <Link href='/book/register'>
+          <a>
+            <RegisterButton _color='primary'>도서등록</RegisterButton>
+          </a>
+        </Link>
       </HeaderWrapper>
 
       {isLoading && (
