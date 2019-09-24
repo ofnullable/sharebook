@@ -10,9 +10,9 @@ import {
   BookDetailWrapper,
   BookInfoWrapper,
 } from './index.styled';
-import { Button } from '@styles/common';
+import { Button, CenterDiv } from '@styles/common';
 
-const BookPage = ({ detail }) => {
+const BookPage = ({ detail, error }) => {
   const { user } = useSelector(state => state.user);
   const { histories } = useSelector(state => state.rental);
 
@@ -33,6 +33,14 @@ const BookPage = ({ detail }) => {
       );
     }
   };
+
+  if (error.status === 404) {
+    return (
+      <CenterDiv>
+        <img src='/static/book-not-found.jpg' alt='can not found book' />
+      </CenterDiv>
+    );
+  }
 
   return (
     <BookDetailHeader>

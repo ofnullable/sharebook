@@ -137,7 +137,7 @@ export const GlobalStyle = createGlobalStyle`
       padding: 0 15px;
     `}
     ${device.mobiles`
-      padding: 0 20px;
+      padding: 0 15px;
     `}
   }
   ul {
@@ -177,6 +177,10 @@ export const GlobalStyle = createGlobalStyle`
     &:read-only {
       background: ${COLOR_SCHEME.lightGray};
     }
+  }
+  img {
+    display: inline-block;
+    max-width: 100%;
   }
   ::selection {
     color: ${COLOR_SCHEME.white};

@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
+import { HamburgerContext } from '@utils/context';
 import { signOutRequest } from '@redux/actions/userActions';
 
-import { HeaderNav, HeaderMenu, HeaderMenuGroup, HomepageLink } from './Nav.styled';
+import { HeaderNav, HamburgerMenu, HeaderMenu, HeaderMenuGroup, HomepageLink } from './Nav.styled';
 
 const Nav = () => {
   const { isSignedIn } = useSelector(state => state.user.user);
+  const [active, setActive] = useContext(HamburgerContext);
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const toggleHamburgerMenu = () => {
+    setActive(!active);
+  };
 
   const handleSignOut = () => {
     dispatch(signOutRequest());
@@ -43,6 +49,11 @@ const Nav = () => {
   return (
     <HeaderNav>
       <ul>
+        <HamburgerMenu onClick={toggleHamburgerMenu}>
+          <span />
+          <span />
+          <span />
+        </HamburgerMenu>
         <HeaderMenu>
           <Link href='/' prefetch={false}>
             <HomepageLink>
