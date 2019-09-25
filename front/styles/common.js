@@ -85,6 +85,23 @@ export const InputGroup = styled.div`
   & > label .import {
     color: ${COLOR_SCHEME.red};
   }
+  & label + select {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 0.5em;
+    padding: 5px 8px;
+    border-radius: 5px;
+    border: 1px solid ${COLOR_SCHEME.gray};
+  }
+  & label + textarea {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid ${COLOR_SCHEME.gray};
+    resize: vertical;
+    overflow: auto;
+  }
 `;
 
 export const ScreenOverlay = styled(CenterDiv)`
@@ -185,5 +202,19 @@ export const GlobalStyle = createGlobalStyle`
   ::selection {
     color: ${COLOR_SCHEME.white};
     background-color: ${COLOR_SCHEME.secondery};    
+  }
+  &::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.5em;
+    background: none;
+    scroll-behavior: smooth;
+  }
+  &::-webkit-scrollbar-thumb {
+    opacity: 0.5;
+    border-radius: 15px;
+    background: ${COLOR_SCHEME.gray};
+  }
+  &::-webkit-scrollbar-track {
+    background: none;
   }
 `;

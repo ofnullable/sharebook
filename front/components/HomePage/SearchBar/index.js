@@ -8,7 +8,7 @@ import { SearchForm, SearchButton } from './index.styled';
 import { SpinIcon } from '@styles/common';
 
 const SearchBar = () => {
-  const [searchText, handleSearchTextChange, setSearchText] = useInput();
+  const [searchText, searchTextHandler, setSearchText] = useInput();
   const { isLoading } = useSelector(state => state.book.list);
 
   const handleSearch = e => {
@@ -25,7 +25,7 @@ const SearchBar = () => {
         type='search'
         placeholder='제목으로 도서를 검색해보세요!'
         value={searchText}
-        onChange={handleSearchTextChange}
+        onChange={searchTextHandler}
       />
       <SearchButton _color='primary' className='searchButton'>
         {isLoading ? (

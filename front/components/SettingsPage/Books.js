@@ -20,7 +20,7 @@ const Books = () => {
     <>
       <HeaderWrapper>
         <Title>도서관리</Title>
-        <Link href='/book/register'>
+        <Link href='/settings/books/register'>
           <a>
             <RegisterButton _color='primary'>도서등록</RegisterButton>
           </a>
