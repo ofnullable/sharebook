@@ -14,8 +14,8 @@ app.prepare().then(() => {
     prefix: '/static',
   });
 
-  fastify.get('/book/register', async (req, reply) => {
-    return app.handleRequest(req.req, reply.res).then(() => {
+  fastify.get('/settings/books/register', async (req, reply) => {
+    return app.render(req.req, reply.res, '/book/register').then(() => {
       reply.sent = true;
     });
   });
