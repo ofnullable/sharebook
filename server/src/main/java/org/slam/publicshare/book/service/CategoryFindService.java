@@ -18,9 +18,9 @@ public class CategoryFindService {
         return categoryRepository.findAllByDisplayOrderByName(display);
     }
 
-    public Category findByName(String name) {
-        return categoryRepository.findByNameAndDisplayIsTrue(name)
-                .orElseThrow(() -> new NoSuchCategoryException(name));
+    public Category findCategoryById(Long id) {
+        return categoryRepository.findByIdAndDisplayIsTrue(id)
+                .orElseThrow(() -> new NoSuchCategoryException(id));
     }
 
 }

@@ -58,7 +58,7 @@ public class BookFindServiceTest {
     @Test
     @DisplayName("도서 리스트 페이지 요청")
     public void book_list_pagination() {
-        given(bookRepository.findAll(any(Pageable.class)))
+        given(bookRepository.findAllByOrderByStatus(any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
         var result = bookFindService.findAll(null, buildPageRequest(10));
@@ -91,7 +91,7 @@ public class BookFindServiceTest {
     @Test
     @DisplayName("카테고리 내 도서 페이지 요청")
     public void find_book_by_category() {
-        given(categoryFindService.findByName(any(String.class)))
+        given(categoryFindService.findCategoryById(any(Long.class)))
                 .willReturn(buildCategory());
         given(bookRepository.findAllByCategoryNameOrderByStatus(any(String.class), any(Pageable.class)))
                 .willReturn(buildNormalPageBook());

@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public class NoSuchCategoryException extends RuntimeException {
-    private String name;
-    public NoSuchCategoryException(String name) {
-        this.name = name;
+    private Long id;
+    public NoSuchCategoryException(Long id) {
+        this.id = id;
     }
 }

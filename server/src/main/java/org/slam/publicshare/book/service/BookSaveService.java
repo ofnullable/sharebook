@@ -17,7 +17,7 @@ public class BookSaveService {
 
     @Transactional
     public Book save(SaveBookRequest dto, Account account) {
-        var category = categoryFindService.findByName(dto.getCategory());
+        var category = categoryFindService.findCategoryById(dto.getCategoryId());
         var book = dto.toEntity(account);
         book.setCategory(category);
         return bookRepository.save(book);

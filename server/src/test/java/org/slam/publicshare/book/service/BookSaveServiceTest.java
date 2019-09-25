@@ -40,7 +40,7 @@ public class BookSaveServiceTest {
 
         given(accountFindService.findById(any(Long.class)))
                 .willReturn(buildNormalAccount());
-        given(categoryFindService.findByName(any(String.class)))
+        given(categoryFindService.findCategoryById(any(Long.class)))
                 .willReturn(buildCategory());
         given(bookRepository.save(any(Book.class)))
                 .willReturn(book);
@@ -55,7 +55,7 @@ public class BookSaveServiceTest {
     public void save_book_with_invalid_category() {
         given(accountFindService.findById(any(Long.class)))
                 .willReturn(buildNormalAccount());
-        given(categoryFindService.findByName(any(String.class)))
+        given(categoryFindService.findCategoryById(any(Long.class)))
                 .willThrow(NoSuchCategoryException.class);
 
         assertThrows(NoSuchCategoryException.class, () -> bookSaveService.save(buildSaveBookRequest(), buildNormalAccount()));

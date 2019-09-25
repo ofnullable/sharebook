@@ -10,6 +10,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     List<Category> findAllByDisplayOrderByName(boolean display);
 
-    Optional<Category> findByNameAndDisplayIsTrue(String name);
+    Optional<Category> findByIdAndDisplayIsTrue(Long id);
 
 }
