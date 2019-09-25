@@ -40,10 +40,10 @@ public class CategoryFindServiceTest {
     @Test
     @DisplayName("카테고리가 존재하는 경우")
     public void find_category_by_name() {
-        given(categoryRepository.findByNameAndDisplayIsTrue(any(String.class)))
+        given(categoryRepository.findByIdAndDisplayIsTrue(any(Long.class)))
                 .willReturn(Optional.of(buildCategory()));
 
-        var result = categoryFindService.findByName("운영체제");
+        var result = categoryFindService.findCategoryById(1L);
 
         assertEquals(result.getName(), "운영체제");
         assertFalse(result.isDisplay());
@@ -52,10 +52,10 @@ public class CategoryFindServiceTest {
     @Test
     @DisplayName("카테고리가 존재하지 않는 경우 - NoSuchCategoryException")
     public void find_category_by_invalid_name() {
-        given(categoryRepository.findByNameAndDisplayIsTrue(any(String.class)))
+        given(categoryRepository.findByIdAndDisplayIsTrue(any(Long.class)))
                 .willReturn(Optional.empty());
 
-        assertThrows(NoSuchCategoryException.class, () -> categoryFindService.findByName(""));
+        assertThrows(NoSuchCategoryException.class, () -> categoryFindService.findCategoryById(0L));
     }
 
 }

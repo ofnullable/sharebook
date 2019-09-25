@@ -39,7 +39,7 @@ public class BookUtils {
                 .description("description")
                 .publisher("publisher")
                 .imageUrl("/image/url")
-                .category("운영체제")
+                .categoryId(1L)
                 .build();
     }
 

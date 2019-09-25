@@ -10,12 +10,12 @@ import { HeaderNav, HamburgerMenu, HeaderMenu, HeaderMenuGroup, HomepageLink } f
 
 const Nav = () => {
   const { isSignedIn } = useSelector(state => state.user.user);
-  const [active, setActive] = useContext(HamburgerContext);
+  const [_, setActive] = useContext(HamburgerContext);
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const toggleHamburgerMenu = () => {
-    setActive(!active);
+  const openHamburgerMenu = () => {
+    setActive(true);
   };
 
   const handleSignOut = () => {
@@ -49,7 +49,7 @@ const Nav = () => {
   return (
     <HeaderNav>
       <ul>
-        <HamburgerMenu onClick={toggleHamburgerMenu}>
+        <HamburgerMenu onClick={openHamburgerMenu}>
           <span />
           <span />
           <span />

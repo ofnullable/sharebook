@@ -57,6 +57,19 @@ export const loadMyBookListFailure = error => ({
   error,
 });
 
+export const registerBookRequest = data => ({
+  type: BOOK.REGISTER_BOOK_REQUEST,
+  data,
+});
+export const registerBookSuccess = data => ({
+  type: BOOK.REGISTER_BOOK_SUCCESS,
+  data,
+});
+export const registerBookFailure = error => ({
+  type: BOOK.REGISTER_BOOK_FAILURE,
+  error,
+});
+
 export const changeBookStatus = (id, status) => ({
   type: BOOK.CHANGE_BOOK_STATUS,
   id,

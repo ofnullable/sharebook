@@ -9,6 +9,7 @@ import org.slam.publicshare.book.domain.Book;
 import org.slam.publicshare.book.domain.BookStatus;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,19 +27,19 @@ public class SaveBookRequest {
     @NotBlank
     private String description;
 
-    @NotBlank
-    private String category;
+    @NotNull
+    private Long categoryId;
 
     @NotBlank
     private String imageUrl;
 
     @Builder
-    public SaveBookRequest(String title, String author, String publisher, String description, String category, String imageUrl) {
+    public SaveBookRequest(String title, String author, String publisher, String description, Long categoryId, String imageUrl) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.description = description;
-        this.category = category;
+        this.categoryId = categoryId;
         this.imageUrl = imageUrl;
     }
 

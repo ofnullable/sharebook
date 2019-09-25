@@ -57,7 +57,7 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NoSuchCategoryException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ApiError handleNoSuchCategoryException(NoSuchCategoryException e, WebRequest request) {
-        log.debug("No Such Category. name: {}", e.getName());
+        log.debug("No Such Category. name: {}", e.getId());
         return bindError(ErrorCode.CATEGORY_NOT_FOUND, request);
     }
 

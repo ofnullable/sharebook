@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 
 import { loadBookRequest } from '@redux/actions/bookActions';
 import { loadRentalInfoRequest } from '@redux/actions/rentalActions';
-import BookPage from '@components/BookPage';
+import BookDetailPage from '@components/BookPage/BookDetailPage';
 
 const Book = () => {
   const { data, error } = useSelector(state => state.book.detail);
 
-  return <BookPage detail={data} error={error} />;
+  return <BookDetailPage detail={data} error={error} />;
 };
 
 Book.getInitialProps = async ({ query, store }) => {
