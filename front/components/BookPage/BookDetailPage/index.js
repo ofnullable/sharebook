@@ -49,8 +49,9 @@ const BookPage = ({ detail, error }) => {
       </BookImageWrapper>
       <BookDetailWrapper>
         <BookInfoWrapper>
+          <p>{detail.category}</p>
           <h1>{detail.title}</h1>
-          <p>{`${detail.category} | ${detail.author} | ${detail.publisher}`}</p>
+          <p>{`${detail.author} | ${detail.publisher}`}</p>
           <span>{`${detail.owner} | ${detail.createdAt}`}</span>
           <div>{detail.description}</div>
         </BookInfoWrapper>

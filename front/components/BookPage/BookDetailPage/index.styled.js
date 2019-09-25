@@ -28,17 +28,19 @@ export const BookDetailHeader = styled.article`
 export const BookImageWrapper = styled.section`
   ${device.laptops`
     width: 40%;
-    float: left;
   `};
   ${device.tablets`
     width: 40%;
-    float: left;
   `};
   ${device.mobiles`
     width: 100%;
   `};
+  display: inline-block;
+  vertical-align: top;
   text-align: center;
   & img {
+    width: 200px;
+    height: 300px;
     border-radius: 5px;
     vertical-align: bottom;
   }
@@ -47,16 +49,15 @@ export const BookImageWrapper = styled.section`
 export const BookDetailWrapper = styled.section`
   ${device.laptops`
     width: 60%;
-    float: right;
   `};
   ${device.tablets`
     width: 60%;
-    float: right;
   `};
   ${device.mobiles`
     width: 100%;
   `};
-
+  display: inline-block;
+  vertical-align: top;
   & button {
     ${device.laptops`
       width: 30%;
@@ -71,7 +72,6 @@ export const BookDetailWrapper = styled.section`
 `;
 
 export const BookInfoWrapper = styled.div`
-  padding: 1em 0;
   & h1 {
     ${device.laptops`
       font-size: 3em;
@@ -79,7 +79,7 @@ export const BookInfoWrapper = styled.div`
     ${device.tablets`
       font-size: 2.5em;
     `};
-    margin: 0 0 0.5em;
+    margin: 0 0 0.25em;
   }
   & p {
     margin: 0 0 0.5em;
@@ -89,5 +89,8 @@ export const BookInfoWrapper = styled.div`
   }
   & div {
     margin: 0.5em 0;
+    &:first-child {
+      margin-top: 0;
+    }
   }
 `;
