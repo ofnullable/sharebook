@@ -5,8 +5,9 @@ import { transition } from '@styles/mixins';
 import { COLOR_SCHEME } from '@styles/colors';
 
 export const Title = styled.h1`
-  display: inline-block;
   margin: 0.7rem 1%;
+  display: inline-block;
+  vertical-align: middle;
 `;
 
 export const LeftMenu = styled.aside`
