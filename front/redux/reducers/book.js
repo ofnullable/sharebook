@@ -24,6 +24,11 @@ const initial = {
     isLoading: false,
     error: {},
   },
+  register: {
+    data: {},
+    isLoading: false,
+    error: {},
+  },
 };
 
 export default (state = initial, action) => {

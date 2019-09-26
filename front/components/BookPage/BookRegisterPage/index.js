@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useInput } from '@utils/InputUtils';
-import { uploadImageRequest } from '@redux/actions/fileActions';
-import { registerBookRequest } from '@redux/actions/bookActions';
+import { IMAGE_SERVER_PREFIX } from '@utils/consts';
+import { uploadImageRequest, registerBookRequest } from '@redux/actions/registerActions';
 
 import { RegisterForm, BookImagePreview, ImageUploadButton, RegisterButton } from './index.styled';
 import {
@@ -14,7 +15,7 @@ import {
 import { InputGroup } from '@styles/common';
 
 const BookRegisterPage = () => {
-  const { url, error: imageUploadError } = useSelector(state => state.file.data);
+  const { image, result } = useSelector(state => state.register);
   const categoryList = useSelector(state => state.category.list);
 
   const [imageUploaded, setImageUploaded] = useState(false);
@@ -26,24 +27,25 @@ const BookRegisterPage = () => {
   const [description, descriptionHandler] = useInput();
 
   const dispatch = useDispatch();
+  const router = useRouter();
   const fileRef = useRef();
 
   //TODO: useEffect 사용하여 image upload 오류 시 처리
 
   const handleRegister = e => {
     e.preventDefault();
-    if (url) {
-      fileRef.current.value = '';
-
+    if (image.url) {
       const registerData = {
         categoryId,
         title,
         author,
         publisher,
         description,
-        imageUrl: url,
+        imageUrl: IMAGE_SERVER_PREFIX + url,
       };
       dispatch(registerBookRequest(registerData));
+
+      fileRef.current.value = '';
     } else {
       alert('도서 이미지를 선택해주세요.');
     }
