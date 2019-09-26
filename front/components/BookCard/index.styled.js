@@ -5,11 +5,11 @@ import { COLOR_SCHEME } from '@styles/colors';
 
 export const Card = styled.div`
   ${device.laptops`
-    width: 31%;
-    margin: 1.15%;
+    width: 18%;
+    margin: 1%;
   `};
   ${device.tablets`
-    width: 48%;
+    width: 31%;
     margin: 1%;
   `};
   ${device.mobiles`
@@ -33,19 +33,15 @@ export const Card = styled.div`
 export const CardBody = styled.div`
   padding: 10px;
   & .card-title {
-    ${device.laptops`
-      font-size: 1.7em;
-    `};
-    ${device.tablets`
-      font-size: 1.5em; 
-    `};
-    ${device.mobiles`
-      font-size: 16px;
-    `};
+    font-size: 1rem;
     margin: 0.5em 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   & .description {
     margin: 0.5em 0;
+    font-size: 0.9rem;
     color: ${COLOR_SCHEME.darkGray};
     overflow: hidden;
     white-space: nowrap;
