@@ -1,6 +1,6 @@
 import { BOOK } from '@redux/actionTypes';
 
-export const loadBookListRequest = (searchText = '', page = 1, size = 12) => ({
+export const loadBookListRequest = (searchText = '', page = 1, size = 20) => ({
   type: BOOK.LOAD_BOOK_LIST_REQUEST,
   searchText,
   page,
@@ -15,7 +15,7 @@ export const loadBookListFailure = error => ({
   error,
 });
 
-export const loadBookListByCategoryRequest = (category, page = 1, size = 12) => ({
+export const loadBookListByCategoryRequest = (category, page = 1, size = 20) => ({
   type: BOOK.LOAD_BOOK_LIST_BY_CATEGORY_REQUEST,
   category,
   page,
@@ -43,7 +43,7 @@ export const loadBookFailure = error => ({
   error,
 });
 
-export const loadMyBookListRequest = (page = 1, size = 12) => ({
+export const loadMyBookListRequest = (page = 1, size = 20) => ({
   type: BOOK.LOAD_MY_BOOK_LIST_REQUEST,
   page,
   size,
