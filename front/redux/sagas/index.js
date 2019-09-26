@@ -9,8 +9,8 @@ import user from './user';
 import book from './book';
 import category from './category';
 import rental from './rental';
-import file from './file';
+import register from './register';
 
 export default function*() {
-  yield all([fork(user), fork(book), fork(category), fork(rental), fork(file)]);
+  yield all([fork(user), fork(book), fork(category), fork(rental), fork(register)]);
 }
