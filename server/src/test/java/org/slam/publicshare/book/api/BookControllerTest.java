@@ -166,4 +166,34 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    @DisplayName("특정 유저가 등록한 도서 리스트 요청")
+    public void find_book_by_owner_test() throws Exception {
+        given(bookFindService.findAllByOwner(any(Long.class), any(PageRequest.class)))
+                .willReturn(buildNormalPageBook());
+
+        mvc.perform(get("/account/1/books?page=1&size=10"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 유저가 등록한 도서 리스트 요청")
+    public void find_book_by_invalid_owner_test() throws Exception {
+        given(bookFindService.findAllByOwner(any(Long.class), any(PageRequest.class)))
+                .willReturn(buildEmptyPageBook());
+
+        mvc.perform(get("/account/11/books?page=1&size=10"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("현재 로그인 한 유저가 등록한 도서 리스트 요청")
+    public void find_book_by_logged_in_account() throws Exception {
+        given(bookFindService.findAllByOwner(any(Long.class), any(PageRequest.class)))
+                .willReturn(buildNormalPageBook());
+
+        mvc.perform(get("/account/0/books?page=1&size=10"))
+                .andExpect(status().isOk());
+    }
+
 }

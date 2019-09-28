@@ -56,7 +56,7 @@ public class BookFindServiceTest {
     }
 
     @Test
-    @DisplayName("도서 리스트 페이지 요청")
+    @DisplayName("도서 리스트 요청")
     public void book_list_pagination() {
         given(bookRepository.findAllByOrderByStatus(any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
@@ -89,7 +89,7 @@ public class BookFindServiceTest {
     }
 
     @Test
-    @DisplayName("카테고리 내 도서 페이지 요청")
+    @DisplayName("카테고리 내 도서 요청")
     public void find_book_by_category() {
         given(categoryFindService.findCategoryById(any(Long.class)))
                 .willReturn(buildCategory());
@@ -99,6 +99,28 @@ public class BookFindServiceTest {
         var result = bookFindService.findAllByCategory("운영체제", buildPageRequest(10));
 
         assertEquals(result.getSize(), 10);
+    }
+
+    @Test
+    @DisplayName("특정 유저가 등록한 도서 리스트 요청")
+    public void find_book_by_author() {
+        given(bookRepository.findAllByOwnerId(any(Long.class), any(Pageable.class)))
+                .willReturn(buildNormalPageBook());
+
+        var result = bookFindService.findAllByOwner(1L, buildPageRequest(10));
+
+        assertEquals(result.getSize(), 10);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 유저가 등록한 도서 리스트 요청")
+    public void find_book_by_invalid_author() {
+        given(bookRepository.findAllByOwnerId(any(Long.class), any(Pageable.class)))
+                .willReturn(buildEmptyPageBook());
+
+        var result = bookFindService.findAllByOwner(11L, buildPageRequest(10));
+
+        assertEquals(result.getSize(), 0);
     }
 
 }

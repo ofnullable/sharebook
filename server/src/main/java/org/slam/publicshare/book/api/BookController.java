@@ -48,10 +48,10 @@ public class BookController {
     @GetMapping("/account/{accountId}/books")
     public Page<BookResponse> getBooksByAccount(@PathVariable Long accountId, @Valid final  PageRequest pageRequest, @AuthenticationPrincipal(expression = "account") Account account) {
         if (accountId == 0) {
-            return bookFindService.findByOwner(account.getId(), pageRequest)
+            return bookFindService.findAllByOwner(account.getId(), pageRequest)
                     .map(BookResponse::new);
         }
-        return bookFindService.findByOwner(accountId, pageRequest)
+        return bookFindService.findAllByOwner(accountId, pageRequest)
                 .map(BookResponse::new);
     }
 
