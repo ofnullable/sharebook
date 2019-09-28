@@ -4,8 +4,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slam.publicshare.account.domain.Account;
 import org.slam.publicshare.account.domain.Email;
+import org.slam.publicshare.book.domain.converter.BookStatusConverter;
+import org.slam.publicshare.book.exception.NoSuchBookStatusException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BookTest {
 
@@ -40,6 +43,34 @@ public class BookTest {
     public void book_set_category_test() {
         book.setCategory(category);
         assertEquals(book.getCategory().getName(), category.getName());
+    }
+
+    @Test
+    @DisplayName("도서 상태 테스트")
+    public void book_status_test() {
+        var available = BookStatus.of(1);
+        assertEquals(available, BookStatus.AVAILABLE);
+
+        var unavailable = BookStatus.of(2);
+        assertEquals(unavailable, BookStatus.UNAVAILABLE);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 도서 상태 - NoSuchBookStatusException")
+    public void invalid_book_status_test() {
+        assertThrows(NoSuchBookStatusException.class, () -> BookStatus.of(3));
+    }
+
+    @Test
+    @DisplayName("컨버터 테스트")
+    public void converter_test() {
+        var converter = new BookStatusConverter();
+
+        var column = converter.convertToDatabaseColumn(BookStatus.AVAILABLE);
+        assertEquals(column, Integer.valueOf(1));
+
+        var attribute = converter.convertToEntityAttribute(column);
+        assertEquals(attribute, BookStatus.AVAILABLE);
     }
 
 }
