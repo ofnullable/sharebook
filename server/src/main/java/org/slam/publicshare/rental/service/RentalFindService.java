@@ -14,11 +14,11 @@ public class RentalFindService {
 
     private final RentalRepository rentalRepository;
 
-    public List<Rental> findByAccountId(Long accountId) {
+    public List<Rental> findAllByAccountId(Long accountId) {
         return rentalRepository.findAllByAccountId(accountId);
     }
 
-    public List<Rental> findByBookId(Long bookId) {
+    public List<Rental> findAllByBookId(Long bookId) {
         return rentalRepository.findAllByBookIdOrderByIdDesc(bookId);
     }
 

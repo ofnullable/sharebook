@@ -23,14 +23,14 @@ public class RentalController {
 
     @GetMapping("/rental")
     public List<RentalResponse> findRentalByAccount(@AuthenticationPrincipal(expression = "account") Account account) {
-        return rentalFindService.findByAccountId(account.getId()).stream()
+        return rentalFindService.findAllByAccountId(account.getId()).stream()
                 .map(RentalResponse::new)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/rental/{bookId}")
     public List<RentalResponse> findRentalByBookId(@PathVariable Long bookId) {
-        return rentalFindService.findByBookId(bookId).stream()
+        return rentalFindService.findAllByBookId(bookId).stream()
                 .map(RentalResponse::new)
                 .collect(Collectors.toList());
     }
