@@ -6,8 +6,6 @@ import org.slam.publicshare.book.domain.Category;
 import org.slam.publicshare.book.dto.book.SaveBookRequest;
 import org.springframework.data.domain.Page;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -50,7 +48,7 @@ public class BookUtils {
     }
 
     public static Page<Book> buildNormalPageBook() {
-        return buildPage(buildBookList(), 10);
+        return buildPage(buildBookList(), 20);
     }
 
     public static Page<Book> buildEmptyPageBook() {

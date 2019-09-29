@@ -46,7 +46,7 @@ public class BookTest {
     }
 
     @Test
-    @DisplayName("도서 상태변경 테스트")
+    @DisplayName("도서 상태변경")
     public void change_book_status_test() {
         var available = BookStatus.of(1);
         assertEquals(available, BookStatus.AVAILABLE);
@@ -68,7 +68,7 @@ public class BookTest {
     }
 
     @Test
-    @DisplayName("컨버터 테스트")
+    @DisplayName("BookStatus <-> Database column 컨버팅")
     public void converter_test() {
         var converter = new BookStatusConverter();
 

@@ -33,7 +33,7 @@ public class AccountFindServiceTest {
     private Account account = buildNormalAccount();
 
     @Test
-    @DisplayName("SECURITY - 이메일이 존재하는 경우 정상작동")
+    @DisplayName("SECURITY - 이메일로 조회")
     public void load_account_by_email() {
         given(accountRepository.findByEmail(any(Email.class)))
                 .willReturn(Optional.of(account));
@@ -55,7 +55,7 @@ public class AccountFindServiceTest {
     }
 
     @Test
-    @DisplayName("아이디(PK)가 존재하는 경우 정상작동")
+    @DisplayName("아이디(PK)로 조회")
     public void find_account_by_id() {
         given(accountRepository.findById(any(Long.class)))
                 .willReturn(Optional.of(account));

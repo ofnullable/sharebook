@@ -60,7 +60,7 @@ public class AccountControllerTest extends WithAuthenticationPrincipal {
     }
 
     @Test
-    @DisplayName("존재하는 계정조회")
+    @DisplayName("계정 Id로 계정 조회")
     public void find_account_by_id() throws Exception {
         given(accountFindService.findById(any(Long.class)))
                 .willReturn(account);
