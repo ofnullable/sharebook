@@ -36,7 +36,7 @@ public class BookFindServiceTest {
     private Book book = buildBook();
 
     @Test
-    @DisplayName("도서가 존재하는 경우 정상작동")
+    @DisplayName("도서 Id로 도서 조회")
     public void find_book_by_id() {
         given(bookRepository.findById(any(Long.class)))
                 .willReturn(Optional.of(book));
@@ -61,9 +61,9 @@ public class BookFindServiceTest {
         given(bookRepository.findAllByOrderByStatus(any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
-        var result = bookFindService.findAll(null, buildPageRequest(10));
+        var result = bookFindService.findAll(null, buildPageRequest(20));
 
-        assertEquals(result.getSize(), 10);
+        assertEquals(result.getSize(), 20);
     }
 
     @Test
@@ -72,20 +72,20 @@ public class BookFindServiceTest {
         given(bookRepository.findALlByTitleContainingIgnoreCaseOrderByStatus(any(String.class), any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
-        var result = bookFindService.findAll("test title", buildPageRequest(10));
+        var result = bookFindService.findAll("test title", buildPageRequest(20));
 
-        assertEquals(result.getSize(), 10);
+        assertEquals(result.getSize(), 20);
     }
 
     @Test
-    @DisplayName("비정상적인 사이즈로 요청시 요청 사이즈 10으로 고정")
+    @DisplayName("비정상적인 사이즈로 요청시 요청 사이즈 20으로 고정")
     public void book_list_irregular_size_pagination() {
         given(bookRepository.findALlByTitleContainingIgnoreCaseOrderByStatus(any(String.class), any(Pageable.class)))
                 .willReturn(buildIrregularPageBook());
 
         var result = bookFindService.findAll("test title", buildPageRequest(100));
 
-        assertEquals(result.getSize(), 12);
+        assertEquals(result.getSize(), 20);
     }
 
     @Test
@@ -96,9 +96,9 @@ public class BookFindServiceTest {
         given(bookRepository.findAllByCategoryNameOrderByStatus(any(String.class), any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
-        var result = bookFindService.findAllByCategory("운영체제", buildPageRequest(10));
+        var result = bookFindService.findAllByCategory("운영체제", buildPageRequest(20));
 
-        assertEquals(result.getSize(), 10);
+        assertEquals(result.getSize(), 20);
     }
 
     @Test
@@ -107,9 +107,9 @@ public class BookFindServiceTest {
         given(bookRepository.findAllByOwnerId(any(Long.class), any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
-        var result = bookFindService.findAllByOwner(1L, buildPageRequest(10));
+        var result = bookFindService.findAllByOwner(1L, buildPageRequest(20));
 
-        assertEquals(result.getSize(), 10);
+        assertEquals(result.getSize(), 20);
     }
 
     @Test
@@ -118,7 +118,7 @@ public class BookFindServiceTest {
         given(bookRepository.findAllByOwnerId(any(Long.class), any(Pageable.class)))
                 .willReturn(buildEmptyPageBook());
 
-        var result = bookFindService.findAllByOwner(11L, buildPageRequest(10));
+        var result = bookFindService.findAllByOwner(11L, buildPageRequest(20));
 
         assertEquals(result.getSize(), 0);
     }

@@ -54,7 +54,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
     private Book book = buildBook();
 
     @Test
-    @DisplayName("존재하는 도서 조회")
+    @DisplayName("도서 Id로 도서 조회")
     public void find_book_by_id() throws Exception {
         given(bookFindService.findById(any(Long.class)))
                 .willReturn(book);
@@ -112,7 +112,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
     }
 
     @Test
-    @DisplayName("도서 리스트 페이지 요청")
+    @DisplayName("도서 리스트 요청")
     public void book_list_pagination() throws Exception {
         given(bookFindService.findAll(any(), any(PageRequest.class)))
                 .willReturn(buildNormalPageBook());
@@ -132,14 +132,14 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
     }
 
     @Test
-    @DisplayName("비정상적인 사이즈로 요청시 요청 사이즈 10으로 고정")
+    @DisplayName("비정상적인 사이즈로 요청시 요청 사이즈 20으로 고정")
     public void book_list_irregular_size_pagination() throws Exception {
         given(bookFindService.findAll(any(), any(PageRequest.class)))
                 .willReturn(buildNormalPageBook());
 
         mvc.perform(get("/books?page=1&size=500"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size", is(10)));
+                .andExpect(jsonPath("$.size", is(20)));
     }
 
     @Test

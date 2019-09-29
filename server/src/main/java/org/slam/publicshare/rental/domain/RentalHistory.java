@@ -9,6 +9,7 @@ import org.slam.publicshare.common.domain.Auditable;
 import org.slam.publicshare.rental.exception.HistoryStatusEqualsException;
 import org.slam.publicshare.rental.exception.RentalAlreadyCompletionException;
 import org.slam.publicshare.rental.exception.RentalAlreadyStartedException;
+import org.slam.publicshare.rental.exception.RentalNotRequestedException;
 
 import javax.persistence.*;
 
@@ -41,6 +42,10 @@ public class RentalHistory extends Auditable {
 
         if (lastStatus != null) {
             verifyWithLastStatus(status, lastStatus);
+        } else {
+            if (status != RentalStatus.REQUESTED) {
+                throw new RentalNotRequestedException(rental.getId());
+            }
         }
     }
 
