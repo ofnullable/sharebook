@@ -78,14 +78,14 @@ public class BookFindServiceTest {
     }
 
     @Test
-    @DisplayName("비정상적인 사이즈로 요청시 요청 사이즈 10으로 고정")
+    @DisplayName("비정상적인 사이즈로 요청시 요청 사이즈 20으로 고정")
     public void book_list_irregular_size_pagination() {
         given(bookRepository.findALlByTitleContainingIgnoreCaseOrderByStatus(any(String.class), any(Pageable.class)))
                 .willReturn(buildIrregularPageBook());
 
         var result = bookFindService.findAll("test title", buildPageRequest(100));
 
-        assertEquals(result.getSize(), 12);
+        assertEquals(result.getSize(), 20);
     }
 
     @Test

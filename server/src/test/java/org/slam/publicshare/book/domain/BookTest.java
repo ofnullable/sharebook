@@ -46,13 +46,19 @@ public class BookTest {
     }
 
     @Test
-    @DisplayName("도서 상태 테스트")
-    public void book_status_test() {
+    @DisplayName("도서 상태변경 테스트")
+    public void change_book_status_test() {
         var available = BookStatus.of(1);
         assertEquals(available, BookStatus.AVAILABLE);
 
+        book.changeStatus(available);
+        assertEquals(book.getStatus(), BookStatus.AVAILABLE);
+
         var unavailable = BookStatus.of(2);
         assertEquals(unavailable, BookStatus.UNAVAILABLE);
+
+        book.changeStatus(unavailable);
+        assertEquals(book.getStatus(), BookStatus.UNAVAILABLE);
     }
 
     @Test
