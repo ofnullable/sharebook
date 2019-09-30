@@ -4,9 +4,9 @@ import lombok.Getter;
 import org.slam.publicshare.rental.domain.RentalStatus;
 
 @Getter
-public class HistoryStatusEqualsException extends RuntimeException {
+public class RentalStatusEqualsException extends RuntimeException {
     private RentalStatus status;
-    public HistoryStatusEqualsException(RentalStatus state) {
+    public RentalStatusEqualsException(RentalStatus state) {
         this.status = state;
     }
 }
