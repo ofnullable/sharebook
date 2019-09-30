@@ -3,7 +3,9 @@ package org.slam.publicshare.error;
 import org.slam.publicshare.account.exception.EmailDuplicationException;
 import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.book.exception.NoSuchBookException;
+import org.slam.publicshare.book.exception.NoSuchBookStatusException;
 import org.slam.publicshare.book.exception.NoSuchCategoryException;
+import org.slam.publicshare.rental.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -61,6 +63,48 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
         return bindError(ErrorCode.CATEGORY_NOT_FOUND, request);
     }
 
+    @ExceptionHandler(NoSuchBookStatusException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ApiError handleNoSuchBookStatusException(NoSuchBookStatusException e, WebRequest request) {
+        log.debug("No Such Book Status. code: {}", e.getCode());
+        return bindError(ErrorCode.INVALID_BOOK_STATUS, request);
+    }
+
+    @ExceptionHandler(NoSuchRentalException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ApiError handleNoSuchRentalException(NoSuchRentalException e, WebRequest request) {
+        log.debug("No Such Rental. id: {}", e.getRentalId());
+        return bindError(ErrorCode.RENTAL_NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(RentalAlreadyCompletionException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ApiError handleAlreadyCompletionException(RentalAlreadyCompletionException e, WebRequest request) {
+        log.debug("Rental Already Completion.");
+        return bindError(ErrorCode.RENTAL_ALREADY_COMPLETION, request);
+    }
+
+    @ExceptionHandler(RentalNotRequestedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ApiError handleRentalNotRequestedException(RentalNotRequestedException e, WebRequest request) {
+        log.debug("This Rental Is Not Requested. id: {}", e.getRentalId());
+        return bindError(ErrorCode.RENTAL_NOT_REQUESTED, request);
+    }
+
+    @ExceptionHandler(RentalStatusEqualsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ApiError handleRentalStatusEqualsException(RentalStatusEqualsException e, WebRequest request) {
+        log.debug("Rental Status Can Not Equals. status: {}", e.getStatus());
+        return bindError(ErrorCode.RENTAL_STATUS_EQUALS, request);
+    }
+
+    @ExceptionHandler(RentalStatusInvalidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ApiError handleRentalStatusInvalidException(RentalStatusInvalidException e, WebRequest request) {
+        log.debug("Rental Status Invalid. old status: {}, new status: {}", e.getOldStatus(), e.getNewStatus());
+        return bindError(ErrorCode.INVALID_RENTAL_STATUS, request);
+    }
+
     @Override
     protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.debug("handle BindException: {}", ex.getBindingResult());
@@ -104,3 +148,10 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     }
 
 }
+
+//    @ExceptionHandler()
+//    @ResponseStatus()
+//    protected ApiError handleException(Exception e, WebRequest request) {
+//        log.debug("");
+//        return bindError(ErrorCode, request);
+//    }
