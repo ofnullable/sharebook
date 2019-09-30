@@ -6,10 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.slam.publicshare.common.domain.Auditable;
-import org.slam.publicshare.rental.exception.HistoryStatusEqualsException;
 import org.slam.publicshare.rental.exception.RentalAlreadyCompletionException;
-import org.slam.publicshare.rental.exception.RentalAlreadyStartedException;
 import org.slam.publicshare.rental.exception.RentalNotRequestedException;
+import org.slam.publicshare.rental.exception.RentalStatusEqualsException;
+import org.slam.publicshare.rental.exception.RentalStatusInvalidException;
 
 import javax.persistence.*;
 
@@ -18,8 +18,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RentalHistory extends Auditable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -41,7 +40,7 @@ public class RentalHistory extends Auditable {
         var lastStatus = getLastStatus(rental);
 
         if (lastStatus != null) {
-            verifyWithLastStatus(status, lastStatus);
+            verifyWithLastStatus(lastStatus, status);
         } else {
             if (status != RentalStatus.REQUESTED) {
                 throw new RentalNotRequestedException(rental.getId());
@@ -54,21 +53,37 @@ public class RentalHistory extends Auditable {
         return lastIndex > -1 ? rental.getHistories().get(lastIndex).getStatus() : null;
     }
 
-    private void verifyWithLastStatus(RentalStatus newStatus, RentalStatus lastStatus) {
-        if (lastStatus == newStatus)
-            throw new HistoryStatusEqualsException(newStatus);
+    private void verifyWithLastStatus(RentalStatus lastStatus, RentalStatus newStatus) {
+        if (isStatusEquals(lastStatus, newStatus))
+            throw new RentalStatusEqualsException(newStatus);
+        if (isStatusInvalid(lastStatus, newStatus))
+            throw new RentalStatusInvalidException(lastStatus, newStatus);
         if (isCompleted(lastStatus))
             throw new RentalAlreadyCompletionException();
-        if (isRented(lastStatus) && newStatus == RentalStatus.REJECTED)
-            throw new RentalAlreadyStartedException();
     }
 
-    private boolean isCompleted(RentalStatus lastStatus) {
-        return lastStatus == RentalStatus.REJECTED || lastStatus == RentalStatus.RETURNED;
+    private boolean isStatusInvalid(RentalStatus lastStatus, RentalStatus newStatus) {
+        if (isRented(lastStatus) && newStatus == RentalStatus.REJECTED)
+            return true;
+        if (isRequested(lastStatus) && newStatus == RentalStatus.RETURNED)
+            return true;
+        return false;
+    }
+
+    private boolean isStatusEquals(RentalStatus lastStatus, RentalStatus newStatus) {
+        return lastStatus == newStatus;
+    }
+
+    private boolean isRequested(RentalStatus lastStatus) {
+        return lastStatus == RentalStatus.REQUESTED;
     }
 
     private boolean isRented(RentalStatus lastStatus) {
         return lastStatus == RentalStatus.ACCEPTED;
+    }
+
+    private boolean isCompleted(RentalStatus lastStatus) {
+        return lastStatus == RentalStatus.REJECTED || lastStatus == RentalStatus.RETURNED;
     }
 
 }
