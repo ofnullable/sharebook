@@ -2,10 +2,10 @@ package org.slam.publicshare.rental.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.slam.publicshare.rental.exception.HistoryStatusEqualsException;
 import org.slam.publicshare.rental.exception.RentalAlreadyCompletionException;
-import org.slam.publicshare.rental.exception.RentalAlreadyStartedException;
 import org.slam.publicshare.rental.exception.RentalNotRequestedException;
+import org.slam.publicshare.rental.exception.RentalStatusEqualsException;
+import org.slam.publicshare.rental.exception.RentalStatusInvalidException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -66,18 +66,18 @@ public class RentalTest {
     }
 
     @Test
-    @DisplayName("동일한 상태로 변경 시 - HistoryStatusEqualsException")
+    @DisplayName("동일한 상태로 변경 시 - RentalStatusEqualsException")
     public void same_status_test() {
         var rental = buildRequestedRental();
 
-        assertThrows(HistoryStatusEqualsException.class, rental::rental);
+        assertThrows(RentalStatusEqualsException.class, rental::rental);
 
-        assertThrows(HistoryStatusEqualsException.class, () -> {
+        assertThrows(RentalStatusEqualsException.class, () -> {
             rental.accept();
             rental.accept();
         });
 
-        assertThrows(HistoryStatusEqualsException.class, () -> {
+        assertThrows(RentalStatusEqualsException.class, () -> {
             rental.returned();
             rental.returned();
         });
@@ -100,11 +100,19 @@ public class RentalTest {
     }
 
     @Test
-    @DisplayName("이미 시작된 대여기록 거절 시 - RentalAlreadyStartedException")
+    @DisplayName("이미 시작된 대여기록 거절 시 - RentalStatusInvalidException")
     public void already_started_rental_test() {
         var accepted = buildAcceptedRental();
 
-        assertThrows(RentalAlreadyStartedException.class, accepted::reject);
+        assertThrows(RentalStatusInvalidException.class, accepted::reject);
+    }
+
+    @Test
+    @DisplayName("시작되지 않은 대여기록 반납요청 시 - RentalStatusInvalidException")
+    public void not_started_rental_return_test() {
+        var accepted = buildAcceptedRental();
+
+        assertThrows(RentalStatusInvalidException.class, accepted::reject);
     }
 
 }
