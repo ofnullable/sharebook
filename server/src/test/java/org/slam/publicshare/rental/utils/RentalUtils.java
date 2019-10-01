@@ -8,10 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RentalUtils {
 
-    private static Rental rental = Rental.builder()
-                .accountId(1L)
-                .bookId(1L)
+    private static Rental buildRental(Long accountId, Long bookId) {
+        return Rental.builder()
+                .accountId(accountId)
+                .bookId(bookId)
                 .build();
+    }
 
     public static Rental buildRequestedRental() {
         var rental = Rental.builder()
@@ -33,7 +35,7 @@ public class RentalUtils {
     }
 
     public static List<Rental> buildRentalList() {
-        return List.of(rental, rental, rental);
+        return List.of(buildRental(1L, 1L), buildRental(2L, 1L), buildRental(3L, 1L));
     }
 
     public static void equalRental(Rental result, Rental target) {
