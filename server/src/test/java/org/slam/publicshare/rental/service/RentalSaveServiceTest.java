@@ -26,7 +26,7 @@ public class RentalSaveServiceTest {
 
     @Test
     @DisplayName("대여기록 저장")
-    public void save_rental_test() {
+    public void save_rental() {
         given(rentalRepository.save(any(Rental.class)))
                 .willReturn(rental);
 

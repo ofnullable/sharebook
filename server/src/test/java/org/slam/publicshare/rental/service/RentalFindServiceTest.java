@@ -32,7 +32,7 @@ public class RentalFindServiceTest {
 
     @Test
     @DisplayName("대여 Id로 대여기록 조회")
-    public void find_by_id_test() {
+    public void find_by_id() {
         given(rentalRepository.findById(any(Long.class)))
                 .willReturn(Optional.of(requested));
 
@@ -43,7 +43,7 @@ public class RentalFindServiceTest {
 
     @Test
     @DisplayName("대여기록 존재하지 않는 경우 - NoSuchRentalException")
-    public void find_by_invalid_id_test() {
+    public void find_by_invalid_id() {
         given(rentalRepository.findById(any(Long.class)))
                 .willReturn(Optional.empty());
 
@@ -52,7 +52,7 @@ public class RentalFindServiceTest {
 
     @Test
     @DisplayName("특정 계정의 대여기록 조회")
-    public void find_by_account_id_test() {
+    public void find_by_account_id() {
         given(rentalRepository.findAllByAccountId(any(Long.class)))
                 .willReturn(buildRentalList());
 
@@ -63,7 +63,7 @@ public class RentalFindServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 계정의 대여기록 조회시 결과 0개")
-    public void find_by_invalid_account_id_test() {
+    public void find_by_invalid_account_id() {
         given(rentalRepository.findAllByAccountId(any(Long.class)))
                 .willReturn(new ArrayList<>());
 
@@ -74,7 +74,7 @@ public class RentalFindServiceTest {
 
     @Test
     @DisplayName("특정 도서의 대여 기록 조회")
-    public void find_by_book_id_test() {
+    public void find_by_book_id() {
         given(rentalRepository.findAllByBookIdOrderByIdDesc(any(Long.class)))
                 .willReturn(buildRentalList());
 
@@ -85,7 +85,7 @@ public class RentalFindServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 도서의 대여 기록 조회시 결과 0개")
-    public void find_by_invalid_book_id_test() {
+    public void find_by_invalid_book_id() {
         given(rentalRepository.findAllByBookIdOrderByIdDesc(any(Long.class)))
                 .willReturn(new ArrayList<>());
 

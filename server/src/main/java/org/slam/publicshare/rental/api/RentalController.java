@@ -7,6 +7,7 @@ import org.slam.publicshare.rental.dto.RentalResponse;
 import org.slam.publicshare.rental.service.RentalFindService;
 import org.slam.publicshare.rental.service.RentalSaveService;
 import org.slam.publicshare.rental.service.RentalUpdateService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,14 +22,7 @@ public class RentalController {
     private final RentalSaveService rentalSaveService;
     private final RentalUpdateService rentalUpdateService;
 
-    @GetMapping("/rental")
-    public List<RentalResponse> findRentalByAccount(@AuthenticationPrincipal(expression = "account") Account account) {
-        return rentalFindService.findAllByAccountId(account.getId()).stream()
-                .map(RentalResponse::new)
-                .collect(Collectors.toList());
-    }
-
-    @GetMapping("/rental/{bookId}")
+    @GetMapping("/book/{bookId}/rental")
     public List<RentalResponse> findRentalByBookId(@PathVariable Long bookId) {
         return rentalFindService.findAllByBookId(bookId).stream()
                 .map(RentalResponse::new)
@@ -36,13 +30,21 @@ public class RentalController {
     }
 
     @PostMapping("/book/{bookId}/rental")
+    @ResponseStatus(HttpStatus.CREATED)
     public RentalResponse rentalRequest(@PathVariable Long bookId, @AuthenticationPrincipal(expression = "account") Account account) {
         return new RentalResponse(rentalSaveService.rentalRequest(bookId, account.getId()));
     }
 
-    @PutMapping("/rental/{rentalId}")
-    public RentalResponse changeRentalStatus(@PathVariable Long rentalId, @RequestBody RentalStatus status) {
-        return new RentalResponse(rentalUpdateService.updateRental(rentalId, status));
+    @PutMapping("/rental/{id}")
+    public RentalResponse changeRentalStatus(@PathVariable Long id, @RequestBody RentalStatus status) {
+        return new RentalResponse(rentalUpdateService.updateRental(id, status));
+    }
+
+    @GetMapping("/account/rental")
+    public List<RentalResponse> findRentalByAccount(@AuthenticationPrincipal(expression = "account") Account account) {
+        return rentalFindService.findAllByAccountId(account.getId()).stream()
+                .map(RentalResponse::new)
+                .collect(Collectors.toList());
     }
 
 }

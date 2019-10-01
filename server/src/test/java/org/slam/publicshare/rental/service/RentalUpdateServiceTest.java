@@ -30,7 +30,7 @@ public class RentalUpdateServiceTest {
 
     @Test
     @DisplayName("ACCEPTED로 status 업데이트")
-    public void update_rental_to_accepted_test() {
+    public void update_rental_to_accepted() {
         var rental = buildRequestedRental();
 
         given(rentalFindService.findById(any(Long.class)))
@@ -44,7 +44,7 @@ public class RentalUpdateServiceTest {
 
     @Test
     @DisplayName("REJECTED로 status 업데이트")
-    public void update_rental_to_rejected_test() {
+    public void update_rental_to_rejected() {
         var rental = buildRequestedRental();
 
         given(rentalFindService.findById(any(Long.class)))
@@ -58,7 +58,7 @@ public class RentalUpdateServiceTest {
 
     @Test
     @DisplayName("RETURNED로 status 업데이트")
-    public void update_rental_to_returned_test() {
+    public void update_rental_to_returned() {
         var rental = buildAcceptedRental();
 
         given(rentalFindService.findById(any(Long.class)))
@@ -72,7 +72,7 @@ public class RentalUpdateServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 대여기록 업데이트 시 - NoSuchRentalException")
-    public void update_not_requested_rental_test() {
+    public void update_not_requested_rental() {
         given(rentalFindService.findById(any(Long.class)))
                 .willThrow(NoSuchRentalException.class);
 
@@ -81,7 +81,7 @@ public class RentalUpdateServiceTest {
 
     @Test
     @DisplayName("이전 상태와 같은 상태로 변경 요청 시 - RentalStatusEqualsException")
-    public void update_rental_to_same_status_test() {
+    public void update_rental_to_same_status() {
         var rental = buildAcceptedRental();
 
         given(rentalFindService.findById(any(Long.class)))
@@ -95,7 +95,7 @@ public class RentalUpdateServiceTest {
 
     @Test
     @DisplayName("유효하지 않은 상태로 변경 요청 시 - RentalStatusInvalidException")
-    public void update_rental_requested_to_returned_test() {
+    public void update_rental_requested_to_returned() {
         var rental = buildRequestedRental();
 
         given(rentalFindService.findById(any(Long.class)))
@@ -109,7 +109,7 @@ public class RentalUpdateServiceTest {
 
     @Test
     @DisplayName("REQUESTED로 상태 변경 시 - RentalStatusInvalidException")
-    public void update_to_requested_test() {
+    public void update_to_requested() {
         var rental = Rental.builder().accountId(1L).bookId(1L).build();
 
         given(rentalFindService.findById(any(Long.class)))

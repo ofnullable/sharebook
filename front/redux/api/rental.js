@@ -5,7 +5,7 @@ export const loadRentalInfoApi = () => {
 };
 
 export const loadRentalInfoByBookIdApi = bookId => {
-  return axios.get(`/rental/${bookId}`, { withCredentials: true });
+  return axios.get(`book/${bookId}/rental/`, { withCredentials: true });
 };
 
 export const rentalBookApi = bookId => {

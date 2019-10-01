@@ -168,7 +168,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("특정 유저가 등록한 도서 리스트 요청")
-    public void find_book_by_owner_test() throws Exception {
+    public void find_book_by_owner() throws Exception {
         given(bookFindService.findAllByOwner(any(Long.class), any(PageRequest.class)))
                 .willReturn(buildNormalPageBook());
 
@@ -178,7 +178,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("존재하지 않는 유저가 등록한 도서 리스트 요청")
-    public void find_book_by_invalid_owner_test() throws Exception {
+    public void find_book_by_invalid_owner() throws Exception {
         given(bookFindService.findAllByOwner(any(Long.class), any(PageRequest.class)))
                 .willReturn(buildEmptyPageBook());
 

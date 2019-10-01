@@ -14,8 +14,8 @@ public class RentalUpdateService {
     private final RentalFindService rentalFindService;
 
     @Transactional
-    public Rental updateRental(Long rentalId, RentalStatus rentalStatus) {
-        var rental = rentalFindService.findById(rentalId);
+    public Rental updateRental(Long id, RentalStatus rentalStatus) {
+        var rental = rentalFindService.findById(id);
         switch (rentalStatus) {
             case ACCEPTED:
                 rental.accept();

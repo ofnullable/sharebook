@@ -28,7 +28,7 @@ public class PageRequestUtils {
 
     @Test
     @DisplayName("PageRequest 기본값 테스트")
-    public void page_request_test() {
+    public void page_request_default_value() {
         var request = buildPageRequest(10);
         request.of(); // 기본값 세팅을 위한 메서드 호출
 
@@ -45,8 +45,6 @@ public class PageRequestUtils {
         assertEquals(request.getPage(), Integer.valueOf(1));
         assertEquals(request.getDirection(), Sort.Direction.ASC);
         assertEquals(request.getSortBy(), "id");
-
-
     }
 
 }

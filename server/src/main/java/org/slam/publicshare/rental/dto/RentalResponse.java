@@ -9,17 +9,21 @@ import java.util.List;
 
 @Getter
 public class RentalResponse {
+
     private Long id;
     private Long bookId;
     private Long accountId;
     private List<RentalHistory> histories;
+
     public RentalResponse(Rental rental) {
         this.id = rental.getId();
         this.bookId = rental.getBookId();
         this.accountId = rental.getAccountId();
         this.histories = getHistories(rental);
     }
+
     private List<RentalHistory> getHistories(Rental rental) {
         return rental.getHistories().size() > 0 ? rental.getHistories() : new ArrayList<>();
     }
+
 }
