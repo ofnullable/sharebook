@@ -16,7 +16,7 @@ public class AccountTest {
 
     @Test
     @DisplayName("Email객체에서 Id, Host 추출")
-    public void  email_method_test() {
+    public void  email_method() {
         var email = Email.of("test@test.com");
 
         assertEquals(email.getId(), "test");
@@ -25,7 +25,7 @@ public class AccountTest {
 
     @Test
     @DisplayName("Builder로 인스턴스 생성")
-    public void account_builder_test() {
+    public void account_builder() {
         assertEquals(account.getEmail().getAddress(), "asd@asd.com");
         assertEquals(account.getName(), "test");
         assertTrue(account.getPassword().startsWith("{bcrypt}"));
@@ -33,14 +33,14 @@ public class AccountTest {
 
     @Test
     @DisplayName("Account의 편의 메서드를 활용하여 Role 추가")
-    public void add_role_test() {
+    public void add_role() {
         account.addRole(RoleName.BASIC);
         assertEquals(1, account.getRoles().size());
     }
 
     @Test
     @DisplayName("비밀번호 업데이트")
-    public void update_password_test() {
+    public void update_password() {
         account.updatePassword("modifyTest");
         assertTrue(account.getPassword().startsWith("{bcrypt}"));
     }

@@ -22,10 +22,11 @@ public class WithAuthenticationPrincipal {
         }
 
         @Override
-        public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                      NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-            var account = buildNormalAccount();
+        public Object resolveArgument(
+                MethodParameter parameter, ModelAndViewContainer mavContainer
+                , NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
+            var account = buildNormalAccount();
             var idField = account.getClass().getDeclaredField("id");
             idField.setAccessible(true);
             idField.set(account, 1L);
