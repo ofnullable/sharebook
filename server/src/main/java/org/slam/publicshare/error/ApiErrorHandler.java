@@ -79,7 +79,7 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RentalAlreadyCompletionException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ApiError handleAlreadyCompletionException(RentalAlreadyCompletionException e, WebRequest request) {
+    protected ApiError handleRentalAlreadyCompletionException(RentalAlreadyCompletionException e, WebRequest request) {
         log.debug("Rental Already Completion.");
         return bindError(ErrorCode.RENTAL_ALREADY_COMPLETION, request);
     }
@@ -101,8 +101,8 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RentalStatusInvalidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ApiError handleRentalStatusInvalidException(RentalStatusInvalidException e, WebRequest request) {
-        log.debug("Rental Status Invalid. old status: {}, new status: {}", e.getOldStatus(), e.getNewStatus());
-        return bindError(ErrorCode.INVALID_RENTAL_STATUS, request);
+        log.debug("Rental Status Invalid. status: {}", e.getStatus());
+        return bindErrorWithFields(ErrorCode.INVALID_RENTAL_STATUS, e.getStatus(), request);
     }
 
     @Override
@@ -119,13 +119,13 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(bindErrorWithFields(ErrorCode.INVALID_INPUT_VALUE, fieldErrors, request));
     }
 
+    private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
+        return new ResponseEntity<>(apiError, HttpStatus.valueOf(apiError.getStatus()));
+    }
+
     private Map<String, String> getFieldErrors(BindingResult bindingResult) {
         return bindingResult.getFieldErrors().stream()
                 .collect(toMap(FieldError::getField, FieldError::getDefaultMessage));
-    }
-
-    private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-        return new ResponseEntity<>(apiError, HttpStatus.valueOf(apiError.getStatus()));
     }
 
     private ApiError bindError(ErrorCode errorCode, WebRequest request) {
@@ -148,10 +148,3 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     }
 
 }
-
-//    @ExceptionHandler()
-//    @ResponseStatus()
-//    protected ApiError handleException(Exception e, WebRequest request) {
-//        log.debug("");
-//        return bindError(ErrorCode, request);
-//    }
