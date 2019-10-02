@@ -2,12 +2,15 @@ package org.slam.publicshare.config.security.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.slam.publicshare.account.dto.AccountResponse;
 import org.slam.publicshare.config.security.userdetails.AccountDetails;
 import org.slam.publicshare.error.ApiError;
 import org.slam.publicshare.error.ErrorCode;
 import org.springframework.security.core.Authentication;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class HandlerUtils {
 
     private static ObjectMapper mapper = new ObjectMapper();

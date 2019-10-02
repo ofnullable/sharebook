@@ -25,8 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
+@ExtendWith(SpringExtension.class)
 public class AccountIntegrationTest {
 
     @Autowired
@@ -55,7 +55,7 @@ public class AccountIntegrationTest {
     }
 
     @Test
-    @DisplayName("인증 후 계정 조회")
+    @DisplayName("로그인 후 계정 조회")
     @WithUserDetails("test1@asd.com")
     public void get_account_with_auth() throws Exception {
         var resultAction = mvc.perform(get("/account/1"))
@@ -66,7 +66,7 @@ public class AccountIntegrationTest {
     }
 
     @Test
-    @DisplayName("인증하지 않고 계정 조회 - 401")
+    @DisplayName("로그인하지 않고 계정 조회 - 401")
     public void get_account_with_no_auth() throws Exception {
         mvc.perform(get("/account/1"))
                 .andExpect(status().isUnauthorized())
@@ -199,7 +199,7 @@ public class AccountIntegrationTest {
 
     @Test
     @WithMockUser(username = "test1@asd.com", roles = "BASIC")
-    @DisplayName("인증 후 비밀번호 업데이트")
+    @DisplayName("로그인 후 비밀번호 업데이트")
     public void update_password_with_auth() throws Exception {
         mvc.perform(patch("/account/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -211,7 +211,7 @@ public class AccountIntegrationTest {
 
     @Test
     @WithMockUser(username = "test1@asd.com", roles = "BASIC")
-    @DisplayName("인증 후 존재하지 않는 계정 비밀번호 업데이트")
+    @DisplayName("로그인 후 존재하지 않는 계정 비밀번호 업데이트")
     public void update_password_with_invalid_account_with_auth() throws Exception {
         mvc.perform(patch("/account/10")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -222,7 +222,7 @@ public class AccountIntegrationTest {
     }
 
     @Test
-    @DisplayName("인증하지 않고 비밀번호 업데이트")
+    @DisplayName("로그인하지 않고 비밀번호 업데이트")
     public void update_password_with_no_auth() throws Exception {
         mvc.perform(patch("/account/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
