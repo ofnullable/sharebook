@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.slam.publicshare.config.WithAuthenticationPrincipal;
 import org.slam.publicshare.rental.domain.RentalStatus;
-import org.slam.publicshare.rental.exception.RentalStatusInvalidException;
+import org.slam.publicshare.rental.exception.*;
 import org.slam.publicshare.rental.service.RentalFindService;
 import org.slam.publicshare.rental.service.RentalSaveService;
 import org.slam.publicshare.rental.service.RentalUpdateService;
@@ -75,7 +75,7 @@ public class RentalControllerTest extends WithAuthenticationPrincipal {
     }
 
     @Test
-    @DisplayName("특정 계정의 대여목록 조회")
+    @DisplayName("현재 계정의 대여목록 조회")
     public void find_rental_by_account_id() throws Exception {
         given(rentalFindService.findAllByAccountId(any(Long.class)))
                 .willReturn(buildRentalList());
@@ -152,12 +152,60 @@ public class RentalControllerTest extends WithAuthenticationPrincipal {
     @DisplayName("REQUESTED로 대여기록 업데이트 - 400")
     public void update_rental_to_requested() throws Exception {
         given(rentalUpdateService.updateRental(any(Long.class), eq(RentalStatus.REQUESTED)))
-                .willThrow(RentalStatusInvalidException.class);
+                .willThrow(new RentalStatusInvalidException(RentalStatus.NONE, RentalStatus.REQUESTED));
 
         mvc.perform(put("/rental/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(RentalStatus.REQUESTED)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("이미 종료 된 대여 업데이트 시 - 400")
+    public void update_already_completed_rental() throws Exception {
+        given(rentalUpdateService.updateRental(any(Long.class), eq(RentalStatus.REJECTED)))
+                .willThrow(RentalAlreadyCompletionException.class);
+
+        mvc.perform(put("/rental/1")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(RentalStatus.REJECTED)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("요청되지 않은 대여 업데이트 시 - 400")
+    public void update_not_requested_rental() throws Exception {
+        given(rentalUpdateService.updateRental(any(Long.class), eq(RentalStatus.REJECTED)))
+                .willThrow(RentalNotRequestedException.class);
+
+        mvc.perform(put("/rental/1")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(RentalStatus.REJECTED)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("이전 상태와 같은 상태로 변경 요청 시 - 400")
+    public void update_rental_to_same_status() throws Exception {
+        given(rentalUpdateService.updateRental(any(Long.class), eq(RentalStatus.REJECTED)))
+                .willThrow(RentalStatusEqualsException.class);
+
+        mvc.perform(put("/rental/1")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(RentalStatus.REJECTED)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 대여 업데이트 시 - 404")
+    public void update_invalid_rental() throws Exception {
+        given(rentalUpdateService.updateRental(any(Long.class), eq(RentalStatus.REJECTED)))
+                .willThrow(NoSuchRentalException.class);
+
+        mvc.perform(put("/rental/1")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(mapper.writeValueAsString(RentalStatus.REJECTED)))
+                .andExpect(status().isNotFound());
     }
 
 }

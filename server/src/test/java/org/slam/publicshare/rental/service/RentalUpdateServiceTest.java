@@ -1,5 +1,6 @@
 package org.slam.publicshare.rental.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +11,7 @@ import org.slam.publicshare.rental.domain.RentalStatus;
 import org.slam.publicshare.rental.exception.NoSuchRentalException;
 import org.slam.publicshare.rental.exception.RentalStatusEqualsException;
 import org.slam.publicshare.rental.exception.RentalStatusInvalidException;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,6 +29,14 @@ public class RentalUpdateServiceTest {
 
     @Mock
     private RentalFindService rentalFindService;
+
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
+
+    @BeforeEach
+    public void setup() {
+        rentalUpdateService.setApplicationEventPublisher(eventPublisher);
+    }
 
     @Test
     @DisplayName("ACCEPTED로 status 업데이트")
