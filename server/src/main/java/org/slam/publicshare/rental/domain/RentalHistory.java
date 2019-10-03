@@ -24,9 +24,8 @@ public class RentalHistory extends Auditable {
     @Enumerated(EnumType.STRING)
     private RentalStatus status;
 
+    @ManyToOne(optional = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToOne
-    @JoinColumn(name = "rental_id", nullable = false, updatable = false)
     private Rental rental;
 
     @Builder

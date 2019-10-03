@@ -4,8 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.slam.publicshare.rental.domain.event.RentalStatusChangeEvent;
-import org.springframework.data.domain.AbstractAggregateRoot;
+import org.slam.publicshare.book.domain.Book;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,50 +14,62 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Rental extends AbstractAggregateRoot<Rental> {
+public class Rental {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, updatable = false)
-    private Long bookId;
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    private Book book;
 
     @Column(nullable = false, updatable = false)
     private Long accountId;
+
+    @Enumerated(EnumType.STRING)
+    private RentalStatus currentStatus;
 
     private LocalDateTime startedAt;
 
     private LocalDateTime endedAt;
 
-    @OneToMany(mappedBy = "rental", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL)
     private List<RentalHistory> histories = new ArrayList<>();
 
     @Builder
-    public Rental(Long bookId, Long accountId) {
-        this.bookId = bookId;
+    public Rental(Book book, Long accountId) {
+        this.book = book;
         this.accountId = accountId;
     }
 
     public void rental() {
+        this.currentStatus = RentalStatus.REQUESTED;
         this.histories.add(buildRentHistory(RentalStatus.REQUESTED));
-        registerEvent(new RentalStatusChangeEvent(this));
+
+        System.out.println(this.book.getId());
+        this.book.addRental(this);
+        this.book.changeToUnavailable();
     }
 
     public void accept() {
         this.startedAt = LocalDateTime.now();
+        this.currentStatus = RentalStatus.ACCEPTED;
         this.histories.add(buildRentHistory(RentalStatus.ACCEPTED));
     }
 
     public void reject() {
         this.endedAt = LocalDateTime.now();
+        this.currentStatus = RentalStatus.REJECTED;
         this.histories.add(buildRentHistory(RentalStatus.REJECTED));
-        registerEvent(new RentalStatusChangeEvent(this));
+
+        this.book.changeToAvailable();
     }
 
     public void returned() {
         this.endedAt = LocalDateTime.now();
+        this.currentStatus = RentalStatus.RETURNED;
         this.histories.add(buildRentHistory(RentalStatus.RETURNED));
-        registerEvent(new RentalStatusChangeEvent(this));
+
+        this.book.changeToAvailable();
     }
 
     private RentalHistory buildRentHistory(RentalStatus status) {

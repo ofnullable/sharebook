@@ -17,7 +17,7 @@ public class RentalResponse {
 
     public RentalResponse(Rental rental) {
         this.id = rental.getId();
-        this.bookId = rental.getBookId();
+        this.bookId = rental.getBook().getId();
         this.accountId = rental.getAccountId();
         this.histories = getHistories(rental);
     }
