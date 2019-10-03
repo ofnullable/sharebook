@@ -77,11 +77,11 @@ VALUES
        ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, now(), "test1@asd.com", now(), "test1@asd.com"),
        ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, now(), "test1@asd.com", now(), "test1@asd.com");
 
-INSERT INTO share_jpa.rental(account_id, book_id, started_at, ended_at)
+INSERT INTO share_jpa.rental(account_id, book_id, current_status, started_at, ended_at)
 VALUES
-       (1, 1, now(), null),
-       (1, 2, null, null),
-       (1, 2, null, null);
+       (2, 1, "ACCEPTED", now(), null),
+       (2, 2, "REQUESTED", null, null),
+       (2, 2, "REQUESTED", null, null);
 
 INSERT INTO share_jpa.rental_history(rental_id, status, created_by, created_at, modified_by, modified_at)
 VALUES

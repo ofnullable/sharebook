@@ -7,6 +7,7 @@ import org.slam.publicshare.book.dto.book.SaveBookRequest;
 import org.slam.publicshare.book.service.BookFindService;
 import org.slam.publicshare.book.service.BookSaveService;
 import org.slam.publicshare.common.dto.PageRequest;
+import org.slam.publicshare.rental.domain.RentalStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
@@ -14,6 +15,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,13 +50,21 @@ public class BookController {
     }
 
     @GetMapping("/account/{accountId}/books")
-    public Page<BookResponse> getBooksByAccount(@PathVariable Long accountId, @Valid final  PageRequest pageRequest, @AuthenticationPrincipal(expression = "account") Account account) {
+    public Page<BookResponse> findAllBookByOwner(@PathVariable Long accountId, @Valid final  PageRequest pageRequest, @AuthenticationPrincipal(expression = "account") Account account) {
         if (accountId == 0) {
             return bookFindService.findAllByOwner(account.getId(), pageRequest)
                     .map(BookResponse::new);
         }
         return bookFindService.findAllByOwner(accountId, pageRequest)
                 .map(BookResponse::new);
+    }
+
+    @GetMapping("/book/rental/{status}")
+    public List<BookResponse> findAllBookByRentalStatus(@AuthenticationPrincipal(expression = "account") Account account, @PathVariable RentalStatus status) {
+        return bookFindService.findAllByRentalStatus(account.getId())
+                .parallelStream()
+                .map(BookResponse::new)
+                .collect(toList());
     }
 
 }
