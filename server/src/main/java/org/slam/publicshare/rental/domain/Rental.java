@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.slam.publicshare.rental.domain.event.RentalStatusChangeEvent;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,7 +15,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Rental {
+public class Rental extends AbstractAggregateRoot<Rental> {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,6 +41,7 @@ public class Rental {
 
     public void rental() {
         this.histories.add(buildRentHistory(RentalStatus.REQUESTED));
+        registerEvent(new RentalStatusChangeEvent(this));
     }
 
     public void accept() {
@@ -49,11 +52,13 @@ public class Rental {
     public void reject() {
         this.endedAt = LocalDateTime.now();
         this.histories.add(buildRentHistory(RentalStatus.REJECTED));
+        registerEvent(new RentalStatusChangeEvent(this));
     }
 
     public void returned() {
         this.endedAt = LocalDateTime.now();
         this.histories.add(buildRentHistory(RentalStatus.RETURNED));
+        registerEvent(new RentalStatusChangeEvent(this));
     }
 
     private RentalHistory buildRentHistory(RentalStatus status) {
