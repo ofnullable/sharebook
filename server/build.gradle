@@ -80,8 +80,6 @@ dependencies {
     implementation 'org.springframework.integration:spring-integration-ftp'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.1'
-
     implementation 'com.querydsl:querydsl-jpa'
     compileOnly 'com.querydsl:querydsl-apt'
 
