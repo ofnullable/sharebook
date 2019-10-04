@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slam.publicshare.rental.domain.Rental;
 import org.slam.publicshare.rental.domain.RentalStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,7 +25,6 @@ public class RentalIntegrationTest {
     @Autowired
     private MockMvc mvc;
 
-    private Rental defaultRental = Rental.builder().bookId(1L).accountId(1L).build();
     private ObjectMapper mapper = new ObjectMapper();
 
     @Test
@@ -63,10 +61,10 @@ public class RentalIntegrationTest {
     }
 
     @Test
-    @WithUserDetails("test1@asd.com")
+    @WithUserDetails("test2@asd.com")
     @DisplayName("로그인 후 대여요청")
     public void save_rental_with_auth() throws Exception {
-        var resultAction = mvc.perform(post("/book/1/rental"))
+        var resultAction = mvc.perform(post("/book/5/rental"))
                 .andExpect(status().isCreated())
                 .andDo(print());
     }

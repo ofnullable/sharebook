@@ -51,13 +51,13 @@ public class BookTest {
         var available = BookStatus.of(1);
         assertEquals(available, BookStatus.AVAILABLE);
 
-        book.changeStatus(available);
-        assertEquals(book.getStatus(), BookStatus.AVAILABLE);
-
         var unavailable = BookStatus.of(2);
         assertEquals(unavailable, BookStatus.UNAVAILABLE);
 
-        book.changeStatus(unavailable);
+        book.changeToAvailable();
+        assertEquals(book.getStatus(), BookStatus.AVAILABLE);
+
+        book.changeToUnavailable();
         assertEquals(book.getStatus(), BookStatus.UNAVAILABLE);
     }
 
