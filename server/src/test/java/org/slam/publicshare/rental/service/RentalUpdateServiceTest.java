@@ -28,13 +28,14 @@ public class RentalUpdateServiceTest {
     @Mock
     private RentalFindService rentalFindService;
 
+    private Rental requested = buildRequestedRental();
+    private Rental accepted = buildAcceptedRental();
+
     @Test
     @DisplayName("ACCEPTED로 status 업데이트")
     public void update_rental_to_accepted() {
-        var rental = buildRequestedRental();
-
         given(rentalFindService.findById(any(Long.class)))
-                .willReturn(rental);
+                .willReturn(requested);
 
         var result = rentalUpdateService.updateRental(1L, RentalStatus.ACCEPTED);
 
@@ -45,10 +46,8 @@ public class RentalUpdateServiceTest {
     @Test
     @DisplayName("REJECTED로 status 업데이트")
     public void update_rental_to_rejected() {
-        var rental = buildRequestedRental();
-
         given(rentalFindService.findById(any(Long.class)))
-                .willReturn(rental);
+                .willReturn(requested);
 
         var result = rentalUpdateService.updateRental(1L, RentalStatus.REJECTED);
 
@@ -59,10 +58,8 @@ public class RentalUpdateServiceTest {
     @Test
     @DisplayName("RETURNED로 status 업데이트")
     public void update_rental_to_returned() {
-        var rental = buildAcceptedRental();
-
         given(rentalFindService.findById(any(Long.class)))
-                .willReturn(rental);
+                .willReturn(accepted);
 
         var result = rentalUpdateService.updateRental(1L, RentalStatus.RETURNED);
 
@@ -110,10 +107,8 @@ public class RentalUpdateServiceTest {
     @Test
     @DisplayName("REQUESTED로 상태 변경 시 - RentalStatusInvalidException")
     public void update_to_requested() {
-        var rental = Rental.builder().accountId(1L).bookId(1L).build();
-
         given(rentalFindService.findById(any(Long.class)))
-                .willReturn(rental);
+                .willReturn(requested);
 
         assertThrows(RentalStatusInvalidException.class, () -> rentalUpdateService.updateRental(1L, RentalStatus.REQUESTED));
     }

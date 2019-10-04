@@ -2,6 +2,7 @@ package org.slam.publicshare.book.utils;
 
 import org.slam.publicshare.account.domain.Account;
 import org.slam.publicshare.book.domain.Book;
+import org.slam.publicshare.book.domain.BookStatus;
 import org.slam.publicshare.book.domain.Category;
 import org.slam.publicshare.book.dto.book.SaveBookRequest;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ public class BookUtils {
             .description("book for test!")
             .owner(account)
             .imageUrl("/asd")
+            .status(BookStatus.AVAILABLE)
             .build();
 
     private static Category category = Category.of("운영체제");

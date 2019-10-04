@@ -45,7 +45,6 @@ public class Rental {
         this.currentStatus = RentalStatus.REQUESTED;
         this.histories.add(buildRentHistory(RentalStatus.REQUESTED));
 
-        System.out.println(this.book.getId());
         this.book.addRental(this);
         this.book.changeToUnavailable();
     }

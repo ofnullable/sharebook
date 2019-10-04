@@ -9,8 +9,7 @@ import org.slam.publicshare.rental.exception.RentalStatusInvalidException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.slam.publicshare.rental.utils.RentalUtils.buildAcceptedRental;
-import static org.slam.publicshare.rental.utils.RentalUtils.buildRequestedRental;
+import static org.slam.publicshare.rental.utils.RentalUtils.*;
 
 public class RentalTest {
 
@@ -55,10 +54,7 @@ public class RentalTest {
     @Test
     @DisplayName("존재하지 않는 요청에 대한 처리 시 - RentalNotRequestedException")
     public void invalid_first_status() {
-        var rental = Rental.builder()
-                .accountId(1L)
-                .bookId(1L)
-                .build();
+        var rental = buildRental(1L);
 
         assertThrows(RentalNotRequestedException.class, rental::accept);
         assertThrows(RentalNotRequestedException.class, rental::reject);
