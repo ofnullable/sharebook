@@ -42,7 +42,7 @@ public class RentalValidatorTest {
     @DisplayName("대여 불가능한 도서 대여 시 - IllegalStateException")
     public void rental_unavailable_status_book() {
         var book = buildBook();
-        book.changeToUnavailable();
+        book.toUnavailable(1L);
         var rental = buildRental(book);
 
         assertThrows(IllegalStateException.class, () -> validator.validate(rental));
@@ -58,7 +58,7 @@ public class RentalValidatorTest {
     }
 
     private Book buildBookWithOwner(Book book) throws NoSuchFieldException, IllegalAccessException {
-        if (!book.isAvailable()) book.changeToAvailable();
+        if (!book.isAvailable()) book.toAvailable();
         var account = book.getOwner();
         var accountId = account.getClass()
                 .getDeclaredField("id");

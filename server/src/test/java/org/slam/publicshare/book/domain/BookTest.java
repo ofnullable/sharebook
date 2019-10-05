@@ -54,10 +54,10 @@ public class BookTest {
         var unavailable = BookStatus.of(2);
         assertEquals(unavailable, BookStatus.UNAVAILABLE);
 
-        book.changeToAvailable();
+        book.toAvailable();
         assertEquals(book.getStatus(), BookStatus.AVAILABLE);
 
-        book.changeToUnavailable();
+        book.toUnavailable(1L);
         assertEquals(book.getStatus(), BookStatus.UNAVAILABLE);
     }
 
