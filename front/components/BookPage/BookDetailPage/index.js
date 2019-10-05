@@ -14,23 +14,22 @@ import { Button, CenterDiv } from '@styles/common';
 
 const BookPage = ({ detail, error }) => {
   const { user } = useSelector(state => state.user);
-  const { histories } = useSelector(state => state.rental);
 
   const router = useRouter();
 
   const renderButton = () => {
-    if (user.data.id) {
-      if (user.data.name === detail.owner) {
-        // TODO: Add toggle rental history modal button
-        return null;
-      }
-      return <RentalButton detail={detail} histories={histories.data} />;
-    } else {
+    if (!user.data.id) {
       return (
         <Button _color='primary' onClick={() => router.push('/signin')}>
           로그인하기
         </Button>
       );
+    } else {
+      if (user.data.name === detail.owner) {
+        // TODO: Add toggle rental history modal button
+        return null;
+      }
+      return <RentalButton detail={detail} wasRent={detail.currentRenterId === user.data.id} />;
     }
   };
 

@@ -6,7 +6,7 @@ import { rentalBookRequest } from '@redux/actions/rentalActions';
 
 import { Button } from '@styles/common';
 
-const RentalButton = ({ detail, histories }) => {
+const RentalButton = ({ detail, wasRent }) => {
   const dispatch = useDispatch();
 
   const handleRent = () => {
@@ -20,8 +20,6 @@ const RentalButton = ({ detail, histories }) => {
       </Button>
     );
   }
-
-  const wasRent = histories.filter(h => h.bookId === detail.id).length;
 
   return wasRent ? (
     <Button _color='gray' disabled>

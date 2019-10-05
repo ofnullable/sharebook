@@ -12,7 +12,7 @@ import { CenterDiv } from '@styles/common';
 const menus = {
   profile: { name: '프로필', component: <Profile /> },
   books: { name: '도서관리', component: <Books /> },
-  rentals: { name: '대여목록', component: <Rentals /> },
+  rentals: { name: '대여관리', component: <Rentals /> },
 };
 const activeStyle = { backgroundColor: '#e9ecef' };
 

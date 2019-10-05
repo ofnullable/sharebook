@@ -11,7 +11,7 @@ export const HeaderWrapper = styled.div`
   }
 `;
 
-export const RegisterButton = styled(Button)`
-  float: right;
-  margin: calc(0.7rem - 2px) 1%;
-`;
+// export const RegisterButton = styled(Button)`
+//   float: right;
+//   margin: calc(0.7rem - 2px) 1%;
+// `;
