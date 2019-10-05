@@ -38,8 +38,8 @@ public class BookFindService {
         return bookRepository.findAllByOwnerId(accountId, pageRequest.of());
     }
 
-    public List<Book> findAllByRentalStatus(Long accountId) {
-        return bookRepository.findByRentalStatus(accountId, RentalStatus.REQUESTED);
+    public List<Book> findAllByRentalStatus(Long accountId, RentalStatus status) {
+        return bookRepository.findByRentalStatus(accountId, status);
     }
 
 }

@@ -59,9 +59,9 @@ public class BookController {
                 .map(BookResponse::new);
     }
 
-    @GetMapping("/book/rental/{status}")
-    public List<BookResponse> findAllBookByRentalStatus(@AuthenticationPrincipal(expression = "account") Account account, @PathVariable RentalStatus status) {
-        return bookFindService.findAllByRentalStatus(account.getId())
+    @GetMapping("/account/books/rental/{status}")
+    public List<BookResponse> findAllMyBookByRentalStatus(@AuthenticationPrincipal(expression = "account") Account account, @PathVariable RentalStatus status) {
+        return bookFindService.findAllByRentalStatus(account.getId(), status)
                 .parallelStream()
                 .map(BookResponse::new)
                 .collect(toList());

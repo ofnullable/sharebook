@@ -20,7 +20,7 @@ public class RentalSaveService {
         var book = bookFindService.findById(bookId);
         var rental = Rental.builder().book(book).accountId(accountId).build();
         validator.validate(rental);
-        rental.rental();
+        rental.request();
         return rentalRepository.save(rental);
     }
 

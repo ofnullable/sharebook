@@ -1,5 +1,6 @@
 package org.slam.publicshare.rental.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class Rental {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private Book book;
 
@@ -41,37 +43,37 @@ public class Rental {
         this.accountId = accountId;
     }
 
-    public void rental() {
+    public void request() {
         this.currentStatus = RentalStatus.REQUESTED;
-        this.histories.add(buildRentHistory(RentalStatus.REQUESTED));
+        this.histories.add(buildRentalHistory(RentalStatus.REQUESTED));
 
         this.book.addRental(this);
-        this.book.changeToUnavailable();
+        this.book.toUnavailable(this.accountId);
     }
 
     public void accept() {
         this.startedAt = LocalDateTime.now();
         this.currentStatus = RentalStatus.ACCEPTED;
-        this.histories.add(buildRentHistory(RentalStatus.ACCEPTED));
+        this.histories.add(buildRentalHistory(RentalStatus.ACCEPTED));
     }
 
     public void reject() {
         this.endedAt = LocalDateTime.now();
         this.currentStatus = RentalStatus.REJECTED;
-        this.histories.add(buildRentHistory(RentalStatus.REJECTED));
+        this.histories.add(buildRentalHistory(RentalStatus.REJECTED));
 
-        this.book.changeToAvailable();
+        this.book.toAvailable();
     }
 
     public void returned() {
         this.endedAt = LocalDateTime.now();
         this.currentStatus = RentalStatus.RETURNED;
-        this.histories.add(buildRentHistory(RentalStatus.RETURNED));
+        this.histories.add(buildRentalHistory(RentalStatus.RETURNED));
 
-        this.book.changeToAvailable();
+        this.book.toAvailable();
     }
 
-    private RentalHistory buildRentHistory(RentalStatus status) {
+    private RentalHistory buildRentalHistory(RentalStatus status) {
         return RentalHistory.builder()
                 .rental(this)
                 .status(status)

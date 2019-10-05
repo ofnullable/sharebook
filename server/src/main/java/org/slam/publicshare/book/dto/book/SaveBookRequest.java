@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.slam.publicshare.account.domain.Account;
 import org.slam.publicshare.book.domain.Book;
-import org.slam.publicshare.book.domain.BookStatus;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -49,7 +48,6 @@ public class SaveBookRequest {
                 .author(author)
                 .publisher(publisher)
                 .description(description)
-                .status(BookStatus.AVAILABLE) // default status
                 .owner(account)
                 .imageUrl(imageUrl)
                 .build();
