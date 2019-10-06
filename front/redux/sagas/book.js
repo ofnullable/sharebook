@@ -86,12 +86,12 @@ function* loadMyBookList({ page, size }) {
 function* watchLoadMyBookListByRentalStatusRequest() {
   yield takeLatest(BOOK.LOAD_MY_BOOK_LIST_BY_RENTAL_STATUS_REQUEST, loadMyBookListByRentalStatus);
 }
-function* loadMyBookListByRentalStatus({ status }) {
+function* loadMyBookListByRentalStatus({ status, page, size }) {
   try {
-    const response = yield call(loadMyBookListByRentalStatusApi, status);
-    yield put(loadMyBookListByRentalStatusSuccess(response.data, status));
+    const response = yield call(loadMyBookListByRentalStatusApi, { status, page, size });
+    yield put(loadMyBookListByRentalStatusSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(loadMyBookListByRentalStatusFailure(e.response.data || e, status));
+    yield put(loadMyBookListByRentalStatusFailure(e.response.data || e));
   }
 }

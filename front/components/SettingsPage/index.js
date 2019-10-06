@@ -1,5 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 
 import Profile from './Profile';
 import Books from './Books';
@@ -18,6 +20,14 @@ const activeStyle = { backgroundColor: '#e9ecef' };
 
 const SettingsPage = ({ menu }) => {
   const [active, setActive] = useContext(HamburgerContext);
+  const { isSignedIn, isLoading } = useSelector(state => state.user.user);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && !isSignedIn) {
+      router.push('/signin');
+    }
+  }, [isLoading, isSignedIn]);
 
   const handleMenuClose = () => {
     setActive(false);
