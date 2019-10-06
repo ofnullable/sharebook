@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class BookFindService {
@@ -38,8 +36,8 @@ public class BookFindService {
         return bookRepository.findAllByOwnerId(accountId, pageRequest.of());
     }
 
-    public List<Book> findAllByRentalStatus(Long accountId, RentalStatus status) {
-        return bookRepository.findByRentalStatus(accountId, status);
+    public Page<Book> findAllMyBookByRentalStatus(Long accountId, RentalStatus status, PageRequest pageRequest) {
+        return bookRepository.findAllByOwnerIdAndRentalsCurrentStatus(accountId, status, pageRequest.of());
     }
 
 }
