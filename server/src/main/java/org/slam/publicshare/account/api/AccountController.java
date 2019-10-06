@@ -28,7 +28,9 @@ public class AccountController {
     }
 
     @GetMapping("/account/{id}")
-    public AccountResponse findAccountById(@PathVariable Long id, @AuthenticationPrincipal(expression = "account") Account account) {
+    public AccountResponse findAccountById(
+            @AuthenticationPrincipal(expression = "account") Account account,
+            @PathVariable Long id) {
         if (id == 0) { // id가 0이면 현재 세션의 account를 돌려준다.
             return new AccountResponse(account);
         }

@@ -66,7 +66,7 @@ public class RentalTest {
     public void same_rental_status() {
         var rental = buildRequestedRental();
 
-        assertThrows(RentalStatusEqualsException.class, rental::rental);
+        assertThrows(RentalStatusEqualsException.class, rental::request);
 
         assertThrows(RentalStatusEqualsException.class, () -> {
             rental.accept();

@@ -44,19 +44,21 @@ public class Book extends Auditable {
     @Column(nullable = false)
     private String imageUrl;
 
+    private Long currentRenterId;
+
     @OneToMany(mappedBy = "book")
     private List<Rental> rentals = new ArrayList<>();
 
     @Builder
-    public Book(String title, String author, String publisher, Category category, String description, BookStatus status, Account owner, String imageUrl) {
+    public Book(String title, String author, String publisher, Category category, String description, Account owner, String imageUrl) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.category = category;
         this.description = description;
-        this.status = status;
         this.owner = owner;
         this.imageUrl = imageUrl;
+        this.status = BookStatus.AVAILABLE;
     }
 
     public void setCategory(Category category) {
@@ -67,12 +69,14 @@ public class Book extends Auditable {
         this.rentals.add(rental);
     }
 
-    public void changeToUnavailable() {
+    public void toUnavailable(Long renterId) {
         this.status = BookStatus.UNAVAILABLE;
+        this.currentRenterId = renterId;
     }
 
-    public void changeToAvailable() {
+    public void toAvailable() {
         this.status = BookStatus.AVAILABLE;
+        this.currentRenterId = null;
     }
 
     public boolean isAvailable() {

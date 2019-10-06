@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const loadRentalInfoApi = () => {
+export const loadMyRentalInfoApi = () => {
   return axios.get(`/account/rental`, { withCredentials: true });
 };
 

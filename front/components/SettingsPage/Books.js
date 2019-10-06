@@ -5,8 +5,9 @@ import { useSelector } from 'react-redux';
 import BookCard from '@components/BookCard';
 
 import { Title } from './index.styled';
-import { HeaderWrapper, RegisterButton } from './Books.styled';
+import { HeaderWrapper } from './Books.styled';
 import {
+  Button,
   CardWrapper,
   CenterDiv,
   SpinIcon,
@@ -22,7 +23,7 @@ const Books = () => {
         <Title>도서관리</Title>
         <Link href='/settings/books/register'>
           <a>
-            <RegisterButton _color='primary'>도서등록</RegisterButton>
+            <Button _color='primary'>도서등록</Button>
           </a>
         </Link>
       </HeaderWrapper>

@@ -15,9 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,31 +23,40 @@ public class BookController {
     private final BookSaveService bookSaveService;
     private final BookFindService bookFindService;
 
-    @PostMapping("/book")
-    @ResponseStatus(HttpStatus.CREATED)
-    public BookResponse saveBook(@RequestBody @Valid SaveBookRequest dto, @AuthenticationPrincipal(expression = "account") Account account) {
-        return new BookResponse(bookSaveService.save(dto, account));
-    }
-
     @GetMapping("/book/{id}")
     public BookResponse findBookById(@PathVariable Long id) {
         return new BookResponse(bookFindService.findById(id));
     }
 
+    @PostMapping("/book")
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookResponse saveBook(
+            @AuthenticationPrincipal(expression = "account") Account account,
+            @RequestBody @Valid SaveBookRequest dto) {
+        return new BookResponse(bookSaveService.save(dto, account));
+    }
+
     @GetMapping("/books")
-    public Page<BookResponse> findAllBook(@Nullable final String searchText, @Valid final PageRequest pageRequest) {
+    public Page<BookResponse> findAllBook(
+            @Nullable final String searchText,
+            @Valid final PageRequest pageRequest) {
         return bookFindService.findAll(searchText, pageRequest)
                 .map(BookResponse::new);
     }
 
     @GetMapping("/books/category/{category}")
-    public Page<BookResponse> findAllBookByCategory(@PathVariable String category, @Valid final PageRequest pageRequest) {
+    public Page<BookResponse> findAllBookByCategory(
+            @PathVariable String category,
+            @Valid final PageRequest pageRequest) {
         return bookFindService.findAllByCategory(category, pageRequest)
                 .map(BookResponse::new);
     }
 
     @GetMapping("/account/{accountId}/books")
-    public Page<BookResponse> findAllBookByOwner(@PathVariable Long accountId, @Valid final  PageRequest pageRequest, @AuthenticationPrincipal(expression = "account") Account account) {
+    public Page<BookResponse> findAllBookByOwner(
+            @AuthenticationPrincipal(expression = "account") Account account,
+            @PathVariable Long accountId,
+            @Valid final PageRequest pageRequest) {
         if (accountId == 0) {
             return bookFindService.findAllByOwner(account.getId(), pageRequest)
                     .map(BookResponse::new);
@@ -59,12 +65,13 @@ public class BookController {
                 .map(BookResponse::new);
     }
 
-    @GetMapping("/book/rental/{status}")
-    public List<BookResponse> findAllBookByRentalStatus(@AuthenticationPrincipal(expression = "account") Account account, @PathVariable RentalStatus status) {
-        return bookFindService.findAllByRentalStatus(account.getId())
-                .parallelStream()
-                .map(BookResponse::new)
-                .collect(toList());
+    @GetMapping("/account/books/rental/{status}")
+    public Page<BookResponse> findAllMyBookByRentalStatus(
+            @AuthenticationPrincipal(expression = "account") Account account,
+            @PathVariable RentalStatus status,
+            @Valid final PageRequest pageRequest) {
+        return bookFindService.findAllMyBookByRentalStatus(account.getId(), status, pageRequest)
+                .map(BookResponse::new);
     }
 
 }

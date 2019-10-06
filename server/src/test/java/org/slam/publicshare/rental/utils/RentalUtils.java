@@ -32,7 +32,7 @@ public class RentalUtils {
                 .accountId(1L)
                 .book(book)
                 .build();
-        rental.rental();
+        rental.request();
         return rental;
     }
 
@@ -41,7 +41,7 @@ public class RentalUtils {
                 .accountId(1L)
                 .book(book)
                 .build();
-        rental.rental();
+        rental.request();
         rental.accept();
         return rental;
     }

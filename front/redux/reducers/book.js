@@ -18,6 +18,7 @@ const initial = {
   },
   myBooks: {
     data: [],
+    status: '',
     page: 1,
     totalPages: 1,
     isLast: false,
@@ -68,18 +69,22 @@ export default (state = initial, action) => {
         break;
 
       case BOOK.LOAD_MY_BOOK_LIST_REQUEST:
+      case BOOK.LOAD_MY_BOOK_LIST_BY_RENTAL_STATUS_REQUEST:
         draft.myBooks.data = !action.page || action.page === 1 ? [] : draft.list.data;
+        draft.myBooks.status = action.status ? action.status : '';
         draft.myBooks.page = action.page ? action.page : 1;
         draft.myBooks.isLoading = true;
         draft.myBooks.error = {};
         break;
       case BOOK.LOAD_MY_BOOK_LIST_SUCCESS:
+      case BOOK.LOAD_MY_BOOK_LIST_BY_RENTAL_STATUS_SUCCESS:
         draft.myBooks.data = draft.myBooks.data.concat(action.data.content);
         draft.myBooks.isLast = action.data.last;
         draft.myBooks.totalPages = action.data.totalPages;
         draft.myBooks.isLoading = false;
         break;
       case BOOK.LOAD_MY_BOOK_LIST_FAILURE:
+      case BOOK.LOAD_MY_BOOK_LIST_BY_RENTAL_STATUS_FAILURE:
         draft.myBooks.error = action.error;
         draft.myBooks.isLoading = false;
         break;
