@@ -4,6 +4,8 @@ import device from '@styles/device';
 import { COLOR_SCHEME } from '@styles/colors';
 
 export const HeaderNav = styled.nav`
+  width: 100%;
+  background-color: ${COLOR_SCHEME.primary};
   & > ul {
     ${device.laptops`
       padding: 15px;
@@ -14,10 +16,7 @@ export const HeaderNav = styled.nav`
     ${device.mobiles`
       padding: 10px;
     `}
-    margin: 0;
-    width: 100%;
-    display: inline-block;
-    background-color: ${COLOR_SCHEME.primary};
+    margin: 0 auto;
   }
 `;
 export const HamburgerMenu = styled.li`

@@ -54,6 +54,7 @@ export const BookDetailWrapper = styled.section`
   `};
   ${device.mobiles`
     width: 100%;
+    margin: 1em 0;
   `};
   display: inline-block;
   vertical-align: top;
@@ -78,18 +79,16 @@ export const BookInfoWrapper = styled.div`
     ${device.tablets`
       font-size: 2.5em;
     `};
-    margin: 0 0 0.25em;
+    margin: 0 0 0.5em;
   }
   & p {
     margin: 0 0 0.5em;
+    &:last-child {
+      margin: 1em 0;
+      font-size: 16px;
+    }
   }
   & span {
     color: ${COLOR_SCHEME.darkGray};
-  }
-  & div {
-    margin: 0.5em 0;
-    &:first-child {
-      margin-top: 0;
-    }
   }
 `;

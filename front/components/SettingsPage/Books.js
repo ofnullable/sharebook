@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 import BookCard from '@components/BookCard';
@@ -17,15 +17,15 @@ import {
 
 const Books = () => {
   const { isLoading, data } = useSelector(state => state.book.myBooks);
+  const router = useRouter();
+
   return (
     <>
       <HeaderWrapper>
         <Title>도서관리</Title>
-        <Link href='/settings/books/register'>
-          <a>
-            <Button _color='primary'>도서등록</Button>
-          </a>
-        </Link>
+        <Button _color='primary' onClick={() => router.push('/settings/books/register')}>
+          도서등록
+        </Button>
       </HeaderWrapper>
 
       {isLoading && (

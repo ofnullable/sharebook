@@ -14,13 +14,11 @@ const Settings = ({ menu }) => {
 Settings.getInitialProps = async ({ query, store }) => {
   const menu = query.menu;
 
-  // store.dispatch({});
   switch (menu) {
     case 'books':
       store.dispatch(loadMyBookListRequest());
       break;
     case 'rentals':
-      // load rentals my user id
       store.dispatch(loadMyBookListByRentalStatusRequest(RENTAL_STATUS.REQUESTED));
       break;
   }

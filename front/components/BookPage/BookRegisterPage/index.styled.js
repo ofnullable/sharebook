@@ -21,7 +21,7 @@ export const BookImagePreview = styled.div`
 
 export const ImageUploadButton = styled(Button)`
   width: 200px;
-  margin: 5% calc((100% - 200px) / 2) 0;
+  margin: 1em calc((100% - 200px) / 2) 0;
 `;
 
 export const RegisterButton = styled(Button)`
