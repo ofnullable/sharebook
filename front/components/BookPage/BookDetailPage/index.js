@@ -36,7 +36,7 @@ const BookPage = ({ detail, error }) => {
   if (error.status === 404) {
     return (
       <CenterDiv>
-        <img src='/static/book-not-found.jpg' alt='can not found book' />
+        <p>도서가 존재하지 않습니다.</p>
       </CenterDiv>
     );
   }
@@ -52,7 +52,7 @@ const BookPage = ({ detail, error }) => {
           <h1>{detail.title}</h1>
           <p>{`${detail.author} | ${detail.publisher}`}</p>
           <span>{`${detail.owner} | ${detail.createdAt}`}</span>
-          <div>{detail.description}</div>
+          <p>{detail.description}</p>
         </BookInfoWrapper>
         {renderButton()}
       </BookDetailWrapper>

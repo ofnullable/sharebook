@@ -1,25 +1,19 @@
 import React, { useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { HamburgerContext } from '@utils/context';
-import { signOutRequest } from '@redux/actions/userActions';
 
 import { HeaderNav, HamburgerMenu, HeaderMenu, HeaderMenuGroup, HomepageLink } from './Nav.styled';
 
 const Nav = () => {
   const { isSignedIn } = useSelector(state => state.user.user);
   const [_, setActive] = useContext(HamburgerContext);
-  const dispatch = useDispatch();
   const router = useRouter();
 
   const openHamburgerMenu = () => {
     setActive(true);
-  };
-
-  const handleSignOut = () => {
-    dispatch(signOutRequest());
   };
 
   const getSecondMenu = () => {
@@ -28,7 +22,13 @@ const Nav = () => {
     }
 
     if (isSignedIn) {
-      return;
+      return (
+        <HeaderMenu _float='right'>
+          <Link href='/settings/profile' prefetch={false}>
+            <a>마이페이지</a>
+          </Link>
+        </HeaderMenu>
+      );
     }
 
     return (
@@ -48,12 +48,14 @@ const Nav = () => {
 
   return (
     <HeaderNav>
-      <ul>
-        <HamburgerMenu onClick={openHamburgerMenu}>
-          <span />
-          <span />
-          <span />
-        </HamburgerMenu>
+      <ul className='container'>
+        {router.pathname.startsWith('/settings') && (
+          <HamburgerMenu onClick={openHamburgerMenu}>
+            <span />
+            <span />
+            <span />
+          </HamburgerMenu>
+        )}
         <HeaderMenu>
           <Link href='/' prefetch={false}>
             <HomepageLink>
@@ -63,13 +65,6 @@ const Nav = () => {
           </Link>
         </HeaderMenu>
         {getSecondMenu()}
-        {isSignedIn && (
-          <HeaderMenu _float='right'>
-            <Link href='/settings/profile' prefetch={false}>
-              <a>마이페이지</a>
-            </Link>
-          </HeaderMenu>
-        )}
       </ul>
     </HeaderNav>
   );

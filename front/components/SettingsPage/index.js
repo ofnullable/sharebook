@@ -12,7 +12,7 @@ import { LeftMenu, MenuItem, MenuCloseArea, WithLeftMenu } from './index.styled'
 import { CenterDiv } from '@styles/common';
 
 const menus = {
-  profile: { name: '프로필', component: <Profile /> },
+  profile: { name: '개인관리', component: <Profile /> },
   books: { name: '도서관리', component: <Books /> },
   rentals: { name: '대여관리', component: <Rentals /> },
 };

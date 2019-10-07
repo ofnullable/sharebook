@@ -16,7 +16,7 @@ const Profile = () => {
 
   return (
     <>
-      <Title>내 프로필</Title>
+      <Title>개인설정</Title>
       <Button _color='gray' onClick={handleSignOut}>
         로그아웃
       </Button>
