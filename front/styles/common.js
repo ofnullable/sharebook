@@ -14,10 +14,10 @@ export const Button = styled.button`
   ${transition};
   ${buttonColor};
   cursor: pointer;
-  display: inline-block;
   padding: 3px 15px;
   border-radius: 5px;
   text-align: center;
+  vertical-align: middle;
 `;
 
 export const ButtonLink = Button.withComponent('a');
@@ -77,7 +77,6 @@ export const CenterForm = styled.form`
     width: 100%;
   `}
   margin: 0 auto;
-  overflow: auto;
 `;
 
 export const InputGroup = styled.div`
