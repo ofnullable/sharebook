@@ -31,17 +31,10 @@ export const HamburgerMenu = styled.li`
     vertical-align: middle;
   `};
   padding: 5px;
-  width: 30px;
   cursor: pointer;
-  & span {
+  & i {
     display: block;
-    border: 1px solid ${COLOR_SCHEME.white};
-    &:first-child {
-      margin-bottom: 3px;
-    }
-    &:last-child {
-      margin-top: 3px;
-    }
+    color: ${COLOR_SCHEME.white};
   }
 `;
 

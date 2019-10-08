@@ -34,7 +34,7 @@ app.prepare().then(() => {
     });
   });
 
-  fastify.get('*', (req, reply) => {
+  fastify.get('*', async (req, reply) => {
     return app.handleRequest(req.req, reply.res).then(() => {
       reply.sent = true;
     });
@@ -46,7 +46,7 @@ app.prepare().then(() => {
   });
 
   const port = Number(process.env.PORT) || 3010;
-  const host = dev ? 'localhost' : '0.0.0.0';
+  const host = '0.0.0.0';
 
   fastify.listen(port, host, err => {
     if (err) throw err;

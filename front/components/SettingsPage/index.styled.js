@@ -22,23 +22,7 @@ export const LeftMenu = styled.aside`
     margin-right: 3%;
   `};
   ${device.mobiles`
-    position: absolute;
-    width: 60%;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    padding: 15px;
-    background-color: white;
-    transform: translateX(-100%);
-    z-index: 10;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 10px;
-    &.active {
-      transform: translateX(0%);
-
-      & + div {
-        display: block;
-      }
-    }
+    display: none;
   `};
   ${transition};
   & ul {
@@ -47,18 +31,6 @@ export const LeftMenu = styled.aside`
     text-align: left;
     list-style: none;
   }
-`;
-
-export const MenuCloseArea = styled.div`
-  display: none;
-  z-index: 9;
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  background-color: ${COLOR_SCHEME.gray};
-  opacity: 0.7;
 `;
 
 export const MenuItem = styled.a`
@@ -88,4 +60,36 @@ export const WithLeftMenu = styled.div`
     width: 100%;
     text-align: left;
   `};
+`;
+
+export const BottomMenuBar = styled.menu`
+  display: none;
+  ${device.mobiles`
+    display: block;
+  `}
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  margin: 0;
+  padding: 5px;
+  background-color: ${COLOR_SCHEME.white};
+`;
+
+export const BottomMenuItem = styled.div`
+  display: inline-block;
+  text-align: center;
+  width: 33.3333%;
+  padding: 5px 0;
+  border-radius: 5px;
+
+  & > i {
+    display: none;
+    ${device.mobiles`
+    display: block;
+  `}
+  }
+  & > p {
+    margin: 0;
+  }
 `;

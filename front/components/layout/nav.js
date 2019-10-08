@@ -1,30 +1,23 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-import { HamburgerContext } from '@utils/context';
-
-import { HeaderNav, HamburgerMenu, HeaderMenu, HeaderMenuGroup, HomepageLink } from './Nav.styled';
+import { HeaderNav, HeaderMenu, HeaderMenuGroup, HomepageLink } from './Nav.styled';
 
 const Nav = () => {
   const { isSignedIn } = useSelector(state => state.user.user);
-  const [_, setActive] = useContext(HamburgerContext);
   const router = useRouter();
 
-  const openHamburgerMenu = () => {
-    setActive(true);
-  };
-
   const getSecondMenu = () => {
-    if (router.pathname === '/signin' || router.pathname === '/join') {
+    if (['/signin', '/join', '/settings'].includes(router.pathname)) {
       return;
     }
 
     if (isSignedIn) {
       return (
         <HeaderMenu _float='right'>
-          <Link href='/settings/profile' prefetch={false}>
+          <Link href='/settings?menu=profile' as='/settings/profile' prefetch={false}>
             <a>마이페이지</a>
           </Link>
         </HeaderMenu>
@@ -47,26 +40,21 @@ const Nav = () => {
   };
 
   return (
-    <HeaderNav>
-      <ul className='container'>
-        {router.pathname.startsWith('/settings') && (
-          <HamburgerMenu onClick={openHamburgerMenu}>
-            <span />
-            <span />
-            <span />
-          </HamburgerMenu>
-        )}
-        <HeaderMenu>
-          <Link href='/' prefetch={false}>
-            <HomepageLink>
-              <i className='material-icons'>share</i>
-              <span>PublicShare</span>
-            </HomepageLink>
-          </Link>
-        </HeaderMenu>
-        {getSecondMenu()}
-      </ul>
-    </HeaderNav>
+    <>
+      <HeaderNav>
+        <ul className='container'>
+          <HeaderMenu>
+            <Link href='/' prefetch={false}>
+              <HomepageLink>
+                <i className='material-icons'>share</i>
+                <span>PublicShare</span>
+              </HomepageLink>
+            </Link>
+          </HeaderMenu>
+          {getSecondMenu()}
+        </ul>
+      </HeaderNav>
+    </>
   );
 };
 
