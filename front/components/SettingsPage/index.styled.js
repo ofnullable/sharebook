@@ -22,7 +22,13 @@ export const LeftMenu = styled.aside`
     margin-right: 3%;
   `};
   ${device.mobiles`
-    display: none;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+    background-color: #f8f9fa;
   `};
   ${transition};
   & ul {
@@ -34,14 +40,36 @@ export const LeftMenu = styled.aside`
 `;
 
 export const MenuItem = styled.a`
-  display: block;
-  text-align: left;
+  ${device.laptops`
+    display: block;
+    text-align: left;
+    padding: 15px;
+  `}
+  ${device.tablets`
+    display: block;
+    text-align: left;
+    padding: 15px;
+  `}
+  ${device.mobiles`
+    display: inline-block;
+    text-align: center;
+    width: 33.3333%;
+    padding: 10px 0;
+  `}
   color: ${COLOR_SCHEME.black};
   cursor: pointer;
-  padding: 15px;
   border-radius: 5px;
   &:hover {
     background-color: ${COLOR_SCHEME.lightGray};
+  }
+  & i {
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+  & p {
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
   }
 `;
 
@@ -62,34 +90,14 @@ export const WithLeftMenu = styled.div`
   `};
 `;
 
-export const BottomMenuBar = styled.menu`
-  display: none;
-  ${device.mobiles`
-    display: block;
-  `}
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  margin: 0;
-  padding: 5px;
-  background-color: ${COLOR_SCHEME.white};
-`;
-
-export const BottomMenuItem = styled.div`
-  display: inline-block;
-  text-align: center;
-  width: 33.3333%;
-  padding: 5px 0;
-  border-radius: 5px;
-
-  & > i {
-    display: none;
-    ${device.mobiles`
-    display: block;
-  `}
-  }
-  & > p {
-    margin: 0;
+export const SubMenu = styled.div`
+  margin: 0.7rem 1%;
+  & span {
+    margin-right: 1em;
+    color: ${COLOR_SCHEME.gray};
+    cursor: pointer;
+    &.active {
+      color: ${COLOR_SCHEME.black};
+    }
   }
 `;

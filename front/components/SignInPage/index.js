@@ -17,7 +17,14 @@ const SignInPage = () => {
 
   useEffect(() => {
     if (isSignedIn) {
-      Router.back();
+      const referrer = document.referrer;
+      const origin = document.location.origin;
+
+      if (referrer.startsWith(origin)) {
+        Router.back();
+      } else {
+        Router.push('/');
+      }
     }
   }, [isSignedIn]);
 

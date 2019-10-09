@@ -1,13 +1,16 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { Title } from './index.styled';
+import { SubMenu } from './index.styled';
 
 const RentalList = () => {
   return (
-    <div>
-      <Title>대여관리</Title>
-    </div>
+    <>
+      <SubMenu>
+        <span>요청한도서</span>
+        <span>대여중도서</span>
+      </SubMenu>
+    </>
   );
 };
 

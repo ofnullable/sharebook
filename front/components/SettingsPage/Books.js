@@ -1,11 +1,11 @@
 import React from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 import BookCard from '@components/BookCard';
 
-import { Title } from './index.styled';
-import { HeaderWrapper } from './Books.styled';
+import { SubMenu } from './index.styled';
 import {
   Button,
   CardWrapper,
@@ -15,18 +15,38 @@ import {
   LoadingIconWrapper,
 } from '@styles/common';
 
-const Books = () => {
+const Books = ({ status }) => {
   const { isLoading, data } = useSelector(state => state.book.myBooks);
   const router = useRouter();
 
+  const renderSubMenu = () => {
+    return (
+      <SubMenu>
+        <Link href={`/settings?menu=books&status=`} as={`/settings/books/`}>
+          <a>
+            <span className={!status ? 'active' : ''}>전체보기</span>
+          </a>
+        </Link>
+        <Link href={`/settings?menu=books&status=requested`} as={`/settings/books/requested`}>
+          <a>
+            <span className={status === 'REQUESTED' ? 'active' : ''}>요청받은도서</span>
+          </a>
+        </Link>
+        <Link href={`/settings?menu=books&status=accepted`} as={`/settings/books/accepted`}>
+          <a>
+            <span className={status === 'ACCEPTED' ? 'active' : ''}>대여해준도서</span>
+          </a>
+        </Link>
+      </SubMenu>
+    );
+  };
+
   return (
     <>
-      <HeaderWrapper>
-        <Title>도서관리</Title>
-        <Button _color='primary' onClick={() => router.push('/settings/books/register')}>
-          도서등록
-        </Button>
-      </HeaderWrapper>
+      <Button _color='primary' onClick={() => router.push('/settings/books/register')}>
+        도서등록
+      </Button>
+      {renderSubMenu()}
 
       {isLoading && (
         <>

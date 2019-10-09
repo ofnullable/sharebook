@@ -14,12 +14,6 @@ app.prepare().then(() => {
     prefix: '/static',
   });
 
-  fastify.get('/settings/books/register', async (req, reply) => {
-    return app.render(req.req, reply.res, '/book/register').then(() => {
-      reply.sent = true;
-    });
-  });
-
   fastify.get('/book/:id', async (req, reply) => {
     const id = req.params.id;
     return app.render(req.req, reply.res, '/book', { id }).then(() => {
@@ -27,9 +21,28 @@ app.prepare().then(() => {
     });
   });
 
-  fastify.get('/settings/:menu', async (req, reply) => {
-    const menu = req.params.menu;
-    return app.render(req.req, reply.res, '/settings', { menu }).then(() => {
+  fastify.get('/settings/books/register', async (req, reply) => {
+    return app.render(req.req, reply.res, '/book/register').then(() => {
+      reply.sent = true;
+    });
+  });
+
+  fastify.get('/settings/profile', async (req, reply) => {
+    return app.render(req.req, reply.res, '/settings', { menu: 'profile' }).then(() => {
+      reply.sent = true;
+    });
+  });
+
+  fastify.get('/settings/books/:status', async (req, reply) => {
+    const status = req.params.status;
+    return app.render(req.req, reply.res, '/management/books', { status }).then(() => {
+      reply.sent = true;
+    });
+  });
+
+  fastify.get('/settings/rentals/:status', async (req, reply) => {
+    const status = req.params.status || 'requested';
+    return app.render(req.req, reply.res, '/management/rentals', { status }).then(() => {
       reply.sent = true;
     });
   });
