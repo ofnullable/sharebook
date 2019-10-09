@@ -26,6 +26,7 @@ public class RestAuthSuccessHandler implements AuthenticationSuccessHandler {
         final var auth = authToString(authentication);
 
         res.setStatus(res.SC_OK);
+        res.setHeader("Set-Cookie","HttpOnly; Same-Site=None");
         res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         res.getWriter().write(auth);
         res.flushBuffer();
