@@ -39,7 +39,7 @@ public class BookController {
     @GetMapping("/books")
     public Page<BookResponse> findAllBook(
             @Nullable final String searchText,
-            @Valid final PageRequest pageRequest) {
+            @Valid PageRequest pageRequest) {
         return bookFindService.findAll(searchText, pageRequest)
                 .map(BookResponse::new);
     }
@@ -47,7 +47,7 @@ public class BookController {
     @GetMapping("/books/category/{category}")
     public Page<BookResponse> findAllBookByCategory(
             @PathVariable String category,
-            @Valid final PageRequest pageRequest) {
+            @Valid PageRequest pageRequest) {
         return bookFindService.findAllByCategory(category, pageRequest)
                 .map(BookResponse::new);
     }
@@ -56,7 +56,7 @@ public class BookController {
     public Page<BookResponse> findAllBookByOwner(
             @AuthenticationPrincipal(expression = "account") Account account,
             @PathVariable Long accountId,
-            @Valid final PageRequest pageRequest) {
+            @Valid PageRequest pageRequest) {
         if (accountId == 0) {
             return bookFindService.findAllByOwner(account.getId(), pageRequest)
                     .map(BookResponse::new);
@@ -69,7 +69,7 @@ public class BookController {
     public Page<BookResponse> findAllMyBookByRentalStatus(
             @AuthenticationPrincipal(expression = "account") Account account,
             @PathVariable RentalStatus status,
-            @Valid final PageRequest pageRequest) {
+            @Valid PageRequest pageRequest) {
         return bookFindService.findAllMyBookByRentalStatus(account.getId(), status, pageRequest)
                 .map(BookResponse::new);
     }
