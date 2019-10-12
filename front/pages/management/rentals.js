@@ -1,7 +1,7 @@
 import React from 'react';
 
 import RentalsPage from '@components/Management/RentalsPage';
-import { RENTAL_STATUS } from '@utils/consts';
+import { loadRentalListRequest } from '@redux/actions/rentalActions';
 
 const Rentals = ({ status }) => {
   return <RentalsPage status={status} />;
@@ -9,6 +9,8 @@ const Rentals = ({ status }) => {
 
 Rentals.getInitialProps = async ({ query, store }) => {
   const status = query.status;
+
+  store.dispatch(loadRentalListRequest(status.toUpperCase()));
 
   return { status };
 };

@@ -21,7 +21,7 @@ const Profile = () => {
       </Button>
       <SubMenu>
         <span>프로필</span>
-        <span>리뷰</span>
+        <span>리뷰관리</span>
       </SubMenu>
     </>
   );

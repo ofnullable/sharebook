@@ -14,26 +14,26 @@ import {
   LoadingIconWrapper,
 } from '@styles/common';
 
-const BooksPage = ({ status }) => {
-  const { isLoading, data } = useSelector(state => state.book.myBooks);
+const RentalPage = ({ status }) => {
+  const { isLoading, data } = useSelector(state => state.rental.myRentals);
 
   const renderSubMenu = () => {
     return (
       <SubMenu>
-        <Link
-          href={{ pathname: `/management/rentals`, query: { status: 'requested' } }}
-          as={`/settings/rentals/requested`}
-        >
-          <a>
-            <span className={status === 'requested' ? 'active' : ''}>요청한도서</span>
-          </a>
-        </Link>
         <Link
           href={{ pathname: `/management/rentals`, query: { status: 'accepted' } }}
           as={`/settings/rentals/accepted`}
         >
           <a>
             <span className={status === 'accepted' ? 'active' : ''}>대여중도서</span>
+          </a>
+        </Link>
+        <Link
+          href={{ pathname: `/management/rentals`, query: { status: 'requested' } }}
+          as={`/settings/rentals/requested`}
+        >
+          <a>
+            <span className={status === 'requested' ? 'active' : ''}>요청한도서</span>
           </a>
         </Link>
       </SubMenu>
@@ -62,7 +62,7 @@ const BooksPage = ({ status }) => {
         <CardWrapper>
           {!isLoading &&
             (data.length ? (
-              data.map(d => <BookCard key={d.id} data={d} />)
+              data.map(d => <BookCard key={d.id} data={d.book} />)
             ) : (
               <CenterDiv>
                 <p>도서가 존재하지 않습니다.</p>
@@ -74,4 +74,4 @@ const BooksPage = ({ status }) => {
   );
 };
 
-export default BooksPage;
+export default RentalPage;

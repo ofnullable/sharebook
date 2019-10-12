@@ -30,9 +30,9 @@ const menus = {
   rentals: {
     name: '대여관리',
     icon: 'list_alt',
-    as: '/settings/rentals/',
-    pathname: '/settings',
-    query: { menu: 'rentals' },
+    as: '/settings/rentals/accepted',
+    pathname: '/management/rentals',
+    query: { status: 'accepted' },
     component: <Rentals />,
   },
 };
