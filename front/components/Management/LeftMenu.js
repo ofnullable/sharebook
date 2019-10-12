@@ -23,9 +23,9 @@ const menus = {
   rentals: {
     name: '대여관리',
     icon: 'list_alt',
-    as: '/settings/rentals/requested',
+    as: '/settings/rentals/accepted',
     pathname: '/management/rentals',
-    query: { status: 'requested' },
+    query: { status: 'accepted' },
   },
 };
 const activeStyle = { backgroundColor: '#e9ecef' };

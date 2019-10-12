@@ -2,17 +2,18 @@ package org.slam.publicshare.rental.api;
 
 import lombok.RequiredArgsConstructor;
 import org.slam.publicshare.account.domain.Account;
+import org.slam.publicshare.common.dto.PageRequest;
 import org.slam.publicshare.rental.domain.RentalStatus;
 import org.slam.publicshare.rental.dto.RentalResponse;
 import org.slam.publicshare.rental.service.RentalFindService;
 import org.slam.publicshare.rental.service.RentalSaveService;
 import org.slam.publicshare.rental.service.RentalUpdateService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,13 +22,6 @@ public class RentalController {
     private final RentalFindService rentalFindService;
     private final RentalSaveService rentalSaveService;
     private final RentalUpdateService rentalUpdateService;
-
-    @GetMapping("/book/{bookId}/rental")
-    public List<RentalResponse> findRentalByBookId(@PathVariable Long bookId) {
-        return rentalFindService.findAllByBookId(bookId).stream()
-                .map(RentalResponse::new)
-                .collect(Collectors.toList());
-    }
 
     @PostMapping("/book/{bookId}/rental")
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,11 +36,13 @@ public class RentalController {
         return new RentalResponse(rentalUpdateService.updateRental(id, status));
     }
 
-    @GetMapping("/account/rental")
-    public List<RentalResponse> findRentalByAccount(@AuthenticationPrincipal(expression = "account") Account account) {
-        return rentalFindService.findAllByAccountId(account.getId()).stream()
-                .map(RentalResponse::new)
-                .collect(Collectors.toList());
+    @GetMapping("/account/rentals/{rentalStatus}")
+    public Page<RentalResponse> findRentalByAccount(
+            @AuthenticationPrincipal(expression = "account") Account account,
+            @PathVariable RentalStatus rentalStatus,
+            @Valid PageRequest pageRequest) {
+        return rentalFindService.findAllByAccountIdAndCurrentStatus(account.getId(), rentalStatus, pageRequest)
+                .map(RentalResponse::new);
     }
 
 }

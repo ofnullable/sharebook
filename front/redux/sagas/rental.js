@@ -2,19 +2,17 @@ import { fork, put, takeLatest, call, all } from 'redux-saga/effects';
 
 import { BOOK_STATUS } from '@utils/consts';
 import { RENTAL } from '@redux/actionTypes';
-import { loadMyRentalInfoApi, loadRentalInfoByBookIdApi, rentalBookApi } from '@redux/api/rental';
+import { rentalBookApi, loadRentalListApi } from '@redux/api/rental';
 import {
-  loadMyRentalInfoSuccess,
-  loadMyRentalInfoFailure,
-  loadRentalInfoByBookIdSuccess,
-  loadRentalInfoByBookIdFailure,
   rentalBookSuccess,
   rentalBookFailure,
+  loadRentalListSuccess,
+  loadRentalListFailure,
 } from '@redux/actions/rentalActions';
 import { changeBookStatus } from '@redux/actions/bookActions';
 
 export default function*() {
-  yield all([fork(watchRentalBookRequest)]);
+  yield all([fork(watchRentalBookRequest), fork(watchLoadRentalListRequest)]);
 }
 
 function* watchRentalBookRequest() {
@@ -28,5 +26,19 @@ function* rentalBook({ id }) {
   } catch (e) {
     console.error(e);
     yield put(rentalBookFailure(e.response.data || e));
+  }
+}
+
+function* watchLoadRentalListRequest() {
+  yield takeLatest(RENTAL.LOAD_RENTAL_LIST_REQUEST, loadRentalList);
+}
+function* loadRentalList({ status, page, size }) {
+  try {
+    const response = yield call(loadRentalListApi, { status, page, size });
+    console.log(response.data);
+    yield put(loadRentalListSuccess(response.data));
+  } catch (e) {
+    console.error(e);
+    yield put(loadRentalListFailure(e.response.data || e));
   }
 }
