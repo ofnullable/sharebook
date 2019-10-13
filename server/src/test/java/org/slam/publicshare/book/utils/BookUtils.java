@@ -51,10 +51,6 @@ public class BookUtils {
         return buildPage(buildBookList(), 20);
     }
 
-    public static Page<Book> buildEmptyPageBook() {
-        return Page.empty();
-    }
-
     public static Page<Book> buildIrregularPageBook() {
         return buildPage(buildBookList(), 100);
     }

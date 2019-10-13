@@ -7,17 +7,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.slam.publicshare.common.dto.PageRequest;
 import org.slam.publicshare.config.WithAuthenticationPrincipal;
 import org.slam.publicshare.rental.domain.RentalStatus;
 import org.slam.publicshare.rental.exception.*;
 import org.slam.publicshare.rental.service.RentalFindService;
 import org.slam.publicshare.rental.service.RentalSaveService;
 import org.slam.publicshare.rental.service.RentalUpdateService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -53,48 +53,26 @@ public class RentalControllerTest extends WithAuthenticationPrincipal {
     }
 
     @Test
-    @DisplayName("특정 도서의 대여목록 조회")
-    public void find_rental_by_book_id() throws Exception {
-        given(rentalFindService.findAllByBookId(any(Long.class)))
-                .willReturn(buildRentalList());
-
-        mvc.perform(get("/book/1/rental"))
-                .andExpect(jsonPath("$.length()", is(3)))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 도서의 대여목록 조회")
-    public void find_rental_by_invalid_book_id() throws Exception {
-        given(rentalFindService.findAllByBookId(any(Long.class)))
-                .willReturn(new ArrayList<>());
-
-        mvc.perform(get("/book/1/rental"))
-                .andExpect(jsonPath("$.length()", is(0)))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     @DisplayName("현재 계정의 대여목록 조회")
     public void find_rental_by_account_id() throws Exception {
-        given(rentalFindService.findAllByAccountId(any(Long.class)))
-                .willReturn(buildRentalList());
+        given(rentalFindService.findAllByAccountIdAndCurrentStatus(any(Long.class), any(RentalStatus.class), any(PageRequest.class)))
+                .willReturn(buildPageRental(20));
 
-        mvc.perform(get("/account/rental"))
-                .andExpect(jsonPath("$.length()", is(3)))
+        mvc.perform(get("/account/rentals/ACCEPTED?page=1&size=20"))
+                .andExpect(jsonPath("$.totalElements", is(3)))
                 .andExpect(status().isOk());
     }
-
-    @Test
-    @DisplayName("존재하지 않는 계정의 대여목록 조회")
-    public void find_rental_by_invalid_account_id() throws Exception {
-        given(rentalFindService.findAllByAccountId(any(Long.class)))
-                .willReturn(new ArrayList<>());
-
-        mvc.perform(get("/account/rental"))
-                .andExpect(jsonPath("$.length()", is(0)))
-                .andExpect(status().isOk());
-    }
+//
+//    @Test
+//    @DisplayName("대여목록이 존재하지 않는 경우")
+//    public void find_rental_by_invalid_account_id() throws Exception {
+//        given(rentalFindService.findAllByAccountIdAndCurrentStatus(any(Long.class), any(RentalStatus.class), any(PageRequest.class)))
+//                .willReturn(Page.empty());
+//
+//        mvc.perform(get("/account/rentals/ACCEPTED?page=1&size=20"))
+//                .andExpect(jsonPath("$.totalElements", is(0)))
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     @DisplayName("대여신청")

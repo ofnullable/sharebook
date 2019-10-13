@@ -17,6 +17,7 @@ import org.slam.publicshare.book.service.BookFindService;
 import org.slam.publicshare.book.service.BookSaveService;
 import org.slam.publicshare.common.dto.PageRequest;
 import org.slam.publicshare.config.WithAuthenticationPrincipal;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -180,7 +181,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
     @DisplayName("존재하지 않는 유저가 등록한 도서 리스트 요청")
     public void find_book_by_invalid_owner() throws Exception {
         given(bookFindService.findAllByOwner(any(Long.class), any(PageRequest.class)))
-                .willReturn(buildEmptyPageBook());
+                .willReturn(Page.empty());
 
         mvc.perform(get("/account/11/books?page=1&size=10"))
                 .andExpect(status().isOk());

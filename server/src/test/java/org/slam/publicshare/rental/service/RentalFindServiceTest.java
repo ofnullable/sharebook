@@ -6,8 +6,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.slam.publicshare.rental.domain.Rental;
+import org.slam.publicshare.rental.domain.RentalStatus;
 import org.slam.publicshare.rental.exception.NoSuchRentalException;
 import org.slam.publicshare.rental.repository.RentalRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.slam.publicshare.common.utils.PageRequestUtils.buildPageRequest;
 import static org.slam.publicshare.rental.utils.RentalUtils.*;
 
 @ExtendWith(SpringExtension.class)
@@ -51,47 +55,25 @@ public class RentalFindServiceTest {
     }
 
     @Test
-    @DisplayName("특정 계정의 대여기록 조회")
+    @DisplayName("특정 상태의 대여기록 조회")
     public void find_by_account_id() {
-        given(rentalRepository.findAllByAccountId(any(Long.class)))
-                .willReturn(buildRentalList());
+        given(rentalRepository.findAllByAccountIdAndCurrentStatus(any(Long.class), any(RentalStatus.class), any(Pageable.class)))
+                .willReturn(buildPageRental(20));
 
-        var result = rentalFindService.findAllByAccountId(1L);
+        var result = rentalFindService.findAllByAccountIdAndCurrentStatus(1L, RentalStatus.ACCEPTED, buildPageRequest(20));
 
-        assertEquals(result.size(), 3);
+        assertEquals(result.getTotalElements(), 3);
     }
 
     @Test
     @DisplayName("존재하지 않는 계정의 대여기록 조회시 결과 0개")
     public void find_by_invalid_account_id() {
-        given(rentalRepository.findAllByAccountId(any(Long.class)))
-                .willReturn(new ArrayList<>());
+        given(rentalRepository.findAllByAccountIdAndCurrentStatus(any(Long.class), any(RentalStatus.class), any(Pageable.class)))
+                .willReturn(Page.empty());
 
-        var result = rentalFindService.findAllByAccountId(1L);
+        var result = rentalFindService.findAllByAccountIdAndCurrentStatus(1L, RentalStatus.ACCEPTED, buildPageRequest(20));
 
-        assertEquals(result.size(), 0);
-    }
-
-    @Test
-    @DisplayName("특정 도서의 대여 기록 조회")
-    public void find_by_book_id() {
-        given(rentalRepository.findAllByBookIdOrderByIdDesc(any(Long.class)))
-                .willReturn(buildRentalList());
-
-        var result = rentalFindService.findAllByBookId(1L);
-
-        assertEquals(result.size(), 3);
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 도서의 대여 기록 조회시 결과 0개")
-    public void find_by_invalid_book_id() {
-        given(rentalRepository.findAllByBookIdOrderByIdDesc(any(Long.class)))
-                .willReturn(new ArrayList<>());
-
-        var result = rentalFindService.findAllByBookId(1L);
-
-        assertEquals(result.size(), 0);
+        assertEquals(result.getTotalElements(), 0);
     }
 
 }

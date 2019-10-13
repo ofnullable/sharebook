@@ -28,26 +28,10 @@ public class RentalIntegrationTest {
     private ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    @DisplayName("특정 도서의 대여목록 조회")
-    public void get_rental_by_book_id() throws Exception {
-        var resultAction = mvc.perform(get("/book/1/rental"))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 도서의 대여목록 조회")
-    public void get_rental_by_invalid_book_id() throws Exception {
-        var resultAction = mvc.perform(get("/book/0/rental"))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
-
-    @Test
     @WithUserDetails("test1@asd.com")
     @DisplayName("로그인 후 현재 계정 대여기록 요청")
     public void find_rental_by_account_id_with_auth() throws Exception {
-        var resultAction = mvc.perform(get("/account/rental"))
+        var resultAction = mvc.perform(get("/account/rentals/REQUESTED?page=1&size=20"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -55,7 +39,7 @@ public class RentalIntegrationTest {
     @Test
     @DisplayName("로그인하지 않고 현재 계정 대여기록 요청")
     public void find_rental_by_account_id_with_no_auth() throws Exception {
-        var resultAction = mvc.perform(get("/account/rental"))
+        var resultAction = mvc.perform(get("/account/rentals/REQUESTED"))
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
     }
@@ -92,7 +76,7 @@ public class RentalIntegrationTest {
     @WithUserDetails("test1@asd.com")
     @DisplayName("REJECTED로 대여기록 업데이트")
     public void update_rental_to_rejected() throws Exception {
-        var resultAction = mvc.perform(put("/rental/3")
+        var resultAction = mvc.perform(put("/rental/4")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(RentalStatus.REJECTED)))
                 .andExpect(status().isOk())
@@ -103,7 +87,7 @@ public class RentalIntegrationTest {
     @WithUserDetails("test1@asd.com")
     @DisplayName("RETURNED로 대여기록 업데이트")
     public void update_rental_to_returned() throws Exception {
-        var resultAction = mvc.perform(put("/rental/1")
+        var resultAction = mvc.perform(put("/rental/2")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(mapper.writeValueAsString(RentalStatus.RETURNED)))
                 .andExpect(status().isOk())
