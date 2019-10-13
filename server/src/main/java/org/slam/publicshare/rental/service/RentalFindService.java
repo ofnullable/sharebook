@@ -16,7 +16,6 @@ public class RentalFindService {
 
     private final RentalRepository rentalRepository;
 
-    @Transactional
     public Page<Rental> findAllByAccountIdAndCurrentStatus(Long accountId, RentalStatus rentalStatus, PageRequest pageRequest) {
         return rentalRepository.findAllByAccountIdAndCurrentStatus(accountId, rentalStatus, pageRequest.of());
     }

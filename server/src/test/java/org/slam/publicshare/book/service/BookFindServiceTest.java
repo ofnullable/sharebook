@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.slam.publicshare.book.domain.Book;
 import org.slam.publicshare.book.exception.NoSuchBookException;
 import org.slam.publicshare.book.repository.BookRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -116,7 +117,7 @@ public class BookFindServiceTest {
     @DisplayName("존재하지 않는 유저가 등록한 도서 리스트 요청")
     public void find_book_by_invalid_author() {
         given(bookRepository.findAllByOwnerId(any(Long.class), any(Pageable.class)))
-                .willReturn(buildEmptyPageBook());
+                .willReturn(Page.empty());
 
         var result = bookFindService.findAllByOwner(11L, buildPageRequest(20));
 

@@ -36,6 +36,14 @@ const RentalPage = ({ status }) => {
             <span className={status === 'requested' ? 'active' : ''}>요청한도서</span>
           </a>
         </Link>
+        <Link
+          href={{ pathname: `/management/rentals`, query: { status: 'returned' } }}
+          as={`/settings/rentals/returned`}
+        >
+          <a>
+            <span className={status === 'returned' ? 'active' : ''}>대여기록</span>
+          </a>
+        </Link>
       </SubMenu>
     );
   };

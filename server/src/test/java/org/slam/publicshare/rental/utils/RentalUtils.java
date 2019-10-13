@@ -2,12 +2,14 @@ package org.slam.publicshare.rental.utils;
 
 import org.slam.publicshare.book.domain.Book;
 import org.slam.publicshare.rental.domain.Rental;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.slam.publicshare.book.utils.BookUtils.buildBook;
 import static org.slam.publicshare.book.utils.BookUtils.equalBook;
+import static org.slam.publicshare.common.utils.PageRequestUtils.buildPage;
 
 public class RentalUtils {
 
@@ -48,6 +50,10 @@ public class RentalUtils {
 
     public static List<Rental> buildRentalList() {
         return List.of(buildRental(1L), buildRental(2L), buildRental(3L));
+    }
+
+    public static Page<Rental> buildPageRental(int size) {
+        return buildPage(buildRentalList(), size);
     }
 
     public static void equalRental(Rental result, Rental target) {

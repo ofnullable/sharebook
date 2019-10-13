@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RentalRepository extends JpaRepository<Rental, Long> {
 
-    @EntityGraph(attributePaths = {"book", "book.category", "book.owner", "histories"})
+    @EntityGraph(attributePaths = {"book", "book.category", "book.owner"})
     Page<Rental> findAllByAccountIdAndCurrentStatus(Long accountId, RentalStatus rentalStatus, Pageable pageable);
 
 }

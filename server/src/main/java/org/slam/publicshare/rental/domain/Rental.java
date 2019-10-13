@@ -34,7 +34,7 @@ public class Rental {
 
     private LocalDateTime endedAt;
 
-    @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RentalHistory> histories = new ArrayList<>();
 
     @Builder
