@@ -72,8 +72,6 @@ export const loadMyBookListByRentalStatusFailure = error => ({
   error,
 });
 
-export const loadRentBookList = (status, page = 1, size = 20) => {};
-
 export const changeBookStatus = (id, status) => ({
   type: BOOK.CHANGE_BOOK_STATUS,
   id,

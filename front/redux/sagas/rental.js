@@ -22,7 +22,7 @@ function* rentalBook({ id }) {
   try {
     const response = yield call(rentalBookApi, id);
     yield put(rentalBookSuccess(response.data));
-    yield put(changeBookStatus(response.data.bookId, BOOK_STATUS.UNAVAILABLE));
+    yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.UNAVAILABLE));
   } catch (e) {
     console.error(e);
     yield put(rentalBookFailure(e.response.data || e));
@@ -35,7 +35,6 @@ function* watchLoadRentalListRequest() {
 function* loadRentalList({ status, page, size }) {
   try {
     const response = yield call(loadRentalListApi, { status, page, size });
-    console.log(response.data);
     yield put(loadRentalListSuccess(response.data));
   } catch (e) {
     console.error(e);
