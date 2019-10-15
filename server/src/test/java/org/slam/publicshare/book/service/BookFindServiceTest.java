@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.slam.publicshare.book.domain.Book;
 import org.slam.publicshare.book.exception.NoSuchBookException;
 import org.slam.publicshare.book.repository.BookRepository;
+import org.slam.publicshare.rental.domain.RentalStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -64,6 +65,7 @@ public class BookFindServiceTest {
 
         var result = bookFindService.findAll(null, buildPageRequest(20));
 
+        assertEquals(result.getTotalElements(), 3);
         assertEquals(result.getSize(), 20);
     }
 
@@ -75,6 +77,7 @@ public class BookFindServiceTest {
 
         var result = bookFindService.findAll("test title", buildPageRequest(20));
 
+        assertEquals(result.getTotalElements(), 3);
         assertEquals(result.getSize(), 20);
     }
 
@@ -86,6 +89,7 @@ public class BookFindServiceTest {
 
         var result = bookFindService.findAll("test title", buildPageRequest(100));
 
+        assertEquals(result.getTotalElements(), 3);
         assertEquals(result.getSize(), 20);
     }
 
@@ -99,6 +103,7 @@ public class BookFindServiceTest {
 
         var result = bookFindService.findAllByCategory("운영체제", buildPageRequest(20));
 
+        assertEquals(result.getTotalElements(), 3);
         assertEquals(result.getSize(), 20);
     }
 
@@ -110,6 +115,7 @@ public class BookFindServiceTest {
 
         var result = bookFindService.findAllByOwner(1L, buildPageRequest(20));
 
+        assertEquals(result.getTotalElements(), 3);
         assertEquals(result.getSize(), 20);
     }
 
@@ -122,6 +128,18 @@ public class BookFindServiceTest {
         var result = bookFindService.findAllByOwner(11L, buildPageRequest(20));
 
         assertEquals(result.getSize(), 0);
+    }
+
+    @Test
+    @DisplayName("특정 상태의 내 도서 요청")
+    public void find_book_by_rental_status() {
+        given(bookRepository.findAllByOwnerIdAndRentalsCurrentStatus(any(Long.class), any(RentalStatus.class), any(Pageable.class)))
+                .willReturn(buildNormalPageBook());
+
+        var result = bookFindService.findAllMyBookByRentalStatus(1L, RentalStatus.REQUESTED, buildPageRequest(20));
+
+        assertEquals(result.getTotalElements(), 3);
+        assertEquals(result.getSize(), 20);
     }
 
 }
