@@ -22,23 +22,24 @@ public class RestAuthSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication authentication) throws IOException {
         log.debug("authentication success: {}", authentication.getName());
-        clearSessionAttribute(req); // clear authentication fail attribute
 
         final var auth = authToString(authentication);
 
+        var cookie = makeSameSiteCookie();
+
         res.setStatus(res.SC_OK);
-        res.setHeader("Set-Cookie","HttpOnly; Same-Site=None");
+        res.addCookie(cookie);
         res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         res.getWriter().write(auth);
         res.flushBuffer();
     }
 
-    private void clearSessionAttribute(HttpServletRequest req) {
-        HttpSession session = req.getSession(false);
-        if (session == null) {
-            return;
-        }
-        session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+    private Cookie makeSameSiteCookie() {
+        var cookie = new Cookie("SameSite", "Lax");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+//        cookie.setDomain(".front.com");
+        return cookie;
     }
 
 }
