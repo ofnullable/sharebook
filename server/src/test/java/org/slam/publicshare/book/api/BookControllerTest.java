@@ -19,17 +19,14 @@ import org.slam.publicshare.common.dto.PageRequest;
 import org.slam.publicshare.config.WithAuthenticationPrincipal;
 import org.slam.publicshare.rental.domain.RentalStatus;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.slam.publicshare.book.utils.BookUtils.*;
-import static org.slam.publicshare.common.utils.PageRequestUtils.buildPageRequest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

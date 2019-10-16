@@ -14,7 +14,6 @@ import org.slam.publicshare.rental.exception.*;
 import org.slam.publicshare.rental.service.RentalFindService;
 import org.slam.publicshare.rental.service.RentalSaveService;
 import org.slam.publicshare.rental.service.RentalUpdateService;
-import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;

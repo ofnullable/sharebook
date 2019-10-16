@@ -4,13 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import static org.slam.publicshare.config.security.handler.HandlerUtils.authToString;
@@ -23,8 +21,7 @@ public class RestAuthSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication authentication) throws IOException {
         log.debug("authentication success: {}", authentication.getName());
 
-        final var auth = authToString(authentication);
-
+        var auth = authToString(authentication);
         var cookie = makeSameSiteCookie();
 
         res.setStatus(res.SC_OK);
@@ -38,7 +35,6 @@ public class RestAuthSuccessHandler implements AuthenticationSuccessHandler {
         var cookie = new Cookie("SameSite", "Lax");
         cookie.setHttpOnly(true);
         cookie.setSecure(false);
-//        cookie.setDomain(".front.com");
         return cookie;
     }
 
