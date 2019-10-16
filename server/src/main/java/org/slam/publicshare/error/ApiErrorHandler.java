@@ -3,7 +3,6 @@ package org.slam.publicshare.error;
 import org.slam.publicshare.account.exception.EmailDuplicationException;
 import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.book.exception.NoSuchBookException;
-import org.slam.publicshare.book.exception.NoSuchBookStatusException;
 import org.slam.publicshare.book.exception.NoSuchCategoryException;
 import org.slam.publicshare.rental.exception.*;
 import org.slf4j.Logger;
@@ -61,13 +60,6 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     protected ApiError handleNoSuchCategoryException(NoSuchCategoryException e, WebRequest request) {
         log.debug("No Such Category. name: {}", e.getId());
         return bindError(ErrorCode.CATEGORY_NOT_FOUND, request);
-    }
-
-    @ExceptionHandler(NoSuchBookStatusException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected ApiError handleNoSuchBookStatusException(NoSuchBookStatusException e, WebRequest request) {
-        log.debug("No Such Book Status. code: {}", e.getCode());
-        return bindError(ErrorCode.INVALID_BOOK_STATUS, request);
     }
 
     @ExceptionHandler(NoSuchRentalException.class)
