@@ -28,7 +28,7 @@ const JoinPage = () => {
 
   useEffect(() => {
     if (data.email) {
-      Router.push('/signin');
+      Router.replace('/signin');
     }
   }, [data]);
 
