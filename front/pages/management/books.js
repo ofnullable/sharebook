@@ -5,7 +5,6 @@ import {
   loadMyBookListByRentalStatusRequest,
 } from '@redux/actions/bookActions';
 import BooksPage from '@components/Management/BooksPage';
-import { RENTAL_STATUS } from '@utils/consts';
 
 const Books = ({ status }) => {
   return <BooksPage status={status} />;

@@ -17,7 +17,11 @@ const Nav = () => {
     if (isSignedIn) {
       return (
         <HeaderMenu _float='right'>
-          <Link href='/settings?menu=profile' as='/settings/profile' prefetch={false}>
+          <Link
+            href={{ pathname: '/settings', query: { menu: 'profile' } }}
+            as='/settings/profile'
+            prefetch={false}
+          >
             <a>마이페이지</a>
           </Link>
         </HeaderMenu>
@@ -27,11 +31,11 @@ const Nav = () => {
     return (
       <HeaderMenu _float='right'>
         <HeaderMenuGroup>
-          <Link href='/signin' prefetch={false}>
+          <Link href={{ pathname: '/signin' }} prefetch={false}>
             <a>로그인</a>
           </Link>
           <span>|</span>
-          <Link href='/join' prefetch={false}>
+          <Link href={{ pathname: '/join' }} prefetch={false}>
             <a>회원가입</a>
           </Link>
         </HeaderMenuGroup>
