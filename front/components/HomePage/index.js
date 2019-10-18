@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from './SearchBar';
 import CategoryButton from './CategoryButton';
 import BookCard from '@components/BookCard';
+import DescriptionBody from '@components/BookCard/DescriptionBody';
 import { loadBookListRequest, loadBookListByCategoryRequest } from '@redux/actions/bookActions';
 
 import { ConditionWrapper } from './index.styled';
@@ -67,7 +68,11 @@ const HomePage = ({ category }) => {
 
       <CardWrapper>
         {data.length ? (
-          data.map(d => <BookCard key={d.id} data={d} />)
+          data.map(book => (
+            <BookCard key={book.id} data={book}>
+              <DescriptionBody data={book} />
+            </BookCard>
+          ))
         ) : (
           <CenterDiv>
             <p>도서가 존재하지 않습니다.</p>

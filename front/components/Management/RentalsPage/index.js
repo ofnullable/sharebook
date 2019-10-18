@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
 import BookCard from '@components/BookCard';
+import DescriptionBody from '@components/BookCard/DescriptionBody';
 import LeftMenu from '@components/Management/LeftMenu';
 
 import { WithLeftMenu, Title, SubMenu } from '@components/Management/styled';
@@ -70,7 +71,11 @@ const RentalPage = ({ status }) => {
         <CardWrapper>
           {!isLoading &&
             (data.length ? (
-              data.map(d => <BookCard key={d.id} data={d.book} />)
+              data.map(rental => (
+                <BookCard key={rental.id} data={rental.book}>
+                  <DescriptionBody data={rental.book} />
+                </BookCard>
+              ))
             ) : (
               <CenterDiv>
                 <p>도서가 존재하지 않습니다.</p>

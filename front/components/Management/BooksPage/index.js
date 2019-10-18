@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 import BookCard from '@components/BookCard';
+import DescriptionBody from '@components/BookCard/DescriptionBody';
 import LeftMenu from '@components/Management/LeftMenu';
 
 import { WithLeftMenu, Title, SubMenu } from '@components/Management/styled';
@@ -77,7 +78,11 @@ const BooksPage = ({ status }) => {
         <CardWrapper>
           {!isLoading &&
             (data.length ? (
-              data.map(d => <BookCard key={d.id} data={d} />)
+              data.map(book => (
+                <BookCard key={book.id} data={book}>
+                  <DescriptionBody data={book} />
+                </BookCard>
+              ))
             ) : (
               <CenterDiv>
                 <p>도서가 존재하지 않습니다.</p>
