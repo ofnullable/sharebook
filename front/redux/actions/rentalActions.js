@@ -13,6 +13,19 @@ export const rentalBookFailure = error => ({
   error,
 });
 
+export const returnBookRequest = id => ({
+  type: RENTAL.RETURN_BOOK_REQUEST,
+  id,
+});
+export const returnBookSuccess = data => ({
+  type: RENTAL.RETURN_BOOK_SUCCESS,
+  data,
+});
+export const returnBookFailure = error => ({
+  type: RENTAL.RETURN_BOOK_FAILURE,
+  error,
+});
+
 export const loadRentalListRequest = (status, page = 1, size = 20) => ({
   type: RENTAL.LOAD_RENTAL_LIST_REQUEST,
   status,

@@ -13,6 +13,10 @@ const RentalButton = ({ detail, wasRent }) => {
     dispatch(rentalBookRequest(detail.id));
   };
 
+  const handleReturn = () => {
+    // dispatch();
+  };
+
   if (detail.status === BOOK_STATUS.AVAILABLE) {
     return (
       <Button _color='primary' onClick={handleRent}>
@@ -22,8 +26,8 @@ const RentalButton = ({ detail, wasRent }) => {
   }
 
   return wasRent ? (
-    <Button _color='gray' disabled>
-      대여중
+    <Button _color='red' onClick={handleReturn}>
+      반납하기
     </Button>
   ) : (
     <Button _color='gray' disabled>
