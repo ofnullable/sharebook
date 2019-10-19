@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { Card, CardBody } from './index.styled';
 
-const BookCard = ({ data, children }) => {
+const BookCard = ({ data }) => {
   return (
     <Link
       href={{ pathname: '/book', query: { id: data.id } }}
@@ -13,7 +13,11 @@ const BookCard = ({ data, children }) => {
       <a>
         <Card>
           <img src={`${data.imageUrl}`} />
-          {children}
+          <CardBody>
+            <h2 className='card-title'>{data.title}</h2>
+            <p className='description'>{`${data.category} | ${data.author} | ${data.publisher}`}</p>
+            <span>{data.createdAt}</span>
+          </CardBody>
         </Card>
       </a>
     </Link>

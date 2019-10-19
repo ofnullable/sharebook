@@ -6,6 +6,8 @@ import { rentalBookApi, loadRentalListApi } from '@redux/api/rental';
 import {
   rentalBookSuccess,
   rentalBookFailure,
+  returnBookSuccess,
+  returnBookFailure,
   loadRentalListSuccess,
   loadRentalListFailure,
 } from '@redux/actions/rentalActions';
@@ -26,6 +28,20 @@ function* rentalBook({ id }) {
   } catch (e) {
     console.error(e);
     yield put(rentalBookFailure(e.response.data || e));
+  }
+}
+
+function* watchReturnBookRequest() {
+  yield takeLatest(RENTAL.RETURN_BOOK_REQUEST, returnBook);
+}
+function* returnBook({ id }) {
+  try {
+    const response = yield call(returnBookApi, id);
+    yield put(returnBookSuccess(response.data));
+    yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.AVAILABLE));
+  } catch (e) {
+    console.error(e);
+    yield put(returnBookFailure(e.response.data || e));
   }
 }
 

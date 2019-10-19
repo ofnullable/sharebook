@@ -165,7 +165,7 @@ export const COLOR_SCHEME = {
   gray: colors.gray[4],
   darkGray: colors.gray[6],
   black: colors.gray[9],
-  red: colors.red[6],
+  red: colors.red[5],
   primary: colors.green[4],
   secondery: colors.yellow[6],
 };
