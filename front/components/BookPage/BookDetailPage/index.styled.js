@@ -79,7 +79,7 @@ export const BookInfoWrapper = styled.div`
     ${device.tablets`
       font-size: 2.5em;
     `};
-    margin: 0 0 0.5em;
+    margin: 0.5em 0;
   }
   & p {
     margin: 0 0 0.5em;
