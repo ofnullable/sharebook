@@ -19,12 +19,12 @@ public enum ErrorCode {
 
     CATEGORY_NOT_FOUND(404, "No such category"),
 
-    RENTAL_NOT_FOUND(404, "No such rental"),
-    RENTAL_STATUS_NOT_FOUND(404, "No such rental status"),
-    RENTAL_ALREADY_COMPLETION(400, "Rental already completion"),
-    RENTAL_NOT_REQUESTED(400, "Rental did not requested"),
-    RENTAL_STATUS_EQUALS(400, "Can not change with same status"),
-    INVALID_RENTAL_STATUS(400, "Can not change invalid status"),
+    LENDING_NOT_FOUND(404, "No such lending"),
+    LENDING_STATUS_NOT_FOUND(404, "No such lending status"),
+    LENDING_ALREADY_COMPLETION(400, "Lending already completion"),
+    LENDING_NOT_REQUESTED(400, "Lending did not requested"),
+    LENDING_STATUS_EQUALS(400, "Can not change with same status"),
+    INVALID_LENDING_STATUS(400, "Can not change invalid status"),
 
     INVALID_INPUT_VALUE(400, "Invalid value"),
     KEY_DUPLICATION(409, "Key duplication");

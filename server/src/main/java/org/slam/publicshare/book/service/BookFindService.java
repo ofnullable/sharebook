@@ -5,7 +5,7 @@ import org.slam.publicshare.book.domain.Book;
 import org.slam.publicshare.book.exception.NoSuchBookException;
 import org.slam.publicshare.book.repository.BookRepository;
 import org.slam.publicshare.common.dto.PageRequest;
-import org.slam.publicshare.rental.domain.RentalStatus;
+import org.slam.publicshare.lending.domain.LendingStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -36,8 +36,8 @@ public class BookFindService {
         return bookRepository.findAllByOwnerId(accountId, pageRequest.of());
     }
 
-    public Page<Book> findAllMyBookByRentalStatus(Long accountId, RentalStatus status, PageRequest pageRequest) {
-        return bookRepository.findAllByOwnerIdAndRentalsCurrentStatus(accountId, status, pageRequest.of());
+    public Page<Book> findAllMyBookByLendingStatus(Long accountId, LendingStatus status, PageRequest pageRequest) {
+        return bookRepository.findAllByOwnerIdAndLendingsCurrentStatus(accountId, status, pageRequest.of());
     }
 
 }

@@ -1,7 +1,7 @@
 package org.slam.publicshare.book.repository;
 
 import org.slam.publicshare.book.domain.Book;
-import org.slam.publicshare.rental.domain.RentalStatus;
+import org.slam.publicshare.lending.domain.LendingStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -23,6 +23,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findAllByOwnerId(Long ownerId, Pageable pageable);
 
     @EntityGraph(attributePaths = {"category", "owner"})
-    Page<Book> findAllByOwnerIdAndRentalsCurrentStatus(@Param("id") Long accountId, @Param("status") RentalStatus status, Pageable pageable);
+    Page<Book> findAllByOwnerIdAndLendingsCurrentStatus(@Param("id") Long accountId, @Param("status") LendingStatus status, Pageable pageable);
 
 }
