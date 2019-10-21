@@ -7,7 +7,7 @@ import org.slam.publicshare.book.dto.book.SaveBookRequest;
 import org.slam.publicshare.book.service.BookFindService;
 import org.slam.publicshare.book.service.BookSaveService;
 import org.slam.publicshare.common.dto.PageRequest;
-import org.slam.publicshare.rental.domain.RentalStatus;
+import org.slam.publicshare.lending.domain.LendingStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
@@ -65,12 +65,12 @@ public class BookController {
                 .map(BookResponse::new);
     }
 
-    @GetMapping("/account/books/rental/{status}")
-    public Page<BookResponse> findAllMyBookByRentalStatus(
+    @GetMapping("/account/books/lending/{status}")
+    public Page<BookResponse> findAllMyBookByLendingStatus(
             @AuthenticationPrincipal(expression = "account") Account account,
-            @PathVariable RentalStatus status,
+            @PathVariable LendingStatus status,
             @Valid PageRequest pageRequest) {
-        return bookFindService.findAllMyBookByRentalStatus(account.getId(), status, pageRequest)
+        return bookFindService.findAllMyBookByLendingStatus(account.getId(), status, pageRequest)
                 .map(BookResponse::new);
     }
 

@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.slam.publicshare.book.domain.Book;
 import org.slam.publicshare.book.exception.NoSuchBookException;
 import org.slam.publicshare.book.repository.BookRepository;
-import org.slam.publicshare.rental.domain.RentalStatus;
+import org.slam.publicshare.lending.domain.LendingStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -132,11 +132,11 @@ public class BookFindServiceTest {
 
     @Test
     @DisplayName("특정 상태의 내 도서 요청")
-    public void find_book_by_rental_status() {
-        given(bookRepository.findAllByOwnerIdAndRentalsCurrentStatus(any(Long.class), any(RentalStatus.class), any(Pageable.class)))
+    public void find_book_by_Lending_status() {
+        given(bookRepository.findAllByOwnerIdAndLendingsCurrentStatus(any(Long.class), any(LendingStatus.class), any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
-        var result = bookFindService.findAllMyBookByRentalStatus(1L, RentalStatus.REQUESTED, buildPageRequest(20));
+        var result = bookFindService.findAllMyBookByLendingStatus(1L, LendingStatus.REQUESTED, buildPageRequest(20));
 
         assertEquals(result.getTotalElements(), 3);
         assertEquals(result.getSize(), 20);

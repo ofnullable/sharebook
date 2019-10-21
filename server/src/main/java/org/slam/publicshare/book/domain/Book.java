@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.slam.publicshare.account.domain.Account;
 import org.slam.publicshare.book.domain.converter.BookStatusConverter;
 import org.slam.publicshare.common.domain.Auditable;
-import org.slam.publicshare.rental.domain.Rental;
+import org.slam.publicshare.lending.domain.Lending;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class Book extends Auditable {
     private Long currentRenterId;
 
     @OneToMany(mappedBy = "book")
-    private List<Rental> rentals = new ArrayList<>();
+    private List<Lending> lendings = new ArrayList<>();
 
     @Builder
     public Book(String title, String author, String publisher, Category category, String description, Account owner, String imageUrl) {
@@ -65,8 +65,8 @@ public class Book extends Auditable {
         this.category = category;
     }
 
-    public void addRental(Rental rental) {
-        this.rentals.add(rental);
+    public void addLending(Lending lending) {
+        this.lendings.add(lending);
     }
 
     public void toUnavailable(Long renterId) {

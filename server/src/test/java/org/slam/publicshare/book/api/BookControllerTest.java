@@ -17,7 +17,7 @@ import org.slam.publicshare.book.service.BookFindService;
 import org.slam.publicshare.book.service.BookSaveService;
 import org.slam.publicshare.common.dto.PageRequest;
 import org.slam.publicshare.config.WithAuthenticationPrincipal;
-import org.slam.publicshare.rental.domain.RentalStatus;
+import org.slam.publicshare.lending.domain.LendingStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -200,11 +200,11 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("특정 상태의 내 도서 요청")
-    public void find_book_by_rental_status() throws Exception {
-        given(bookFindService.findAllMyBookByRentalStatus(any(Long.class), any(RentalStatus.class), any(PageRequest.class)))
+    public void find_book_by_lending_status() throws Exception {
+        given(bookFindService.findAllMyBookByLendingStatus(any(Long.class), any(LendingStatus.class), any(PageRequest.class)))
                 .willReturn(buildNormalPageBook());
 
-        mvc.perform(get("/account/books/rental/REQUESTED?page=1&size=20"))
+        mvc.perform(get("/account/books/lending/REQUESTED?page=1&size=20"))
                 .andExpect(status().isOk());
     }
 

@@ -4,7 +4,7 @@ import org.slam.publicshare.account.exception.EmailDuplicationException;
 import org.slam.publicshare.account.exception.NoSuchAccountException;
 import org.slam.publicshare.book.exception.NoSuchBookException;
 import org.slam.publicshare.book.exception.NoSuchCategoryException;
-import org.slam.publicshare.rental.exception.*;
+import org.slam.publicshare.lending.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -62,39 +62,39 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
         return bindError(ErrorCode.CATEGORY_NOT_FOUND, request);
     }
 
-    @ExceptionHandler(NoSuchRentalException.class)
+    @ExceptionHandler(NoSuchLendingException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected ApiError handleNoSuchRentalException(NoSuchRentalException e, WebRequest request) {
-        log.debug("No Such Rental. id: {}", e.getRentalId());
-        return bindError(ErrorCode.RENTAL_NOT_FOUND, request);
+    protected ApiError handleNoSuchLendingException(NoSuchLendingException e, WebRequest request) {
+        log.debug("No Such Lending. id: {}", e.getLendingId());
+        return bindError(ErrorCode.LENDING_NOT_FOUND, request);
     }
 
-    @ExceptionHandler(RentalAlreadyCompletionException.class)
+    @ExceptionHandler(LendingAlreadyCompletionException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ApiError handleRentalAlreadyCompletionException(RentalAlreadyCompletionException e, WebRequest request) {
-        log.debug("Rental Already Completion.");
-        return bindError(ErrorCode.RENTAL_ALREADY_COMPLETION, request);
+    protected ApiError handleLendingAlreadyCompletionException(LendingAlreadyCompletionException e, WebRequest request) {
+        log.debug("Lending Already Completion.");
+        return bindError(ErrorCode.LENDING_ALREADY_COMPLETION, request);
     }
 
-    @ExceptionHandler(RentalNotRequestedException.class)
+    @ExceptionHandler(LendingNotRequestedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ApiError handleRentalNotRequestedException(RentalNotRequestedException e, WebRequest request) {
-        log.debug("This Rental Is Not Requested. id: {}", e.getRentalId());
-        return bindError(ErrorCode.RENTAL_NOT_REQUESTED, request);
+    protected ApiError handleLendingNotRequestedException(LendingNotRequestedException e, WebRequest request) {
+        log.debug("This Lending Is Not Requested. id: {}", e.getLendingId());
+        return bindError(ErrorCode.LENDING_NOT_REQUESTED, request);
     }
 
-    @ExceptionHandler(RentalStatusEqualsException.class)
+    @ExceptionHandler(LendingStatusEqualsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ApiError handleRentalStatusEqualsException(RentalStatusEqualsException e, WebRequest request) {
-        log.debug("Rental Status Can Not Equals. status: {}", e.getStatus());
-        return bindError(ErrorCode.RENTAL_STATUS_EQUALS, request);
+    protected ApiError handleLendingStatusEqualsException(LendingStatusEqualsException e, WebRequest request) {
+        log.debug("Lending Status Can Not Equals. status: {}", e.getStatus());
+        return bindError(ErrorCode.LENDING_STATUS_EQUALS, request);
     }
 
-    @ExceptionHandler(RentalStatusInvalidException.class)
+    @ExceptionHandler(LendingStatusInvalidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ApiError handleRentalStatusInvalidException(RentalStatusInvalidException e, WebRequest request) {
-        log.debug("Rental Status Invalid. status: {}", e.getStatus());
-        return bindErrorWithFields(ErrorCode.INVALID_RENTAL_STATUS, e.getStatus(), request);
+    protected ApiError handleLendingStatusInvalidException(LendingStatusInvalidException e, WebRequest request) {
+        log.debug("Lending Status Invalid. status: {}", e.getStatus());
+        return bindErrorWithFields(ErrorCode.INVALID_LENDING_STATUS, e.getStatus(), request);
     }
 
     @Override
