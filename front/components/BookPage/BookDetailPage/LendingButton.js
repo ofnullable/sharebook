@@ -3,11 +3,11 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { BOOK_STATUS } from '@utils/consts';
-import { rentalBookRequest } from '@redux/actions/rentalActions';
+import { borrowBookRequest } from '@redux/actions/lendingActions';
 
 import { Button } from '@styles/common';
 
-const RentalButton = ({ detail }) => {
+const LendingButton = ({ detail }) => {
   const user = useSelector(state => state.user.user.data);
   const dispatch = useDispatch();
 
@@ -33,7 +33,7 @@ const RentalButton = ({ detail }) => {
   }
 
   const handleRent = () => {
-    dispatch(rentalBookRequest(detail.id));
+    dispatch(borrowBookRequest(detail.id));
   };
 
   // 현재 도서가 대여 가능한 도서인 경우
@@ -48,9 +48,9 @@ const RentalButton = ({ detail }) => {
   // 현재 대여 (또는 대여 요청) 중인 회원이 현재 로그인한 회원인 경우
   if (book.currentRenterId === user.id) {
     /**
-     * 1. if rental.status === REQUESTED
+     * 1. if lending status === REQUESTED
      *   CANCEL button
-     * 2. if rental.status === ACCEPTED
+     * 2. if lending status === ACCEPTED
      *   RETURN button
      */
   }
@@ -63,4 +63,4 @@ const RentalButton = ({ detail }) => {
   );
 };
 
-export default RentalButton;
+export default LendingButton;

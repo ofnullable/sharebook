@@ -23,8 +23,8 @@ export const loadMyBookListApi = ({ page, size }) => {
   return axios.get(`/account/0/books?page=${page}&size=${size}`, { withCredentials: true });
 };
 
-export const loadMyBookListByRentalStatusApi = ({ status, page, size }) => {
-  return axios.get(`/account/books/rental/${status}?page=${page}&size=${size}`, {
+export const loadMyBookListByLendingStatusApi = ({ status, page, size }) => {
+  return axios.get(`/account/books/lending/${status}?page=${page}&size=${size}`, {
     withCredentials: true,
   });
 };

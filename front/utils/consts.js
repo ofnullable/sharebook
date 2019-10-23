@@ -5,7 +5,7 @@ export const BOOK_STATUS = {
   UNAVAILABLE: 'UNAVAILABLE',
 };
 
-export const RENTAL_STATUS = {
+export const LENDING_STATUS = {
   REQUESTED: 'REQUESTED',
   ACCEPTED: 'ACCEPTED',
   REJECTED: 'REJECTED',

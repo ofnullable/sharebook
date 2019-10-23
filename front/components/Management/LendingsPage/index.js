@@ -14,31 +14,31 @@ import {
   LoadingIconWrapper,
 } from '@styles/common';
 
-const RentalPage = ({ status }) => {
-  const { isLoading, data } = useSelector(state => state.rental.myRentals);
+const LendingsPage = ({ status }) => {
+  const { isLoading, data } = useSelector(state => state.lending.myLendings);
 
   const renderSubMenu = () => {
     return (
       <SubMenu>
         <Link
-          href={{ pathname: `/management/rentals`, query: { status: 'accepted' } }}
-          as={`/settings/rentals/accepted`}
+          href={{ pathname: `/management/lendings`, query: { status: 'accepted' } }}
+          as={`/settings/lendings/accepted`}
         >
           <a>
             <span className={status === 'accepted' ? 'active' : ''}>대여중도서</span>
           </a>
         </Link>
         <Link
-          href={{ pathname: `/management/rentals`, query: { status: 'requested' } }}
-          as={`/settings/rentals/requested`}
+          href={{ pathname: `/management/lendings`, query: { status: 'requested' } }}
+          as={`/settings/lendings/requested`}
         >
           <a>
             <span className={status === 'requested' ? 'active' : ''}>요청한도서</span>
           </a>
         </Link>
         <Link
-          href={{ pathname: `/management/rentals`, query: { status: 'returned' } }}
-          as={`/settings/rentals/returned`}
+          href={{ pathname: `/management/lendings`, query: { status: 'returned' } }}
+          as={`/settings/lendings/returned`}
         >
           <a>
             <span className={status === 'returned' ? 'active' : ''}>대여기록</span>
@@ -50,7 +50,7 @@ const RentalPage = ({ status }) => {
 
   return (
     <CenterDiv>
-      <LeftMenu menu={'rentals'} />
+      <LeftMenu menu={'lendings'} />
 
       <WithLeftMenu>
         <Title>대여관리</Title>
@@ -70,7 +70,7 @@ const RentalPage = ({ status }) => {
         <CardWrapper>
           {!isLoading &&
             (data.length ? (
-              data.map(rental => <BookCard key={rental.id} data={rental.book} />)
+              data.map(lending => <BookCard key={lending.id} data={lending.book} />)
             ) : (
               <CenterDiv>
                 <p>도서가 존재하지 않습니다.</p>
@@ -82,4 +82,4 @@ const RentalPage = ({ status }) => {
   );
 };
 
-export default RentalPage;
+export default LendingsPage;

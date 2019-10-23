@@ -20,11 +20,11 @@ const menus = {
     pathname: '/management/books',
     query: { status: '' },
   },
-  rentals: {
+  lendings: {
     name: '대여관리',
     icon: 'list_alt',
-    as: '/settings/rentals/accepted',
-    pathname: '/management/rentals',
+    as: '/settings/lendings/accepted',
+    pathname: '/management/lendings',
     query: { status: 'accepted' },
   },
 };

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { SubMenu } from './index.styled';
 
-const RentalList = () => {
+const LendingList = () => {
   return (
     <>
       <SubMenu>
@@ -14,4 +14,4 @@ const RentalList = () => {
   );
 };
 
-export default RentalList;
+export default LendingList;

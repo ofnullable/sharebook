@@ -57,18 +57,18 @@ export const loadMyBookListFailure = error => ({
   error,
 });
 
-export const loadMyBookListByRentalStatusRequest = (status, page = 1, size = 20) => ({
-  type: BOOK.LOAD_MY_BOOK_LIST_BY_RENTAL_STATUS_REQUEST,
+export const loadMyBookListByLendingStatusRequest = (status, page = 1, size = 20) => ({
+  type: BOOK.LOAD_MY_BOOK_LIST_BY_LENDING_STATUS_REQUEST,
   status,
   page,
   size,
 });
-export const loadMyBookListByRentalStatusSuccess = data => ({
-  type: BOOK.LOAD_MY_BOOK_LIST_BY_RENTAL_STATUS_SUCCESS,
+export const loadMyBookListByLendingStatusSuccess = data => ({
+  type: BOOK.LOAD_MY_BOOK_LIST_BY_LENDING_STATUS_SUCCESS,
   data,
 });
-export const loadMyBookListByRentalStatusFailure = error => ({
-  type: BOOK.LOAD_MY_BOOK_LIST_BY_RENTAL_STATUS_FAILURE,
+export const loadMyBookListByLendingStatusFailure = error => ({
+  type: BOOK.LOAD_MY_BOOK_LIST_BY_LENDING_STATUS_FAILURE,
   error,
 });
 

@@ -1,18 +1,18 @@
 import React from 'react';
 
-import RentalsPage from '@components/Management/RentalsPage';
-import { loadRentalListRequest } from '@redux/actions/rentalActions';
+import LendingsPage from '@components/Management/LendingsPage';
+import { loadLendingListRequest } from '@redux/actions/lendingActions';
 
-const Rentals = ({ status }) => {
-  return <RentalsPage status={status} />;
+const Lendings = ({ status }) => {
+  return <LendingsPage status={status} />;
 };
 
-Rentals.getInitialProps = async ({ query, store }) => {
+Lendings.getInitialProps = async ({ query, store }) => {
   const status = query.status;
 
-  store.dispatch(loadRentalListRequest(status.toUpperCase()));
+  store.dispatch(loadLendingListRequest(status.toUpperCase()));
 
   return { status };
 };
 
-export default Rentals;
+export default Lendings;
