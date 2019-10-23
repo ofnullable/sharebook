@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import Profile from './Profile';
 import Books from './Books';
-import Rentals from './Rentals';
+import Lendings from './Lendings';
 
 import { LeftMenu, MenuItem, WithLeftMenu, Title } from './index.styled';
 import { CenterDiv } from '@styles/common';
@@ -25,15 +25,15 @@ const menus = {
     as: '/settings/books/',
     pathname: '/management/books',
     query: { status: '' },
-    component: <Profile />,
+    component: <Books />,
   },
-  rentals: {
+  lendings: {
     name: '대여관리',
     icon: 'list_alt',
-    as: '/settings/rentals/accepted',
-    pathname: '/management/rentals',
+    as: '/settings/Lendings/accepted',
+    pathname: '/management/Lendings',
     query: { status: 'accepted' },
-    component: <Rentals />,
+    component: <Lendings />,
   },
 };
 

@@ -6,7 +6,7 @@ import {
   loadBookListByCategoryApi,
   loadBookApi,
   loadMyBookListApi,
-  loadMyBookListByRentalStatusApi,
+  loadMyBookListByLendingStatusApi,
 } from '@redux/api/book';
 import {
   loadBookListSuccess,
@@ -17,8 +17,8 @@ import {
   loadBookFailure,
   loadMyBookListSuccess,
   loadMyBookListFailure,
-  loadMyBookListByRentalStatusSuccess,
-  loadMyBookListByRentalStatusFailure,
+  loadMyBookListByLendingStatusSuccess,
+  loadMyBookListByLendingStatusFailure,
 } from '@redux/actions/bookActions';
 
 export default function*() {
@@ -27,7 +27,7 @@ export default function*() {
     fork(watchLoadBookListByCategoryRequest),
     fork(watchLoadBookRequest),
     fork(watchLoadMyBookListRequest),
-    fork(watchLoadMyBookListByRentalStatusRequest),
+    fork(watchLoadMyBookListByLendingStatusRequest),
   ]);
 }
 
@@ -83,15 +83,15 @@ function* loadMyBookList({ page, size }) {
   }
 }
 
-function* watchLoadMyBookListByRentalStatusRequest() {
-  yield takeLatest(BOOK.LOAD_MY_BOOK_LIST_BY_RENTAL_STATUS_REQUEST, loadMyBookListByRentalStatus);
+function* watchLoadMyBookListByLendingStatusRequest() {
+  yield takeLatest(BOOK.LOAD_MY_BOOK_LIST_BY_LENDING_STATUS_REQUEST, loadMyBookListByLendingStatus);
 }
-function* loadMyBookListByRentalStatus({ status, page, size }) {
+function* loadMyBookListByLendingStatus({ status, page, size }) {
   try {
-    const response = yield call(loadMyBookListByRentalStatusApi, { status, page, size });
-    yield put(loadMyBookListByRentalStatusSuccess(response.data));
+    const response = yield call(loadMyBookListByLendingStatusApi, { status, page, size });
+    yield put(loadMyBookListByLendingStatusSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(loadMyBookListByRentalStatusFailure(e.response.data || e));
+    yield put(loadMyBookListByLendingStatusFailure(e.response.data || e));
   }
 }

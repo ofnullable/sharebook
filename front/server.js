@@ -40,9 +40,9 @@ app.prepare().then(() => {
     });
   });
 
-  fastify.get('/settings/rentals/:status', async (req, reply) => {
+  fastify.get('/settings/lendings/:status', async (req, reply) => {
     const status = req.params.status || 'requested';
-    return app.render(req.req, reply.res, '/management/rentals', { status }).then(() => {
+    return app.render(req.req, reply.res, '/management/lendings', { status }).then(() => {
       reply.sent = true;
     });
   });

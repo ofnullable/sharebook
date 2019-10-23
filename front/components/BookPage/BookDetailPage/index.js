@@ -1,6 +1,6 @@
 import React from 'react';
 
-import RentalButton from './RentalButton';
+import LendingButton from './LendingButton';
 
 import {
   BookDetailHeader,
@@ -32,7 +32,7 @@ const BookPage = ({ detail, error }) => {
           <span>{`${detail.owner} | ${detail.createdAt}`}</span>
           <p>{detail.description}</p>
         </BookInfoWrapper>
-        <RentalButton detail={detail} />
+        <LendingButton detail={detail} />
       </BookDetailWrapper>
     </BookDetailHeader>
   );

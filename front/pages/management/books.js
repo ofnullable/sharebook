@@ -2,7 +2,7 @@ import React from 'react';
 
 import {
   loadMyBookListRequest,
-  loadMyBookListByRentalStatusRequest,
+  loadMyBookListByLendingStatusRequest,
 } from '@redux/actions/bookActions';
 import BooksPage from '@components/Management/BooksPage';
 
@@ -16,7 +16,7 @@ Books.getInitialProps = async ({ query, store }) => {
   if (!status) {
     store.dispatch(loadMyBookListRequest());
   } else {
-    store.dispatch(loadMyBookListByRentalStatusRequest(status.toUpperCase()));
+    store.dispatch(loadMyBookListByLendingStatusRequest(status.toUpperCase()));
   }
 
   return { status };
