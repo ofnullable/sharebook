@@ -10,7 +10,10 @@ const Nav = () => {
   const router = useRouter();
 
   const getSecondMenu = () => {
-    if (['/signin', '/join', '/settings'].includes(router.pathname)) {
+    if (
+      ['/signin', '/join'].includes(router.pathname) ||
+      router.pathname.startsWith('/management')
+    ) {
       return;
     }
 
@@ -18,8 +21,8 @@ const Nav = () => {
       return (
         <HeaderMenu _float='right'>
           <Link
-            href={{ pathname: '/settings', query: { menu: 'profile' } }}
-            as='/settings/profile'
+            href={{ pathname: '/management/user', query: { menu: 'profile' } }}
+            as='/management/user/profile'
             prefetch={false}
           >
             <a>마이페이지</a>
