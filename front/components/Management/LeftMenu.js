@@ -9,23 +9,23 @@ const menus = {
   profile: {
     name: '개인관리',
     icon: 'account_circle',
-    as: '/settings/profile',
-    pathname: '/settings',
+    pathname: '/management/user',
     query: { menu: 'profile' },
+    as: '/management/user/profile',
   },
   books: {
     name: '도서관리',
     icon: 'menu_book',
-    as: '/settings/books/',
     pathname: '/management/books',
     query: { status: '' },
+    as: '/management/books/',
   },
   lendings: {
     name: '대여관리',
     icon: 'list_alt',
-    as: '/settings/lendings/accepted',
     pathname: '/management/lendings',
     query: { status: 'accepted' },
+    as: '/management/lendings/accepted',
   },
 };
 const activeStyle = { backgroundColor: '#e9ecef' };

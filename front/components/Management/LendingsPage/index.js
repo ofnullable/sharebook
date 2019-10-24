@@ -22,7 +22,7 @@ const LendingsPage = ({ status }) => {
       <SubMenu>
         <Link
           href={{ pathname: `/management/lendings`, query: { status: 'accepted' } }}
-          as={`/settings/lendings/accepted`}
+          as={`/management/lendings/accepted`}
         >
           <a>
             <span className={status === 'accepted' ? 'active' : ''}>대여중도서</span>
@@ -30,7 +30,7 @@ const LendingsPage = ({ status }) => {
         </Link>
         <Link
           href={{ pathname: `/management/lendings`, query: { status: 'requested' } }}
-          as={`/settings/lendings/requested`}
+          as={`/management/lendings/requested`}
         >
           <a>
             <span className={status === 'requested' ? 'active' : ''}>요청한도서</span>
@@ -38,7 +38,7 @@ const LendingsPage = ({ status }) => {
         </Link>
         <Link
           href={{ pathname: `/management/lendings`, query: { status: 'returned' } }}
-          as={`/settings/lendings/returned`}
+          as={`/management/lendings/returned`}
         >
           <a>
             <span className={status === 'returned' ? 'active' : ''}>대여기록</span>

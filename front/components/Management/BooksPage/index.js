@@ -25,7 +25,7 @@ const BooksPage = ({ status }) => {
       <SubMenu>
         <Link
           href={{ pathname: `/management/books`, query: { status: '' } }}
-          as={`/settings/books/`}
+          as={`/management/books/`}
         >
           <a>
             <span className={!status ? 'active' : ''}>전체보기</span>
@@ -33,7 +33,7 @@ const BooksPage = ({ status }) => {
         </Link>
         <Link
           href={{ pathname: `/management/books`, query: { status: 'requested' } }}
-          as={`/settings/books/requested`}
+          as={`/management/books/requested`}
         >
           <a>
             <span className={status === 'requested' ? 'active' : ''}>요청받은도서</span>
@@ -41,7 +41,7 @@ const BooksPage = ({ status }) => {
         </Link>
         <Link
           href={{ pathname: `/management/books`, query: { status: 'accepted' } }}
-          as={`/settings/books/accepted`}
+          as={`/management/books/accepted`}
         >
           <a>
             <span className={status === 'accepted' ? 'active' : ''}>대여해준도서</span>
@@ -57,7 +57,7 @@ const BooksPage = ({ status }) => {
 
       <WithLeftMenu>
         <Title>도서관리</Title>
-        <Button _color='primary' onClick={() => router.push('/settings/books/register')}>
+        <Button _color='primary' onClick={() => router.push('/management/books/register')}>
           도서등록
         </Button>
 

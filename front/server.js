@@ -21,26 +21,27 @@ app.prepare().then(() => {
     });
   });
 
-  fastify.get('/settings/books/register', async (req, reply) => {
+  fastify.get('/management/user/:menu', async (req, reply) => {
+    const menu = req.params.menu;
+    return app.render(req.req, reply.res, '/management/user', { menu }).then(() => {
+      reply.sent = true;
+    });
+  });
+
+  fastify.get('/management/books/register', async (req, reply) => {
     return app.render(req.req, reply.res, '/book/register').then(() => {
       reply.sent = true;
     });
   });
 
-  fastify.get('/settings/profile', async (req, reply) => {
-    return app.render(req.req, reply.res, '/settings', { menu: 'profile' }).then(() => {
-      reply.sent = true;
-    });
-  });
-
-  fastify.get('/settings/books/:status', async (req, reply) => {
+  fastify.get('/management/books/:status', async (req, reply) => {
     const status = req.params.status;
     return app.render(req.req, reply.res, '/management/books', { status }).then(() => {
       reply.sent = true;
     });
   });
 
-  fastify.get('/settings/lendings/:status', async (req, reply) => {
+  fastify.get('/management/lendings/:status', async (req, reply) => {
     const status = req.params.status || 'requested';
     return app.render(req.req, reply.res, '/management/lendings', { status }).then(() => {
       reply.sent = true;
