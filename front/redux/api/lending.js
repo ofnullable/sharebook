@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { LENDINGG_STATUS } from '@utils/consts';
+import { LENDING_STATUS } from '@utils/consts';
 
 export const borrowBookApi = bookId => {
   return axios.post(`/book/${bookId}/lending`, {}, { withCredentials: true });
@@ -9,7 +9,7 @@ export const borrowBookApi = bookId => {
 export const returnBookApi = bookId => {
   return axios.put(
     `/book/${bookId}/lending`,
-    { status: LENDINGG_STATUS.RETURNED },
+    { status: LENDING_STATUS.RETURNED },
     { withCredentials: true }
   );
 };
