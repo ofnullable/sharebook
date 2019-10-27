@@ -53,6 +53,7 @@ app.prepare().then(() => {
       reply.sent = true;
     });
   });
+
   fastify.setNotFoundHandler((request, reply) => {
     return app.render404(request.req, reply.res).then(() => {
       reply.sent = true;

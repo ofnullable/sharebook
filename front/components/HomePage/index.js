@@ -44,7 +44,7 @@ const HomePage = ({ category }) => {
 
   return (
     <>
-      <h1 className='title'>Welcome to Public Share!</h1>
+      <h1 className='title'>Welcome to sharebook!</h1>
 
       <ConditionWrapper>
         <SearchBar />

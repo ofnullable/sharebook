@@ -11,15 +11,15 @@ import store from '@redux/store';
 
 import { GlobalStyle } from '@styles/common';
 
-const title = 'public-share';
+const title = 'sharebook';
 const description = 'share your books!';
 
-const PublicShare = ({ Component, pageProps, store }) => {
+const Sharebook = ({ Component, pageProps, store }) => {
   return (
     <Provider store={store}>
       <Head>
         <meta charSet='utf-8' />
-        <title>public-share</title>
+        <title>sharebook</title>
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
         <meta httpEquiv='X-UA-Compatible' content='IE=edge,chrome=1' />
         <meta name='title' content={title} />
@@ -39,7 +39,7 @@ const PublicShare = ({ Component, pageProps, store }) => {
   );
 };
 
-PublicShare.getInitialProps = async ({ Component, ctx }) => {
+Sharebook.getInitialProps = async ({ Component, ctx }) => {
   const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
   const loadUserNeeded = ctx.isServer && !['/signin', '/join'].includes(ctx.req.url);
 
@@ -59,4 +59,4 @@ PublicShare.getInitialProps = async ({ Component, ctx }) => {
   return { pageProps };
 };
 
-export default withRedux(store)(withReduxSaga(PublicShare));
+export default withRedux(store)(withReduxSaga(Sharebook));
