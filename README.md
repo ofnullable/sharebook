@@ -1,4 +1,4 @@
-# PUBLIC-SHARE
+# SHAREBOOK
 
 BITCAMP에서 진행했던 프로젝트의 REMAKE ver.  
 **[origin-repository](https://github.com/thdnthdn2/publicshare)**,

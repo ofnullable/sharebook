@@ -2,8 +2,8 @@ ftp.properties
 .next/
 node_modules/
 
-server/.gradle
-server/build/
+.gradle
+build/
 !server/gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###
@@ -16,11 +16,11 @@ server/build/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-server/.idea
-server/*.iws
-server/*.iml
-server/*.ipr
-server/out/
+.idea
+*.iws
+*.iml
+*.ipr
+out/
 
 ### NetBeans ###
 /nbproject/private/
