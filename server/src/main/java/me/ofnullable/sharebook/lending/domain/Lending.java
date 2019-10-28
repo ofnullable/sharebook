@@ -25,7 +25,7 @@ public class Lending {
     private Book book;
 
     @Column(nullable = false, updatable = false)
-    private Long accountId;
+    private Long borrowerId;
 
     @Enumerated(EnumType.STRING)
     private LendingStatus currentStatus;
@@ -40,7 +40,7 @@ public class Lending {
     @Builder
     public Lending(Book book, Long accountId) {
         this.book = book;
-        this.accountId = accountId;
+        this.borrowerId = accountId;
     }
 
     public void borrow() {
@@ -48,7 +48,7 @@ public class Lending {
         this.histories.add(buildLendingHistory(LendingStatus.REQUESTED));
 
         this.book.addLending(this);
-        this.book.toUnavailable(this.accountId);
+        this.book.toUnavailable(this.borrowerId);
     }
 
     public void accept() {

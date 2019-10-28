@@ -23,7 +23,7 @@ public class LendingController {
     private final LendingSaveService lendingSaveService;
     private final LendingUpdateService lendingUpdateService;
 
-    @PostMapping("/book/{bookId}/lending")
+    @PostMapping("/lending/book/{bookId}")
     @ResponseStatus(HttpStatus.CREATED)
     public LendingResponse lendingRequest(
             @AuthenticationPrincipal(expression = "account") Account account,
@@ -31,17 +31,22 @@ public class LendingController {
         return new LendingResponse(lendingSaveService.borrowRequest(bookId, account.getId()));
     }
 
-    @PutMapping("/lending/{id}")
-    public LendingResponse changeLendingStatus(@PathVariable Long id, @RequestBody LendingStatus status) {
+    @PutMapping("/lending/{id}/{status}")
+    public LendingResponse changeLendingStatus(@PathVariable Long id, @PathVariable LendingStatus status) {
         return new LendingResponse(lendingUpdateService.updateLending(id, status));
     }
 
-    @GetMapping("/account/lendings/{lendingStatus}")
+    @GetMapping("/lending/book/{bookId}/latest")
+    public LendingResponse findLatestLendingByBookId(@PathVariable Long bookId) {
+        return new LendingResponse(lendingFindService.findLatestLendingByBookId(bookId));
+    }
+
+    @GetMapping("/lending/{status}")
     public Page<LendingResponse> findLendingByAccount(
             @AuthenticationPrincipal(expression = "account") Account account,
-            @PathVariable LendingStatus lendingStatus,
+            @PathVariable LendingStatus status,
             @Valid PageRequest pageRequest) {
-        return lendingFindService.findAllByAccountIdAndCurrentStatus(account.getId(), lendingStatus, pageRequest)
+        return lendingFindService.findAllByAccountIdAndCurrentStatus(account.getId(), status, pageRequest)
                 .map(LendingResponse::new);
     }
 

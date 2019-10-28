@@ -13,7 +13,7 @@ public class LendingValidator {
     private final AccountFindService accountFindService;
 
     void validate(Lending lending) {
-        isValidAccountId(lending.getAccountId());
+        isValidAccountId(lending.getBorrowerId());
         isAvailable(lending.getBook());
         isNotOwner(lending);
     }
@@ -31,7 +31,7 @@ public class LendingValidator {
 
     private void isNotOwner(Lending lending) {
         var ownerId = lending.getBook().getOwner().getId();
-        if (lending.getAccountId().equals(ownerId)) {
+        if (lending.getBorrowerId().equals(ownerId)) {
             throw new IllegalArgumentException("Can not borrow own book");
         }
     }
