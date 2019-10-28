@@ -26,11 +26,6 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -44,15 +39,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint() {
+    private AuthenticationEntryPoint authenticationEntryPoint() {
         var code = ErrorCode.UNAUTHORIZED;
         return (req, res, e)
                 -> res.sendError(code.getStatus(), code.getMessage());
     }
 
-    @Bean
-    public AccessDeniedHandler authDeniedHandler() {
+    private AccessDeniedHandler authDeniedHandler() {
         var code = ErrorCode.ACCESS_DENIED;
         return (req, res, e)
                 -> res.sendError(code.getStatus(), code.getMessage());
@@ -88,18 +81,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
-     @Bean
-     public CorsFilter corsFilter() {
-         var source = new UrlBasedCorsConfigurationSource();
-         var config = new CorsConfiguration();
-         config.setAllowedOrigins(List.of("*", "http://localhost:3010"));
-         config.addAllowedMethod("*");
-         config.addAllowedHeader("*");
-         config.setAllowCredentials(true);
-         source.registerCorsConfiguration("/**", config);
-         return new CorsFilter(source);
-     }
-
     @Bean
     public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
         return  new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
@@ -123,13 +104,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .addFilter(corsFilter())
-                .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .cors()
+            .and()
                 .csrf().disable()
+                .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .httpBasic()
             .and()
                 .authorizeRequests()
-                    .antMatchers(HttpMethod.GET, "/account/**", "/accounts").authenticated()
+                    .antMatchers(HttpMethod.GET, "/account/**", "/lending").authenticated()
                     .antMatchers(HttpMethod.POST, "/account").permitAll()
                     .antMatchers(HttpMethod.GET, "/**").permitAll()
                     .anyRequest().authenticated()
@@ -153,8 +135,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .key("PUBLIC_SHARE_SECRET_KEY")
                     .authenticationSuccessHandler(authSuccessHandler())
                     .tokenValiditySeconds(7 * 24 * 60 * 60) // 1 week
-            .and()
-                .sessionManagement();
+            .and();
     }
 
 }

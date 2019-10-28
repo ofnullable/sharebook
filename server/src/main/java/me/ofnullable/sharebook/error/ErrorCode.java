@@ -19,6 +19,7 @@ public enum ErrorCode {
 
     CATEGORY_NOT_FOUND(404, "No such category"),
 
+    LENDING_HISTORY_NOT_FOUND(404, "There is no lending history"),
     LENDING_NOT_FOUND(404, "No such lending"),
     LENDING_STATUS_NOT_FOUND(404, "No such lending status"),
     LENDING_ALREADY_COMPLETION(400, "Lending already completion"),

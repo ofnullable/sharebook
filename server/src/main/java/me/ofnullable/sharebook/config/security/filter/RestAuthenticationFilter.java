@@ -26,14 +26,17 @@ public class RestAuthenticationFilter extends UsernamePasswordAuthenticationFilt
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
-        readBody(req);
-
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
+        var authToken = readAndMakeToken(req);
 
         // Allow subclasses to set the "details" property
-        setDetails(req, authRequest);
+        setDetails(req, authToken);
 
-        return this.getAuthenticationManager().authenticate(authRequest);
+        return this.getAuthenticationManager().authenticate(authToken);
+    }
+
+    private UsernamePasswordAuthenticationToken readAndMakeToken(HttpServletRequest req) {
+        readBody(req);
+        return new UsernamePasswordAuthenticationToken(username, password);
     }
 
     private void readBody(HttpServletRequest req) {

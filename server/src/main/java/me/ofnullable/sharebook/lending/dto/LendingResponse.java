@@ -9,11 +9,13 @@ import me.ofnullable.sharebook.lending.domain.LendingStatus;
 public class LendingResponse {
 
     private Long id;
+    private Long borrowerId;
     private BookResponse book;
     private LendingStatus currentStatus;
 
     public LendingResponse(Lending lending) {
         this.id = lending.getId();
+        this.borrowerId = lending.getBorrowerId();
         this.book = new BookResponse(lending.getBook());
         this.currentStatus = lending.getCurrentStatus();
     }

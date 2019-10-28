@@ -97,6 +97,13 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
         return bindErrorWithFields(ErrorCode.INVALID_LENDING_STATUS, e.getStatus(), request);
     }
 
+    @ExceptionHandler(LendingHistoryNotExistsException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ApiError handleLendingHistoryNotExistsException(LendingHistoryNotExistsException e, WebRequest request) {
+        log.debug("Lending history not exists. book id: {}", e.getBookId());
+        return bindError(ErrorCode.LENDING_HISTORY_NOT_FOUND, request);
+    }
+
     @Override
     protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.debug("handle BindException: {}", ex.getBindingResult());

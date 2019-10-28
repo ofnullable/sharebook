@@ -8,6 +8,6 @@ export const Category = styled(Button)`
   margin: 0.3rem 0.3rem 0 0;
   line-height: 1;
   color: ${COLOR_SCHEME.white};
-  background-color: ${COLOR_SCHEME.secondery};
+  background-color: ${COLOR_SCHEME.secondary};
   vertical-align: bottom;
 `;

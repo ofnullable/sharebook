@@ -200,7 +200,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   ::selection {
     color: ${COLOR_SCHEME.white};
-    background-color: ${COLOR_SCHEME.secondery};    
+    background-color: ${COLOR_SCHEME.secondary};    
   }
   &::-webkit-scrollbar {
     width: 0.5em;

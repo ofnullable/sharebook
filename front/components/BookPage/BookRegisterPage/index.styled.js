@@ -10,11 +10,11 @@ export const BookImagePreview = styled.div`
   width: 200px;
   height: 300px;
   margin: 0 auto;
-  color: ${COLOR_SCHEME.secondery};
+  color: ${COLOR_SCHEME.secondary};
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px dashed ${COLOR_SCHEME.secondery};
+  border: 2px dashed ${COLOR_SCHEME.secondary};
   border-radius: 15px;
   cursor: pointer;
 `;

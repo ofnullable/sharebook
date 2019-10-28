@@ -26,6 +26,19 @@ export const returnBookFailure = error => ({
   error,
 });
 
+export const loadLatestLendingRequest = bookId => ({
+  type: LENDING.LOAD_LATEST_LENDING_REQUEST,
+  bookId,
+});
+export const loadLatestLendingSuccess = data => ({
+  type: LENDING.LOAD_LATEST_LENDING_SUCCESS,
+  data,
+});
+export const loadLatestLendingFailure = error => ({
+  type: LENDING.LOAD_LATEST_LENDING_FAILURE,
+  error,
+});
+
 export const loadLendingListRequest = (status, page = 1, size = 20) => ({
   type: LENDING.LOAD_LENDING_LIST_REQUEST,
   status,

@@ -27,57 +27,45 @@ VALUES
        ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description for test book2", 2, "https://placeimg.com/200/300/animals", 1, 2, now(), "test1@asd.com", now(), "test1@asd.com"),
        ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", 2, "https://placeimg.com/200/300/animals", 1, 2, now(), "test1@asd.com", now(), "test1@asd.com"),
        ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com");
+       ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
 
-INSERT INTO share_jpa.book(title, author, publisher, category_id, description, status, image_url, owner_id, current_renter_id, created_at, created_by, modified_at, modified_by)
-VALUES
+       ("이것이 우분투 리눅스다", "우재남", "한빛미디어", 1,"description for test book1", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description for test book2", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+
+       ("이것이 우분투 리눅스다", "우재남", "한빛미디어", 1,"description for test book1", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description for test book2", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+
+       ("이것이 우분투 리눅스다", "우재남", "한빛미디어", 1,"description for test book1", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description for test book2", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+
+       ("이것이 우분투 리눅스다", "우재남", "한빛미디어", 1,"description for test book1", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description for test book2", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+
+       ("이것이 우분투 리눅스다", "우재남", "한빛미디어", 1,"description for test book1", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description for test book2", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
+
        ("이것이 우분투 리눅스다", "우재남", "한빛미디어", 1,"description for test book1", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
        ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description for test book2", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
        ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
        ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
        ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com");
 
-INSERT INTO share_jpa.book(title, author, publisher, category_id, description, status, image_url, owner_id, current_renter_id, created_at, created_by, modified_at, modified_by)
-VALUES
-       ("이것이 우분투 리눅스다", "우재남", "한빛미디어", 1,"description for test book1", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description for test book2", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com");
-
-INSERT INTO share_jpa.book(title, author, publisher, category_id, description, status, image_url, owner_id, current_renter_id, created_at, created_by, modified_at, modified_by)
-VALUES
-       ("이것이 우분투 리눅스다", "우재남", "한빛미디어", 1,"description for test book1", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description for test book2", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com");
-
-INSERT INTO share_jpa.book(title, author, publisher, category_id, description, status, image_url, owner_id, current_renter_id, created_at, created_by, modified_at, modified_by)
-VALUES
-       ("이것이 우분투 리눅스다", "우재남", "한빛미디어", 1,"description for test book1", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description for test book2", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com");
-
-INSERT INTO share_jpa.book(title, author, publisher, category_id, description, status, image_url, owner_id, current_renter_id, created_at, created_by, modified_at, modified_by)
-VALUES
-       ("이것이 우분투 리눅스다", "우재남", "한빛미디어", 1,"description for test book1", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description for test book2", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com");
-
-INSERT INTO share_jpa.book(title, author, publisher, category_id, description, status, image_url, owner_id, current_renter_id, created_at, created_by, modified_at, modified_by)
-VALUES
-       ("이것이 우분투 리눅스다", "우재남", "한빛미디어", 1,"description for test book1", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description for test book2", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("컴퓨터 네트워킹 : 하향식 접근(7판)", "James F. Kurose", "퍼스트북", 2,"description for test book3", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
-       ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com");
-
-INSERT INTO share_jpa.lending(account_id, book_id, current_status, started_at, ended_at)
+INSERT INTO share_jpa.lending(borrower_id, book_id, current_status, started_at, ended_at)
 VALUES
        (2, 1, "RETURNED", now(), null),
        (3, 1, "REQUESTED", now(), null),
