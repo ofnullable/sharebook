@@ -3,6 +3,11 @@ import produce from 'immer';
 import { LENDING } from '@redux/actionTypes';
 
 const initial = {
+  latestLending: {
+    data: {},
+    isLoading: false,
+    error: {}
+  },
   histories: {
     data: [],
     isLoading: false,
@@ -31,6 +36,18 @@ export default (state = initial, action) => {
       case LENDING.BORROW_BOOK_FAILURE:
         draft.histories.isLoading = false;
         draft.histories.error = action.error;
+        break;
+
+      case LENDING.LOAD_LATEST_LENDING_REQUEST:
+        draft.latestLending.isLoading = true;
+        break;
+      case LENDING.LOAD_LATEST_LENDING_SUCCESS:
+        draft.latestLending.isLoading = false;
+        draft.latestLending.data = action.data;
+        break;
+      case LENDING.LOAD_LATEST_LENDING_FAILURE:
+        draft.latestLending.isLoading = false;
+        draft.latestLending.error = action.error;
         break;
 
       case LENDING.LOAD_LENDING_LIST_REQUEST:
