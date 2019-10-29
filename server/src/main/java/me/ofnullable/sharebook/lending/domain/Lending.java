@@ -51,6 +51,13 @@ public class Lending {
         this.book.toUnavailable(this.borrowerId);
     }
 
+    public void canceled() {
+        this.currentStatus = LendingStatus.CANCELED;
+        this.histories.add(buildLendingHistory(LendingStatus.CANCELED));
+
+        this.book.toAvailable();
+    }
+
     public void accept() {
         this.startedAt = LocalDateTime.now();
         this.currentStatus = LendingStatus.ACCEPTED;

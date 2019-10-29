@@ -17,6 +17,9 @@ public class LendingUpdateService {
     public Lending updateLending(Long id, LendingStatus lendingStatus) {
         var lending = lendingFindService.findById(id);
         switch (lendingStatus) {
+            case CANCELED:
+                lending.canceled();
+                break;
             case ACCEPTED:
                 lending.accept();
                 break;
