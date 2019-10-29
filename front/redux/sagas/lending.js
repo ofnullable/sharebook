@@ -2,10 +2,12 @@ import { fork, put, takeLatest, call, all } from 'redux-saga/effects';
 
 import { BOOK_STATUS } from '@utils/consts';
 import { LENDING } from '@redux/actionTypes';
-import { borrowBookApi, returnBookApi, loadLatestLendingApi, loadLendingListApi } from '@redux/api/lending';
+import { borrowBookApi, cancelBorrowBookApi, returnBookApi, loadLatestLendingApi, loadLendingListApi } from '@redux/api/lending';
 import {
   borrowBookSuccess,
   borrowBookFailure,
+  cancelBorrowBookSuccess,
+  cancelBorrowBookFailure,
   returnBookSuccess,
   returnBookFailure,
   loadLatestLendingSuccess,
@@ -16,7 +18,13 @@ import {
 import { changeBookStatus } from '@redux/actions/bookActions';
 
 export default function*() {
-  yield all([fork(watchBorrowBookRequest), fork(watchReturnBookRequest), fork(watchLoadLatestLendingRequest), fork(watchLoadLendingListRequest)]);
+  yield all([
+    fork(watchBorrowBookRequest),
+    fork(watchCancelBorrowBookRequest),
+    fork(watchReturnBookRequest),
+    fork(watchLoadLatestLendingRequest),
+    fork(watchLoadLendingListRequest)
+  ]);
 }
 
 function* watchBorrowBookRequest() {
@@ -30,6 +38,20 @@ function* borrowBook({ id }) {
   } catch (e) {
     console.error(e);
     yield put(borrowBookFailure(e.response.data || e));
+  }
+}
+
+function* watchCancelBorrowBookRequest() {
+  yield takeLatest(LENDING.CANCEL_BORROW_BOOK_REQUEST, cancelBorrowBook);
+}
+function* cancelBorrowBook({ id }) {
+  try {
+    const response = yield call(cancelBorrowBookApi, id);
+    yield put(cancelBorrowBookSuccess(response.data));
+    yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.AVAILABLE));
+  } catch (e) {
+    console.error(e);
+    yield put(cancelBorrowBookFailure(e.response.data || e));
   }
 }
 

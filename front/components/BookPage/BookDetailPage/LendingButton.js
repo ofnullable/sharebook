@@ -3,13 +3,29 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { BOOK_STATUS, LENDING_STATUS } from '@utils/consts';
-import { borrowBookRequest, returnBookRequest } from '@redux/actions/lendingActions';
+import { borrowBookRequest, cancelBorrowBookRequest, returnBookRequest } from '@redux/actions/lendingActions';
 
 import { Button } from '@styles/common';
 
 const LendingButton = ({ detail, lending }) => {
   const user = useSelector(state => state.user.user.data);
   const dispatch = useDispatch();
+
+  const handleAccept = () => {
+    // dispatch(lendingBookRequest(lending.book.id);
+  };
+
+  const handleBorrow = () => {
+    dispatch(borrowBookRequest(lending.book.id));
+  };
+
+  const handleCancelBorrow = () => {
+    dispatch(cancelBorrowBookRequest(lending.id));
+  };
+
+  const handleReturnBook = () => {
+    dispatch(returnBookRequest(lending.id));
+  };
 
   // 로그인하지 않은 경우
   if (!user.id) {
@@ -32,24 +48,10 @@ const LendingButton = ({ detail, lending }) => {
     return null;
   }
 
-  const handleRent = () => {
-    dispatch(borrowBookRequest(lending.book.id));
-  };
-
-  const handleCancelBorrow = () => {
-    console.log(lending.id);
-    // dispatch(cancelBorrowRequest(lending.id));
-  };
-
-  const handleReturnBook = () => {
-    console.log(lending.id);
-    dispatch(returnBookRequest(lending.id));
-  };
-
   // 현재 도서가 대여 가능한 도서인 경우
   if (detail.status === BOOK_STATUS.AVAILABLE) {
     return (
-      <Button _color='primary' onClick={handleRent}>
+      <Button _color='primary' onClick={handleBorrow}>
         대여신청
       </Button>
     );

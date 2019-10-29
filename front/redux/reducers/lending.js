@@ -27,13 +27,16 @@ export default (state = initial, action) => {
   return produce(state, draft => {
     switch (action.type) {
       case LENDING.BORROW_BOOK_REQUEST:
+      case LENDING.CANCEL_BORROW_BOOK_REQUEST:
         draft.histories.isLoading = true;
         break;
       case LENDING.BORROW_BOOK_SUCCESS:
+      case LENDING.CANCEL_BORROW_BOOK_SUCCESS:
         draft.histories.isLoading = false;
         draft.histories.data.push(action.data);
         break;
       case LENDING.BORROW_BOOK_FAILURE:
+      case LENDING.CANCEL_BORROW_BOOK_FAILURE:
         draft.histories.isLoading = false;
         draft.histories.error = action.error;
         break;

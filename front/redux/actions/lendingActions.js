@@ -13,6 +13,19 @@ export const borrowBookFailure = error => ({
   error,
 });
 
+export const cancelBorrowBookRequest = id => ({
+  type: LENDING.CANCEL_BORROW_BOOK_REQUEST,
+  id,
+});
+export const cancelBorrowBookSuccess = data => ({
+  type: LENDING.CANCEL_BORROW_BOOK_SUCCESS,
+  data,
+});
+export const cancelBorrowBookFailure = error => ({
+  type: LENDING.CANCEL_BORROW_BOOK_FAILURE,
+  error,
+});
+
 export const returnBookRequest = id => ({
   type: LENDING.RETURN_BOOK_REQUEST,
   id,
