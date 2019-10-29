@@ -44,7 +44,7 @@ public class Book extends Auditable {
     @Column(nullable = false)
     private String imageUrl;
 
-    private Long currentRenterId;
+    private Long currentBorrowerId;
 
     @OneToMany(mappedBy = "book")
     private List<Lending> lendings = new ArrayList<>();
@@ -71,12 +71,12 @@ public class Book extends Auditable {
 
     public void toUnavailable(Long renterId) {
         this.status = BookStatus.UNAVAILABLE;
-        this.currentRenterId = renterId;
+        this.currentBorrowerId = renterId;
     }
 
     public void toAvailable() {
         this.status = BookStatus.AVAILABLE;
-        this.currentRenterId = null;
+        this.currentBorrowerId = null;
     }
 
     public boolean isAvailable() {

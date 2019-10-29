@@ -6,6 +6,10 @@ export const borrowBookApi = bookId => {
   return axios.post(`/lending/book/${bookId}`, {}, { withCredentials: true });
 };
 
+export const cancelBorrowBookApi = lendingId => {
+  return axios.put(`/lending/${lendingId}/${LENDING_STATUS.CANCELED}`, {}, { withCredentials: true });
+};
+
 export const returnBookApi = id => {
   return axios.put(
     `/lending/${id}/${LENDING_STATUS.RETURNED}`,
