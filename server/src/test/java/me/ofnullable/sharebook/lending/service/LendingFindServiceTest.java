@@ -2,6 +2,7 @@ package me.ofnullable.sharebook.lending.service;
 
 import me.ofnullable.sharebook.lending.domain.Lending;
 import me.ofnullable.sharebook.lending.domain.LendingStatus;
+import me.ofnullable.sharebook.lending.exception.LendingHistoryNotExistsException;
 import me.ofnullable.sharebook.lending.exception.NoSuchLendingException;
 import me.ofnullable.sharebook.lending.repository.LendingRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -54,9 +55,29 @@ public class LendingFindServiceTest {
     }
 
     @Test
+    @DisplayName("도서 Id로 최근 대여기록 조회")
+    public void find_latest_by_book_id() {
+        given(lendingRepository.findFirstByBookIdOrderByIdDesc(any(Long.class)))
+                .willReturn(Optional.of(requested));
+
+        var result = lendingFindService.findLatestLendingByBookId(1L);
+
+        equalLending(result, requested);
+    }
+
+    @Test
+    @DisplayName("도서 Id에 해당하는 대여기록 존재하지 않는 경우 - NoSuchLendingException")
+    public void find_first_by_invalid_book_id() {
+        given(lendingRepository.findFirstByBookIdOrderByIdDesc(any(Long.class)))
+                .willReturn(Optional.empty());
+
+        assertThrows(LendingHistoryNotExistsException.class, () -> lendingFindService.findLatestLendingByBookId(1L));
+    }
+
+    @Test
     @DisplayName("특정 상태의 대여기록 조회")
     public void find_by_account_id() {
-        given(lendingRepository.findAllByAccountIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(Pageable.class)))
+        given(lendingRepository.findAllByBorrowerIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(Pageable.class)))
                 .willReturn(buildPageLending(20));
 
         var result = lendingFindService.findAllByAccountIdAndCurrentStatus(1L, LendingStatus.ACCEPTED, buildPageRequest(20));
@@ -67,7 +88,7 @@ public class LendingFindServiceTest {
     @Test
     @DisplayName("존재하지 않는 계정의 대여기록 조회시 결과 0개")
     public void find_by_invalid_account_id() {
-        given(lendingRepository.findAllByAccountIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(Pageable.class)))
+        given(lendingRepository.findAllByBorrowerIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(Pageable.class)))
                 .willReturn(Page.empty());
 
         var result = lendingFindService.findAllByAccountIdAndCurrentStatus(1L, LendingStatus.ACCEPTED, buildPageRequest(20));

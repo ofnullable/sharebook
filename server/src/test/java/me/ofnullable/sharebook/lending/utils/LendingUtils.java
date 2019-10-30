@@ -57,7 +57,7 @@ public class LendingUtils {
 
     public static void equalLending(Lending result, Lending target) {
         BookUtils.equalBook(result.getBook(), target.getBook());
-        assertEquals(result.getAccountId(), target.getAccountId());
+        assertEquals(result.getBorrowerId(), target.getBorrowerId());
         assertEquals(result.getHistories(), target.getHistories());
     }
 

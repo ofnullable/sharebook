@@ -2,6 +2,7 @@ package me.ofnullable.sharebook.lending.service;
 
 import me.ofnullable.sharebook.lending.domain.Lending;
 import me.ofnullable.sharebook.lending.domain.LendingStatus;
+import me.ofnullable.sharebook.lending.exception.LendingAlreadyCompletionException;
 import me.ofnullable.sharebook.lending.exception.LendingStatusEqualsException;
 import me.ofnullable.sharebook.lending.exception.LendingStatusInvalidException;
 import me.ofnullable.sharebook.lending.exception.NoSuchLendingException;
@@ -33,7 +34,7 @@ public class LendingUpdateServiceTest {
 
     @Test
     @DisplayName("ACCEPTED로 status 업데이트")
-    public void update_lending_to_accepted() {
+    public void update_to_accepted() {
         given(lendingFindService.findById(any(Long.class)))
                 .willReturn(requested);
 
@@ -44,8 +45,20 @@ public class LendingUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("CANCELED로 status 업데이트")
+    public void update_to_canceled() {
+        given(lendingFindService.findById(any(Long.class)))
+                .willReturn(requested);
+
+        var result = lendingUpdateService.updateLending(1L, LendingStatus.CANCELED);
+
+        assertEquals(result.getHistories().size(), 2);
+        assertEquals(result.getHistories().get(1).getStatus(), LendingStatus.CANCELED);
+    }
+
+    @Test
     @DisplayName("REJECTED로 status 업데이트")
-    public void update_lending_to_rejected() {
+    public void update_to_rejected() {
         given(lendingFindService.findById(any(Long.class)))
                 .willReturn(requested);
 
@@ -57,7 +70,7 @@ public class LendingUpdateServiceTest {
 
     @Test
     @DisplayName("RETURNED로 status 업데이트")
-    public void update_lending_to_returned() {
+    public void update_to_returned() {
         given(lendingFindService.findById(any(Long.class)))
                 .willReturn(accepted);
 
@@ -78,7 +91,7 @@ public class LendingUpdateServiceTest {
 
     @Test
     @DisplayName("이전 상태와 같은 상태로 변경 요청 시 - LendingStatusEqualsException")
-    public void update_lending_to_same_status() {
+    public void update_to_same_status() {
         var lending = buildAcceptedLending();
 
         given(lendingFindService.findById(any(Long.class)))
@@ -91,17 +104,68 @@ public class LendingUpdateServiceTest {
     }
 
     @Test
-    @DisplayName("유효하지 않은 상태로 변경 요청 시 - LendingStatusInvalidException")
-    public void update_lending_requested_to_returned() {
-        var lending = buildRequestedLending();
+    @DisplayName("REQUESTED 상태를 유효하지 않은 상태로 변경 요청 - LendingStatusInvalidException")
+    public void update_requested_to_invalid_status() {
+        var requestedLending = buildRequestedLending();
 
         given(lendingFindService.findById(any(Long.class)))
-                .willReturn(lending);
+                .willReturn(requestedLending);
 
         assertThrows(LendingStatusInvalidException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.RETURNED));
+    }
 
-        lending.accept();
+    @Test
+    @DisplayName("ACCEPTED 상태를 유효하지 않은 상태로 변경 요청 - LendingStatusInvalidException")
+    public void update_accepted_to_invalid_status() {
+        var acceptedLending = buildAcceptedLending();
+
+        given(lendingFindService.findById(any(Long.class)))
+                .willReturn(acceptedLending);
+
         assertThrows(LendingStatusInvalidException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.REJECTED));
+        assertThrows(LendingStatusInvalidException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.CANCELED));
+    }
+
+    @Test
+    @DisplayName("CANCELED 상태를 유효하지 않은 상태로 변경 요청 - LendingAlreadyCompletionException")
+    public void update_canceled_to_invalid_status() {
+        var canceledLending = buildRequestedLending();
+        canceledLending.canceled();
+
+        given(lendingFindService.findById(any(Long.class)))
+                .willReturn(canceledLending);
+
+        assertThrows(LendingAlreadyCompletionException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.ACCEPTED));
+        assertThrows(LendingAlreadyCompletionException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.REJECTED));
+        assertThrows(LendingAlreadyCompletionException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.RETURNED));
+    }
+
+    @Test
+    @DisplayName("REJECTED 상태를 유효하지 않은 상태로 변경 요청 - LendingAlreadyCompletionException")
+    public void update_rejected_to_invalid_status() {
+        var rejectedLending = buildRequestedLending();
+        rejectedLending.rejected();
+
+        given(lendingFindService.findById(any(Long.class)))
+                .willReturn(rejectedLending);
+
+        assertThrows(LendingAlreadyCompletionException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.ACCEPTED));
+        assertThrows(LendingAlreadyCompletionException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.CANCELED));
+        assertThrows(LendingAlreadyCompletionException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.RETURNED));
+    }
+
+    @Test
+    @DisplayName("RETURNED 상태를 유효하지 않은 상태로 변경 요청 - LendingAlreadyCompletionException")
+    public void update_returned_to_invalid_status() {
+        var returnedLending = buildAcceptedLending();
+        returnedLending.returned();
+
+        given(lendingFindService.findById(any(Long.class)))
+                .willReturn(returnedLending);
+
+        assertThrows(LendingAlreadyCompletionException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.ACCEPTED));
+        assertThrows(LendingAlreadyCompletionException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.REJECTED));
+        assertThrows(LendingAlreadyCompletionException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.CANCELED));
     }
 
     @Test

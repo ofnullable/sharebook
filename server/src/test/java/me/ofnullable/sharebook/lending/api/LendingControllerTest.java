@@ -1,6 +1,5 @@
 package me.ofnullable.sharebook.lending.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import me.ofnullable.sharebook.common.dto.PageRequest;
 import me.ofnullable.sharebook.config.WithAuthenticationPrincipal;
 import me.ofnullable.sharebook.lending.domain.LendingStatus;
@@ -14,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.http.MediaType;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -44,8 +43,6 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
     @Mock
     private LendingUpdateService lendingUpdateService;
 
-    private ObjectMapper mapper = new ObjectMapper();
-
     @BeforeEach
     public void setup() {
         this.mvc = super.setup(lendingController);
@@ -57,21 +54,44 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
         given(lendingFindService.findAllByAccountIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(PageRequest.class)))
                 .willReturn(buildPageLending(20));
 
-        mvc.perform(get("/account/lendings/ACCEPTED?page=1&size=20"))
+        mvc.perform(get("/lending/ACCEPTED?page=1&size=20"))
                 .andExpect(jsonPath("$.totalElements", is(3)))
                 .andExpect(status().isOk());
     }
-//
-//    @Test
-//    @DisplayName("대여목록이 존재하지 않는 경우")
-//    public void find_lending_by_invalid_account_id() throws Exception {
-//        given(lendingFindService.findAllByAccountIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(PageRequest.class)))
-//                .willReturn(Page.empty());
-//
-//        mvc.perform(get("/account/lendings/ACCEPTED?page=1&size=20"))
-//                .andExpect(jsonPath("$.totalElements", is(0)))
-//                .andExpect(status().isOk());
-//    }
+
+    @Test
+    @DisplayName("대여목록이 존재하지 않는 경우")
+    public void find_lending_by_invalid_account_id() throws Exception {
+        given(lendingFindService.findAllByAccountIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(PageRequest.class)))
+                .willReturn(Page.empty());
+
+        mvc.perform(get("/lending/ACCEPTED?page=1&size=20"))
+                .andExpect(jsonPath("$.totalElements", is(0)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("도서 Id로 최근 대여기록 조회")
+    public void find_latest_by_book_id() throws Exception {
+        var requestedLending = buildRequestedLending();
+
+        given(lendingFindService.findLatestLendingByBookId(any(Long.class)))
+                .willReturn(requestedLending);
+
+        mvc.perform(get("/lending/book/1/latest"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("도서 Id에 해당하는 대여기록 존재하지 않는 경우 - LendingHistoryNotExistsException")
+    public void find_first_by_invalid_book_id() throws Exception {
+        given(lendingFindService.findLatestLendingByBookId(any(Long.class)))
+                .willThrow(LendingHistoryNotExistsException.class);
+
+        mvc.perform(get("/lending/book/1/latest"))
+                .andExpect(status().isNotFound());
+    }
+
 
     @Test
     @DisplayName("대여신청")
@@ -79,7 +99,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
         given(lendingSaveService.borrowRequest(any(Long.class), any(Long.class)))
                 .willReturn(buildRequestedLending());
 
-        mvc.perform(post("/book/1/lending"))
+        mvc.perform(post("/lending/book/1"))
                 .andExpect(status().isCreated());
     }
 
@@ -89,9 +109,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.ACCEPTED)))
                 .willReturn(buildAcceptedLending());
 
-        mvc.perform(put("/lending/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(LendingStatus.ACCEPTED)))
+        mvc.perform(put("/lending/1/ACCEPTED"))
                 .andExpect(status().isOk());
     }
 
@@ -99,14 +117,12 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
     @DisplayName("REJECTED로 대여기록 업데이트")
     public void update_lending_to_rejected() throws Exception {
         var lending = buildRequestedLending();
-        lending.reject();
+        lending.rejected();
 
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.REJECTED)))
                 .willReturn(lending);
 
-        mvc.perform(put("/lending/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(LendingStatus.REJECTED)))
+        mvc.perform(put("/lending/1/REJECTED"))
                 .andExpect(status().isOk());
     }
 
@@ -119,9 +135,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.RETURNED)))
                 .willReturn(lending);
 
-        mvc.perform(put("/lending/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(LendingStatus.RETURNED)))
+        mvc.perform(put("/lending/1/RETURNED"))
                 .andExpect(status().isOk());
     }
 
@@ -131,9 +145,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.REQUESTED)))
                 .willThrow(new LendingStatusInvalidException(LendingStatus.NONE, LendingStatus.REQUESTED));
 
-        mvc.perform(put("/lending/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(LendingStatus.REQUESTED)))
+        mvc.perform(put("/lending/1/REQUESTED"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -143,9 +155,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.REJECTED)))
                 .willThrow(LendingAlreadyCompletionException.class);
 
-        mvc.perform(put("/lending/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(LendingStatus.REJECTED)))
+        mvc.perform(put("/lending/1/REJECTED"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -155,9 +165,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.REJECTED)))
                 .willThrow(LendingNotRequestedException.class);
 
-        mvc.perform(put("/lending/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(LendingStatus.REJECTED)))
+        mvc.perform(put("/lending/1/REJECTED"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -167,9 +175,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.REJECTED)))
                 .willThrow(LendingStatusEqualsException.class);
 
-        mvc.perform(put("/lending/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(LendingStatus.REJECTED)))
+        mvc.perform(put("/lending/1/REJECTED"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -179,9 +185,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.REJECTED)))
                 .willThrow(NoSuchLendingException.class);
 
-        mvc.perform(put("/lending/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(LendingStatus.REJECTED)))
+        mvc.perform(put("/lending/1/REJECTED"))
                 .andExpect(status().isNotFound());
     }
 

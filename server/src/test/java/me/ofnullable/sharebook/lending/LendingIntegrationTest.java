@@ -1,14 +1,12 @@
 package me.ofnullable.sharebook.lending;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.ofnullable.sharebook.lending.domain.LendingStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,7 +29,7 @@ public class LendingIntegrationTest {
     @WithUserDetails("test1@asd.com")
     @DisplayName("로그인 후 현재 계정 대여기록 요청")
     public void find_lending_by_account_id_with_auth() throws Exception {
-        var resultAction = mvc.perform(get("/account/lendings/REQUESTED?page=1&size=20"))
+        mvc.perform(get("/lending/REQUESTED?page=1&size=20"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -39,7 +37,24 @@ public class LendingIntegrationTest {
     @Test
     @DisplayName("로그인하지 않고 현재 계정 대여기록 요청")
     public void find_lending_by_account_id_with_no_auth() throws Exception {
-        var resultAction = mvc.perform(get("/account/lendings/REQUESTED"))
+        mvc.perform(get("/lending/REQUESTED?page=1&size=20"))
+                .andExpect(status().isUnauthorized())
+                .andDo(print());
+    }
+
+    @Test
+    @WithUserDetails("test1@asd.com")
+    @DisplayName("로그인 후 특정 도서의 최근 대여기록 요청")
+    public void find_latest_lending_by_book_id_with_auth() throws Exception {
+        mvc.perform(get("/lending/book/1/latest"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("로그인하지 않고 특정 도서의 최근 대여기록 요청")
+    public void find_latest_lending_by_book_id_with_no_auth() throws Exception {
+        mvc.perform(get("/lending/book/1/latest"))
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
     }
@@ -48,7 +63,7 @@ public class LendingIntegrationTest {
     @WithUserDetails("test2@asd.com")
     @DisplayName("로그인 후 대여요청")
     public void save_lending_with_auth() throws Exception {
-        var resultAction = mvc.perform(post("/book/5/lending"))
+        mvc.perform(post("/lending/book/5"))
                 .andExpect(status().isCreated())
                 .andDo(print());
     }
@@ -56,7 +71,7 @@ public class LendingIntegrationTest {
     @Test
     @DisplayName("로그인 하지 않고 대여요청")
     public void save_lending_with_no_auth() throws Exception {
-        var resultAction = mvc.perform(post("/book/1/lending"))
+        mvc.perform(post("/lending/book/1"))
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
     }
@@ -65,9 +80,7 @@ public class LendingIntegrationTest {
     @WithUserDetails("test1@asd.com")
     @DisplayName("ACCEPTED로 대여기록 업데이트")
     public void update_lending_to_accepted() throws Exception {
-        var resultAction = mvc.perform(put("/lending/2")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(LendingStatus.ACCEPTED)))
+        mvc.perform(put("/lending/2/ACCEPTED"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -76,9 +89,7 @@ public class LendingIntegrationTest {
     @WithUserDetails("test1@asd.com")
     @DisplayName("REJECTED로 대여기록 업데이트")
     public void update_lending_to_rejected() throws Exception {
-        var resultAction = mvc.perform(put("/lending/4")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(LendingStatus.REJECTED)))
+        mvc.perform(put("/lending/4/REJECTED"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -87,9 +98,7 @@ public class LendingIntegrationTest {
     @WithUserDetails("test1@asd.com")
     @DisplayName("RETURNED로 대여기록 업데이트")
     public void update_lending_to_returned() throws Exception {
-        var resultAction = mvc.perform(put("/lending/2")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(mapper.writeValueAsString(LendingStatus.RETURNED)))
+        mvc.perform(put("/lending/2/RETURNED"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
