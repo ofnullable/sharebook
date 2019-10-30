@@ -64,7 +64,7 @@ public class Lending {
         this.histories.add(buildLendingHistory(LendingStatus.ACCEPTED));
     }
 
-    public void reject() {
+    public void rejected() {
         this.endedAt = LocalDateTime.now();
         this.currentStatus = LendingStatus.REJECTED;
         this.histories.add(buildLendingHistory(LendingStatus.REJECTED));
