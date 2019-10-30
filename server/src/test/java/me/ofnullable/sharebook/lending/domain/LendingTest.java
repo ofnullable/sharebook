@@ -35,7 +35,7 @@ public class LendingTest {
     @DisplayName("대여거절")
     public void lending_reject() {
         var lending = buildRequestedLending();
-        lending.reject();
+        lending.rejected();
 
         assertEquals(lending.getHistories().size(), 2);
         assertEquals(lending.getHistories().get(1).getStatus(), LendingStatus.REJECTED);
@@ -57,7 +57,7 @@ public class LendingTest {
         var lending = buildLending(1L);
 
         assertThrows(LendingNotRequestedException.class, lending::accept);
-        assertThrows(LendingNotRequestedException.class, lending::reject);
+        assertThrows(LendingNotRequestedException.class, lending::rejected);
         assertThrows(LendingNotRequestedException.class, lending::returned);
     }
 
@@ -83,7 +83,7 @@ public class LendingTest {
     @DisplayName("이미 종료된 대여기록 수정시도 시 - LendingAlreadyCompletionException")
     public void already_completed_lending() {
         var rejected = buildRequestedLending();
-        rejected.reject();
+        rejected.rejected();
 
         assertThrows(LendingAlreadyCompletionException.class, rejected::accept);
         assertThrows(LendingAlreadyCompletionException.class, rejected::returned);
@@ -92,7 +92,7 @@ public class LendingTest {
         returned.returned();
 
         assertThrows(LendingAlreadyCompletionException.class, returned::accept);
-        assertThrows(LendingAlreadyCompletionException.class, returned::reject);
+        assertThrows(LendingAlreadyCompletionException.class, returned::rejected);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class LendingTest {
     public void already_started_lending() {
         var accepted = buildAcceptedLending();
 
-        assertThrows(LendingStatusInvalidException.class, accepted::reject);
+        assertThrows(LendingStatusInvalidException.class, accepted::rejected);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class LendingTest {
     public void change_not_started_lending_to_return() {
         var accepted = buildAcceptedLending();
 
-        assertThrows(LendingStatusInvalidException.class, accepted::reject);
+        assertThrows(LendingStatusInvalidException.class, accepted::rejected);
     }
 
 }

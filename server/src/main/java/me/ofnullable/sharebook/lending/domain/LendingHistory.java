@@ -38,12 +38,12 @@ public class LendingHistory extends Auditable {
     private void verifyStatus(Lending lending, LendingStatus status) {
         var lastStatus = getLastStatus(lending);
 
-        if (lastStatus != null) {
-            verifyWithLastStatus(lastStatus, status);
-        } else {
+        if (lastStatus == null) {
             if (status != LendingStatus.REQUESTED) {
                 throw new LendingNotRequestedException(lending.getId());
             }
+        } else {
+            verifyWithLastStatus(lastStatus, status);
         }
     }
 
@@ -53,36 +53,45 @@ public class LendingHistory extends Auditable {
     }
 
     private void verifyWithLastStatus(LendingStatus lastStatus, LendingStatus newStatus) {
-        if (isStatusEquals(lastStatus, newStatus))
-            throw new LendingStatusEqualsException(newStatus);
-        if (isStatusInvalid(lastStatus, newStatus))
-            throw new LendingStatusInvalidException(lastStatus, newStatus);
         if (isCompleted(lastStatus))
             throw new LendingAlreadyCompletionException();
-    }
-
-    private boolean isStatusInvalid(LendingStatus lastStatus, LendingStatus newStatus) {
-        if (isRented(lastStatus) && newStatus == LendingStatus.REJECTED)
-            return true;
-        if (isRequested(lastStatus) && newStatus == LendingStatus.RETURNED)
-            return true;
-        return false;
+        if (isStatusEquals(lastStatus, newStatus))
+            throw new LendingStatusEqualsException(newStatus);
+        if (isInvalidStatus(lastStatus, newStatus))
+            throw new LendingStatusInvalidException(lastStatus, newStatus);
     }
 
     private boolean isStatusEquals(LendingStatus lastStatus, LendingStatus newStatus) {
         return lastStatus == newStatus;
     }
 
+    /*
+     * Next status can be:
+     *   origin         next status
+     * REQUESTED -> CANCELED || ACCEPTED || REJECTED
+     * ACCEPTED  -> RETURNED
+     * CANCELED }
+     * REJECTED }-> X
+     * RETURNED }
+     */
+    private boolean isInvalidStatus(LendingStatus lastStatus, LendingStatus newStatus) {
+        if (isRequested(lastStatus) && newStatus == LendingStatus.RETURNED)
+            return true;
+        if (isAccepted(lastStatus) && newStatus != LendingStatus.RETURNED)
+            return true;
+        return false;
+    }
+
     private boolean isRequested(LendingStatus lastStatus) {
         return lastStatus == LendingStatus.REQUESTED;
     }
 
-    private boolean isRented(LendingStatus lastStatus) {
+    private boolean isAccepted(LendingStatus lastStatus) {
         return lastStatus == LendingStatus.ACCEPTED;
     }
 
     private boolean isCompleted(LendingStatus lastStatus) {
-        return lastStatus == LendingStatus.REJECTED || lastStatus == LendingStatus.RETURNED;
+        return lastStatus == LendingStatus.REJECTED || lastStatus == LendingStatus.RETURNED || lastStatus == LendingStatus.CANCELED;
     }
 
 }

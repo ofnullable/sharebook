@@ -24,7 +24,7 @@ public class LendingUpdateService {
                 lending.accept();
                 break;
             case REJECTED:
-                lending.reject();
+                lending.rejected();
                 break;
             case RETURNED:
                 lending.returned();
