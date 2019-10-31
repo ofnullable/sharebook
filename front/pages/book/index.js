@@ -7,9 +7,8 @@ import BookDetailPage from '@components/BookPage/BookDetailPage';
 
 const Book = () => {
   const { detail } = useSelector(state => state.book);
-  const { latestLending } = useSelector(state => state.lending);
 
-  return <BookDetailPage detail={detail.data} error={detail.error} latestLending={latestLending} />;
+  return <BookDetailPage detail={detail.data} error={detail.error} />;
 };
 
 Book.getInitialProps = async ({ query, store }) => {

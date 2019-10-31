@@ -10,7 +10,7 @@ import {
 } from './index.styled';
 import { CenterDiv } from '@styles/common';
 
-const BookPage = ({ detail, error, latestLending }) => {
+const BookPage = ({ detail, error }) => {
   if (error.status === 404) {
     return (
       <CenterDiv>
@@ -32,7 +32,7 @@ const BookPage = ({ detail, error, latestLending }) => {
           <span>{`${detail.owner} | ${detail.createdAt}`}</span>
           <p>{detail.description}</p>
         </BookInfoWrapper>
-        <LendingButton detail={detail} lending={latestLending.data} />
+        <LendingButton detail={detail} />
       </BookDetailWrapper>
     </BookDetailHeader>
   );

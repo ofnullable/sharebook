@@ -1,13 +1,17 @@
 import { fork, put, takeLatest, call, all } from 'redux-saga/effects';
 
-import { BOOK_STATUS } from '@utils/consts';
+import { BOOK_STATUS, LENDING_STATUS } from '@utils/consts';
 import { LENDING } from '@redux/actionTypes';
-import { borrowBookApi, cancelBorrowBookApi, returnBookApi, loadLatestLendingApi, loadLendingListApi } from '@redux/api/lending';
+import { borrowBookApi, changeLendingStatusApi, loadLatestLendingApi, loadLendingListApi } from '@redux/api/lending';
 import {
   borrowBookSuccess,
   borrowBookFailure,
-  cancelBorrowBookSuccess,
-  cancelBorrowBookFailure,
+  cancelBorrowSuccess,
+  cancelBorrowFailure,
+  acceptLendingSuccess,
+  acceptLendingFailure,
+  rejectLendingSuccess,
+  rejectLendingFailure,
   returnBookSuccess,
   returnBookFailure,
   loadLatestLendingSuccess,
@@ -21,6 +25,8 @@ export default function*() {
   yield all([
     fork(watchBorrowBookRequest),
     fork(watchCancelBorrowBookRequest),
+    fork(watchAcceptLendingRequest),
+    fork(watchRejectLendingRequest),
     fork(watchReturnBookRequest),
     fork(watchLoadLatestLendingRequest),
     fork(watchLoadLendingListRequest)
@@ -42,16 +48,43 @@ function* borrowBook({ id }) {
 }
 
 function* watchCancelBorrowBookRequest() {
-  yield takeLatest(LENDING.CANCEL_BORROW_BOOK_REQUEST, cancelBorrowBook);
+  yield takeLatest(LENDING.CANCEL_BORROW_REQUEST, cancelBorrowBook);
 }
 function* cancelBorrowBook({ id }) {
   try {
-    const response = yield call(cancelBorrowBookApi, id);
-    yield put(cancelBorrowBookSuccess(response.data));
+    const response = yield call(changeLendingStatusApi, { id, status: LENDING_STATUS.CANCELED });
+    yield put(cancelBorrowSuccess(response.data));
     yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.AVAILABLE));
   } catch (e) {
     console.error(e);
-    yield put(cancelBorrowBookFailure(e.response.data || e));
+    yield put(cancelBorrowFailure(e.response.data || e));
+  }
+}
+
+function* watchAcceptLendingRequest() {
+  yield takeLatest(LENDING.ACCEPT_LENDING_REQUEST, acceptLending);
+}
+function* acceptLending({ id }) {
+  try {
+    const response = yield call(changeLendingStatusApi, { id, status: LENDING_STATUS.ACCEPTED });
+    yield put(acceptLendingSuccess(response.data));
+  } catch (e) {
+    console.error(e);
+    yield put(acceptLendingFailure(e.response.data || e));
+  }
+}
+
+function* watchRejectLendingRequest() {
+  yield takeLatest(LENDING.REJECT_LENDING_REQUEST, rejectLending);
+}
+function* rejectLending({ id }) {
+  try {
+    const response = yield call(changeLendingStatusApi, { id, status: LENDING_STATUS.REJECTED });
+    yield put(rejectLendingSuccess(response.data));
+    yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.AVAILABLE));
+  } catch (e) {
+    console.error(e);
+    yield put(rejectLendingFailure(e.response.data || e));
   }
 }
 
@@ -60,7 +93,7 @@ function* watchReturnBookRequest() {
 }
 function* returnBook({ id }) {
   try {
-    const response = yield call(returnBookApi, id);
+    const response = yield call(changeLendingStatusApi, { id, status: LENDING_STATUS.RETURNED });
     yield put(returnBookSuccess(response.data));
     yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.AVAILABLE));
   } catch (e) {
