@@ -27,18 +27,33 @@ export default (state = initial, action) => {
   return produce(state, draft => {
     switch (action.type) {
       case LENDING.BORROW_BOOK_REQUEST:
-      case LENDING.CANCEL_BORROW_BOOK_REQUEST:
+      case LENDING.CANCEL_BORROW_REQUEST:
         draft.histories.isLoading = true;
         break;
       case LENDING.BORROW_BOOK_SUCCESS:
-      case LENDING.CANCEL_BORROW_BOOK_SUCCESS:
+      case LENDING.CANCEL_BORROW_SUCCESS:
         draft.histories.isLoading = false;
         draft.histories.data.push(action.data);
         break;
       case LENDING.BORROW_BOOK_FAILURE:
-      case LENDING.CANCEL_BORROW_BOOK_FAILURE:
+      case LENDING.CANCEL_BORROW_FAILURE:
         draft.histories.isLoading = false;
         draft.histories.error = action.error;
+        break;
+
+      case LENDING.ACCEPT_LENDING_REQUEST:
+      case LENDING.REJECT_LENDING_REQUEST:
+        draft.latestLending.isLoading = true;
+        break;
+      case LENDING.ACCEPT_LENDING_SUCCESS:
+      case LENDING.REJECT_LENDING_SUCCESS:
+        draft.latestLending.isLoading = false;
+        draft.latestLending.data = action.data;
+        break;
+      case LENDING.ACCEPT_LENDING_FAILURE:
+      case LENDING.REJECT_LENDING_FAILURE:
+        draft.latestLending.isLoading = false;
+        draft.latestLending.error = action.data;
         break;
 
       case LENDING.LOAD_LATEST_LENDING_REQUEST:

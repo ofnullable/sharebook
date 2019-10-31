@@ -13,16 +13,42 @@ export const borrowBookFailure = error => ({
   error,
 });
 
-export const cancelBorrowBookRequest = id => ({
+export const cancelBorrowRequest = id => ({
   type: LENDING.CANCEL_BORROW_BOOK_REQUEST,
   id,
 });
-export const cancelBorrowBookSuccess = data => ({
+export const cancelBorrowSuccess = data => ({
   type: LENDING.CANCEL_BORROW_BOOK_SUCCESS,
   data,
 });
-export const cancelBorrowBookFailure = error => ({
+export const cancelBorrowFailure = error => ({
   type: LENDING.CANCEL_BORROW_BOOK_FAILURE,
+  error,
+});
+
+export const acceptLendingRequest = id => ({
+  type: LENDING.ACCEPT_LENDING_REQUEST,
+  id,
+});
+export const acceptLendingSuccess = data => ({
+  type: LENDING.ACCEPT_LENDING_SUCCESS,
+  data,
+});
+export const acceptLendingFailure = error => ({
+  type: LENDING.ACCEPT_LENDING_FAILURE,
+  error,
+});
+
+export const rejectLendingRequest = id => ({
+  type: LENDING.REJECT_LENDING_REQUEST,
+  id,
+});
+export const rejectLendingSuccess = data => ({
+  type: LENDING.REJECT_LENDING_SUCCESS,
+  data,
+});
+export const rejectLendingFailure = error => ({
+  type: LENDING.REJECT_LENDING_FAILURE,
   error,
 });
 

@@ -54,7 +54,7 @@ const Nav = () => {
             <Link href='/' prefetch={false}>
               <HomepageLink>
                 <i className='material-icons'>share</i>
-                <span>Sharebook</span>
+                <span>SHAREBOOK</span>
               </HomepageLink>
             </Link>
           </HeaderMenu>
