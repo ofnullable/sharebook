@@ -98,9 +98,6 @@ public class LendingUpdateServiceTest {
                 .willReturn(lending);
 
         assertThrows(LendingStatusEqualsException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.ACCEPTED));
-
-        lending.returned();
-        assertThrows(LendingStatusEqualsException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.RETURNED));
     }
 
     @Test

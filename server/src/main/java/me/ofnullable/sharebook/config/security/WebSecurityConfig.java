@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 -> res.sendError(code.getStatus(), code.getMessage());
     }
 
-    private AccessDeniedHandler authDeniedHandler() {
+    private AccessDeniedHandler accessDeniedHandler() {
         var code = ErrorCode.ACCESS_DENIED;
         return (req, res, e)
                 -> res.sendError(code.getStatus(), code.getMessage());
@@ -118,7 +118,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .exceptionHandling()
                     .authenticationEntryPoint(authenticationEntryPoint())
-                    .accessDeniedHandler(authDeniedHandler())
+                    .accessDeniedHandler(accessDeniedHandler())
             .and()
                 .formLogin()
                     .loginProcessingUrl("/auth/sign-in")

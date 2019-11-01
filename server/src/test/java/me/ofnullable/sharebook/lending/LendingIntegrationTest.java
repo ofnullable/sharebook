@@ -87,6 +87,15 @@ public class LendingIntegrationTest {
 
     @Test
     @WithUserDetails("test1@asd.com")
+    @DisplayName("CANCELED로 대여기록 업데이트")
+    public void update_lending_to_canceled() throws Exception {
+        mvc.perform(put("/lending/5/ACCEPTED"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @WithUserDetails("test1@asd.com")
     @DisplayName("REJECTED로 대여기록 업데이트")
     public void update_lending_to_rejected() throws Exception {
         mvc.perform(put("/lending/4/REJECTED"))
