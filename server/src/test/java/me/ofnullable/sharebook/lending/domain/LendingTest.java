@@ -72,11 +72,6 @@ public class LendingTest {
             lending.accept();
             lending.accept();
         });
-
-        assertThrows(LendingStatusEqualsException.class, () -> {
-            lending.returned();
-            lending.returned();
-        });
     }
 
     @Test
