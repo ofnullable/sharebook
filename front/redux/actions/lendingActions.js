@@ -14,15 +14,15 @@ export const borrowBookFailure = error => ({
 });
 
 export const cancelBorrowRequest = id => ({
-  type: LENDING.CANCEL_BORROW_BOOK_REQUEST,
+  type: LENDING.CANCEL_BORROW_REQUEST,
   id,
 });
 export const cancelBorrowSuccess = data => ({
-  type: LENDING.CANCEL_BORROW_BOOK_SUCCESS,
+  type: LENDING.CANCEL_BORROW_SUCCESS,
   data,
 });
 export const cancelBorrowFailure = error => ({
-  type: LENDING.CANCEL_BORROW_BOOK_FAILURE,
+  type: LENDING.CANCEL_BORROW_FAILURE,
   error,
 });
 
