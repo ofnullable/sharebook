@@ -6,7 +6,7 @@ const initial = {
   latestLending: {
     data: {},
     isLoading: false,
-    error: {}
+    error: {},
   },
   histories: {
     data: [],
@@ -23,20 +23,21 @@ const initial = {
   },
 };
 
+const getTarget = state => {
+  return state.histories.data.length ? state.histories : state.myLendings;
+};
+
 export default (state = initial, action) => {
   return produce(state, draft => {
     switch (action.type) {
       case LENDING.BORROW_BOOK_REQUEST:
-      case LENDING.CANCEL_BORROW_REQUEST:
         draft.histories.isLoading = true;
         break;
       case LENDING.BORROW_BOOK_SUCCESS:
-      case LENDING.CANCEL_BORROW_SUCCESS:
         draft.histories.isLoading = false;
         draft.histories.data.push(action.data);
         break;
       case LENDING.BORROW_BOOK_FAILURE:
-      case LENDING.CANCEL_BORROW_FAILURE:
         draft.histories.isLoading = false;
         draft.histories.error = action.error;
         break;
@@ -55,6 +56,27 @@ export default (state = initial, action) => {
         draft.latestLending.isLoading = false;
         draft.latestLending.error = action.data;
         break;
+
+      case LENDING.CANCEL_BORROW_REQUEST:
+      case LENDING.RETURN_BOOK_REQUEST: {
+        const target = getTarget(draft);
+        target.isLoading = true;
+        break;
+      }
+      case LENDING.CANCEL_BORROW_SUCCESS:
+      case LENDING.RETURN_BOOK_SUCCESS: {
+        const target = getTarget(draft);
+        target.isLoading = false;
+        const originIndex = target.data.findIndex(d => d.id === action.data.id);
+        if (originIndex > -1) target.data.splice(originIndex, 1);
+        break;
+      }
+      case LENDING.CANCEL_BORROW_FAILURE:
+      case LENDING.RETURN_BOOK_FAILURE: {
+        const target = getTarget(draft);
+        target.isLoading = false;
+        break;
+      }
 
       case LENDING.LOAD_LATEST_LENDING_REQUEST:
         draft.latestLending.isLoading = true;

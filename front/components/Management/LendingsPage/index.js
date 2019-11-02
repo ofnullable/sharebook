@@ -2,8 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
-import BookCard from '@components/BookCard';
 import LeftMenu from '@components/Management/LeftMenu';
+import LendingHistory from '@components/Management/LendingsPage/LendingHistory';
 
 import { WithLeftMenu, Title, SubMenu } from '@components/Management/styled';
 import {
@@ -33,7 +33,7 @@ const LendingsPage = ({ status }) => {
           as={`/management/lendings/requested`}
         >
           <a>
-            <span className={status === 'requested' ? 'active' : ''}>요청한도서</span>
+            <span className={status === 'requested' ? 'active' : ''}>요청중도서</span>
           </a>
         </Link>
         <Link
@@ -70,7 +70,7 @@ const LendingsPage = ({ status }) => {
         <CardWrapper>
           {!isLoading &&
             (data.length ? (
-              data.map(lending => <BookCard key={lending.id} data={lending.book} />)
+              data.map(lending => <LendingHistory key={lending.id} data={lending} />)
             ) : (
               <CenterDiv>
                 <p>도서가 존재하지 않습니다.</p>

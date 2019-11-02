@@ -1,10 +1,9 @@
 package me.ofnullable.sharebook.account.dto;
 
 import lombok.Getter;
-import lombok.ToString;
 import me.ofnullable.sharebook.account.domain.Account;
 
-@Getter @ToString
+@Getter
 public class AccountResponse {
 
     private Long id;
