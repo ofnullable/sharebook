@@ -79,7 +79,7 @@ const LendingButton = ({ detail }) => {
   if (lending.borrowerId === user.id) {
     if (lending.currentStatus === LENDING_STATUS.REQUESTED) {
       return (
-          <Button _color='red' onClick={handleCancel}>신청취소</Button>
+          <Button _color='red' onClick={handleCancel}>요청취소</Button>
       )
     } else if (lending.currentStatus === LENDING_STATUS.ACCEPTED) {
       return (

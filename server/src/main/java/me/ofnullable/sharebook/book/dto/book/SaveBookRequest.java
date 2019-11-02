@@ -10,7 +10,6 @@ import me.ofnullable.sharebook.book.domain.Book;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SaveBookRequest {
 
@@ -26,6 +25,7 @@ public class SaveBookRequest {
     @NotBlank
     private String description;
 
+    @Getter
     @NotNull
     private Long categoryId;
 

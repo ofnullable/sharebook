@@ -67,9 +67,9 @@ VALUES
 
 INSERT INTO share_jpa.lending(borrower_id, book_id, current_status, started_at, ended_at)
 VALUES
-       (2, 1, "RETURNED", now(), null),
-       (3, 1, "REQUESTED", now(), null),
-       (2, 2, "ACCEPTED", null, null),
+       (2, 1, "RETURNED", now(), now()),
+       (3, 1, "REQUESTED", null, null),
+       (2, 2, "ACCEPTED", now(), null),
        (2, 3, "REQUESTED", null, null);
 
 INSERT INTO share_jpa.lending_history(lending_id, status, created_by, created_at, modified_by, modified_at)

@@ -8,7 +8,6 @@ import me.ofnullable.sharebook.config.security.handler.RestAuthSuccessHandler;
 import me.ofnullable.sharebook.error.ErrorCode;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,7 +26,6 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -37,18 +35,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
-    private AuthenticationEntryPoint authenticationEntryPoint() {
-        var code = ErrorCode.UNAUTHORIZED;
-        return (req, res, e)
-                -> res.sendError(code.getStatus(), code.getMessage());
-    }
-
-    private AccessDeniedHandler accessDeniedHandler() {
-        var code = ErrorCode.ACCESS_DENIED;
-        return (req, res, e)
-                -> res.sendError(code.getStatus(), code.getMessage());
     }
 
     @Bean
@@ -136,6 +122,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .authenticationSuccessHandler(authSuccessHandler())
                     .tokenValiditySeconds(7 * 24 * 60 * 60) // 1 week
             .and();
+    }
+
+    private AuthenticationEntryPoint authenticationEntryPoint() {
+        var code = ErrorCode.UNAUTHORIZED;
+        return (req, res, e)
+                -> res.sendError(code.getStatus(), code.getMessage());
+    }
+
+    private AccessDeniedHandler accessDeniedHandler() {
+        var code = ErrorCode.ACCESS_DENIED;
+        return (req, res, e)
+                -> res.sendError(code.getStatus(), code.getMessage());
     }
 
 }
