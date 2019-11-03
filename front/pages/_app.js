@@ -39,11 +39,11 @@ const Sharebook = ({ Component, pageProps, store }) => {
   );
 };
 
-Sharebook.getInitialProps = async ({ Component, ctx }) => {
+Sharebook.getInitialProps = async ({ ctx, Component }) => {
   const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
   const loadUserNeeded = ctx.isServer && !['/signin', '/join'].includes(ctx.req.url);
 
-  if (cookie) {
+  if (ctx.isServer) {
     axios.defaults.headers.cookie = cookie;
   }
   const state = ctx.store.getState();

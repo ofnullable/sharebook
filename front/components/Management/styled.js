@@ -23,6 +23,7 @@ export const WithLeftMenu = styled.div`
   ${device.mobiles`
     width: 100%;
     text-align: left;
+    margin-bottom: 55px;
   `};
 `;
 
