@@ -25,7 +25,7 @@ public class LendingController {
 
     @PostMapping("/lending/book/{bookId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public LendingResponse lendingRequest(
+    public LendingResponse borrowRequest(
             @AuthenticationPrincipal(expression = "account") Account account,
             @PathVariable Long bookId) {
         return new LendingResponse(lendingSaveService.borrowRequest(bookId, account.getId()));

@@ -30,4 +30,10 @@ public class LendingFindService {
                 .orElseThrow(() -> new LendingHistoryNotExistsException(bookId));
     }
 
+    // for validation. so return value is not necessary
+    public void findByBorrowerIdAndBookId(Long borrowerId, Long bookId) {
+        lendingRepository.findByBorrowerIdAndBookId(borrowerId, bookId)
+                .orElseThrow(() -> new LendingHistoryNotExistsException(bookId));
+    }
+
 }
