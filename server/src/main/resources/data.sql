@@ -70,7 +70,9 @@ VALUES
        (2, 1, "RETURNED", now(), now()),
        (3, 1, "REQUESTED", null, null),
        (2, 2, "ACCEPTED", now(), null),
-       (2, 3, "REQUESTED", null, null);
+       (2, 3, "REQUESTED", null, null),
+       (2, 4, "REQUESTED", null, null),
+       (2, 5, "REQUESTED", null, null);
 
 INSERT INTO share_jpa.lending_history(lending_id, status, created_by, created_at, modified_by, modified_at)
 VALUES
@@ -80,4 +82,6 @@ VALUES
        (2, "REQUESTED", 3, now(), 3, now()),
        (3, "REQUESTED", 2, now(), 2, now()),
        (3, "ACCEPTED", 1, now(), 1, now()),
-       (4, "REQUESTED", 2, now(), 2, now());
+       (4, "REQUESTED", 2, now(), 2, now()),
+       (5, "REQUESTED", 2, now(), 2, now()),
+       (5, "REQUESTED", 2, now(), 2, now());
