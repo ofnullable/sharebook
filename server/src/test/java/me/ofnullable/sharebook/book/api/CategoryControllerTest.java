@@ -26,11 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-public class CategoryControllerTest {
-
-    private MockMvc mvc;
-
-    private ObjectMapper mapper = new ObjectMapper();
+class CategoryControllerTest {
 
     @InjectMocks
     private CategoryController categoryController;
@@ -41,8 +37,11 @@ public class CategoryControllerTest {
     @Mock
     private CategorySaveService categorySaveService;
 
+    private MockMvc mvc;
+    private final ObjectMapper mapper = new ObjectMapper();
+
     @BeforeEach
-    public void setup() {
+    void setup() {
         mvc = MockMvcBuilders
                 .standaloneSetup(categoryController)
                 .setControllerAdvice(ApiErrorHandler.class)
@@ -52,7 +51,7 @@ public class CategoryControllerTest {
 
     @Test
     @DisplayName("전체 카테고리 조회")
-    public void find_all_of_category() throws Exception {
+    void find_all_of_category() throws Exception {
         var categories = buildCategoryList();
         given(categoryFindService.findAllByDisplay(anyBoolean()))
                 .willReturn(categories);
@@ -63,22 +62,24 @@ public class CategoryControllerTest {
 
     @Test
     @DisplayName("카테고리 추가")
-    public void save_category() throws Exception {
+    void save_category() throws Exception {
         var saveDto = buildSaveCategoryRequest();
         given(categorySaveService.save(any(SaveCategoryRequest.class)))
                 .willReturn(buildCategory());
 
         mvc.perform(post("/category")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(saveDto)))
                 .andExpect(status().isCreated());
     }
 
     @Test
     @DisplayName("유효하지 않은 이름으로 카테고리 추가 - 400")
-    public void save_category_invalid_name() throws Exception {
+    void save_category_invalid_name() throws Exception {
         mvc.perform(post("/category")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(SaveCategoryRequest.of(""))))
                 .andExpect(status().isBadRequest());
     }

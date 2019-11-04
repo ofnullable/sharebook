@@ -1,6 +1,5 @@
 package me.ofnullable.sharebook.lending;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,17 +17,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-public class LendingIntegrationTest {
+class LendingIntegrationTest {
 
     @Autowired
     private MockMvc mvc;
 
-    private ObjectMapper mapper = new ObjectMapper();
-
     @Test
     @WithUserDetails("test1@asd.com")
     @DisplayName("로그인 후 현재 계정 대여기록 요청")
-    public void find_lending_by_account_id_with_auth() throws Exception {
+    void find_lending_by_account_id_with_auth() throws Exception {
         mvc.perform(get("/lending/REQUESTED?page=1&size=20"))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -36,7 +33,7 @@ public class LendingIntegrationTest {
 
     @Test
     @DisplayName("로그인하지 않고 현재 계정 대여기록 요청")
-    public void find_lending_by_account_id_with_no_auth() throws Exception {
+    void find_lending_by_account_id_with_no_auth() throws Exception {
         mvc.perform(get("/lending/REQUESTED?page=1&size=20"))
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
@@ -45,7 +42,7 @@ public class LendingIntegrationTest {
     @Test
     @WithUserDetails("test1@asd.com")
     @DisplayName("로그인 후 특정 도서의 최근 대여기록 요청")
-    public void find_latest_lending_by_book_id_with_auth() throws Exception {
+    void find_latest_lending_by_book_id_with_auth() throws Exception {
         mvc.perform(get("/lending/book/1/latest"))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -53,7 +50,7 @@ public class LendingIntegrationTest {
 
     @Test
     @DisplayName("로그인하지 않고 특정 도서의 최근 대여기록 요청")
-    public void find_latest_lending_by_book_id_with_no_auth() throws Exception {
+    void find_latest_lending_by_book_id_with_no_auth() throws Exception {
         mvc.perform(get("/lending/book/1/latest"))
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
@@ -62,7 +59,7 @@ public class LendingIntegrationTest {
     @Test
     @WithUserDetails("test2@asd.com")
     @DisplayName("로그인 후 대여요청")
-    public void save_lending_with_auth() throws Exception {
+    void save_lending_with_auth() throws Exception {
         mvc.perform(post("/lending/book/5"))
                 .andExpect(status().isCreated())
                 .andDo(print());
@@ -70,7 +67,7 @@ public class LendingIntegrationTest {
 
     @Test
     @DisplayName("로그인 하지 않고 대여요청")
-    public void save_lending_with_no_auth() throws Exception {
+    void save_lending_with_no_auth() throws Exception {
         mvc.perform(post("/lending/book/1"))
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
@@ -79,7 +76,7 @@ public class LendingIntegrationTest {
     @Test
     @WithUserDetails("test1@asd.com")
     @DisplayName("ACCEPTED로 대여기록 업데이트")
-    public void update_lending_to_accepted() throws Exception {
+    void update_lending_to_accepted() throws Exception {
         mvc.perform(put("/lending/2/ACCEPTED"))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -88,7 +85,7 @@ public class LendingIntegrationTest {
     @Test
     @WithUserDetails("test1@asd.com")
     @DisplayName("CANCELED로 대여기록 업데이트")
-    public void update_lending_to_canceled() throws Exception {
+    void update_lending_to_canceled() throws Exception {
         mvc.perform(put("/lending/5/ACCEPTED"))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -97,7 +94,7 @@ public class LendingIntegrationTest {
     @Test
     @WithUserDetails("test1@asd.com")
     @DisplayName("REJECTED로 대여기록 업데이트")
-    public void update_lending_to_rejected() throws Exception {
+    void update_lending_to_rejected() throws Exception {
         mvc.perform(put("/lending/4/REJECTED"))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -106,7 +103,7 @@ public class LendingIntegrationTest {
     @Test
     @WithUserDetails("test1@asd.com")
     @DisplayName("RETURNED로 대여기록 업데이트")
-    public void update_lending_to_returned() throws Exception {
+    void update_lending_to_returned() throws Exception {
         mvc.perform(put("/lending/2/RETURNED"))
                 .andExpect(status().isOk())
                 .andDo(print());

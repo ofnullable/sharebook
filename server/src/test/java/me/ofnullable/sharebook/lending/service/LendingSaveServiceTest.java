@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
-public class LendingSaveServiceTest {
+class LendingSaveServiceTest {
 
     @InjectMocks
     private LendingSaveService lendingSaveService;
@@ -33,7 +33,7 @@ public class LendingSaveServiceTest {
 
     @Test
     @DisplayName("대여요청")
-    public void borrow_request() {
+    void borrow_request() {
         var lending = LendingUtils.buildRequestedLending();
 
         given(bookFindService.findById(any(Long.class)))
@@ -48,7 +48,7 @@ public class LendingSaveServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 도서 대여 시 - NoSuchBookException")
-    public void lending_invalid_book() {
+    void lending_invalid_book() {
         given(bookFindService.findById(any(Long.class)))
                 .willThrow(NoSuchBookException.class);
 

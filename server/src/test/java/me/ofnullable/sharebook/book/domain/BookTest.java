@@ -10,15 +10,15 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class BookTest {
+class BookTest {
 
-    private Account account = Account.builder()
+    private final Account account = Account.builder()
             .email(Email.of("test1@asd.com"))
             .name("test")
             .password("{noop}test")
             .build();
 
-    private Book book = Book.builder()
+    private final Book book = Book.builder()
             .title("test book")
             .author("author")
             .publisher("test")
@@ -31,7 +31,7 @@ public class BookTest {
 
     @Test
     @DisplayName("Builder로 인스턴스 생성")
-    public void book_builder() {
+    void book_builder() {
         assertEquals(book.getTitle(), "test book");
         assertEquals(book.getAuthor(), "author");
         assertEquals(book.getPublisher(), "test");
@@ -40,14 +40,14 @@ public class BookTest {
 
     @Test
     @DisplayName("도서 카테고리 추가")
-    public void book_set_category() {
+    void book_set_category() {
         book.setCategory(category);
         assertEquals(book.getCategory().getName(), category.getName());
     }
 
     @Test
     @DisplayName("도서 상태변경")
-    public void change_book_status() {
+    void change_book_status() {
         var available = BookStatus.of(1);
         assertEquals(available, BookStatus.AVAILABLE);
 
@@ -63,13 +63,13 @@ public class BookTest {
 
     @Test
     @DisplayName("존재하지 않는 도서 상태 - NoSuchBookStatusException")
-    public void invalid_book_status() {
+    void invalid_book_status() {
         assertThrows(NoSuchBookStatusException.class, () -> BookStatus.of(3));
     }
 
     @Test
     @DisplayName("BookStatus <-> Database column 컨버팅")
-    public void converter() {
+    void converter() {
         var converter = new BookStatusConverter();
 
         var column = converter.convertToDatabaseColumn(BookStatus.AVAILABLE);

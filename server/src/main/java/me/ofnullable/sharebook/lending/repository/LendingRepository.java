@@ -17,4 +17,6 @@ public interface LendingRepository extends JpaRepository<Lending, Long> {
     @EntityGraph(attributePaths = {"book", "book.category", "book.owner"})
     Optional<Lending> findFirstByBookIdOrderByIdDesc(Long bookId);
 
+    Optional<Lending> findByBorrowerIdAndBookId(Long borrowerId, Long bookId);
+
 }
