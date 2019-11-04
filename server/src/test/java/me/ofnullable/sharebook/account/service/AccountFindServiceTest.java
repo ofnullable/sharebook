@@ -22,7 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
-public class AccountFindServiceTest {
+class AccountFindServiceTest {
 
     @InjectMocks
     private AccountFindService accountFindService;
@@ -34,7 +34,7 @@ public class AccountFindServiceTest {
 
     @Test
     @DisplayName("SECURITY - 이메일로 조회")
-    public void load_account_by_email() {
+    void load_account_by_email() {
         given(accountRepository.findByEmail(any(Email.class)))
                 .willReturn(Optional.of(account));
 
@@ -47,7 +47,7 @@ public class AccountFindServiceTest {
 
     @Test
     @DisplayName("SECURITY - 이메일이 존재하지 않는 경우 NoSuchAccountException")
-    public void load_account_by_username_with_invalid_email() {
+    void load_account_by_username_with_invalid_email() {
         given(accountRepository.findByEmail(any(Email.class)))
                 .willReturn(Optional.empty());
 
@@ -56,7 +56,7 @@ public class AccountFindServiceTest {
 
     @Test
     @DisplayName("아이디(PK)로 조회")
-    public void find_account_by_id() {
+    void find_account_by_id() {
         given(accountRepository.findById(any(Long.class)))
                 .willReturn(Optional.of(account));
 
@@ -67,7 +67,7 @@ public class AccountFindServiceTest {
 
     @Test
     @DisplayName("아이디(PK)가 존재하지 않는 경우 AccountNotFoundException")
-    public void find_account_by_id_with_invalid_id() {
+    void find_account_by_id_with_invalid_id() {
         given(accountRepository.findById(any(Long.class)))
                 .willReturn(Optional.empty());
 
@@ -76,7 +76,7 @@ public class AccountFindServiceTest {
 
     @Test
     @DisplayName("계정정보가 없는 경우 빈 리스트")
-    public void find_account_all() {
+    void find_account_all() {
         given(accountRepository.findAll())
                 .willReturn(Collections.emptyList());
 

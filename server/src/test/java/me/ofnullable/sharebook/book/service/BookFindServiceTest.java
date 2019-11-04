@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
-public class BookFindServiceTest {
+class BookFindServiceTest {
 
     @InjectMocks
     private BookFindService bookFindService;
@@ -35,11 +35,11 @@ public class BookFindServiceTest {
     @Mock
     private CategoryFindService categoryFindService;
 
-    private Book book = buildBook();
+    private final Book book = buildBook();
 
     @Test
     @DisplayName("도서 Id로 도서 조회")
-    public void find_book_by_id() {
+    void find_book_by_id() {
         given(bookRepository.findById(any(Long.class)))
                 .willReturn(Optional.of(book));
 
@@ -50,7 +50,7 @@ public class BookFindServiceTest {
 
     @Test
     @DisplayName("도서가 존재하지 않는 경우 - NoSuchBookException")
-    public void find_book_by_invalid_id() {
+    void find_book_by_invalid_id() {
         given(bookRepository.findById(any(Long.class)))
                 .willReturn(Optional.empty());
 
@@ -59,7 +59,7 @@ public class BookFindServiceTest {
 
     @Test
     @DisplayName("도서 리스트 요청")
-    public void book_list_pagination() {
+    void book_list_pagination() {
         given(bookRepository.findAllByOrderByStatus(any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
@@ -71,7 +71,7 @@ public class BookFindServiceTest {
 
     @Test
     @DisplayName("도서 제목 검색 요청")
-    public void book_list_pagination_by_title() {
+    void book_list_pagination_by_title() {
         given(bookRepository.findALlByTitleContainingIgnoreCaseOrderByStatus(any(String.class), any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
@@ -83,7 +83,7 @@ public class BookFindServiceTest {
 
     @Test
     @DisplayName("비정상적인 사이즈로 요청시 요청 사이즈 20으로 고정")
-    public void book_list_irregular_size_pagination() {
+    void book_list_irregular_size_pagination() {
         given(bookRepository.findALlByTitleContainingIgnoreCaseOrderByStatus(any(String.class), any(Pageable.class)))
                 .willReturn(buildIrregularPageBook());
 
@@ -95,7 +95,7 @@ public class BookFindServiceTest {
 
     @Test
     @DisplayName("카테고리 내 도서 요청")
-    public void find_book_by_category() {
+    void find_book_by_category() {
         given(categoryFindService.findCategoryById(any(Long.class)))
                 .willReturn(buildCategory());
         given(bookRepository.findAllByCategoryNameOrderByStatus(any(String.class), any(Pageable.class)))
@@ -109,7 +109,7 @@ public class BookFindServiceTest {
 
     @Test
     @DisplayName("특정 유저가 등록한 도서 리스트 요청")
-    public void find_book_by_author() {
+    void find_book_by_author() {
         given(bookRepository.findAllByOwnerId(any(Long.class), any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 
@@ -121,7 +121,7 @@ public class BookFindServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 유저가 등록한 도서 리스트 요청")
-    public void find_book_by_invalid_author() {
+    void find_book_by_invalid_author() {
         given(bookRepository.findAllByOwnerId(any(Long.class), any(Pageable.class)))
                 .willReturn(Page.empty());
 
@@ -132,7 +132,7 @@ public class BookFindServiceTest {
 
     @Test
     @DisplayName("특정 상태의 내 도서 요청")
-    public void find_book_by_Lending_status() {
+    void find_book_by_Lending_status() {
         given(bookRepository.findAllByOwnerIdAndLendingsCurrentStatus(any(Long.class), any(LendingStatus.class), any(Pageable.class)))
                 .willReturn(buildNormalPageBook());
 

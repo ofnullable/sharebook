@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id 'org.springframework.boot' version '2.2.0.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'jacoco'
     id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
@@ -19,7 +19,6 @@ configurations {
         extendsFrom annotationProcessor
     }
     implementation.exclude module: 'spring-boot-starter-logging'
-    testImplementation.exclude module: 'junit'
 }
 
 repositories {
@@ -90,9 +89,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-params'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
     testImplementation 'org.springframework.security:spring-security-test'
 }

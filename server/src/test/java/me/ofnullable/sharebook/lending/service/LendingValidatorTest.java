@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
-public class LendingValidatorTest {
+class LendingValidatorTest {
 
     @InjectMocks
     private LendingValidator validator;
@@ -26,10 +26,9 @@ public class LendingValidatorTest {
     @Mock
     private AccountFindService accountFindService;
 
-
     @Test
     @DisplayName("존재하지 않는 계정 Id로 대여 요청 시 - NoSuchAccountException")
-    public void borrow_with_invalid_account_id() {
+    void borrow_with_invalid_account_id() {
         given(accountFindService.findById(any(Long.class)))
                 .willThrow(NoSuchAccountException.class);
 
@@ -40,7 +39,7 @@ public class LendingValidatorTest {
 
     @Test
     @DisplayName("대여 불가능한 도서 대여 시 - IllegalStateException")
-    public void borrow_unavailable_status_book() {
+    void borrow_unavailable_status_book() {
         var book = BookUtils.buildBook();
         book.toUnavailable(1L);
         var lending = buildLending(book);
@@ -50,7 +49,7 @@ public class LendingValidatorTest {
 
     @Test
     @DisplayName("자신의 도서 대여 시 - IllegalArgumentException")
-    public void borrow_my_book() throws NoSuchFieldException, IllegalAccessException {
+    void borrow_my_book() throws NoSuchFieldException, IllegalAccessException {
         var book = buildBookWithOwner(BookUtils.buildBook());
         var lending = buildLending(book);
 

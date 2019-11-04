@@ -11,11 +11,11 @@ import static me.ofnullable.sharebook.lending.utils.LendingUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class LendingTest {
+class LendingTest {
 
     @Test
     @DisplayName("대여요청")
-    public void save_lending_history() {
+    void save_lending_history() {
         var lending = buildRequestedLending();
 
         assertEquals(lending.getHistories().size(), 1);
@@ -24,7 +24,7 @@ public class LendingTest {
 
     @Test
     @DisplayName("대여수락")
-    public void lending_accept() {
+    void lending_accept() {
         var lending = buildAcceptedLending();
 
         assertEquals(lending.getHistories().size(), 2);
@@ -33,7 +33,7 @@ public class LendingTest {
 
     @Test
     @DisplayName("대여거절")
-    public void lending_reject() {
+    void lending_reject() {
         var lending = buildRequestedLending();
         lending.rejected();
 
@@ -43,7 +43,7 @@ public class LendingTest {
 
     @Test
     @DisplayName("반납")
-    public void lending_return() {
+    void lending_return() {
         var lending = buildAcceptedLending();
         lending.returned();
 
@@ -53,7 +53,7 @@ public class LendingTest {
 
     @Test
     @DisplayName("존재하지 않는 요청에 대한 처리 시 - LendingNotRequestedException")
-    public void invalid_first_status() {
+    void invalid_first_status() {
         var lending = buildLending(1L);
 
         assertThrows(LendingNotRequestedException.class, lending::accept);
@@ -63,7 +63,7 @@ public class LendingTest {
 
     @Test
     @DisplayName("동일한 상태로 변경 시 - LendingStatusEqualsException")
-    public void same_lending_status() {
+    void same_lending_status() {
         var lending = buildRequestedLending();
 
         assertThrows(LendingStatusEqualsException.class, lending::borrow);
@@ -76,7 +76,7 @@ public class LendingTest {
 
     @Test
     @DisplayName("이미 종료된 대여기록 수정시도 시 - LendingAlreadyCompletionException")
-    public void already_completed_lending() {
+    void already_completed_lending() {
         var rejected = buildRequestedLending();
         rejected.rejected();
 
@@ -92,7 +92,7 @@ public class LendingTest {
 
     @Test
     @DisplayName("이미 시작된 대여기록 거절 시 - LendingStatusInvalidException")
-    public void already_started_lending() {
+    void already_started_lending() {
         var accepted = buildAcceptedLending();
 
         assertThrows(LendingStatusInvalidException.class, accepted::rejected);
@@ -100,7 +100,7 @@ public class LendingTest {
 
     @Test
     @DisplayName("시작되지 않은 대여기록 반납요청 시 - LendingStatusInvalidException")
-    public void change_not_started_lending_to_return() {
+    void change_not_started_lending_to_return() {
         var accepted = buildAcceptedLending();
 
         assertThrows(LendingStatusInvalidException.class, accepted::rejected);

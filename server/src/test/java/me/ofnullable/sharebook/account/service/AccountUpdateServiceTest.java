@@ -16,17 +16,17 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
-public class AccountUpdateServiceTest {
+class AccountUpdateServiceTest {
 
     @Mock
     private AccountUpdateService accountUpdateService;
 
-    private Account account = Account.builder().email(Email.of("test@asd.com")).name("test").password("test").build();
-    private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    private final Account account = Account.builder().email(Email.of("test@asd.com")).name("test").password("test").build();
+    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @Test
     @DisplayName("비밀번호 업데이트")
-    public void update_password() {
+    void update_password() {
         given(accountUpdateService.updatePassword(any(Long.class), anyString()))
                 .willReturn(account);
 

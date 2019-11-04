@@ -65,14 +65,14 @@ VALUES
        ("두근두근 파이썬", "천인국", "생능출판사", 3,"description for test book4", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com"),
        ("명품 C++ Programming", "황기태", "생능출판사 ", 3,"description for test book5", 1, "https://placeimg.com/200/300/animals", 1, null, now(), "test1@asd.com", now(), "test1@asd.com");
 
-INSERT INTO share_jpa.lending(borrower_id, book_id, current_status, started_at, ended_at)
+INSERT INTO share_jpa.lending(book_id, borrower_id, current_status, started_at, ended_at)
 VALUES
-       (2, 1, "RETURNED", now(), now()),
-       (3, 1, "REQUESTED", null, null),
+       (1, 2, "RETURNED", now(), now()),
+       (1, 3, "CANCELED", null, now()),
        (2, 2, "ACCEPTED", now(), null),
-       (2, 3, "REQUESTED", null, null),
-       (2, 4, "REQUESTED", null, null),
-       (2, 5, "REQUESTED", null, null);
+       (3, 2, "RETURNED", now(), now()),
+       (4, 3, "REQUESTED", null, null),
+       (5, 2, "REQUESTED", null, null);
 
 INSERT INTO share_jpa.lending_history(lending_id, status, created_by, created_at, modified_by, modified_at)
 VALUES
@@ -80,8 +80,15 @@ VALUES
        (1, "ACCEPTED", 1, now(), 1, now()),
        (1, "RETURNED", 1, now(), 1, now()),
        (2, "REQUESTED", 3, now(), 3, now()),
+       (2, "CANCELED", 3, now(), 3, now()),
        (3, "REQUESTED", 2, now(), 2, now()),
        (3, "ACCEPTED", 1, now(), 1, now()),
        (4, "REQUESTED", 2, now(), 2, now()),
-       (5, "REQUESTED", 2, now(), 2, now()),
+       (4, "ACCEPTED", 1, now(), 2, now()),
+       (4, "RETURNED", 2, now(), 2, now()),
+       (5, "REQUESTED", 3, now(), 3, now()),
        (5, "REQUESTED", 2, now(), 2, now());
+
+INSERT INTO share_jpa.review(book_id, reviewer_id, contents, score)
+VALUES
+       (1, 2, "test review...", 5);

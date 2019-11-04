@@ -7,14 +7,13 @@ BITCAMP에서 진행했던 프로젝트의 REMAKE ver.
 ## 변경사항
 
 - java8 -> java11
-- spring 4.3 -> spring-boot 2.1.7
-- jsp -> thymeleaf
+- spring 4.3 -> spring-boot 2.2.0
+- jsp -> ~~thymeleaf~~ -> Http api + React app
 - commons-dbcp -> HikariCP
+- MyBatis -> JPA
 - commons-fileupload -> spring-integration-ftp
 - login with interceptor -> spring security
 
 ## WIP:
 
-- Mybatis -> JPA 적용해보기
-- Template engine 걷어내고 rest api형태로 만들기
-- **React (Next.js)** 로 Front 만들기
+- Review기능 구현중
