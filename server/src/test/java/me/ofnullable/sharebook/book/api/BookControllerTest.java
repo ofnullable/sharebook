@@ -33,11 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-public class BookControllerTest extends WithAuthenticationPrincipal {
-
-    private MockMvc mvc;
-
-    private ObjectMapper mapper = new ObjectMapper();
+class BookControllerTest extends WithAuthenticationPrincipal {
 
     @InjectMocks
     private BookController bookController;
@@ -48,8 +44,11 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
     @Mock
     private BookFindService bookFindService;
 
+    private MockMvc mvc;
+    private final ObjectMapper mapper = new ObjectMapper();
+
     @BeforeEach
-    public void setup() {
+    void setup() {
         mvc = super.setup(bookController);
     }
 
@@ -57,7 +56,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("도서 Id로 도서 조회")
-    public void find_book_by_id() throws Exception {
+    void find_book_by_id() throws Exception {
         given(bookFindService.findById(any(Long.class)))
                 .willReturn(book);
 
@@ -67,7 +66,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("존재하지 않는 도서 조회 - 404")
-    public void find_book_by_invalid_id() throws Exception {
+    void find_book_by_invalid_id() throws Exception {
         given(bookFindService.findById(any(Long.class)))
                 .willThrow(NoSuchBookException.class);
 
@@ -77,37 +76,39 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("도서 등록")
-    public void save_book() throws Exception {
+    void save_book() throws Exception {
         given(bookSaveService.save(any(SaveBookRequest.class), any(Account.class)))
                 .willReturn(book);
 
         mvc.perform(post("/book")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(buildSaveBookRequest())))
                 .andExpect(status().isCreated());
     }
 
     @Test
     @DisplayName("존재하지 않는 계정으로 도서 등록하는 경우 - 404")
-    public void save_book_with_invalid_account() throws Exception {
+    void save_book_with_invalid_account() throws Exception {
         given(bookSaveService.save(any(SaveBookRequest.class), any(Account.class)))
                 .willThrow(NoSuchAccountException.class);
 
         mvc.perform(post("/book")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(buildSaveBookRequest())))
                 .andExpect(status().isNotFound())
-        .andExpect(jsonPath("$.message", is("No such account")));
+                .andExpect(jsonPath("$.message", is("No such account")));
     }
 
     @Test
     @DisplayName("존재하지 않는 카테고리로 도서 등록하는 경우 - 404")
-    public void save_book_with_invalid_category() throws Exception {
+    void save_book_with_invalid_category() throws Exception {
         given(bookSaveService.save(any(SaveBookRequest.class), any(Account.class)))
                 .willThrow(NoSuchCategoryException.class);
 
         mvc.perform(post("/book")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(buildSaveBookRequest())))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message", is("No such category")));
@@ -115,7 +116,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("도서 리스트 요청")
-    public void book_list_pagination() throws Exception {
+    void book_list_pagination() throws Exception {
         given(bookFindService.findAll(any(), any(PageRequest.class)))
                 .willReturn(buildNormalPageBook());
 
@@ -125,7 +126,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("도서 제목 검색 요청 및 한글 테스트")
-    public void book_list_pagination_by_title() throws Exception {
+    void book_list_pagination_by_title() throws Exception {
         given(bookFindService.findAll(any(String.class), any(PageRequest.class)))
                 .willReturn(buildNormalPageBook());
 
@@ -135,7 +136,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("비정상적인 사이즈로 요청시 요청 사이즈 20으로 고정")
-    public void book_list_irregular_size_pagination() throws Exception {
+    void book_list_irregular_size_pagination() throws Exception {
         given(bookFindService.findAll(any(), any(PageRequest.class)))
                 .willReturn(buildNormalPageBook());
 
@@ -146,7 +147,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("카테고리별 도서 조회")
-    public void find_book_by_category() throws Exception {
+    void find_book_by_category() throws Exception {
         given(bookFindService.findAllByCategory(any(String.class), any(PageRequest.class)))
                 .willReturn(buildNormalPageBook());
 
@@ -158,7 +159,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("존재하지 않는 카테고리로 조회하는 경우 - 404")
-    public void find_book_by_invalid_category() throws Exception {
+    void find_book_by_invalid_category() throws Exception {
         given(bookFindService.findAllByCategory(any(String.class), any(PageRequest.class)))
                 .willThrow(NoSuchCategoryException.class);
 
@@ -170,7 +171,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("특정 유저가 등록한 도서 리스트 요청")
-    public void find_book_by_owner() throws Exception {
+    void find_book_by_owner() throws Exception {
         given(bookFindService.findAllByOwner(any(Long.class), any(PageRequest.class)))
                 .willReturn(buildNormalPageBook());
 
@@ -180,7 +181,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("존재하지 않는 유저가 등록한 도서 리스트 요청")
-    public void find_book_by_invalid_owner() throws Exception {
+    void find_book_by_invalid_owner() throws Exception {
         given(bookFindService.findAllByOwner(any(Long.class), any(PageRequest.class)))
                 .willReturn(Page.empty());
 
@@ -190,7 +191,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("현재 로그인 한 유저가 등록한 도서 리스트 요청")
-    public void find_book_by_logged_in_account() throws Exception {
+    void find_book_by_logged_in_account() throws Exception {
         given(bookFindService.findAllByOwner(any(Long.class), any(PageRequest.class)))
                 .willReturn(buildNormalPageBook());
 
@@ -200,7 +201,7 @@ public class BookControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("특정 상태의 내 도서 요청")
-    public void find_book_by_lending_status() throws Exception {
+    void find_book_by_lending_status() throws Exception {
         given(bookFindService.findAllMyBookByLendingStatus(any(Long.class), any(LendingStatus.class), any(PageRequest.class)))
                 .willReturn(buildNormalPageBook());
 

@@ -15,9 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-
 @ExtendWith(SpringExtension.class)
-public class CategorySaveServiceTest {
+class CategorySaveServiceTest {
 
     @InjectMocks
     private CategorySaveService categorySaveService;
@@ -27,7 +26,7 @@ public class CategorySaveServiceTest {
 
     @Test
     @DisplayName("카테고리 등록")
-    public void save_category() {
+    void save_category() {
         var category = buildCategory();
         given(categoryRepository.save(any(Category.class)))
                 .willReturn(category);

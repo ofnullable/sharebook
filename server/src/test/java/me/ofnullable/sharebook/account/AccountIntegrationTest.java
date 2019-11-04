@@ -27,18 +27,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-public class AccountIntegrationTest {
+class AccountIntegrationTest {
 
     @Autowired
     private MockMvc mvc;
-
-    private Account defaultAccount = buildNormalAccount();
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
+    private final Account defaultAccount = buildNormalAccount();
 
     @Test
     @DisplayName("로그인 후 현재 계정 조회")
     @WithUserDetails("test1@asd.com")
-    public void get_current_account_with_auth() throws Exception {
+    void get_current_account_with_auth() throws Exception {
         var resultAction = mvc.perform(get("/account/0"))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -48,7 +47,7 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("로그인 하지않고 현재 계정 조회")
-    public void get_current_account_with_no_auth() throws Exception {
+    void get_current_account_with_no_auth() throws Exception {
         mvc.perform(get("/account/0"))
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
@@ -57,7 +56,7 @@ public class AccountIntegrationTest {
     @Test
     @DisplayName("로그인 후 계정 조회")
     @WithUserDetails("test1@asd.com")
-    public void get_account_with_auth() throws Exception {
+    void get_account_with_auth() throws Exception {
         var resultAction = mvc.perform(get("/account/1"))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -67,7 +66,7 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("로그인하지 않고 계정 조회 - 401")
-    public void get_account_with_no_auth() throws Exception {
+    void get_account_with_no_auth() throws Exception {
         mvc.perform(get("/account/1"))
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
@@ -75,14 +74,15 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("정상적인 로그인 요청")
-    public void sign_in() throws Exception {
+    void sign_in() throws Exception {
         var signInRequest = SignInRequest.builder()
                 .username("test1@asd.com")
                 .password("test")
                 .build();
 
         var resultAction = mvc.perform(post("/auth/sign-in")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(signInRequest))
         )
                 .andExpect(status().isOk())
@@ -93,14 +93,15 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("존재하지 않는 계정으로 로그인 요청 - 400")
-    public void sign_in_with_bad_credential() throws Exception {
+    void sign_in_with_bad_credential() throws Exception {
         var signInRequest = SignInRequest.builder()
                 .username("invalidUsername")
                 .password("test")
                 .build();
 
         mvc.perform(post("/auth/sign-in")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(signInRequest))
         )
                 .andExpect(status().isBadRequest())
@@ -112,14 +113,15 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("데이터를 전송하지 않은 로그인 요청 - 400")
-    public void sign_in_with_null_credential() throws Exception {
+    void sign_in_with_null_credential() throws Exception {
         var signInRequest = SignInRequest.builder()
                 .username(null)
                 .password(null)
                 .build();
 
         mvc.perform(post("/auth/sign-in")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(signInRequest))
         )
                 .andExpect(status().isBadRequest())
@@ -131,14 +133,15 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("유효하지 않은 데이터로 로그인 요청 - 400")
-    public void sign_in_with_invalid_parameter() throws Exception {
+    void sign_in_with_invalid_parameter() throws Exception {
         var signUpRequest = SignUpRequest.builder()
                 .email(null)
                 .password(null)
                 .build();
 
         mvc.perform(post("/auth/sign-in")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(signUpRequest))
         )
                 .andExpect(status().isBadRequest())
@@ -150,11 +153,12 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("정상적인 회원가입 요청")
-    public void sign_up() throws Exception {
+    void sign_up() throws Exception {
         var signUpRequest = buildNormalSignUpRequest("test@test.com");
 
         mvc.perform(post("/account")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(signUpRequest))
         )
                 .andExpect(status().isCreated())
@@ -163,11 +167,12 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("중복된 이메일로 회원가입 요청 - 409")
-    public void sign_up_with_duplicated_email() throws Exception {
+    void sign_up_with_duplicated_email() throws Exception {
         var signUpRequest = buildNormalSignUpRequest("test1@asd.com");
 
         mvc.perform(post("/account")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(signUpRequest))
         )
                 .andExpect(status().isConflict())
@@ -179,11 +184,12 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("유효하지 않은 이메일로 회원가입 요청 - 400")
-    public void sign_up_with_invalid_email() throws Exception {
+    void sign_up_with_invalid_email() throws Exception {
         var signUpRequest = buildInvalidSignUpRequest();
 
         mvc.perform(post("/account")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(signUpRequest))
         )
                 .andExpect(status().isBadRequest())
@@ -197,9 +203,10 @@ public class AccountIntegrationTest {
     @Test
     @WithMockUser(username = "test1@asd.com", roles = "BASIC")
     @DisplayName("로그인 후 비밀번호 업데이트")
-    public void update_password_with_auth() throws Exception {
+    void update_password_with_auth() throws Exception {
         mvc.perform(patch("/account/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content("test")
         )
                 .andExpect(status().isOk())
@@ -209,9 +216,10 @@ public class AccountIntegrationTest {
     @Test
     @WithMockUser(username = "test1@asd.com", roles = "BASIC")
     @DisplayName("로그인 후 존재하지 않는 계정 비밀번호 업데이트")
-    public void update_password_with_invalid_account_with_auth() throws Exception {
+    void update_password_with_invalid_account_with_auth() throws Exception {
         mvc.perform(patch("/account/10")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content("newPassword")
         )
                 .andExpect(status().isNotFound())
@@ -220,9 +228,10 @@ public class AccountIntegrationTest {
 
     @Test
     @DisplayName("로그인하지 않고 비밀번호 업데이트")
-    public void update_password_with_no_auth() throws Exception {
+    void update_password_with_no_auth() throws Exception {
         mvc.perform(patch("/account/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content("newPassword")
         )
                 .andExpect(status().isUnauthorized())

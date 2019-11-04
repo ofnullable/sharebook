@@ -27,9 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-public class LendingControllerTest extends WithAuthenticationPrincipal {
-
-    private MockMvc mvc;
+class LendingControllerTest extends WithAuthenticationPrincipal {
 
     @InjectMocks
     private LendingController lendingController;
@@ -43,14 +41,16 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
     @Mock
     private LendingUpdateService lendingUpdateService;
 
+    private MockMvc mvc;
+
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.mvc = super.setup(lendingController);
     }
 
     @Test
     @DisplayName("현재 계정의 대여목록 조회")
-    public void find_lending_by_account_id() throws Exception {
+    void find_lending_by_account_id() throws Exception {
         given(lendingFindService.findAllByAccountIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(PageRequest.class)))
                 .willReturn(buildPageLending(20));
 
@@ -61,7 +61,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("대여목록이 존재하지 않는 경우")
-    public void find_lending_by_invalid_account_id() throws Exception {
+    void find_lending_by_invalid_account_id() throws Exception {
         given(lendingFindService.findAllByAccountIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(PageRequest.class)))
                 .willReturn(Page.empty());
 
@@ -72,7 +72,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("도서 Id로 최근 대여기록 조회")
-    public void find_latest_by_book_id() throws Exception {
+    void find_latest_lending_by_book_id() throws Exception {
         var requestedLending = buildRequestedLending();
 
         given(lendingFindService.findLatestLendingByBookId(any(Long.class)))
@@ -84,7 +84,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("도서 Id에 해당하는 대여기록 존재하지 않는 경우 - LendingHistoryNotExistsException")
-    public void find_first_by_invalid_book_id() throws Exception {
+    void find_first_lending_by_invalid_book_id() throws Exception {
         given(lendingFindService.findLatestLendingByBookId(any(Long.class)))
                 .willThrow(LendingHistoryNotExistsException.class);
 
@@ -95,7 +95,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("대여신청")
-    public void save_lending_with_auth() throws Exception {
+    void save_lending_with_auth() throws Exception {
         given(lendingSaveService.borrowRequest(any(Long.class), any(Long.class)))
                 .willReturn(buildRequestedLending());
 
@@ -105,7 +105,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("ACCEPTED로 대여기록 업데이트")
-    public void update_lending_to_accepted() throws Exception {
+    void update_lending_to_accepted() throws Exception {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.ACCEPTED)))
                 .willReturn(buildAcceptedLending());
 
@@ -115,7 +115,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("REJECTED로 대여기록 업데이트")
-    public void update_lending_to_rejected() throws Exception {
+    void update_lending_to_rejected() throws Exception {
         var lending = buildRequestedLending();
         lending.rejected();
 
@@ -128,7 +128,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("RETURNED로 대여기록 업데이트")
-    public void update_lending_to_returned() throws Exception {
+    void update_lending_to_returned() throws Exception {
         var lending = buildAcceptedLending();
         lending.returned();
 
@@ -141,7 +141,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("REQUESTED로 대여기록 업데이트 - 400")
-    public void update_lending_to_requested() throws Exception {
+    void update_lending_to_requested() throws Exception {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.REQUESTED)))
                 .willThrow(new LendingStatusInvalidException(LendingStatus.NONE, LendingStatus.REQUESTED));
 
@@ -151,7 +151,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("이미 종료 된 대여 업데이트 시 - 400")
-    public void update_already_completed_lending() throws Exception {
+    void update_already_completed_lending() throws Exception {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.REJECTED)))
                 .willThrow(LendingAlreadyCompletionException.class);
 
@@ -161,7 +161,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("요청되지 않은 대여 업데이트 시 - 400")
-    public void update_not_requested_lending() throws Exception {
+    void update_not_requested_lending() throws Exception {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.REJECTED)))
                 .willThrow(LendingNotRequestedException.class);
 
@@ -171,7 +171,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("이전 상태와 같은 상태로 변경 요청 시 - 400")
-    public void update_lending_to_same_status() throws Exception {
+    void update_lending_to_same_status() throws Exception {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.REJECTED)))
                 .willThrow(LendingStatusEqualsException.class);
 
@@ -181,7 +181,7 @@ public class LendingControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("존재하지 않는 대여 업데이트 시 - 404")
-    public void update_invalid_lending() throws Exception {
+    void update_invalid_lending() throws Exception {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.REJECTED)))
                 .willThrow(NoSuchLendingException.class);
 
