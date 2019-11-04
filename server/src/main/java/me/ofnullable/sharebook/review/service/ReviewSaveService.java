@@ -17,7 +17,7 @@ public class ReviewSaveService {
     @Transactional
     public Review save(SaveReviewRequest dto) {
         var entity = dto.toEntity();
-        reviewValidator.validateAccountAndBook(entity);
+        reviewValidator.isValidRequest(entity);
         return reviewRepository.save(entity);
     }
 

@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
-public class BookSaveServiceTest {
+class BookSaveServiceTest {
 
     @InjectMocks
     private BookSaveService bookSaveService;
@@ -35,7 +35,7 @@ public class BookSaveServiceTest {
 
     @Test
     @DisplayName("도서 등록")
-    public void save_book() {
+    void save_book() {
         var book = buildBook();
 
         given(accountFindService.findById(any(Long.class)))
@@ -52,7 +52,7 @@ public class BookSaveServiceTest {
 
     @Test
     @DisplayName("존재하지 카테고리로 도서 등록하는 경우 - NoSuchCategoryException")
-    public void save_book_with_invalid_category() {
+    void save_book_with_invalid_category() {
         given(accountFindService.findById(any(Long.class)))
                 .willReturn(buildNormalAccount());
         given(categoryFindService.findCategoryById(any(Long.class)))

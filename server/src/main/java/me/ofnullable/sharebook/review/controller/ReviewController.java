@@ -6,6 +6,7 @@ import me.ofnullable.sharebook.review.dto.ReviewResponse;
 import me.ofnullable.sharebook.review.dto.SaveReviewRequest;
 import me.ofnullable.sharebook.review.service.ReviewFindService;
 import me.ofnullable.sharebook.review.service.ReviewSaveService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class ReviewController {
     }
 
     @PostMapping("/review/book/{bookId}")
+    @ResponseStatus(HttpStatus.CREATED)
     public ReviewResponse saveReview(
             @AuthenticationPrincipal(expression = "account") Account account,
             @RequestBody @Valid SaveReviewRequest dto) {

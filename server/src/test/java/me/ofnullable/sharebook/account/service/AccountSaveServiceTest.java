@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
-public class AccountSaveServiceTest {
+class AccountSaveServiceTest {
 
     @InjectMocks
     private AccountSaveService accountSaveService;
@@ -30,11 +30,11 @@ public class AccountSaveServiceTest {
     @Mock
     private AccountRepository accountRepository;
 
-    SignUpRequest signUpRequest = buildNormalSignUpRequest("test@test.com");
+    private final SignUpRequest signUpRequest = buildNormalSignUpRequest("test@test.com");
 
     @Test
     @DisplayName("회원가입")
-    public void save_account() {
+    void save_account() {
         given(accountRepository.save(any(Account.class)))
                 .willReturn(signUpRequest.toEntity());
 
@@ -46,7 +46,7 @@ public class AccountSaveServiceTest {
 
     @Test
     @DisplayName("중복된 이메일로 회원가입")
-    public void save_account_with_duplicated_email() {
+    void save_account_with_duplicated_email() {
         given(accountFindService.existedEmail(any(Email.class)))
                 .willReturn(true);
 

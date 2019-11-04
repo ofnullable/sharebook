@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
-public class LendingFindServiceTest {
+class LendingFindServiceTest {
 
     @InjectMocks
     private LendingFindService lendingFindService;
@@ -32,11 +32,11 @@ public class LendingFindServiceTest {
     @Mock
     private LendingRepository lendingRepository;
 
-    private Lending requested = buildRequestedLending();
+    private final Lending requested = buildRequestedLending();
 
     @Test
     @DisplayName("대여 Id로 대여기록 조회")
-    public void find_by_id() {
+    void find_by_id() {
         given(lendingRepository.findById(any(Long.class)))
                 .willReturn(Optional.of(requested));
 
@@ -47,7 +47,7 @@ public class LendingFindServiceTest {
 
     @Test
     @DisplayName("대여기록 존재하지 않는 경우 - NoSuchLendingException")
-    public void find_by_invalid_id() {
+    void find_by_invalid_id() {
         given(lendingRepository.findById(any(Long.class)))
                 .willReturn(Optional.empty());
 
@@ -56,7 +56,7 @@ public class LendingFindServiceTest {
 
     @Test
     @DisplayName("도서 Id로 최근 대여기록 조회")
-    public void find_latest_by_book_id() {
+    void find_latest_by_book_id() {
         given(lendingRepository.findFirstByBookIdOrderByIdDesc(any(Long.class)))
                 .willReturn(Optional.of(requested));
 
@@ -67,7 +67,7 @@ public class LendingFindServiceTest {
 
     @Test
     @DisplayName("도서 Id에 해당하는 대여기록 존재하지 않는 경우 - NoSuchLendingException")
-    public void find_first_by_invalid_book_id() {
+    void find_first_by_invalid_book_id() {
         given(lendingRepository.findFirstByBookIdOrderByIdDesc(any(Long.class)))
                 .willReturn(Optional.empty());
 
@@ -76,7 +76,7 @@ public class LendingFindServiceTest {
 
     @Test
     @DisplayName("특정 상태의 대여기록 조회")
-    public void find_by_account_id() {
+    void find_by_account_id() {
         given(lendingRepository.findAllByBorrowerIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(Pageable.class)))
                 .willReturn(buildPageLending(20));
 
@@ -87,7 +87,7 @@ public class LendingFindServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 계정의 대여기록 조회시 결과 0개")
-    public void find_by_invalid_account_id() {
+    void find_by_invalid_account_id() {
         given(lendingRepository.findAllByBorrowerIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(Pageable.class)))
                 .willReturn(Page.empty());
 

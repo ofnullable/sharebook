@@ -15,7 +15,7 @@ public class ReviewValidator {
     private final AccountFindService accountFindService;
     private final LendingFindService lendingFindService;
 
-    void validateAccountAndBook(Review review) {
+    void isValidRequest(Review review) {
         isValidAccountId(review.getReviewerId());
         isValidBookId(review.getBookId());
         lentHistoryExists(review.getReviewerId(), review.getBookId());

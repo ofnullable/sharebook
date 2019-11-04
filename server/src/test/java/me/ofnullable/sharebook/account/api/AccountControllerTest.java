@@ -27,11 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-public class AccountControllerTest extends WithAuthenticationPrincipal {
-
-    private MockMvc mvc;
-
-    private ObjectMapper mapper = new ObjectMapper();
+class AccountControllerTest extends WithAuthenticationPrincipal {
 
     @InjectMocks
     private AccountController accountController;
@@ -45,8 +41,11 @@ public class AccountControllerTest extends WithAuthenticationPrincipal {
     @Mock
     private AccountUpdateService accountUpdateService;
 
+    private MockMvc mvc;
+    private final ObjectMapper mapper = new ObjectMapper();
+
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.mvc = super.setup(accountController);
     }
 
@@ -54,14 +53,14 @@ public class AccountControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("현재 세션에 있는 계정조회")
-    public void get_my_account() throws Exception {
+    void get_my_account() throws Exception {
         mvc.perform(get("/account/0"))
                 .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("계정 Id로 계정 조회")
-    public void find_account_by_id() throws Exception {
+    void find_account_by_id() throws Exception {
         given(accountFindService.findById(any(Long.class)))
                 .willReturn(account);
 
@@ -71,7 +70,7 @@ public class AccountControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("존재하지 않는 계정조회 - 404")
-    public void find_account_by_invalid_id() throws Exception {
+    void find_account_by_invalid_id() throws Exception {
         given(accountFindService.findById(any(Long.class)))
                 .willThrow(NoSuchAccountException.class);
 
@@ -81,12 +80,13 @@ public class AccountControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("유효한 이메일로 회원가입")
-    public void sign_in() throws Exception {
+    void sign_in() throws Exception {
         given(accountSaveService.save(any(SignUpRequest.class)))
                 .willReturn(buildNormalAccount());
 
         mvc.perform(post("/account")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(buildNormalSignUpRequest("test1@asd.com")))
         )
                 .andExpect(status().isCreated());
@@ -94,12 +94,13 @@ public class AccountControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("중복된 이메일로 회원가입")
-    public void sign_in_duplicated_email() throws Exception {
+    void sign_in_duplicated_email() throws Exception {
         given(accountSaveService.save(any(SignUpRequest.class)))
                 .willThrow(EmailDuplicationException.class);
 
         mvc.perform(post("/account")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(buildNormalSignUpRequest("test1@asd.com")))
         )
                 .andExpect(status().isConflict());
@@ -107,12 +108,13 @@ public class AccountControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("유효하지 않은 이메일로 회원가입 - 400")
-    public void sign_in_invalid_email() throws Exception {
+    void sign_in_invalid_email() throws Exception {
         given(accountSaveService.save(any(SignUpRequest.class)))
                 .willReturn(buildNormalAccount());
 
         mvc.perform(post("/account")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(buildInvalidSignUpRequest()))
         )
                 .andExpect(status().isBadRequest());
@@ -120,12 +122,13 @@ public class AccountControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("비밀번호 변경 요청")
-    public void update_password() throws Exception {
+    void update_password() throws Exception {
         given(accountUpdateService.updatePassword(any(Long.class), anyString()))
                 .willReturn(account);
 
         mvc.perform(patch("/account/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content("newPassword")
         )
                 .andExpect(status().isOk());
@@ -133,12 +136,13 @@ public class AccountControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     @DisplayName("존재하지 않는 계정 비밀번호 변경 요청 - 404")
-    public void invalid_update_password() throws Exception {
+    void invalid_update_password() throws Exception {
         given(accountUpdateService.updatePassword(any(Long.class), anyString()))
                 .willThrow(NoSuchAccountException.class);
 
         mvc.perform(patch("/account/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content("newPassword")
         )
                 .andExpect(status().isNotFound());

@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
-public class CategoryFindServiceTest {
+class CategoryFindServiceTest {
 
     @InjectMocks
     private CategoryFindService categoryFindService;
@@ -28,7 +28,7 @@ public class CategoryFindServiceTest {
 
     @Test
     @DisplayName("전체 카테고리 요청")
-    public void find_category_is_display() {
+    void find_category_is_display() {
         given(categoryRepository.findAllByDisplayOrderByName(true))
                 .willReturn(buildCategoryList());
 
@@ -39,7 +39,7 @@ public class CategoryFindServiceTest {
 
     @Test
     @DisplayName("카테고리가 존재하는 경우")
-    public void find_category_by_name() {
+    void find_category_by_name() {
         given(categoryRepository.findByIdAndDisplayIsTrue(any(Long.class)))
                 .willReturn(Optional.of(buildCategory()));
 
@@ -51,7 +51,7 @@ public class CategoryFindServiceTest {
 
     @Test
     @DisplayName("카테고리가 존재하지 않는 경우 - NoSuchCategoryException")
-    public void find_category_by_invalid_name() {
+    void find_category_by_invalid_name() {
         given(categoryRepository.findByIdAndDisplayIsTrue(any(Long.class)))
                 .willReturn(Optional.empty());
 
