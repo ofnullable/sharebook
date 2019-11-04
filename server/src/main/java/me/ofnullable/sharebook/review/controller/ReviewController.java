@@ -29,7 +29,7 @@ public class ReviewController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/review/book/{bookId}")
+    @PostMapping("/review")
     @ResponseStatus(HttpStatus.CREATED)
     public ReviewResponse saveReview(
             @AuthenticationPrincipal(expression = "account") Account account,

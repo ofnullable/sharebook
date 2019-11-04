@@ -55,7 +55,7 @@ class ReviewControllerTest extends WithAuthenticationPrincipal {
         given(reviewSaveService.save(any(SaveReviewRequest.class)))
                 .willReturn(buildReview());
 
-        mvc.perform(post("/review/book/1")
+        mvc.perform(post("/review")
                 .characterEncoding("UTF-8")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(buildSaveRequest())))
