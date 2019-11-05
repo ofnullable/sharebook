@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { loadBookRequest } from '@redux/actions/bookActions';
-import { loadLatestLendingRequest } from "@redux/actions/lendingActions";
+import { loadLatestLendingRequest } from '@redux/actions/lendingActions';
 import BookDetailPage from '@components/BookPage/BookDetailPage';
 
 const Book = () => {

@@ -20,26 +20,17 @@ const LendingsPage = ({ status }) => {
   const renderSubMenu = () => {
     return (
       <SubMenu>
-        <Link
-          href={{ pathname: `/management/lendings`, query: { status: 'accepted' } }}
-          as={`/management/lendings/accepted`}
-        >
+        <Link href='/management/lendings/[status]' as={`/management/lendings/accepted`}>
           <a>
             <span className={status === 'accepted' ? 'active' : ''}>대여중도서</span>
           </a>
         </Link>
-        <Link
-          href={{ pathname: `/management/lendings`, query: { status: 'requested' } }}
-          as={`/management/lendings/requested`}
-        >
+        <Link href='/management/lendings/[status]' as={`/management/lendings/requested`}>
           <a>
             <span className={status === 'requested' ? 'active' : ''}>요청중도서</span>
           </a>
         </Link>
-        <Link
-          href={{ pathname: `/management/lendings`, query: { status: 'returned' } }}
-          as={`/management/lendings/returned`}
-        >
+        <Link href='/management/lendings/[status]' as={`/management/lendings/returned`}>
           <a>
             <span className={status === 'returned' ? 'active' : ''}>대여기록</span>
           </a>

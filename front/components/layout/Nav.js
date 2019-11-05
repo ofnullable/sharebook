@@ -20,11 +20,7 @@ const Nav = () => {
     if (isSignedIn) {
       return (
         <HeaderMenu _float='right'>
-          <Link
-            href={{ pathname: '/management/user', query: { menu: 'profile' } }}
-            as='/management/user/profile'
-            prefetch={false}
-          >
+          <Link href='/management/user/[menu]' as='/management/user/profile' prefetch={false}>
             <a>마이페이지</a>
           </Link>
         </HeaderMenu>

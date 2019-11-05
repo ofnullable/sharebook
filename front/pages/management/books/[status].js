@@ -13,7 +13,7 @@ const Books = ({ status }) => {
 Books.getInitialProps = async ({ query, store }) => {
   const status = query.status;
 
-  if (!status) {
+  if (status === 'all') {
     store.dispatch(loadMyBookListRequest());
   } else {
     store.dispatch(loadMyBookListByLendingStatusRequest(status.toUpperCase()));

@@ -10,27 +10,25 @@
     "start": "cross-env NODE_ENV=production next start"
   },
   "dependencies": {
-    "@next/bundle-analyzer": "^9.0.5",
+    "@next/bundle-analyzer": "^9.1.2",
     "axios": "^0.19.0",
-    "cross-env": "^5.2.0",
-    "fastify": "^2.7.1",
-    "fastify-static": "^2.5.0",
-    "immer": "^3.2.0",
-    "next": "9.0.5",
+    "cross-env": "^6.0.3",
+    "immer": "^5.0.0",
+    "next": "^9.1.2",
     "next-redux-saga": "^4.0.2",
-    "next-redux-wrapper": "^3.0.0",
-    "react": "16.9.0",
-    "react-dom": "16.9.0",
+    "next-redux-wrapper": "^4.0.1",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
     "react-redux": "^7.1.1",
     "redux": "^4.0.4",
-    "redux-saga": "^1.0.5",
-    "styled-components": "^4.3.2"
+    "redux-saga": "^1.1.1",
+    "styled-components": "^4.4.1"
   },
   "devDependencies": {
     "babel-plugin-module-resolver": "^3.2.0",
     "babel-plugin-styled-components": "^1.10.6",
     "compression-webpack-plugin": "^3.0.0",
-    "nodemon": "^1.19.1",
-    "webpack": "^4.39.3"
+    "nodemon": "^1.19.4",
+    "webpack": "^4.41.2"
   }
 }

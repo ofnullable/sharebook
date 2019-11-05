@@ -1,7 +1,7 @@
 {
   "presets": ["next/babel"],
   "plugins": [
-    ["babel-plugin-styled-components", { "ssr": true, "displayName": false, "preprocess": false }],
+    ["styled-components", { "ssr": true }],
     [
       "module-resolver",
       {

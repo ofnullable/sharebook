@@ -9,22 +9,19 @@ const menus = {
   profile: {
     name: '개인관리',
     icon: 'account_circle',
-    pathname: '/management/user',
-    query: { menu: 'profile' },
+    pathname: '/management/user/[menu]',
     as: '/management/user/profile',
   },
   books: {
     name: '도서관리',
     icon: 'menu_book',
-    pathname: '/management/books',
-    query: { status: '' },
-    as: '/management/books/',
+    pathname: '/management/books/[status]',
+    as: '/management/books/all',
   },
   lendings: {
     name: '대여관리',
     icon: 'list_alt',
-    pathname: '/management/lendings',
-    query: { status: 'accepted' },
+    pathname: '/management/lendings/[status]',
     as: '/management/lendings/accepted',
   },
 };
@@ -45,12 +42,7 @@ const LeftMenu = ({ menu }) => {
       <ul>
         {Object.keys(menus).map(m => {
           return (
-            <Link
-              key={m}
-              href={{ pathname: menus[m].pathname, query: menus[m].query }}
-              as={menus[m].as}
-              prefetch={false}
-            >
+            <Link key={m} href={`${menus[m].pathname}`} as={menus[m].as}>
               <MenuItem style={menu === m ? activeStyle : {}}>
                 <i className='material-icons'>{menus[m].icon}</i>
                 <p>{menus[m].name}</p>
