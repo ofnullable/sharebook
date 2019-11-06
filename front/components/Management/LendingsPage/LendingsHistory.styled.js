@@ -25,6 +25,10 @@ export const LendingInfoWrapper = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+  & span:last-child {
+    color: ${COLOR_SCHEME.darkGray};
+    font-size: 90%;
+  }
 `;
 
 export const ButtonWrapper = styled.div`

@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { useDispatch } from 'react-redux';
 
 import { cancelBorrowRequest, returnBookRequest } from '@redux/actions/lendingActions';
@@ -44,7 +45,7 @@ const LendingHistory = ({ data }) => {
       <LendingInfoWrapper>
         <span>{data.book.category}</span>
         <p>{data.book.title}</p>
-        <span style={{ fontSize: '90%' }}>{data.startedAt}</span>
+        <span>{data.startedAt && moment(data.startedAt).format('YYYY-MM-DD hh:mm')}</span>
       </LendingInfoWrapper>
       <ButtonWrapper>{ChangeStatusButton()}</ButtonWrapper>
     </ItemWrapper>
