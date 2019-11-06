@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import device from '@styles/device';
-import { COLOR_SCHEME } from '@styles/colors';
 
 export const BookDetailHeader = styled.article`
   ${device.laptops`

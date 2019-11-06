@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import ReviewForm from './ReviewForm';
 import ReviewItem from './ReviewItem';
 
-import { ReviewTitle, EmptyReview } from './index.styled';
+import { ReviewWrapper, ReviewTitle, EmptyReview } from './index.styled';
 
 const Review = () => {
   const user = useSelector(state => state.user.user);
@@ -24,7 +24,7 @@ const Review = () => {
   };
 
   return (
-    <>
+    <ReviewWrapper>
       <ReviewTitle>리뷰</ReviewTitle>
       {canWriteReview() && <ReviewForm user={user} />}
       {data.length ? (
@@ -32,7 +32,7 @@ const Review = () => {
       ) : (
         <EmptyReview>리뷰가 존재하지 않아요 ㅠ^ㅠ</EmptyReview>
       )}
-    </>
+    </ReviewWrapper>
   );
 };
 

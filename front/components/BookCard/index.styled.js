@@ -50,7 +50,6 @@ export const CardBody = styled.div`
   & span {
     float: right;
     font-size: 12px;
-    margin: 0.5em;
     color: ${COLOR_SCHEME.darkGray};
     overflow: hidden;
     white-space: nowrap;
