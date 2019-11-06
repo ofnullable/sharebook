@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useInput } from '@utils/InputUtils';
+import { useInput } from '@utils/inputUtils';
 import { signUpRequest } from '@redux/actions/userActions';
 
 import { ErrorText } from './index.styled';
