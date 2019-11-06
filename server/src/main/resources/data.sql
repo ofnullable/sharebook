@@ -76,19 +76,19 @@ VALUES
 
 INSERT INTO share_jpa.lending_history(lending_id, status, created_by, created_at, modified_by, modified_at)
 VALUES
-       (1, "REQUESTED", 2, now(), 2, now()),
-       (1, "ACCEPTED", 1, now(), 1, now()),
-       (1, "RETURNED", 1, now(), 1, now()),
-       (2, "REQUESTED", 3, now(), 3, now()),
-       (2, "CANCELED", 3, now(), 3, now()),
-       (3, "REQUESTED", 2, now(), 2, now()),
-       (3, "ACCEPTED", 1, now(), 1, now()),
-       (4, "REQUESTED", 2, now(), 2, now()),
-       (4, "ACCEPTED", 1, now(), 2, now()),
-       (4, "RETURNED", 2, now(), 2, now()),
-       (5, "REQUESTED", 3, now(), 3, now()),
-       (5, "REQUESTED", 2, now(), 2, now());
+       (1, "REQUESTED", "test2@asd.com", now(), "test2@asd.com", now()),
+       (1, "ACCEPTED", "test1@asd.com", now(), "test1@asd.com", now()),
+       (1, "RETURNED", "test1@asd.com", now(), "test1@asd.com", now()),
+       (2, "REQUESTED", "test3@asd.com", now(), "test3@asd.com", now()),
+       (2, "CANCELED", "test3@asd.com", now(), "test3@asd.com", now()),
+       (3, "REQUESTED", "test2@asd.com", now(), "test2@asd.com", now()),
+       (3, "ACCEPTED", "test1@asd.com", now(), "test1@asd.com", now()),
+       (4, "REQUESTED", "test2@asd.com", now(), "test2@asd.com", now()),
+       (4, "ACCEPTED", "test2@asd.com", now(), "test2@asd.com", now()),
+       (4, "RETURNED", "test2@asd.com", now(), "test2@asd.com", now()),
+       (5, "REQUESTED", "test3@asd.com", now(), "test3@asd.com", now()),
+       (5, "REQUESTED", "test2@asd.com", now(), "test2@asd.com", now());
 
-INSERT INTO share_jpa.review(book_id, reviewer_id, contents, score)
+INSERT INTO share_jpa.review(book_id, reviewer_id, contents, score, created_by, created_at, modified_by, modified_at)
 VALUES
-       (1, 2, "test review...", 5);
+       (1, 2, "test review...", 5, "test2@asd.com", now(), "test2@asd.com", now());
