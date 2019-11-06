@@ -2,14 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useInput } from '@utils/InputUtils';
+import { useInput } from '@utils/inputUtils';
 import { uploadImageRequest, registerBookRequest } from '@redux/actions/registerActions';
 
 import { RegisterForm, BookImagePreview, ImageUploadButton, RegisterButton } from './index.styled';
 import {
   BookImageWrapper,
   BookDetailWrapper,
-  BookInfoWrapper,
 } from '@components/BookPage/BookDetailPage/index.styled';
 import { InputGroup } from '@styles/common';
 
@@ -117,69 +116,45 @@ const BookRegisterPage = () => {
         )}
       </BookImageWrapper>
       <BookDetailWrapper>
-        <BookInfoWrapper>
-          <InputGroup>
-            <label htmlFor='category'>Category</label>
-            <select
-              name='categoryId'
-              id='category'
-              value={categoryId}
-              onChange={categoryHandler}
-              required
-            >
-              {categoryList.data.map(c => (
-                <option key={c.name} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          </InputGroup>
-          <InputGroup>
-            <label htmlFor='title'>Title</label>
-            <input
-              type='text'
-              name='title'
-              id='title'
-              value={title}
-              onChange={titleHandler}
-              required
-            />
-          </InputGroup>
-          <InputGroup>
-            <label htmlFor='author'>Author</label>
-            <input
-              type='text'
-              name='author'
-              id='author'
-              value={author}
-              onChange={authorHandler}
-              required
-            />
-          </InputGroup>
-          <InputGroup>
-            <label htmlFor='publisher'>Publisher</label>
-            <input
-              type='text'
-              name='publisher'
-              id='publisher'
-              value={publisher}
-              onChange={publisherHandler}
-              required
-            />
-          </InputGroup>
-          <InputGroup>
-            <label htmlFor='description'>Description</label>
-            <textarea
-              style={{ minHeight: '150px' }}
-              type='text'
-              name='description'
-              id='description'
-              value={description}
-              onChange={descriptionHandler}
-              required
-            />
-          </InputGroup>
-        </BookInfoWrapper>
+        <InputGroup>
+          <label htmlFor='category'>Category</label>
+          <select id='category' value={categoryId} onChange={categoryHandler} required>
+            {categoryList.data.map(c => (
+              <option key={c.name} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </InputGroup>
+        <InputGroup>
+          <label htmlFor='title'>Title</label>
+          <input type='text' id='title' value={title} onChange={titleHandler} required />
+        </InputGroup>
+        <InputGroup>
+          <label htmlFor='author'>Author</label>
+          <input type='text' id='author' value={author} onChange={authorHandler} required />
+        </InputGroup>
+        <InputGroup>
+          <label htmlFor='publisher'>Publisher</label>
+          <input
+            type='text'
+            id='publisher'
+            value={publisher}
+            onChange={publisherHandler}
+            required
+          />
+        </InputGroup>
+        <InputGroup>
+          <label htmlFor='description'>Description</label>
+          <textarea
+            style={{ minHeight: '150px', width: '100%' }}
+            type='text'
+            id='description'
+            value={description}
+            onChange={descriptionHandler}
+            required
+          />
+        </InputGroup>
       </BookDetailWrapper>
       <RegisterButton _color='primary' type='submit'>
         등록하기

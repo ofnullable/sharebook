@@ -94,7 +94,6 @@ export const InputGroup = styled.div`
   }
   & label + textarea {
     display: block;
-    width: 100%;
     padding: 5px;
     border-radius: 5px;
     border: 1px solid ${COLOR_SCHEME.gray};

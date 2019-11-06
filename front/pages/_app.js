@@ -8,7 +8,7 @@ import withReduxSaga from 'next-redux-saga';
 
 import { loadUserRequest } from '@redux/actions/userActions';
 import Layout from '@components/layout';
-import store from '@redux/store';
+import storeConfig from '@redux/store';
 
 import { GlobalStyle } from '@styles/common';
 
@@ -63,4 +63,4 @@ class Sharebook extends App {
   }
 }
 
-export default withRedux(store)(withReduxSaga(Sharebook));
+export default withRedux(storeConfig)(withReduxSaga(Sharebook));

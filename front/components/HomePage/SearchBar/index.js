@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Router from 'next/router';
 
-import { useInput } from '@utils/InputUtils';
+import { useInput } from '@utils/inputUtils';
 
 import { SearchForm, SearchButton } from './index.styled';
 import { SpinIcon } from '@styles/common';
