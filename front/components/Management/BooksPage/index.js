@@ -23,26 +23,17 @@ const BooksPage = ({ status }) => {
   const renderSubMenu = () => {
     return (
       <SubMenu>
-        <Link
-          href={{ pathname: `/management/books`, query: { status: '' } }}
-          as={`/management/books/`}
-        >
+        <Link href='/management/books/[status]' as={`/management/books/all`}>
           <a>
-            <span className={!status ? 'active' : ''}>전체보기</span>
+            <span className={status === 'all' ? 'active' : ''}>전체보기</span>
           </a>
         </Link>
-        <Link
-          href={{ pathname: `/management/books`, query: { status: 'requested' } }}
-          as={`/management/books/requested`}
-        >
+        <Link href='/management/books/[status]' as={`/management/books/requested`}>
           <a>
             <span className={status === 'requested' ? 'active' : ''}>요청받은도서</span>
           </a>
         </Link>
-        <Link
-          href={{ pathname: `/management/books`, query: { status: 'accepted' } }}
-          as={`/management/books/accepted`}
-        >
+        <Link href='/management/books/[status]' as={`/management/books/accepted`}>
           <a>
             <span className={status === 'accepted' ? 'active' : ''}>대여해준도서</span>
           </a>

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useInput } from '@utils/InputUtils';
+import { useInput } from '@utils/inputUtils';
 import { signInRequest } from '@redux/actions/userActions';
 
 import { CenterDiv, InputGroup, Button, SpinIcon, CenterForm, ButtonLink } from '@styles/common';

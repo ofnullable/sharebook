@@ -58,6 +58,23 @@ export const BookDetailWrapper = styled.section`
   `};
   display: inline-block;
   vertical-align: top;
+  & h1 {
+    ${device.laptops`
+      font-size: 3em;
+    `};
+    ${device.tablets`
+      font-size: 2.5em;
+    `};
+    margin: 0.5em 0;
+  }
+  & p,
+  & span {
+    display: block;
+    margin: 0 0 0.5em;
+  }
+  & h3 {
+    margin: 1em 0 0.5em;
+  }
   & button {
     ${device.laptops`
       width: 30%;
@@ -68,27 +85,6 @@ export const BookDetailWrapper = styled.section`
     ${device.mobiles`
       width: 100%;
     `};
-  }
-`;
-
-export const BookInfoWrapper = styled.div`
-  & h1 {
-    ${device.laptops`
-      font-size: 3em;
-    `};
-    ${device.tablets`
-      font-size: 2.5em;
-    `};
-    margin: 0.5em 0;
-  }
-  & p {
-    margin: 0 0 0.5em;
-    &:last-child {
-      margin: 1em 0;
-      font-size: 16px;
-    }
-  }
-  & span {
-    color: ${COLOR_SCHEME.darkGray};
+    margin: 1em 0 0;
   }
 `;

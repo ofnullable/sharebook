@@ -14,18 +14,12 @@ const UserPage = ({ menu }) => {
   const renderSubMenu = () => {
     return (
       <SubMenu>
-        <Link
-          href={{ pathname: `/management/user`, query: { menu: 'profile' } }}
-          as={`/management/user/profile`}
-        >
+        <Link href='/management/user/[menu]' as='/management/user/profile'>
           <a>
             <span className={menu === 'profile' ? 'active' : ''}>프로필</span>
           </a>
         </Link>
-        <Link
-          href={{ pathname: `/management/user`, query: { menu: 'reviews' } }}
-          as={`/management/user/reviews`}
-        >
+        <Link href='/management/user/[menu]' as='/management/user/reviews'>
           <a>
             <span className={menu === 'reviews' ? 'active' : ''}>리뷰관리</span>
           </a>

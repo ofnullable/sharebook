@@ -1,14 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import { loadBookRequest } from '@redux/actions/bookActions';
-import { loadLatestLendingRequest } from "@redux/actions/lendingActions";
+import { loadLatestLendingRequest } from '@redux/actions/lendingActions';
+import { loadReviewListRequest } from '@redux/actions/reviewActions';
 import BookDetailPage from '@components/BookPage/BookDetailPage';
 
 const Book = () => {
-  const { detail } = useSelector(state => state.book);
-
-  return <BookDetailPage detail={detail.data} error={detail.error} />;
+  return <BookDetailPage />;
 };
 
 Book.getInitialProps = async ({ query, store }) => {
@@ -16,6 +14,7 @@ Book.getInitialProps = async ({ query, store }) => {
 
   store.dispatch(loadBookRequest(bookId));
   store.dispatch(loadLatestLendingRequest(bookId));
+  store.dispatch(loadReviewListRequest(bookId));
 };
 
 export default Book;
