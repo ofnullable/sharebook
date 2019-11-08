@@ -22,7 +22,7 @@ function* uploadImage({ file }) {
     yield put(uploadImageSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(uploadImageFailure(e.response.data || e));
+    yield put(uploadImageFailure(e));
   }
 }
 
@@ -35,6 +35,6 @@ function* registerBook({ data }) {
     yield put(registerBookSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(registerBookFailure(e.response.data || e));
+    yield put(registerBookFailure(e));
   }
 }

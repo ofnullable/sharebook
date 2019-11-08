@@ -1,11 +1,16 @@
 import { fork, put, takeLatest, call, all } from 'redux-saga/effects';
 
 import { REVIEW } from '@redux/actionTypes';
-import { loadReviewListApi } from '@redux/api/review';
-import { loadReviewListSuccess, loadReviewListFailure } from '@redux/actions/reviewActions';
+import { loadReviewListApi, saveReviewApi } from '@redux/api/review';
+import {
+  loadReviewListSuccess,
+  loadReviewListFailure,
+  saveReviewSuccess,
+  saveReviewFailure,
+} from '@redux/actions/reviewActions';
 
 export default function*() {
-  yield all([fork(watchLoadReviewListRequest)]);
+  yield all([fork(watchLoadReviewListRequest), fork(watchSaveReviewRequest)]);
 }
 
 function* watchLoadReviewListRequest() {
@@ -17,6 +22,19 @@ function* loadReviewList({ bookId }) {
     yield put(loadReviewListSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(loadReviewListFailure(e.response.data || e));
+    yield put(loadReviewListFailure(e));
+  }
+}
+
+function* watchSaveReviewRequest() {
+  yield takeLatest(REVIEW.SAVE_REVIEW_REQUEST, saveReview);
+}
+function* saveReview({ data }) {
+  try {
+    const response = yield call(saveReviewApi, data);
+    yield put(saveReviewSuccess(response.data));
+  } catch (e) {
+    console.error(e);
+    yield put(saveReviewFailure(e));
   }
 }
