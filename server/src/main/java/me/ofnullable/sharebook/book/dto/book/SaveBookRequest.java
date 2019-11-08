@@ -16,19 +16,14 @@ public class SaveBookRequest {
 
     @NotBlank
     private String title;
-
     @NotBlank
     private String author;
-
     @NotBlank
     private String publisher;
-
     @NotBlank
     private String description;
-
     @NotNull
     private Long categoryId;
-
     @NotBlank
     private String imageUrl;
 

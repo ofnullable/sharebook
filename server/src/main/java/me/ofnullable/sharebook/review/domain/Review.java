@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.ofnullable.sharebook.common.domain.Auditable;
+import me.ofnullable.sharebook.review.dto.UpdateReviewRequest;
 
 import javax.persistence.*;
 
@@ -34,6 +35,13 @@ public class Review extends Auditable {
         this.reviewerId = reviewerId;
         this.contents = contents;
         this.score = score;
+    }
+
+    public void update(UpdateReviewRequest dto) {
+        if (dto.getScore() != null) {
+            this.score = dto.getScore();
+        }
+        this.contents = dto.getContents();
     }
 
 }
