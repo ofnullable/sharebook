@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static me.ofnullable.sharebook.account.utils.AccountUtils.buildNormalAccount;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -32,8 +33,8 @@ class ReviewSaveServiceTest {
     @Mock
     private ReviewValidator validator;
 
-    private final SaveReviewRequest request = new SaveReviewRequest(1L, 1L, "Test Review", 5);
-    private final Review review = request.toEntity();
+    private final SaveReviewRequest request = new SaveReviewRequest(1L, "Test Review", 5);
+    private final Review review = request.toEntity(1L);
 
     @Test
     @DisplayName("정상적인 review 등록")
@@ -41,7 +42,7 @@ class ReviewSaveServiceTest {
         given(reviewRepository.save(any(Review.class)))
                 .willReturn(review);
 
-        var result = reviewSaveService.save(request);
+        var result = reviewSaveService.save(request, buildNormalAccount());
 
         BDDMockito.then(validator)
                 .should()
@@ -61,7 +62,7 @@ class ReviewSaveServiceTest {
                 .when(validator)
                 .isValidRequest(any());
 
-        assertThrows(NoSuchBookException.class, () -> reviewSaveService.save(request));
+        assertThrows(NoSuchBookException.class, () -> reviewSaveService.save(request, buildNormalAccount()));
 
         BDDMockito.then(validator)
                 .should()
@@ -78,7 +79,7 @@ class ReviewSaveServiceTest {
                 .when(validator)
                 .isValidRequest(any());
 
-        assertThrows(NoSuchAccountException.class, () -> reviewSaveService.save(request));
+        assertThrows(NoSuchAccountException.class, () -> reviewSaveService.save(request, buildNormalAccount()));
 
         BDDMockito.then(validator)
                 .should()
@@ -95,7 +96,7 @@ class ReviewSaveServiceTest {
                 .when(validator)
                 .isValidRequest(any());
 
-        assertThrows(LendingHistoryNotExistsException.class, () -> reviewSaveService.save(request));
+        assertThrows(LendingHistoryNotExistsException.class, () -> reviewSaveService.save(request, buildNormalAccount()));
 
         BDDMockito.then(validator)
                 .should()

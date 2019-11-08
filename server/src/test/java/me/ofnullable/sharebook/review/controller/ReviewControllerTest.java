@@ -1,6 +1,7 @@
 package me.ofnullable.sharebook.review.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.config.WithAuthenticationPrincipal;
 import me.ofnullable.sharebook.review.dto.SaveReviewRequest;
 import me.ofnullable.sharebook.review.service.ReviewFindService;
@@ -52,7 +53,7 @@ class ReviewControllerTest extends WithAuthenticationPrincipal {
 
     @Test
     void save_review() throws Exception {
-        given(reviewSaveService.save(any(SaveReviewRequest.class)))
+        given(reviewSaveService.save(any(SaveReviewRequest.class), any(Account.class)))
                 .willReturn(buildReview());
 
         mvc.perform(post("/review")

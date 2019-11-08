@@ -15,21 +15,19 @@ public class SaveReviewRequest {
 
     @NotNull
     private Long bookId;
-    @NotNull
-    private Long reviewerId;
     @NotBlank
     private String contents;
     @NotNull
     private Integer score;
+    private Long reviewerId;
 
-    public SaveReviewRequest(Long bookId, Long reviewerId, String contents, Integer score) {
+    public SaveReviewRequest(Long bookId, String contents, Integer score) {
         this.bookId = bookId;
-        this.reviewerId = reviewerId;
         this.contents = contents;
         this.score = score;
     }
 
-    public Review toEntity() {
+    public Review toEntity(Long reviewerId) {
         return Review.builder()
                 .bookId(bookId)
                 .reviewerId(reviewerId)

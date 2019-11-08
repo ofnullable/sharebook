@@ -1,6 +1,7 @@
 package me.ofnullable.sharebook.review.service;
 
 import lombok.RequiredArgsConstructor;
+import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.review.domain.Review;
 import me.ofnullable.sharebook.review.dto.SaveReviewRequest;
 import me.ofnullable.sharebook.review.repository.ReviewRepository;
@@ -15,8 +16,8 @@ public class ReviewSaveService {
     private final ReviewValidator reviewValidator;
 
     @Transactional
-    public Review save(SaveReviewRequest dto) {
-        var entity = dto.toEntity();
+    public Review save(SaveReviewRequest dto, Account account) {
+        var entity = dto.toEntity(account.getId());
         reviewValidator.isValidRequest(entity);
         return reviewRepository.save(entity);
     }
