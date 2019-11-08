@@ -2,7 +2,12 @@ import { fork, put, takeLatest, call, all } from 'redux-saga/effects';
 
 import { BOOK_STATUS, LENDING_STATUS } from '@utils/consts';
 import { LENDING } from '@redux/actionTypes';
-import { borrowBookApi, changeLendingStatusApi, loadLatestLendingApi, loadLendingListApi } from '@redux/api/lending';
+import {
+  borrowBookApi,
+  changeLendingStatusApi,
+  loadLatestLendingApi,
+  loadLendingListApi,
+} from '@redux/api/lending';
 import {
   borrowBookSuccess,
   borrowBookFailure,
@@ -29,7 +34,7 @@ export default function*() {
     fork(watchRejectLendingRequest),
     fork(watchReturnBookRequest),
     fork(watchLoadLatestLendingRequest),
-    fork(watchLoadLendingListRequest)
+    fork(watchLoadLendingListRequest),
   ]);
 }
 
@@ -43,7 +48,7 @@ function* borrowBook({ id }) {
     yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.UNAVAILABLE));
   } catch (e) {
     console.error(e);
-    yield put(borrowBookFailure(e.response.data || e));
+    yield put(borrowBookFailure(e));
   }
 }
 
@@ -57,7 +62,7 @@ function* cancelBorrowBook({ id }) {
     yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.AVAILABLE));
   } catch (e) {
     console.error(e);
-    yield put(cancelBorrowFailure(e.response.data || e));
+    yield put(cancelBorrowFailure(e));
   }
 }
 
@@ -70,7 +75,7 @@ function* acceptLending({ id }) {
     yield put(acceptLendingSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(acceptLendingFailure(e.response.data || e));
+    yield put(acceptLendingFailure(e));
   }
 }
 
@@ -84,7 +89,7 @@ function* rejectLending({ id }) {
     yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.AVAILABLE));
   } catch (e) {
     console.error(e);
-    yield put(rejectLendingFailure(e.response.data || e));
+    yield put(rejectLendingFailure(e));
   }
 }
 
@@ -98,7 +103,7 @@ function* returnBook({ id }) {
     yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.AVAILABLE));
   } catch (e) {
     console.error(e);
-    yield put(returnBookFailure(e.response.data || e));
+    yield put(returnBookFailure(e));
   }
 }
 
@@ -110,7 +115,7 @@ function* loadLatestLending({ bookId }) {
     const response = yield call(loadLatestLendingApi, bookId);
     yield put(loadLatestLendingSuccess(response.data));
   } catch (e) {
-    yield put(loadLatestLendingFailure(e.response.data || e));
+    yield put(loadLatestLendingFailure(e));
   }
 }
 
@@ -123,6 +128,6 @@ function* loadLendingList({ status, page, size }) {
     yield put(loadLendingListSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(loadLendingListFailure(e.response.data || e));
+    yield put(loadLendingListFailure(e));
   }
 }

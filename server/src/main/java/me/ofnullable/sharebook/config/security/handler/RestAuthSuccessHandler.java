@@ -22,20 +22,11 @@ public class RestAuthSuccessHandler implements AuthenticationSuccessHandler {
         log.debug("authentication success: {}", authentication.getName());
 
         var auth = authToString(authentication);
-        var cookie = makeSameSiteCookie();
 
         res.setStatus(res.SC_OK);
-        res.addCookie(cookie);
-        res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        res.setContentType(MediaType.APPLICATION_JSON_VALUE);
         res.getWriter().write(auth);
         res.flushBuffer();
-    }
-
-    private Cookie makeSameSiteCookie() {
-        var cookie = new Cookie("SameSite", "Lax");
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
-        return cookie;
     }
 
 }

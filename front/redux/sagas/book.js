@@ -40,7 +40,7 @@ function* loadBookList({ searchText, page, size }) {
     yield put(loadBookListSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(loadBookListFailure(e.response.data || e));
+    yield put(loadBookListFailure(e));
   }
 }
 
@@ -53,7 +53,7 @@ function* loadBookListByCategory({ page, size, category }) {
     yield put(loadBookListByCategorySuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(loadBookListByCategoryFailure(e.response.data || e));
+    yield put(loadBookListByCategoryFailure(e));
   }
 }
 
@@ -66,7 +66,7 @@ function* loadBook({ id }) {
     yield put(loadBookSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(loadBookFailure(e.response.data || e));
+    yield put(loadBookFailure(e));
   }
 }
 
@@ -79,7 +79,7 @@ function* loadMyBookList({ page, size }) {
     yield put(loadMyBookListSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(loadMyBookListFailure(e.response.data || e));
+    yield put(loadMyBookListFailure(e));
   }
 }
 
@@ -92,6 +92,6 @@ function* loadMyBookListByLendingStatus({ status, page, size }) {
     yield put(loadMyBookListByLendingStatusSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(loadMyBookListByLendingStatusFailure(e.response.data || e));
+    yield put(loadMyBookListByLendingStatusFailure(e));
   }
 }

@@ -34,10 +34,7 @@ public class ReviewController {
     public ReviewResponse saveReview(
             @AuthenticationPrincipal(expression = "account") Account account,
             @RequestBody @Valid SaveReviewRequest dto) {
-        if (!account.getId().equals(dto.getReviewerId())) {
-            throw new IllegalArgumentException("Reviewer Id did not match with principal");
-        }
-        return new ReviewResponse(reviewSaveService.save(dto));
+        return new ReviewResponse(reviewSaveService.save(dto, account));
     }
 
 }

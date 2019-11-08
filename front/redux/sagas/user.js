@@ -31,7 +31,7 @@ function* signUp({ user }) {
     yield put(signUpSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(signUpFailure(e.response.data || e.response));
+    yield put(signUpFailure(e));
   }
 }
 
@@ -44,7 +44,7 @@ function* signIn({ user }) {
     yield put(signInSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(signInFailure(e.response.data || e.response));
+    yield put(signInFailure(e));
   }
 }
 
@@ -57,7 +57,7 @@ function* signOut() {
     yield put(signOutSuccess());
   } catch (e) {
     console.error(e);
-    yield put(signOutFailure(e.response.data || e.response));
+    yield put(signOutFailure(e));
   }
 }
 
@@ -72,6 +72,6 @@ function* loadUser({ id }) {
     if (id !== 0) {
       console.error(e);
     }
-    yield put(loadUserFailure(e.response.data || e.response));
+    yield put(loadUserFailure(e));
   }
 }

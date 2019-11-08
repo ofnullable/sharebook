@@ -1,6 +1,6 @@
-import App from 'next/app';
 import React from 'react';
 import axios from 'axios';
+import App from 'next/app';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';

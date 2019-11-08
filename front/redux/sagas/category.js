@@ -16,7 +16,7 @@ function* loadCategoryList() {
     const response = yield call(loadCategoryListApi);
     yield put(loadCategoryListSuccess(response.data));
   } catch (e) {
-    console.error(e);
-    yield put(loadCategoryListFailure(e.response.data || e));
+    console.dir(e);
+    yield put(loadCategoryListFailure(e));
   }
 }
