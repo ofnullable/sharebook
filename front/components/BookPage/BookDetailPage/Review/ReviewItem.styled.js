@@ -2,29 +2,30 @@ import styled from 'styled-components';
 
 import device from '@styles/device';
 import { COLOR_SCHEME } from '@styles/colors';
+import { Button } from '@styles/common';
 
 export const ReviewItemWrapper = styled.div`
   border-bottom: 1px solid ${COLOR_SCHEME.lightGray};
-  padding: 15px;
+  padding: 10px;
 `;
 
 export const ReviewInfo = styled.div`
   ${device.laptops`
     width: 25%;
-    padding: 0 15px;
+    padding: 10px 15px;
   `};
   ${device.tablets`
     width: 25%;
-    padding: 0 15px;
+    padding: 10px  15px;
   `};
   ${device.mobiles`
     width: 100%;
-    padding: 5px 0 10px;
+    padding: 5px 0;
   `};
   display: inline-block;
   vertical-align: middle;
 
-  & p {
+  & p.reviewer {
     margin: 0.5rem;
     ${device.mobiles`
       margin: 0;
@@ -43,14 +44,25 @@ export const ReviewInfo = styled.div`
 export const ReviewContents = styled.div`
   ${device.laptops`
     width: 75%;
+    padding: 15px 0;
   `};
   ${device.tablets`
     width: 75%;
+    padding: 15px 0;
   `};
   ${device.mobiles`
     width: 100%;
+    padding: 5px 0;
   `};
 
   display: inline-block;
   vertical-align: middle;
+`;
+
+export const RemoveButton = styled(Button)`
+  color: ${COLOR_SCHEME.red};
+`;
+
+export const ModifyButton = styled(Button)`
+  color: ${COLOR_SCHEME.secondary};
 `;

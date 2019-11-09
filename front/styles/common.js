@@ -6,8 +6,8 @@ import { COLOR_SCHEME } from './colors';
 
 const buttonColor = props => `
   color: ${props._color ? COLOR_SCHEME.white : COLOR_SCHEME.primary};
-  border: 1px solid ${COLOR_SCHEME[`${props._color}`] || 'white'};
-  background-color: ${COLOR_SCHEME[`${props._color}`] || 'white'};
+  border: 1px solid ${COLOR_SCHEME[`${props._color}`] || COLOR_SCHEME.white};
+  background-color: ${COLOR_SCHEME[`${props._color}`] || COLOR_SCHEME.white};
 `;
 
 export const Button = styled.button`
@@ -18,6 +18,10 @@ export const Button = styled.button`
   border-radius: 5px;
   text-align: center;
   vertical-align: middle;
+  & i {
+    font-size: 20px;
+    vertical-align: middle;
+  }
 `;
 
 export const ButtonLink = Button.withComponent('a');
