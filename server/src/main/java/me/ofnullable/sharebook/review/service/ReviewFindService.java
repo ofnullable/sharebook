@@ -17,4 +17,9 @@ public class ReviewFindService {
         return reviewRepository.findAllByBookId(bookId);
     }
 
+    public Review findByReviewId(Long reviewId) {
+        return reviewRepository.findById(reviewId)
+                // EntityNotFound? ResourceNotFound?
+                .orElseThrow();
+    }
 }

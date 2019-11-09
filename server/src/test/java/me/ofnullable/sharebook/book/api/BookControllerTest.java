@@ -135,7 +135,7 @@ class BookControllerTest extends WithAuthenticationPrincipal {
     }
 
     @Test
-    @DisplayName("비정상적인 사이즈로 요청시 요청 사이즈 20으로 고정")
+    @DisplayName("비정상적인 사이즈로 요청 시 요청 사이즈 20으로 고정")
     void book_list_irregular_size_pagination() throws Exception {
         given(bookFindService.findAll(any(), any(PageRequest.class)))
                 .willReturn(buildNormalPageBook());

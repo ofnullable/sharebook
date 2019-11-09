@@ -109,7 +109,8 @@ VALUES
        (64, 2, "ACCEPTED", now(), null),
        (63, 2, "RETURNED", now(), now()),
        (62, 3, "REQUESTED", null, null),
-       (61, 2, "REQUESTED", null, null);
+       (61, 2, "REQUESTED", null, null),
+       (60, 2, "REQUESTED", null, null);
 
 INSERT INTO share_jpa.lending_history(lending_id, status, created_by, created_at, modified_by, modified_at)
 VALUES
@@ -126,7 +127,8 @@ VALUES
        (5, "ACCEPTED", "test2@asd.com", now(), "test2@asd.com", now()),
        (5, "RETURNED", "test2@asd.com", now(), "test2@asd.com", now()),
        (6, "REQUESTED", "test3@asd.com", now(), "test3@asd.com", now()),
-       (6, "REQUESTED", "test2@asd.com", now(), "test2@asd.com", now());
+       (7, "REQUESTED", "test2@asd.com", now(), "test2@asd.com", now()),
+       (8, "REQUESTED", "test2@asd.com", now(), "test2@asd.com", now());
 
 INSERT INTO share_jpa.review(book_id, reviewer_id, contents, score, created_by, created_at, modified_by, modified_at)
 VALUES

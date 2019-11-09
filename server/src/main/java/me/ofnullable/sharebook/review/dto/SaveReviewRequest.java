@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import me.ofnullable.sharebook.review.domain.Review;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Getter

@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.review.dto.ReviewResponse;
 import me.ofnullable.sharebook.review.dto.SaveReviewRequest;
+import me.ofnullable.sharebook.review.dto.UpdateReviewRequest;
+import me.ofnullable.sharebook.review.service.ReviewDeleteService;
 import me.ofnullable.sharebook.review.service.ReviewFindService;
 import me.ofnullable.sharebook.review.service.ReviewSaveService;
+import me.ofnullable.sharebook.review.service.ReviewUpdateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,8 @@ public class ReviewController {
 
     private final ReviewFindService reviewFindService;
     private final ReviewSaveService reviewSaveService;
+    private final ReviewUpdateService reviewUpdateService;
+    private final ReviewDeleteService reviewDeleteService;
 
     @GetMapping("/reviews/book/{bookId}")
     public List<ReviewResponse> findAllReviewsByBookId(@PathVariable Long bookId) {
@@ -35,6 +40,16 @@ public class ReviewController {
             @AuthenticationPrincipal(expression = "account") Account account,
             @RequestBody @Valid SaveReviewRequest dto) {
         return new ReviewResponse(reviewSaveService.save(dto, account));
+    }
+
+    @PutMapping("/review/{id}")
+    public ReviewResponse updateReview(@RequestBody @Valid UpdateReviewRequest dto) {
+        return new ReviewResponse(reviewUpdateService.updateReview(dto));
+    }
+
+    @DeleteMapping("/review/{reviewId}")
+    public Long removeReview(@PathVariable Long reviewId) {
+        return reviewDeleteService.deleteReview(reviewId);
     }
 
 }

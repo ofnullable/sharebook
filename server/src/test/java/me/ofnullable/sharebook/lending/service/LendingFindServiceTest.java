@@ -18,6 +18,8 @@ import java.util.Optional;
 
 import static me.ofnullable.sharebook.common.utils.PageRequestUtils.buildPageRequest;
 import static me.ofnullable.sharebook.lending.utils.LendingUtils.*;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -94,6 +96,31 @@ class LendingFindServiceTest {
         var result = lendingFindService.findAllByAccountIdAndCurrentStatus(1L, LendingStatus.ACCEPTED, buildPageRequest(20));
 
         assertEquals(result.getTotalElements(), 0);
+    }
+
+    @Test
+    @DisplayName("대여자 Id와 도서 Id로 최근 대여기록 조회")
+    void find_latest_lending_by_borrower_id_and_book_id() {
+        var lending = buildLending(1L);
+        given(lendingRepository.findFirstByBorrowerIdAndBookId(any(Long.class), any(Long.class)))
+                .willReturn(Optional.of(lending));
+
+        var result = lendingFindService.findLatestByBorrowerIdAndBookId(1L, 1L);
+
+        then(result.getId())
+                .isEqualTo(lending.getId());
+    }
+
+    @Test
+    @DisplayName("대여자 Id와 도서 Id로 최근 대여기록 조회 - 존재하지 않는 경우 LendingHistoryNotExistsException")
+    void find_latest_lending_by_invalid_borrower_id_and_book_id() {
+        given(lendingRepository.findFirstByBorrowerIdAndBookId(any(Long.class), any(Long.class)))
+                .willReturn(Optional.empty());
+
+        var exception = catchThrowable(() -> lendingFindService.findLatestByBorrowerIdAndBookId(1L, 1L));
+
+        then(exception)
+                .isInstanceOf(LendingHistoryNotExistsException.class);
     }
 
 }

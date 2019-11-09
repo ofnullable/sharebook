@@ -43,7 +43,7 @@ class LendingIntegrationTest {
     @WithUserDetails("test1@asd.com")
     @DisplayName("로그인 후 특정 도서의 최근 대여기록 요청")
     void find_latest_lending_by_book_id_with_auth() throws Exception {
-        mvc.perform(get("/lending/book/1/latest"))
+        mvc.perform(get("/lending/book/65/latest"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -57,7 +57,7 @@ class LendingIntegrationTest {
     }
 
     @Test
-    @WithUserDetails("test2@asd.com")
+    @WithUserDetails("test1@asd.com")
     @DisplayName("로그인 후 대여요청")
     void save_lending_with_auth() throws Exception {
         mvc.perform(post("/lending/book/5"))
@@ -77,16 +77,16 @@ class LendingIntegrationTest {
     @WithUserDetails("test1@asd.com")
     @DisplayName("ACCEPTED로 대여기록 업데이트")
     void update_lending_to_accepted() throws Exception {
-        mvc.perform(put("/lending/2/ACCEPTED"))
+        mvc.perform(put("/lending/6/ACCEPTED"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
 
     @Test
-    @WithUserDetails("test1@asd.com")
+    @WithUserDetails("test2@asd.com")
     @DisplayName("CANCELED로 대여기록 업데이트")
     void update_lending_to_canceled() throws Exception {
-        mvc.perform(put("/lending/5/ACCEPTED"))
+        mvc.perform(put("/lending/7/CANCELED"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -95,7 +95,7 @@ class LendingIntegrationTest {
     @WithUserDetails("test1@asd.com")
     @DisplayName("REJECTED로 대여기록 업데이트")
     void update_lending_to_rejected() throws Exception {
-        mvc.perform(put("/lending/4/REJECTED"))
+        mvc.perform(put("/lending/8/REJECTED"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -104,7 +104,7 @@ class LendingIntegrationTest {
     @WithUserDetails("test1@asd.com")
     @DisplayName("RETURNED로 대여기록 업데이트")
     void update_lending_to_returned() throws Exception {
-        mvc.perform(put("/lending/2/RETURNED"))
+        mvc.perform(put("/lending/3/RETURNED"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

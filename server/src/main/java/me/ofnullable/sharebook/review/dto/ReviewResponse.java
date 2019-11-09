@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class ReviewResponse {
+
     private Long id;
     private Long bookId;
     private Long reviewerId;
@@ -18,6 +19,7 @@ public class ReviewResponse {
     private String modifiedBy;
     private LocalDateTime createdAt;
     private String createdBy;
+
     public ReviewResponse(Review review) {
         this.id = review.getId();
         this.bookId = review.getBookId();
@@ -29,4 +31,5 @@ public class ReviewResponse {
         this.createdAt = review.getCreatedAt();
         this.createdBy = review.getCreatedBy();
     }
+
 }
