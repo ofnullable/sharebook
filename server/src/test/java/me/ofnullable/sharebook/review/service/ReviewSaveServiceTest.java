@@ -16,10 +16,10 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static me.ofnullable.sharebook.account.utils.AccountUtils.buildNormalAccount;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(SpringExtension.class)
 class ReviewSaveServiceTest {
@@ -46,9 +46,10 @@ class ReviewSaveServiceTest {
 
         BDDMockito.then(validator)
                 .should()
-                .isValidRequest(any());
+                .isValidRequest(any(Review.class));
 
-        verify(reviewRepository)
+        BDDMockito.then(reviewRepository)
+                .should()
                 .save(any());
 
         BDDAssertions.then(result)
@@ -62,14 +63,17 @@ class ReviewSaveServiceTest {
                 .when(validator)
                 .isValidRequest(any());
 
-        assertThrows(NoSuchBookException.class, () -> reviewSaveService.save(request, buildNormalAccount()));
+        var exception = catchThrowable(() -> reviewSaveService.save(request, buildNormalAccount()));
 
         BDDMockito.then(validator)
                 .should()
-                .isValidRequest(any());
+                .isValidRequest(any(Review.class));
 
-        verify(reviewRepository, never())
-                .save(any());
+        BDDMockito.then(reviewRepository)
+                .shouldHaveNoInteractions();
+
+        BDDAssertions.then(exception)
+                .isInstanceOf(NoSuchBookException.class);
     }
 
     @Test
@@ -77,16 +81,15 @@ class ReviewSaveServiceTest {
     void save_review_with_invalid_account_id() {
         doThrow(NoSuchAccountException.class)
                 .when(validator)
-                .isValidRequest(any());
+                .isValidRequest(any(Review.class));
 
-        assertThrows(NoSuchAccountException.class, () -> reviewSaveService.save(request, buildNormalAccount()));
+        var exception = catchThrowable(() -> reviewSaveService.save(request, buildNormalAccount()));
 
-        BDDMockito.then(validator)
-                .should()
-                .isValidRequest(any());
+        BDDMockito.then(reviewRepository)
+                .shouldHaveNoInteractions();
 
-        verify(reviewRepository, never())
-                .save(any());
+        BDDAssertions.then(exception)
+                .isInstanceOf(NoSuchAccountException.class);
     }
 
     @Test
@@ -94,16 +97,15 @@ class ReviewSaveServiceTest {
     void save_review_with_no_lending_history() {
         doThrow(LendingHistoryNotExistsException.class)
                 .when(validator)
-                .isValidRequest(any());
+                .isValidRequest(any(Review.class));
 
-        assertThrows(LendingHistoryNotExistsException.class, () -> reviewSaveService.save(request, buildNormalAccount()));
+        var exception = catchThrowable(() -> reviewSaveService.save(request, buildNormalAccount()));
 
-        BDDMockito.then(validator)
-                .should()
-                .isValidRequest(any());
+        BDDMockito.then(reviewRepository)
+                .shouldHaveNoInteractions();
 
-        verify(reviewRepository, never())
-                .save(any());
+        BDDAssertions.then(exception)
+                .isInstanceOf(LendingHistoryNotExistsException.class);
     }
 
 }
