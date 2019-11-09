@@ -49,7 +49,7 @@ public class ReviewController {
 
     @DeleteMapping("/review/{reviewId}")
     public Long removeReview(@PathVariable Long reviewId) {
-        return reviewDeleteService.delete(reviewId);
+        return reviewDeleteService.deleteReview(reviewId);
     }
 
 }

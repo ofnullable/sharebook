@@ -13,7 +13,7 @@ public class ReviewDeleteService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public Long delete(Long reviewId) {
+    public Long deleteReview(Long reviewId) {
         var review = reviewFindService.findByReviewId(reviewId);
         reviewRepository.delete(review);
         return reviewId;
