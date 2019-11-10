@@ -6,8 +6,8 @@ import { COLOR_SCHEME } from './colors';
 
 const buttonColor = props => `
   color: ${props._color ? COLOR_SCHEME.white : COLOR_SCHEME.primary};
-  border: 1px solid ${COLOR_SCHEME[`${props._color}`] || 'white'};
-  background-color: ${COLOR_SCHEME[`${props._color}`] || 'white'};
+  border: 1px solid ${COLOR_SCHEME[`${props._color}`] || COLOR_SCHEME.white};
+  background-color: ${COLOR_SCHEME[`${props._color}`] || COLOR_SCHEME.white};
 `;
 
 export const Button = styled.button`
@@ -18,6 +18,19 @@ export const Button = styled.button`
   border-radius: 5px;
   text-align: center;
   vertical-align: middle;
+  & i {
+    ${device.laptops`
+      font-size: 20px;
+    `}
+    ${device.tablets`
+      font-size: 20px;
+    `}
+    ${device.mobiles`
+      font-size: 18px;
+    `}
+    vertical-align: sub;
+    padding-right: 5px;
+  }
 `;
 
 export const ButtonLink = Button.withComponent('a');
@@ -31,7 +44,7 @@ const spin = keyframes`
   }
 `;
 
-export const SpinIcon = styled.i`
+export const LoadingIcon = styled.i`
   animation: ${spin} 1s infinite linear;
   font-size: ${props => props._size};
   color: ${props => COLOR_SCHEME[`${props._color}`] || 'inherit'};
@@ -94,6 +107,7 @@ export const InputGroup = styled.div`
   }
   & label + textarea {
     display: block;
+    width: 100%;
     padding: 5px;
     border-radius: 5px;
     border: 1px solid ${COLOR_SCHEME.gray};

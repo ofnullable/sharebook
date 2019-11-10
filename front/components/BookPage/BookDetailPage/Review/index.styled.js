@@ -21,8 +21,8 @@ export const ReviewTitle = styled.h3`
   margin: 1em 0 0;
 `;
 
-export const EmptyReview = styled.p`
-  padding: 15px;
+export const EmptyReview = styled.h3`
+  padding: 2em 15px 15px;
   margin: 0;
   text-align: center;
 `;

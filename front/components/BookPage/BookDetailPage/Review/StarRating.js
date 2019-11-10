@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { FilledStar, EmptyStar } from './StarRating.styled';
+import { StarWrapper, FilledStar, EmptyStar } from './StarRating.styled';
 
 const StarRating = ({ readOnly, score, clickHandler }) => {
   return readOnly ? (
-    <p>
+    <StarWrapper>
       {Array.from(new Array(5)).map((_, i) =>
         i >= score ? (
           <EmptyStar key={i} className='material-icons'>
@@ -16,9 +16,9 @@ const StarRating = ({ readOnly, score, clickHandler }) => {
           </FilledStar>
         )
       )}
-    </p>
+    </StarWrapper>
   ) : (
-    <p>
+    <StarWrapper>
       {Array.from(new Array(5)).map((_, i) =>
         i >= score ? (
           <EmptyStar key={i} id={i + 1} className='material-icons' onClick={clickHandler}>
@@ -30,7 +30,7 @@ const StarRating = ({ readOnly, score, clickHandler }) => {
           </FilledStar>
         )
       )}
-    </p>
+    </StarWrapper>
   );
 };
 
