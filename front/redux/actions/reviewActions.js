@@ -25,3 +25,29 @@ export const saveReviewFailure = error => ({
   type: REVIEW.SAVE_REVIEW_FAILURE,
   error,
 });
+
+export const updateReviewRequest = data => ({
+  type: REVIEW.UPDATE_REVIEW_REQUEST,
+  data,
+});
+export const updateReviewSuccess = data => ({
+  type: REVIEW.UPDATE_REVIEW_SUCCESS,
+  data,
+});
+export const updateReviewFailure = error => ({
+  type: REVIEW.UPDATE_REVIEW_FAILURE,
+  error,
+});
+
+export const deleteReviewRequest = id => ({
+  type: REVIEW.DELETE_REVIEW_REQUEST,
+  id,
+});
+export const deleteReviewSuccess = id => ({
+  type: REVIEW.DELETE_REVIEW_SUCCESS,
+  id,
+});
+export const deleteReviewFailure = error => ({
+  type: REVIEW.DELETE_REVIEW_FAILURE,
+  error,
+});

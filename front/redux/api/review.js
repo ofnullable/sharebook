@@ -7,3 +7,11 @@ export const loadReviewListApi = bookId => {
 export const saveReviewApi = data => {
   return axios.post(`/review`, data, { withCredentials: true });
 };
+
+export const updateReviewApi = data => {
+  return axios.put(`/review/${data.id}`, data, { withCredentials: true });
+};
+
+export const deleteReviewApi = id => {
+  return axios.delete(`/review/${id}`, { withCredentials: true });
+};
