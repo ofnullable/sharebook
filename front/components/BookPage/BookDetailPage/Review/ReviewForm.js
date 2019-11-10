@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import StarRating from './StarRating';
@@ -19,9 +19,10 @@ const ReviewForm = () => {
   const handleContentsChange = e => {
     setContents(e.target.value);
   };
-  const handleStarClick = e => {
+
+  const handleStarClick = useCallback(e => {
     setScore(e.target.id);
-  };
+  }, []);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -31,25 +32,28 @@ const ReviewForm = () => {
     if (isBlank(contents)) {
       return alert('리뷰를 작성해주세요!');
     }
-    dispatch(saveReviewRequest({ score, contents, bookId: book.id }));
-    setContents('');
     setScore(0);
+    setContents('');
+    dispatch(saveReviewRequest({ score, contents, bookId: book.id }));
   };
 
   return (
     <ReviewFormWrapper>
-      <p>리뷰를 작성해주세요!</p>
+      {error ? (
+        <p style={{ color: 'red' }}>리뷰 등록에 실패했습니다.</p>
+      ) : (
+        <p>리뷰를 작성해주세요!</p>
+      )}
       <form onSubmit={handleSubmit}>
         <StarRating readOnly={false} score={score} clickHandler={handleStarClick} />
         <InputGroup>
-          <label htmlFor='review'></label>
+          <label htmlFor='review' />
           <textarea id='review' value={contents} onChange={handleContentsChange} />
         </InputGroup>
         <Button type='submit' _color='primary'>
-          리뷰등록
+          <i className='material-icons'>rate_review</i>리뷰등록
         </Button>
       </form>
-      {error && <p style={{ color: 'red', margin: '1em 0 0' }}>리뷰 등록에 실패했습니다.</p>}
     </ReviewFormWrapper>
   );
 };

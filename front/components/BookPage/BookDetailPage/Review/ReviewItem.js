@@ -1,48 +1,105 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 
 import StarRating from './StarRating';
+import LoadingOverlay from '@components/common/LoadingOverlay';
+import { updateReviewRequest, deleteReviewRequest } from '@redux/actions/reviewActions';
 
 import {
   ReviewItemWrapper,
   ReviewInfo,
   ReviewContents,
-  RemoveButton,
-  ModifyButton,
+  DangerButton,
+  WarningButton,
 } from './ReviewItem.styled';
+import { InputGroup, Button } from '@styles/common';
 
 const ReviewItem = ({ review }) => {
+  const [editable, setEditable] = useState(false);
+  const [score, setScore] = useState(review.score);
+  const [contents, setContents] = useState(review.contents);
   const user = useSelector(state => state.user.user.data);
+  const { isLoading } = useSelector(state => state.review.updateRequest);
   const dispatch = useDispatch();
 
+  const handleDelete = () => {
+    if (confirm('리뷰를 삭제하시겠습니까?')) {
+      dispatch(deleteReviewRequest(review.id));
+    }
+  };
+
+  const handleUpdate = () => {
+    setEditable(false);
+    if (score === review.score && contents === review.contents) return;
+    dispatch(updateReviewRequest({ id: review.id, score, contents }));
+  };
+
+  const toggleEditable = () => {
+    if (editable) {
+      setScore(review.score);
+      setContents(review.contents);
+    }
+    setEditable(!editable);
+  };
+
+  const handleEditContents = e => {
+    setContents(e.target.value);
+  };
+
+  const handleStarClick = useCallback(e => {
+    setScore(e.target.id);
+  }, []);
+
   const renderButtonDiv = () => {
+    if (editable) {
+      return (
+        <div>
+          <Button _color='red' onClick={toggleEditable}>
+            취소
+          </Button>
+          <Button onClick={handleUpdate}>수정</Button>
+        </div>
+      );
+    }
+
     if (Object.keys(user).length) {
       if (review.reviewerId === user.id) {
         return (
-          <div style={{ textAlign: 'right' }}>
-            <RemoveButton>
-              삭제<i className='material-icons'>delete_forever</i>
-            </RemoveButton>
-            <ModifyButton>
-              수정<i className='material-icons'>create</i>
-            </ModifyButton>
+          <div>
+            <DangerButton onClick={handleDelete}>
+              <i className='material-icons'>delete_forever</i>삭제
+            </DangerButton>
+            <WarningButton onClick={toggleEditable}>
+              <i className='material-icons'>create</i>수정
+            </WarningButton>
           </div>
         );
       }
-      // TODO: reply or report button
     }
   };
 
   return (
     <ReviewItemWrapper>
+      {isLoading && <LoadingOverlay />}
       <ReviewInfo>
-        <StarRating readOnly={true} score={review.score} />
+        <StarRating
+          readOnly={!editable}
+          score={editable ? score : review.score}
+          clickHandler={editable && handleStarClick}
+        />
         <p className='reviewer'>{review.createdBy}</p>
         <span>{moment(review.createdAt).format('YYYY-MM-DD hh:mm')}</span>
       </ReviewInfo>
       <ReviewContents>
-        <p>{review.contents}</p>
+        {editable ? (
+          <InputGroup>
+            <label htmlFor='review' />
+            <textarea id='review' value={contents} onChange={handleEditContents} />
+          </InputGroup>
+        ) : (
+          <p>{review.contents}</p>
+        )}
         {renderButtonDiv()}
       </ReviewContents>
     </ReviewItemWrapper>

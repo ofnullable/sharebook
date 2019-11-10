@@ -11,22 +11,15 @@ const Review = () => {
   const book = useSelector(state => state.book.detail);
   const { data, isLoading } = useSelector(state => state.review.reviewList);
 
-  const canWriteReview = () => {
-    /**
-     * Conditions of can not write review
-     * 1. Is not sign in.
-     * 2. Current user is owner.
-     * 3. Already reviewed.
-     */
-    if (!user.isSignedIn) return false;
-    if (book.data.owner === user.data.name) return false;
-    return true;
+  const isNotOwner = () => {
+    if (!user.isSignedIn) return true;
+    return book.data.owner !== user.data.name;
   };
 
   return (
     <ReviewWrapper>
       <ReviewTitle>리뷰</ReviewTitle>
-      {canWriteReview() && <ReviewForm user={user} />}
+      {isNotOwner() && <ReviewForm user={user} />}
       {data.length ? (
         data.map(review => <ReviewItem key={review.id} review={review} />)
       ) : (

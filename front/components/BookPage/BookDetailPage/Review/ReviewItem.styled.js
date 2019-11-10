@@ -54,15 +54,24 @@ export const ReviewContents = styled.div`
     width: 100%;
     padding: 5px 0;
   `};
-
   display: inline-block;
   vertical-align: middle;
+
+  & button {
+    &:first-child {
+      margin-right: 0.5em;
+    }
+  }
+
+  & div:last-child {
+    text-align: right;
+  }
 `;
 
-export const RemoveButton = styled(Button)`
+export const DangerButton = styled(Button)`
   color: ${COLOR_SCHEME.red};
 `;
 
-export const ModifyButton = styled(Button)`
+export const WarningButton = styled(Button)`
   color: ${COLOR_SCHEME.secondary};
 `;
