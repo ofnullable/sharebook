@@ -7,7 +7,7 @@ import { useInput } from '@utils/inputUtils';
 import { signUpRequest } from '@redux/actions/userActions';
 
 import { ErrorText } from './index.styled';
-import { Button, SpinIcon, CenterDiv, InputGroup, CenterForm, ButtonLink } from '@styles/common';
+import { Button, LoadingIcon, CenterDiv, InputGroup, CenterForm, ButtonLink } from '@styles/common';
 
 const JoinPage = () => {
   const [email, emailHandler] = useInput();
@@ -128,9 +128,9 @@ const JoinPage = () => {
         <CenterDiv>
           {isLoading ? (
             <Button _color='primary' type='submit' disabled>
-              <SpinIcon _size='14px' className='material-icons'>
+              <LoadingIcon _size='14px' className='material-icons'>
                 autorenew
-              </SpinIcon>
+              </LoadingIcon>
             </Button>
           ) : (
             <Button _color='primary' type='submit'>

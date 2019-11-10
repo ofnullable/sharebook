@@ -5,7 +5,7 @@ import Router from 'next/router';
 import { useInput } from '@utils/inputUtils';
 
 import { SearchForm, SearchButton } from './index.styled';
-import { SpinIcon } from '@styles/common';
+import { LoadingIcon } from '@styles/common';
 
 const SearchBar = () => {
   const [searchText, searchTextHandler, setSearchText] = useInput();
@@ -29,9 +29,9 @@ const SearchBar = () => {
       />
       <SearchButton _color='primary' className='searchButton'>
         {isLoading ? (
-          <SpinIcon _size='16px' className='material-icons'>
+          <LoadingIcon _size='16px' className='material-icons'>
             autorenew
-          </SpinIcon>
+          </LoadingIcon>
         ) : (
           '검색'
         )}

@@ -4,15 +4,10 @@ import { useSelector } from 'react-redux';
 
 import LeftMenu from '@components/Management/LeftMenu';
 import LendingHistory from '@components/Management/LendingsPage/LendingHistory';
+import LoadingOverlay from '@components/common/LoadingOverlay';
 
 import { WithLeftMenu, Title, SubMenu } from '@components/Management/styled';
-import {
-  CardWrapper,
-  CenterDiv,
-  SpinIcon,
-  ScreenOverlay,
-  LoadingIconWrapper,
-} from '@styles/common';
+import { CardWrapper, CenterDiv } from '@styles/common';
 
 const LendingsPage = ({ status }) => {
   const { isLoading, data } = useSelector(state => state.lending.myLendings);
@@ -47,16 +42,7 @@ const LendingsPage = ({ status }) => {
         <Title>대여관리</Title>
         {renderSubMenu()}
 
-        {isLoading && (
-          <>
-            <ScreenOverlay />
-            <LoadingIconWrapper>
-              <SpinIcon _size='100px' _color='primary' className='material-icons'>
-                autorenew
-              </SpinIcon>
-            </LoadingIconWrapper>
-          </>
-        )}
+        {isLoading && <LoadingOverlay />}
 
         <CardWrapper>
           {!isLoading &&

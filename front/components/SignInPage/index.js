@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useInput } from '@utils/inputUtils';
 import { signInRequest } from '@redux/actions/userActions';
 
-import { CenterDiv, InputGroup, Button, SpinIcon, CenterForm, ButtonLink } from '@styles/common';
+import { CenterDiv, InputGroup, Button, LoadingIcon, CenterForm, ButtonLink } from '@styles/common';
 
 const SignInPage = () => {
   const { isSignedIn, isLoading } = useSelector(state => state.user.user);
@@ -61,9 +61,9 @@ const SignInPage = () => {
         <CenterDiv>
           {isLoading ? (
             <Button _color='primary' type='submit' disabled>
-              <SpinIcon _size='14px' className='material-icons'>
+              <LoadingIcon _size='14px' className='material-icons'>
                 autorenew
-              </SpinIcon>
+              </LoadingIcon>
             </Button>
           ) : (
             <Button _color='primary' type='submit'>

@@ -9,7 +9,7 @@ export const normalize = css`
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Do Hyeon', monospace, sans-serif;
+    font-family: 'Jua', monospace, sans-serif;
   }
   body {
     border: none;

@@ -19,8 +19,17 @@ export const Button = styled.button`
   text-align: center;
   vertical-align: middle;
   & i {
-    font-size: 20px;
-    vertical-align: middle;
+    ${device.laptops`
+      font-size: 20px;
+    `}
+    ${device.tablets`
+      font-size: 20px;
+    `}
+    ${device.mobiles`
+      font-size: 18px;
+    `}
+    vertical-align: sub;
+    padding-right: 5px;
   }
 `;
 
@@ -35,7 +44,7 @@ const spin = keyframes`
   }
 `;
 
-export const SpinIcon = styled.i`
+export const LoadingIcon = styled.i`
   animation: ${spin} 1s infinite linear;
   font-size: ${props => props._size};
   color: ${props => COLOR_SCHEME[`${props._color}`] || 'inherit'};
@@ -98,6 +107,7 @@ export const InputGroup = styled.div`
   }
   & label + textarea {
     display: block;
+    width: 100%;
     padding: 5px;
     border-radius: 5px;
     border: 1px solid ${COLOR_SCHEME.gray};

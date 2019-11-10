@@ -5,16 +5,10 @@ import { useSelector } from 'react-redux';
 
 import BookCard from '@components/BookCard';
 import LeftMenu from '@components/Management/LeftMenu';
+import LoadingOverlay from '@components/common/LoadingOverlay';
 
 import { WithLeftMenu, Title, SubMenu } from '@components/Management/styled';
-import {
-  Button,
-  CardWrapper,
-  CenterDiv,
-  SpinIcon,
-  ScreenOverlay,
-  LoadingIconWrapper,
-} from '@styles/common';
+import { Button, CardWrapper, CenterDiv } from '@styles/common';
 
 const BooksPage = ({ status }) => {
   const { isLoading, data } = useSelector(state => state.book.myBooks);
@@ -54,16 +48,7 @@ const BooksPage = ({ status }) => {
 
         {renderSubMenu()}
 
-        {isLoading && (
-          <>
-            <ScreenOverlay />
-            <LoadingIconWrapper>
-              <SpinIcon _size='100px' _color='primary' className='material-icons'>
-                autorenew
-              </SpinIcon>
-            </LoadingIconWrapper>
-          </>
-        )}
+        {isLoading && <LoadingOverlay />}
 
         <CardWrapper>
           {!isLoading &&

@@ -4,16 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from './SearchBar';
 import CategoryButton from './CategoryButton';
 import BookCard from '@components/BookCard';
+import LoadingOverlay from '@components/common/LoadingOverlay';
 import { loadBookListRequest, loadBookListByCategoryRequest } from '@redux/actions/bookActions';
 
 import { ConditionWrapper } from './index.styled';
-import {
-  CardWrapper,
-  CenterDiv,
-  SpinIcon,
-  ScreenOverlay,
-  LoadingIconWrapper,
-} from '@styles/common';
+import { CardWrapper, CenterDiv } from '@styles/common';
 
 const HomePage = ({ category }) => {
   const { isLoading, data, page, isLast } = useSelector(state => state.book.list);
@@ -54,16 +49,7 @@ const HomePage = ({ category }) => {
         ]}
       </ConditionWrapper>
 
-      {isLoading && (
-        <>
-          <ScreenOverlay />
-          <LoadingIconWrapper>
-            <SpinIcon _size='100px' _color='primary' className='material-icons'>
-              autorenew
-            </SpinIcon>
-          </LoadingIconWrapper>
-        </>
-      )}
+      {isLoading && <LoadingOverlay />}
 
       <CardWrapper>
         {data.length ? (
