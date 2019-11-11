@@ -7,6 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor // Field순서 변경에 유의
 public enum ErrorCode {
 
+    RESOURCE_NOT_FOUND(404, ""),
+
     ACCESS_DENIED(403, "You don't have permission to view this page."),
     BAD_CREDENTIALS(400, "Username and/or Password did not match"),
     UNAUTHORIZED(401, "Unauthorized"),

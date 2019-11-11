@@ -2,7 +2,6 @@ package me.ofnullable.sharebook.book.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import me.ofnullable.sharebook.book.exception.NoSuchBookStatusException;
 
 import java.util.Arrays;
 
@@ -20,7 +19,7 @@ public enum BookStatus {
         return Arrays.stream(BookStatus.values())
                 .filter(c -> c.getCode() == code)
                 .findAny()
-                .orElseThrow(() -> new NoSuchBookStatusException(code));
+                .orElseThrow(() -> new IllegalArgumentException("Can not found book status for code: " + code));
     }
 
 }

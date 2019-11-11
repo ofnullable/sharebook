@@ -1,9 +1,7 @@
 package me.ofnullable.sharebook.error;
 
 import me.ofnullable.sharebook.account.exception.EmailDuplicationException;
-import me.ofnullable.sharebook.account.exception.NoSuchAccountException;
-import me.ofnullable.sharebook.book.exception.NoSuchBookException;
-import me.ofnullable.sharebook.book.exception.NoSuchCategoryException;
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.lending.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,64 +28,39 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @ExceptionHandler(NoSuchAccountException.class)
+    @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected ApiError handleNoSuchAccountException(NoSuchAccountException e, WebRequest request) {
-        if (e.getId() != null) {
-            log.debug("No Such Account. ID: {}", e.getId());
-        } else {
-            log.debug("No Such Account. Username: {}", e.getUsername());
-        }
-        return bindError(ErrorCode.ACCOUNT_NOT_FOUND, request);
+    protected ApiError handleResourceNotFoundException(ResourceNotFoundException e, WebRequest request) {
+        log.debug("Fail to find resource, key: {}", e.getKey());
+        return bindResourceNotFoundError(e.getMessage(), request);
     }
 
     @ExceptionHandler(EmailDuplicationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     protected ApiError handleEmailDuplicationException(EmailDuplicationException e, WebRequest request) {
         log.debug("Duplicate email: {}", e.getEmail());
-        return bindError(ErrorCode.EMAIL_DUPLICATION, request);
-    }
-
-    @ExceptionHandler(NoSuchBookException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected ApiError handleNoSuchBookException(NoSuchBookException e, WebRequest request) {
-        log.debug("No Such Book. id: {}", e.getId());
-        return bindError(ErrorCode.BOOK_NOT_FOUND, request);
-    }
-
-    @ExceptionHandler(NoSuchCategoryException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected ApiError handleNoSuchCategoryException(NoSuchCategoryException e, WebRequest request) {
-        log.debug("No Such Category. name: {}", e.getId());
-        return bindError(ErrorCode.CATEGORY_NOT_FOUND, request);
-    }
-
-    @ExceptionHandler(NoSuchLendingException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected ApiError handleNoSuchLendingException(NoSuchLendingException e, WebRequest request) {
-        log.debug("No Such Lending. id: {}", e.getLendingId());
-        return bindError(ErrorCode.LENDING_NOT_FOUND, request);
+        return bindResourceNotFoundError(ErrorCode.EMAIL_DUPLICATION, request);
     }
 
     @ExceptionHandler(LendingAlreadyCompletionException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ApiError handleLendingAlreadyCompletionException(LendingAlreadyCompletionException e, WebRequest request) {
         log.debug("Lending Already Completion.");
-        return bindError(ErrorCode.LENDING_ALREADY_COMPLETION, request);
+        return bindResourceNotFoundError(ErrorCode.LENDING_ALREADY_COMPLETION, request);
     }
 
     @ExceptionHandler(LendingNotRequestedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ApiError handleLendingNotRequestedException(LendingNotRequestedException e, WebRequest request) {
         log.debug("This Lending Is Not Requested. id: {}", e.getLendingId());
-        return bindError(ErrorCode.LENDING_NOT_REQUESTED, request);
+        return bindResourceNotFoundError(ErrorCode.LENDING_NOT_REQUESTED, request);
     }
 
     @ExceptionHandler(LendingStatusEqualsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ApiError handleLendingStatusEqualsException(LendingStatusEqualsException e, WebRequest request) {
         log.debug("Lending Status Can Not Equals. status: {}", e.getStatus());
-        return bindError(ErrorCode.LENDING_STATUS_EQUALS, request);
+        return bindResourceNotFoundError(ErrorCode.LENDING_STATUS_EQUALS, request);
     }
 
     @ExceptionHandler(LendingStatusInvalidException.class)
@@ -101,7 +74,7 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ApiError handleLendingHistoryNotExistsException(LendingHistoryNotExistsException e, WebRequest request) {
         log.debug("Lending history not exists. book id: {}", e.getBookId());
-        return bindError(ErrorCode.LENDING_HISTORY_NOT_FOUND, request);
+        return bindResourceNotFoundError(ErrorCode.LENDING_HISTORY_NOT_FOUND, request);
     }
 
     @Override
@@ -127,11 +100,20 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
                 .collect(toMap(FieldError::getField, FieldError::getDefaultMessage));
     }
 
-    private ApiError bindError(ErrorCode errorCode, WebRequest request) {
+    private ApiError bindResourceNotFoundError(ErrorCode errorCode, WebRequest request) {
         var req = ((ServletWebRequest) request).getRequest();
         return ApiError.builder()
                 .status(errorCode.getStatus())
                 .message(errorCode.getMessage())
+                .path(req.getRequestURI())
+                .build();
+    }
+
+    private ApiError bindResourceNotFoundError(String message, WebRequest request) {
+        var req = ((ServletWebRequest) request).getRequest();
+        return ApiError.builder()
+                .status(ErrorCode.RESOURCE_NOT_FOUND.getStatus())
+                .message(message)
                 .path(req.getRequestURI())
                 .build();
     }

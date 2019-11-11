@@ -47,9 +47,9 @@ public class ReviewController {
         return new ReviewResponse(reviewUpdateService.updateReview(dto));
     }
 
-    @DeleteMapping("/review/{reviewId}")
-    public Long removeReview(@PathVariable Long reviewId) {
-        return reviewDeleteService.deleteReview(reviewId);
+    @DeleteMapping("/review/{id}")
+    public Long removeReview(@PathVariable Long id) {
+        return reviewDeleteService.deleteReview(id);
     }
 
 }
