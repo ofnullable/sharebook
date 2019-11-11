@@ -41,7 +41,9 @@ public class Review extends Auditable {
         if (dto.getScore() != null) {
             this.score = dto.getScore();
         }
-        this.contents = dto.getContents();
+        if (dto.getContents() != null) {
+            this.contents = dto.getContents();
+        }
     }
 
 }

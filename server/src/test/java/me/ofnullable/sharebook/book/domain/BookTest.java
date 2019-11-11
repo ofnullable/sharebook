@@ -3,7 +3,6 @@ package me.ofnullable.sharebook.book.domain;
 import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.account.domain.Email;
 import me.ofnullable.sharebook.book.domain.converter.BookStatusConverter;
-import me.ofnullable.sharebook.book.exception.NoSuchBookStatusException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -62,9 +61,9 @@ class BookTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 도서 상태 - NoSuchBookStatusException")
+    @DisplayName("존재하지 않는 도서 상태 - IllegalArgumentException")
     void invalid_book_status() {
-        assertThrows(NoSuchBookStatusException.class, () -> BookStatus.of(3));
+        assertThrows(IllegalArgumentException.class, () -> BookStatus.of(3));
     }
 
     @Test

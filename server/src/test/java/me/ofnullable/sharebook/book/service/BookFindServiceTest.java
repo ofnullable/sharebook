@@ -1,8 +1,8 @@
 package me.ofnullable.sharebook.book.service;
 
 import me.ofnullable.sharebook.book.domain.Book;
-import me.ofnullable.sharebook.book.exception.NoSuchBookException;
 import me.ofnullable.sharebook.book.repository.BookRepository;
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.lending.domain.LendingStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,12 +49,12 @@ class BookFindServiceTest {
     }
 
     @Test
-    @DisplayName("도서가 존재하지 않는 경우 - NoSuchBookException")
+    @DisplayName("도서가 존재하지 않는 경우 - ResourceNotFoundException")
     void find_book_by_invalid_id() {
         given(bookRepository.findById(any(Long.class)))
                 .willReturn(Optional.empty());
 
-        assertThrows(NoSuchBookException.class, () -> bookFindService.findById(any(Long.class)));
+        assertThrows(ResourceNotFoundException.class, () -> bookFindService.findById(any(Long.class)));
     }
 
     @Test

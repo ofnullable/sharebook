@@ -1,13 +1,12 @@
 package me.ofnullable.sharebook.review.service;
 
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.NoSuchElementException;
 
 import static me.ofnullable.sharebook.review.utils.ReviewUtils.*;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -75,17 +74,17 @@ class ReviewUpdateServiceTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 리뷰 업데이트 시 NoSuchElementException")
+    @DisplayName("존재하지 않는 리뷰 업데이트 시 ResourceNotFoundException")
     void update_invalid_review() {
         given(reviewFindService.findByReviewId(any(Long.class)))
-                .willThrow(NoSuchElementException.class);
+                .willThrow(ResourceNotFoundException.class);
 
         var dto = buildUpdateRequest();
 
         var exception = catchThrowable(() -> reviewUpdateService.updateReview(dto));
 
         then(exception)
-                .isInstanceOf(NoSuchElementException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
 }

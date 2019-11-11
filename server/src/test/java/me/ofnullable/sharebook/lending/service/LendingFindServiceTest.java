@@ -1,9 +1,9 @@
 package me.ofnullable.sharebook.lending.service;
 
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.lending.domain.Lending;
 import me.ofnullable.sharebook.lending.domain.LendingStatus;
 import me.ofnullable.sharebook.lending.exception.LendingHistoryNotExistsException;
-import me.ofnullable.sharebook.lending.exception.NoSuchLendingException;
 import me.ofnullable.sharebook.lending.repository.LendingRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,12 +48,12 @@ class LendingFindServiceTest {
     }
 
     @Test
-    @DisplayName("대여기록 존재하지 않는 경우 - NoSuchLendingException")
+    @DisplayName("대여기록 존재하지 않는 경우 - ResourceNotFoundException")
     void find_by_invalid_id() {
         given(lendingRepository.findById(any(Long.class)))
                 .willReturn(Optional.empty());
 
-        assertThrows(NoSuchLendingException.class, () -> lendingFindService.findById(1L));
+        assertThrows(ResourceNotFoundException.class, () -> lendingFindService.findById(1L));
     }
 
     @Test
@@ -62,18 +62,18 @@ class LendingFindServiceTest {
         given(lendingRepository.findFirstByBookIdOrderByIdDesc(any(Long.class)))
                 .willReturn(Optional.of(requested));
 
-        var result = lendingFindService.findLatestLendingByBookId(1L);
+        var result = lendingFindService.findLatestByBookId(1L);
 
         equalLending(result, requested);
     }
 
     @Test
-    @DisplayName("도서 Id에 해당하는 대여기록 존재하지 않는 경우 - NoSuchLendingException")
+    @DisplayName("도서 Id에 해당하는 대여기록 존재하지 않는 경우 - LendingHistoryNotExistsException")
     void find_first_by_invalid_book_id() {
         given(lendingRepository.findFirstByBookIdOrderByIdDesc(any(Long.class)))
                 .willReturn(Optional.empty());
 
-        assertThrows(LendingHistoryNotExistsException.class, () -> lendingFindService.findLatestLendingByBookId(1L));
+        assertThrows(LendingHistoryNotExistsException.class, () -> lendingFindService.findLatestByBookId(1L));
     }
 
     @Test

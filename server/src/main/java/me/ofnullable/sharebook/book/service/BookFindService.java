@@ -2,9 +2,9 @@ package me.ofnullable.sharebook.book.service;
 
 import lombok.RequiredArgsConstructor;
 import me.ofnullable.sharebook.book.domain.Book;
-import me.ofnullable.sharebook.book.exception.NoSuchBookException;
 import me.ofnullable.sharebook.book.repository.BookRepository;
 import me.ofnullable.sharebook.common.dto.PageRequest;
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.lending.domain.LendingStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class BookFindService {
 
     public Book findById(Long id) {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new NoSuchBookException(id));
+                .orElseThrow(() -> new ResourceNotFoundException(id, Book.class));
     }
 
     public Page<Book> findAll(String searchText, PageRequest pageRequest) {

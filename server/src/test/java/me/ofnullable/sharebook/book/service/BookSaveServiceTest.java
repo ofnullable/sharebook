@@ -2,8 +2,8 @@ package me.ofnullable.sharebook.book.service;
 
 import me.ofnullable.sharebook.account.service.AccountFindService;
 import me.ofnullable.sharebook.book.domain.Book;
-import me.ofnullable.sharebook.book.exception.NoSuchCategoryException;
 import me.ofnullable.sharebook.book.repository.BookRepository;
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,14 +51,14 @@ class BookSaveServiceTest {
     }
 
     @Test
-    @DisplayName("존재하지 카테고리로 도서 등록하는 경우 - NoSuchCategoryException")
+    @DisplayName("존재하지 카테고리로 도서 등록하는 경우 - ResourceNotFoundException")
     void save_book_with_invalid_category() {
         given(accountFindService.findById(any(Long.class)))
                 .willReturn(buildNormalAccount());
         given(categoryFindService.findCategoryById(any(Long.class)))
-                .willThrow(NoSuchCategoryException.class);
+                .willThrow(ResourceNotFoundException.class);
 
-        assertThrows(NoSuchCategoryException.class, () -> bookSaveService.save(buildSaveBookRequest(), buildNormalAccount()));
+        assertThrows(ResourceNotFoundException.class, () -> bookSaveService.save(buildSaveBookRequest(), buildNormalAccount()));
     }
 
 }

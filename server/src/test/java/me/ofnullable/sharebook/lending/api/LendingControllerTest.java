@@ -1,6 +1,7 @@
 package me.ofnullable.sharebook.lending.api;
 
 import me.ofnullable.sharebook.common.dto.PageRequest;
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.config.WithAuthenticationPrincipal;
 import me.ofnullable.sharebook.lending.domain.LendingStatus;
 import me.ofnullable.sharebook.lending.exception.*;
@@ -75,7 +76,7 @@ class LendingControllerTest extends WithAuthenticationPrincipal {
     void find_latest_lending_by_book_id() throws Exception {
         var requestedLending = buildRequestedLending();
 
-        given(lendingFindService.findLatestLendingByBookId(any(Long.class)))
+        given(lendingFindService.findLatestByBookId(any(Long.class)))
                 .willReturn(requestedLending);
 
         mvc.perform(get("/lending/book/1/latest"))
@@ -85,7 +86,7 @@ class LendingControllerTest extends WithAuthenticationPrincipal {
     @Test
     @DisplayName("도서 Id에 해당하는 대여기록 존재하지 않는 경우 - LendingHistoryNotExistsException")
     void find_first_lending_by_invalid_book_id() throws Exception {
-        given(lendingFindService.findLatestLendingByBookId(any(Long.class)))
+        given(lendingFindService.findLatestByBookId(any(Long.class)))
                 .willThrow(LendingHistoryNotExistsException.class);
 
         mvc.perform(get("/lending/book/1/latest"))
@@ -183,7 +184,7 @@ class LendingControllerTest extends WithAuthenticationPrincipal {
     @DisplayName("존재하지 않는 대여 업데이트 시 - 404")
     void update_invalid_lending() throws Exception {
         given(lendingUpdateService.updateLending(any(Long.class), eq(LendingStatus.REJECTED)))
-                .willThrow(NoSuchLendingException.class);
+                .willThrow(ResourceNotFoundException.class);
 
         mvc.perform(put("/lending/1/REJECTED"))
                 .andExpect(status().isNotFound());

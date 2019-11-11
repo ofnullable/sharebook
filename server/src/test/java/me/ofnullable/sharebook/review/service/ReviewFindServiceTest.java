@@ -1,5 +1,6 @@
 package me.ofnullable.sharebook.review.service;
 
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.review.domain.Review;
 import me.ofnullable.sharebook.review.repository.ReviewRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -10,7 +11,6 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static me.ofnullable.sharebook.review.utils.ReviewUtils.buildReview;
@@ -33,7 +33,7 @@ class ReviewFindServiceTest {
     @Test
     @DisplayName("도서 Id와 연관된 리뷰 목록 조회")
     void find_by_book_id() {
-        given(reviewRepository.findAllByBookId(any(Long.class)))
+        given(reviewRepository.findAllByBookIdOrderByIdDesc(any(Long.class)))
                 .willReturn(List.of(review));
 
         var list = reviewFindService.findAllByBookId(1L);
@@ -63,7 +63,7 @@ class ReviewFindServiceTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 Id의 리뷰 조회 시 NoSuchElementException")
+    @DisplayName("존재하지 않는 Id의 리뷰 조회 시 ResourceNotFoundException")
     void find_by_invalid_id() {
         given(reviewRepository.findById(any(Long.class)))
                 .willReturn(Optional.empty());
@@ -71,7 +71,7 @@ class ReviewFindServiceTest {
         var exception = catchThrowable(() -> reviewFindService.findByReviewId(1L));
 
         then(exception)
-                .isInstanceOf(NoSuchElementException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
 }

@@ -1,7 +1,7 @@
 package me.ofnullable.sharebook.lending.service;
 
-import me.ofnullable.sharebook.book.exception.NoSuchBookException;
 import me.ofnullable.sharebook.book.service.BookFindService;
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.lending.domain.Lending;
 import me.ofnullable.sharebook.lending.repository.LendingRepository;
 import me.ofnullable.sharebook.lending.utils.LendingUtils;
@@ -47,12 +47,12 @@ class LendingSaveServiceTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 도서 대여 시 - NoSuchBookException")
+    @DisplayName("존재하지 않는 도서 대여 시 - ResourceNotFoundException")
     void lending_invalid_book() {
         given(bookFindService.findById(any(Long.class)))
-                .willThrow(NoSuchBookException.class);
+                .willThrow(ResourceNotFoundException.class);
 
-        assertThrows(NoSuchBookException.class, () -> lendingSaveService.borrowRequest(1L, 1L));
+        assertThrows(ResourceNotFoundException.class, () -> lendingSaveService.borrowRequest(1L, 1L));
     }
 
 }

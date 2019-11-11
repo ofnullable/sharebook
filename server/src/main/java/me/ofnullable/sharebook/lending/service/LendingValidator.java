@@ -19,7 +19,7 @@ public class LendingValidator {
     }
 
     private void isValidAccountId(Long accountId) {
-        // if account dose not exist, throws NoSuchAccountException
+        // if account dose not exist, throws ResourceNotFoundException
         accountFindService.findById(accountId);
     }
 

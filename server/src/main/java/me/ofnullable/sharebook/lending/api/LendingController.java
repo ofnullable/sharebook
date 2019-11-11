@@ -38,7 +38,7 @@ public class LendingController {
 
     @GetMapping("/lending/book/{bookId}/latest")
     public LendingResponse findLatestLendingByBookId(@PathVariable Long bookId) {
-        return new LendingResponse(lendingFindService.findLatestLendingByBookId(bookId));
+        return new LendingResponse(lendingFindService.findLatestByBookId(bookId));
     }
 
     @GetMapping("/lending/{status}")

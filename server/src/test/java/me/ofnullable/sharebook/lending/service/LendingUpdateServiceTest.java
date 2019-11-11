@@ -1,11 +1,11 @@
 package me.ofnullable.sharebook.lending.service;
 
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.lending.domain.Lending;
 import me.ofnullable.sharebook.lending.domain.LendingStatus;
 import me.ofnullable.sharebook.lending.exception.LendingAlreadyCompletionException;
 import me.ofnullable.sharebook.lending.exception.LendingStatusEqualsException;
 import me.ofnullable.sharebook.lending.exception.LendingStatusInvalidException;
-import me.ofnullable.sharebook.lending.exception.NoSuchLendingException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -81,12 +81,12 @@ class LendingUpdateServiceTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 대여기록 업데이트 시 - NoSuchLendingException")
+    @DisplayName("존재하지 않는 대여기록 업데이트 시 - ResourceNotFoundException")
     void update_not_requested_lending() {
         given(lendingFindService.findById(any(Long.class)))
-                .willThrow(NoSuchLendingException.class);
+                .willThrow(ResourceNotFoundException.class);
 
-        assertThrows(NoSuchLendingException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.ACCEPTED));
+        assertThrows(ResourceNotFoundException.class, () -> lendingUpdateService.updateLending(1L, LendingStatus.ACCEPTED));
     }
 
     @Test
