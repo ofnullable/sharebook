@@ -2,14 +2,12 @@ package me.ofnullable.sharebook.book.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.ofnullable.sharebook.account.domain.Account;
-import me.ofnullable.sharebook.account.exception.NoSuchAccountException;
 import me.ofnullable.sharebook.book.domain.Book;
 import me.ofnullable.sharebook.book.dto.book.SaveBookRequest;
-import me.ofnullable.sharebook.book.exception.NoSuchBookException;
-import me.ofnullable.sharebook.book.exception.NoSuchCategoryException;
 import me.ofnullable.sharebook.book.service.BookFindService;
 import me.ofnullable.sharebook.book.service.BookSaveService;
 import me.ofnullable.sharebook.common.dto.PageRequest;
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.config.WithAuthenticationPrincipal;
 import me.ofnullable.sharebook.lending.domain.LendingStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +66,7 @@ class BookControllerTest extends WithAuthenticationPrincipal {
     @DisplayName("존재하지 않는 도서 조회 - 404")
     void find_book_by_invalid_id() throws Exception {
         given(bookFindService.findById(any(Long.class)))
-                .willThrow(NoSuchBookException.class);
+                .willThrow(ResourceNotFoundException.class);
 
         mvc.perform(get("/book/1"))
                 .andExpect(status().isNotFound());
@@ -90,28 +88,26 @@ class BookControllerTest extends WithAuthenticationPrincipal {
     @DisplayName("존재하지 않는 계정으로 도서 등록하는 경우 - 404")
     void save_book_with_invalid_account() throws Exception {
         given(bookSaveService.save(any(SaveBookRequest.class), any(Account.class)))
-                .willThrow(NoSuchAccountException.class);
+                .willThrow(ResourceNotFoundException.class);
 
         mvc.perform(post("/book")
                 .characterEncoding("UTF-8")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(buildSaveBookRequest())))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", is("No such account")));
+                .andExpect(status().isNotFound());
     }
 
     @Test
     @DisplayName("존재하지 않는 카테고리로 도서 등록하는 경우 - 404")
     void save_book_with_invalid_category() throws Exception {
         given(bookSaveService.save(any(SaveBookRequest.class), any(Account.class)))
-                .willThrow(NoSuchCategoryException.class);
+                .willThrow(ResourceNotFoundException.class);
 
         mvc.perform(post("/book")
                 .characterEncoding("UTF-8")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(buildSaveBookRequest())))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", is("No such category")));
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -161,7 +157,7 @@ class BookControllerTest extends WithAuthenticationPrincipal {
     @DisplayName("존재하지 않는 카테고리로 조회하는 경우 - 404")
     void find_book_by_invalid_category() throws Exception {
         given(bookFindService.findAllByCategory(any(String.class), any(PageRequest.class)))
-                .willThrow(NoSuchCategoryException.class);
+                .willThrow(ResourceNotFoundException.class);
 
         // path variable에 한글
         mvc.perform(get("/books/category/카테고리?page=1&size=10")

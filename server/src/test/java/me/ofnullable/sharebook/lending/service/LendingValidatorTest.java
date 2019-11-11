@@ -1,9 +1,9 @@
 package me.ofnullable.sharebook.lending.service;
 
-import me.ofnullable.sharebook.account.exception.NoSuchAccountException;
 import me.ofnullable.sharebook.account.service.AccountFindService;
 import me.ofnullable.sharebook.book.domain.Book;
 import me.ofnullable.sharebook.book.utils.BookUtils;
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,14 +27,14 @@ class LendingValidatorTest {
     private AccountFindService accountFindService;
 
     @Test
-    @DisplayName("존재하지 않는 계정 Id로 대여 요청 시 - NoSuchAccountException")
+    @DisplayName("존재하지 않는 계정 Id로 대여 요청 시 - ResourceNotFoundException")
     void borrow_with_invalid_account_id() {
         given(accountFindService.findById(any(Long.class)))
-                .willThrow(NoSuchAccountException.class);
+                .willThrow(ResourceNotFoundException.class);
 
         var lending = buildRequestedLending();
 
-        assertThrows(NoSuchAccountException.class, () -> validator.validate(lending));
+        assertThrows(ResourceNotFoundException.class, () -> validator.validate(lending));
     }
 
     @Test

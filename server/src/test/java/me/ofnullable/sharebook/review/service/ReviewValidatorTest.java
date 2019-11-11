@@ -1,9 +1,8 @@
 package me.ofnullable.sharebook.review.service;
 
-import me.ofnullable.sharebook.account.exception.NoSuchAccountException;
 import me.ofnullable.sharebook.account.service.AccountFindService;
-import me.ofnullable.sharebook.book.exception.NoSuchBookException;
 import me.ofnullable.sharebook.book.service.BookFindService;
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.review.repository.ReviewRepository;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.DisplayName;
@@ -55,10 +54,10 @@ class ReviewValidatorTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 계정 Id인 경우 NoSuchAccountException")
+    @DisplayName("존재하지 않는 계정 Id인 경우 ResourceNotFoundException")
     void invalid_account_id() {
         given(accountFindService.findById(any(Long.class)))
-                .willThrow(NoSuchAccountException.class);
+                .willThrow(ResourceNotFoundException.class);
 
         var exception = catchThrowable(() -> reviewValidator.isValidRequest(buildReview()));
 
@@ -69,14 +68,14 @@ class ReviewValidatorTest {
                 .shouldHaveNoInteractions();
 
         BDDAssertions.then(exception)
-                .isInstanceOf(NoSuchAccountException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
-    @DisplayName("존재하지 않는 도서 Id인 경우 NoSuchBookException")
+    @DisplayName("존재하지 않는 도서 Id인 경우 ResourceNotFoundException")
     void invalid_book_id() {
         given(bookFindService.findById(any(Long.class)))
-                .willThrow(NoSuchBookException.class);
+                .willThrow(ResourceNotFoundException.class);
 
         var exception = catchThrowable(() -> reviewValidator.isValidRequest(buildReview()));
 
@@ -88,7 +87,7 @@ class ReviewValidatorTest {
                 .shouldHaveNoInteractions();
 
         BDDAssertions.then(exception)
-                .isInstanceOf(NoSuchBookException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test

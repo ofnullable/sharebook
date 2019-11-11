@@ -2,8 +2,8 @@ package me.ofnullable.sharebook.account.service;
 
 import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.account.domain.Email;
-import me.ofnullable.sharebook.account.exception.NoSuchAccountException;
 import me.ofnullable.sharebook.account.repository.AccountRepository;
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +46,7 @@ class AccountFindServiceTest {
     }
 
     @Test
-    @DisplayName("SECURITY - 이메일이 존재하지 않는 경우 NoSuchAccountException")
+    @DisplayName("SECURITY - 이메일이 존재하지 않는 경우 UsernameNotFoundException")
     void load_account_by_username_with_invalid_email() {
         given(accountRepository.findByEmail(any(Email.class)))
                 .willReturn(Optional.empty());
@@ -66,12 +66,12 @@ class AccountFindServiceTest {
     }
 
     @Test
-    @DisplayName("아이디(PK)가 존재하지 않는 경우 AccountNotFoundException")
+    @DisplayName("아이디(PK)가 존재하지 않는 경우 ResourceNotFoundException")
     void find_account_by_id_with_invalid_id() {
         given(accountRepository.findById(any(Long.class)))
                 .willReturn(Optional.empty());
 
-        assertThrows(NoSuchAccountException.class, () -> accountFindService.findById(1L));
+        assertThrows(ResourceNotFoundException.class, () -> accountFindService.findById(1L));
     }
 
     @Test

@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.account.dto.SignUpRequest;
 import me.ofnullable.sharebook.account.exception.EmailDuplicationException;
-import me.ofnullable.sharebook.account.exception.NoSuchAccountException;
 import me.ofnullable.sharebook.account.service.AccountFindService;
 import me.ofnullable.sharebook.account.service.AccountSaveService;
 import me.ofnullable.sharebook.account.service.AccountUpdateService;
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.config.WithAuthenticationPrincipal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -72,7 +72,7 @@ class AccountControllerTest extends WithAuthenticationPrincipal {
     @DisplayName("존재하지 않는 계정조회 - 404")
     void find_account_by_invalid_id() throws Exception {
         given(accountFindService.findById(any(Long.class)))
-                .willThrow(NoSuchAccountException.class);
+                .willThrow(ResourceNotFoundException.class);
 
         mvc.perform(get("/account/1"))
                 .andExpect(status().isNotFound());
@@ -138,7 +138,7 @@ class AccountControllerTest extends WithAuthenticationPrincipal {
     @DisplayName("존재하지 않는 계정 비밀번호 변경 요청 - 404")
     void invalid_update_password() throws Exception {
         given(accountUpdateService.updatePassword(any(Long.class), anyString()))
-                .willThrow(NoSuchAccountException.class);
+                .willThrow(ResourceNotFoundException.class);
 
         mvc.perform(patch("/account/1")
                 .characterEncoding("UTF-8")

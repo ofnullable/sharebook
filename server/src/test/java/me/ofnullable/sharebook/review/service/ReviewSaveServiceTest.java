@@ -1,7 +1,6 @@
 package me.ofnullable.sharebook.review.service;
 
-import me.ofnullable.sharebook.account.exception.NoSuchAccountException;
-import me.ofnullable.sharebook.book.exception.NoSuchBookException;
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.lending.exception.LendingHistoryNotExistsException;
 import me.ofnullable.sharebook.review.domain.Review;
 import me.ofnullable.sharebook.review.dto.SaveReviewRequest;
@@ -59,7 +58,7 @@ class ReviewSaveServiceTest {
     @Test
     @DisplayName("존재하지 않는 도서에 대한 review 등록")
     void save_review_with_invalid_book_id() {
-        doThrow(NoSuchBookException.class)
+        doThrow(ResourceNotFoundException.class)
                 .when(validator)
                 .isValidRequest(any());
 
@@ -73,13 +72,13 @@ class ReviewSaveServiceTest {
                 .shouldHaveNoInteractions();
 
         BDDAssertions.then(exception)
-                .isInstanceOf(NoSuchBookException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
     @DisplayName("존재하지 않는 계정으로 review 등록")
     void save_review_with_invalid_account_id() {
-        doThrow(NoSuchAccountException.class)
+        doThrow(ResourceNotFoundException.class)
                 .when(validator)
                 .isValidRequest(any(Review.class));
 
@@ -89,7 +88,7 @@ class ReviewSaveServiceTest {
                 .shouldHaveNoInteractions();
 
         BDDAssertions.then(exception)
-                .isInstanceOf(NoSuchAccountException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test

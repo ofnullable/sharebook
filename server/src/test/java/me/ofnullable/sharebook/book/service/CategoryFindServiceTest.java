@@ -1,7 +1,7 @@
 package me.ofnullable.sharebook.book.service;
 
-import me.ofnullable.sharebook.book.exception.NoSuchCategoryException;
 import me.ofnullable.sharebook.book.repository.CategoryRepository;
+import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,12 +50,12 @@ class CategoryFindServiceTest {
     }
 
     @Test
-    @DisplayName("카테고리가 존재하지 않는 경우 - NoSuchCategoryException")
+    @DisplayName("카테고리가 존재하지 않는 경우 - ResourceNotFoundException")
     void find_category_by_invalid_name() {
         given(categoryRepository.findByIdAndDisplayIsTrue(any(Long.class)))
                 .willReturn(Optional.empty());
 
-        assertThrows(NoSuchCategoryException.class, () -> categoryFindService.findCategoryById(0L));
+        assertThrows(ResourceNotFoundException.class, () -> categoryFindService.findCategoryById(0L));
     }
 
 }
