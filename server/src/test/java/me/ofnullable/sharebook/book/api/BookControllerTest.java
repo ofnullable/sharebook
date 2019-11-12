@@ -9,7 +9,6 @@ import me.ofnullable.sharebook.book.service.BookSaveService;
 import me.ofnullable.sharebook.common.dto.PageRequest;
 import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.config.WithAuthenticationPrincipal;
-import me.ofnullable.sharebook.lending.domain.LendingStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -192,16 +191,6 @@ class BookControllerTest extends WithAuthenticationPrincipal {
                 .willReturn(buildNormalPageBook());
 
         mvc.perform(get("/account/0/books?page=1&size=10"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName("특정 상태의 내 도서 요청")
-    void find_book_by_lending_status() throws Exception {
-        given(bookFindService.findAllMyBookByLendingStatus(any(Long.class), any(LendingStatus.class), any(PageRequest.class)))
-                .willReturn(buildNormalPageBook());
-
-        mvc.perform(get("/account/books/lending/REQUESTED?page=1&size=20"))
                 .andExpect(status().isOk());
     }
 

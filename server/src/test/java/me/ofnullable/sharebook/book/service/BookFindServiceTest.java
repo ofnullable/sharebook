@@ -3,7 +3,6 @@ package me.ofnullable.sharebook.book.service;
 import me.ofnullable.sharebook.book.domain.Book;
 import me.ofnullable.sharebook.book.repository.BookRepository;
 import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
-import me.ofnullable.sharebook.lending.domain.LendingStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -128,18 +127,6 @@ class BookFindServiceTest {
         var result = bookFindService.findAllByOwner(11L, buildPageRequest(20));
 
         assertEquals(result.getSize(), 0);
-    }
-
-    @Test
-    @DisplayName("특정 상태의 내 도서 요청")
-    void find_book_by_Lending_status() {
-        given(bookRepository.findAllByOwnerIdAndLendingsCurrentStatus(any(Long.class), any(LendingStatus.class), any(Pageable.class)))
-                .willReturn(buildNormalPageBook());
-
-        var result = bookFindService.findAllMyBookByLendingStatus(1L, LendingStatus.REQUESTED, buildPageRequest(20));
-
-        assertEquals(result.getTotalElements(), 3);
-        assertEquals(result.getSize(), 20);
     }
 
 }
