@@ -26,7 +26,7 @@ class LendingIntegrationTest {
     @WithUserDetails("test1@asd.com")
     @DisplayName("로그인 후 현재 계정 대여기록 요청")
     void find_lending_by_account_id_with_auth() throws Exception {
-        mvc.perform(get("/lending/REQUESTED?page=1&size=20"))
+        mvc.perform(get("/lendings/REQUESTED?page=1&size=20"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -34,7 +34,7 @@ class LendingIntegrationTest {
     @Test
     @DisplayName("로그인하지 않고 현재 계정 대여기록 요청")
     void find_lending_by_account_id_with_no_auth() throws Exception {
-        mvc.perform(get("/lending/REQUESTED?page=1&size=20"))
+        mvc.perform(get("/lendings/REQUESTED?page=1&size=20"))
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
     }

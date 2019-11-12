@@ -77,12 +77,12 @@ class LendingFindServiceTest {
     }
 
     @Test
-    @DisplayName("특정 상태의 대여기록 조회")
+    @DisplayName("특정 계정의 대여기록 조회")
     void find_by_account_id() {
         given(lendingRepository.findAllByBorrowerIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(Pageable.class)))
                 .willReturn(buildPageLending(20));
 
-        var result = lendingFindService.findAllByAccountIdAndCurrentStatus(1L, LendingStatus.ACCEPTED, buildPageRequest(20));
+        var result = lendingFindService.findLendingRequestsByCurrentStatus(1L, LendingStatus.ACCEPTED, buildPageRequest(20));
 
         assertEquals(result.getTotalElements(), 3);
     }
@@ -93,7 +93,7 @@ class LendingFindServiceTest {
         given(lendingRepository.findAllByBorrowerIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(Pageable.class)))
                 .willReturn(Page.empty());
 
-        var result = lendingFindService.findAllByAccountIdAndCurrentStatus(1L, LendingStatus.ACCEPTED, buildPageRequest(20));
+        var result = lendingFindService.findLendingRequestsByCurrentStatus(1L, LendingStatus.ACCEPTED, buildPageRequest(20));
 
         assertEquals(result.getTotalElements(), 0);
     }
@@ -121,6 +121,20 @@ class LendingFindServiceTest {
 
         then(exception)
                 .isInstanceOf(LendingHistoryNotExistsException.class);
+    }
+
+    @Test
+    @DisplayName("내 도서의 상태별 대여 기록 조회")
+    void find_lending_requests_for_my_book() {
+        given(lendingRepository.findAllByBookOwnerIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(Pageable.class)))
+                .willReturn(buildPageLending(10));
+
+        var result = lendingFindService.findLendingRequestsForMyBooksByCurrentStatus(1L, LendingStatus.REQUESTED, buildPageRequest(10));
+
+        then(result)
+                .isInstanceOf(Page.class);
+        then(result.getSize())
+                .isEqualTo(10);
     }
 
 }
