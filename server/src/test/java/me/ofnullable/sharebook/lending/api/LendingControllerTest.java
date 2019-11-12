@@ -50,24 +50,35 @@ class LendingControllerTest extends WithAuthenticationPrincipal {
     }
 
     @Test
-    @DisplayName("현재 계정의 대여목록 조회")
+    @DisplayName("현재 계정의 대여기록 조회")
     void find_lending_by_account_id() throws Exception {
-        given(lendingFindService.findAllByAccountIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(PageRequest.class)))
+        given(lendingFindService.findLendingRequestsByCurrentStatus(any(Long.class), any(LendingStatus.class), any(PageRequest.class)))
                 .willReturn(buildPageLending(20));
 
-        mvc.perform(get("/lending/ACCEPTED?page=1&size=20"))
+        mvc.perform(get("/lendings/ACCEPTED?page=1&size=20"))
                 .andExpect(jsonPath("$.totalElements", is(3)))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("대여목록이 존재하지 않는 경우")
+    @DisplayName("현재 계정의 대여기록이 존재하지 않는 경우")
     void find_lending_by_invalid_account_id() throws Exception {
-        given(lendingFindService.findAllByAccountIdAndCurrentStatus(any(Long.class), any(LendingStatus.class), any(PageRequest.class)))
+        given(lendingFindService.findLendingRequestsByCurrentStatus(any(Long.class), any(LendingStatus.class), any(PageRequest.class)))
                 .willReturn(Page.empty());
 
-        mvc.perform(get("/lending/ACCEPTED?page=1&size=20"))
+        mvc.perform(get("/lendings/ACCEPTED?page=1&size=20"))
                 .andExpect(jsonPath("$.totalElements", is(0)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("내 도서의 상태별 대여 기록 조회")
+    void find_lending_requests_for_my_book() throws Exception {
+        given(lendingFindService.findLendingRequestsForMyBooksByCurrentStatus(any(Long.class), any(LendingStatus.class), any(PageRequest.class)))
+                .willReturn(buildPageLending(10));
+
+        mvc.perform(get("/mybook/lendings/REQUESTED?page=1&size=10"))
+                .andExpect(jsonPath("$.totalElements", is(3)))
                 .andExpect(status().isOk());
     }
 

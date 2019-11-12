@@ -41,12 +41,21 @@ public class LendingController {
         return new LendingResponse(lendingFindService.findLatestByBookId(bookId));
     }
 
-    @GetMapping("/lending/{status}")
-    public Page<LendingResponse> findLendingByAccount(
+    @GetMapping("/lendings/{status}")
+    public Page<LendingResponse> findLendingRequestsByCurrentStatus(
             @AuthenticationPrincipal(expression = "account") Account account,
             @PathVariable LendingStatus status,
             @Valid PageRequest pageRequest) {
-        return lendingFindService.findAllByAccountIdAndCurrentStatus(account.getId(), status, pageRequest)
+        return lendingFindService.findLendingRequestsByCurrentStatus(account.getId(), status, pageRequest)
+                .map(LendingResponse::new);
+    }
+
+    @GetMapping("/mybook/lendings/{status}")
+    public Page<LendingResponse> findLendingRequestsForMyBooks(
+            @AuthenticationPrincipal(expression = "account") Account account,
+            @PathVariable LendingStatus status,
+            @Valid PageRequest pageRequest) {
+        return lendingFindService.findLendingRequestsForMyBooksByCurrentStatus(account.getId(), status, pageRequest)
                 .map(LendingResponse::new);
     }
 

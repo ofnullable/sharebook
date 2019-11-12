@@ -7,7 +7,6 @@ import me.ofnullable.sharebook.book.dto.book.SaveBookRequest;
 import me.ofnullable.sharebook.book.service.BookFindService;
 import me.ofnullable.sharebook.book.service.BookSaveService;
 import me.ofnullable.sharebook.common.dto.PageRequest;
-import me.ofnullable.sharebook.lending.domain.LendingStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
@@ -62,15 +61,6 @@ public class BookController {
                     .map(BookResponse::new);
         }
         return bookFindService.findAllByOwner(accountId, pageRequest)
-                .map(BookResponse::new);
-    }
-
-    @GetMapping("/account/books/lending/{status}")
-    public Page<BookResponse> findAllMyBookByLendingStatus(
-            @AuthenticationPrincipal(expression = "account") Account account,
-            @PathVariable LendingStatus status,
-            @Valid PageRequest pageRequest) {
-        return bookFindService.findAllMyBookByLendingStatus(account.getId(), status, pageRequest)
                 .map(BookResponse::new);
     }
 
