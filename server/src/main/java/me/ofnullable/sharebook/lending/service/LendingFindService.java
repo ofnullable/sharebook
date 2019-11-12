@@ -16,8 +16,12 @@ public class LendingFindService {
 
     private final LendingRepository lendingRepository;
 
-    public Page<Lending> findAllByAccountIdAndCurrentStatus(Long accountId, LendingStatus status, PageRequest pageRequest) {
-        return lendingRepository.findAllByBorrowerIdAndCurrentStatus(accountId, status, pageRequest.of());
+    public Page<Lending> findLendingRequestsByCurrentStatus(Long borrowerId, LendingStatus status, PageRequest pageRequest) {
+        return lendingRepository.findAllByBorrowerIdAndCurrentStatus(borrowerId, status, pageRequest.of());
+    }
+
+    public Page<Lending> findLendingRequestsForMyBooksByCurrentStatus(Long ownerId, LendingStatus status, PageRequest pageRequest) {
+        return lendingRepository.findAllByBookOwnerIdAndCurrentStatus(ownerId, status, pageRequest.of());
     }
 
     public Lending findById(Long lendingId) {

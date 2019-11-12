@@ -15,6 +15,9 @@ public interface LendingRepository extends JpaRepository<Lending, Long> {
     Page<Lending> findAllByBorrowerIdAndCurrentStatus(Long borrowerId, LendingStatus status, Pageable pageable);
 
     @EntityGraph(attributePaths = {"book", "book.category", "book.owner"})
+    Page<Lending> findAllByBookOwnerIdAndCurrentStatus(Long owner, LendingStatus status, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"book", "book.category", "book.owner"})
     Optional<Lending> findFirstByBookIdOrderByIdDesc(Long bookId);
 
     Optional<Lending> findFirstByBorrowerIdAndBookId(Long borrowerId, Long bookId);

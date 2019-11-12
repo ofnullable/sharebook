@@ -5,7 +5,6 @@ import me.ofnullable.sharebook.book.domain.Book;
 import me.ofnullable.sharebook.book.repository.BookRepository;
 import me.ofnullable.sharebook.common.dto.PageRequest;
 import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
-import me.ofnullable.sharebook.lending.domain.LendingStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -34,10 +33,6 @@ public class BookFindService {
 
     public Page<Book> findAllByOwner(Long accountId, PageRequest pageRequest) {
         return bookRepository.findAllByOwnerId(accountId, pageRequest.of());
-    }
-
-    public Page<Book> findAllMyBookByLendingStatus(Long accountId, LendingStatus status, PageRequest pageRequest) {
-        return bookRepository.findAllByOwnerIdAndLendingsCurrentStatus(accountId, status, pageRequest.of());
     }
 
 }

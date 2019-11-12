@@ -47,7 +47,6 @@ public class Lending {
         this.currentStatus = LendingStatus.REQUESTED;
         this.histories.add(buildLendingHistory(LendingStatus.REQUESTED));
 
-        this.book.addLending(this);
         this.book.toUnavailable(this.borrowerId);
     }
 

@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.book.domain.converter.BookStatusConverter;
 import me.ofnullable.sharebook.common.domain.Auditable;
-import me.ofnullable.sharebook.lending.domain.Lending;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -46,9 +43,6 @@ public class Book extends Auditable {
 
     private Long currentBorrowerId;
 
-    @OneToMany(mappedBy = "book")
-    private List<Lending> lendings = new ArrayList<>();
-
     @Builder
     public Book(String title, String author, String publisher, Category category, String description, Account owner, String imageUrl) {
         this.title = title;
@@ -63,10 +57,6 @@ public class Book extends Auditable {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public void addLending(Lending lending) {
-        this.lendings.add(lending);
     }
 
     public void toUnavailable(Long renterId) {
