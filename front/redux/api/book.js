@@ -22,9 +22,3 @@ export const loadBookApi = id => {
 export const loadMyBookListApi = ({ page, size }) => {
   return axios.get(`/account/0/books?page=${page}&size=${size}`, { withCredentials: true });
 };
-
-export const loadMyBookListByLendingStatusApi = ({ status, page, size }) => {
-  return axios.get(`/account/books/lending/${status}?page=${page}&size=${size}`, {
-    withCredentials: true,
-  });
-};

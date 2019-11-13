@@ -25,12 +25,7 @@ export default (state = initial, action) => {
         draft.user.error = {};
         draft.user.isLoading = true;
         break;
-      case USER.SIGN_IN_FAILURE:
-      case USER.SIGN_OUT_FAILURE:
-      case USER.LOAD_USER_FAILURE:
-        draft.user.error = action.error;
-        draft.user.isLoading = false;
-        break;
+
       case USER.SIGN_IN_SUCCESS:
       case USER.LOAD_USER_SUCCESS:
         draft.user.data = action.data;
@@ -40,6 +35,18 @@ export default (state = initial, action) => {
       case USER.SIGN_OUT_SUCCESS:
         draft.user.data = {};
         draft.user.isSignedIn = false;
+        draft.user.isLoading = false;
+        break;
+
+      case USER.SIGN_IN_FAILURE:
+      case USER.LOAD_USER_FAILURE:
+        draft.user.error = action.error;
+        draft.user.isSignedIn = false;
+        draft.user.data = {};
+        draft.user.isLoading = false;
+        break;
+      case USER.SIGN_OUT_FAILURE:
+        draft.user.error = action.error;
         draft.user.isLoading = false;
         break;
 

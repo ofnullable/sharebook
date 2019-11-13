@@ -13,9 +13,10 @@ export const borrowBookFailure = error => ({
   error,
 });
 
-export const cancelBorrowRequest = id => ({
+export const cancelBorrowRequest = (id, target) => ({
   type: LENDING.CANCEL_BORROW_REQUEST,
   id,
+  target,
 });
 export const cancelBorrowSuccess = data => ({
   type: LENDING.CANCEL_BORROW_SUCCESS,
@@ -26,9 +27,10 @@ export const cancelBorrowFailure = error => ({
   error,
 });
 
-export const acceptLendingRequest = id => ({
+export const acceptLendingRequest = (id, target) => ({
   type: LENDING.ACCEPT_LENDING_REQUEST,
   id,
+  target,
 });
 export const acceptLendingSuccess = data => ({
   type: LENDING.ACCEPT_LENDING_SUCCESS,
@@ -39,9 +41,10 @@ export const acceptLendingFailure = error => ({
   error,
 });
 
-export const rejectLendingRequest = id => ({
+export const rejectLendingRequest = (id, target) => ({
   type: LENDING.REJECT_LENDING_REQUEST,
   id,
+  target,
 });
 export const rejectLendingSuccess = data => ({
   type: LENDING.REJECT_LENDING_SUCCESS,
@@ -52,9 +55,10 @@ export const rejectLendingFailure = error => ({
   error,
 });
 
-export const returnBookRequest = id => ({
+export const returnBookRequest = (id, target) => ({
   type: LENDING.RETURN_BOOK_REQUEST,
   id,
+  target,
 });
 export const returnBookSuccess = data => ({
   type: LENDING.RETURN_BOOK_SUCCESS,
@@ -78,17 +82,32 @@ export const loadLatestLendingFailure = error => ({
   error,
 });
 
-export const loadLendingListRequest = (status, page = 1, size = 20) => ({
-  type: LENDING.LOAD_LENDING_LIST_REQUEST,
+export const loadMyRequestListByStatusRequest = (status, page = 1, size = 20) => ({
+  type: LENDING.LOAD_MY_REQUEST_LIST_BY_STATUS_REQUEST,
   status,
   page,
   size,
 });
-export const loadLendingListSuccess = data => ({
-  type: LENDING.LOAD_LENDING_LIST_SUCCESS,
+export const loadMyRequestListByStatusSuccess = data => ({
+  type: LENDING.LOAD_MY_REQUEST_LIST_BY_STATUS_SUCCESS,
   data,
 });
-export const loadLendingListFailure = error => ({
-  type: LENDING.LOAD_LENDING_LIST_FAILURE,
+export const loadMyRequestListByStatusFailure = error => ({
+  type: LENDING.LOAD_MY_REQUEST_LIST_BY_STATUS_FAILURE,
+  error,
+});
+
+export const loadRequestListForMyBookRequest = (status, page = 1, size = 20) => ({
+  type: LENDING.LOAD_REQUEST_LIST_FOR_MY_BOOK_REQUEST,
+  status,
+  page,
+  size,
+});
+export const loadRequestListForMyBookSuccess = data => ({
+  type: LENDING.LOAD_REQUEST_LIST_FOR_MY_BOOK_SUCCESS,
+  data,
+});
+export const loadRequestListForMyBookFailure = error => ({
+  type: LENDING.LOAD_REQUEST_LIST_FOR_MY_BOOK_FAILURE,
   error,
 });
