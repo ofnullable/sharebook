@@ -29,7 +29,6 @@ export const Button = styled.button`
       font-size: 18px;
     `}
     vertical-align: sub;
-    padding-right: 5px;
   }
 `;
 

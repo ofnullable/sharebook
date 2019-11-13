@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const loadReviewListApi = bookId => {
-  return axios.get(`/reviews/book/${bookId}`);
+  return axios.get(`/reviews/book/${bookId}`, { withCredentials: true });
 };
 
 export const saveReviewApi = data => {

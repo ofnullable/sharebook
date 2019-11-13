@@ -1,25 +1,28 @@
 import React from 'react';
+import Link from 'next/link';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 
 import { cancelBorrowRequest, returnBookRequest } from '@redux/actions/lendingActions';
 
 import {
-  ItemWrapper,
+  LendingHistoryWrapper,
   ThumbnailImage,
   LendingInfoWrapper,
   ButtonWrapper,
 } from './LendingsHistory.styled';
 import { Button } from '@styles/common';
 
+moment.locale('ko');
+
 const LendingHistory = ({ data }) => {
   const dispatch = useDispatch();
 
   const handleCancel = () => {
-    dispatch(cancelBorrowRequest(data.id));
+    dispatch(cancelBorrowRequest(data.id, 'myRequests'));
   };
   const handleReturn = () => {
-    dispatch(returnBookRequest(data.id));
+    dispatch(returnBookRequest(data.id, 'myRequests'));
   };
 
   const ChangeStatusButton = () => {
@@ -40,15 +43,20 @@ const LendingHistory = ({ data }) => {
     return null;
   };
   return (
-    <ItemWrapper>
-      <ThumbnailImage src={data.book.imageUrl} alt={`이미지 - ${data.book.title}`} />
+    <LendingHistoryWrapper>
+      <Link href='/book/[id]' as={`/book/${data.book.id}`}>
+        <a>
+          <ThumbnailImage src={data.book.imageUrl} alt={`이미지 - ${data.book.title}`} />
+        </a>
+      </Link>
       <LendingInfoWrapper>
         <span>{data.book.category}</span>
         <p>{data.book.title}</p>
-        <span>{data.startedAt && moment(data.startedAt).format('YYYY-MM-DD hh:mm')}</span>
+        <p>{data.endedAt && moment(data.endedAt).from(data.startedAt)}</p>
+        <span>{data.startedAt && moment(data.startedAt).format('YYYY.MM.DD hh:mm')}</span>
       </LendingInfoWrapper>
       <ButtonWrapper>{ChangeStatusButton()}</ButtonWrapper>
-    </ItemWrapper>
+    </LendingHistoryWrapper>
   );
 };
 

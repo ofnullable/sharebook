@@ -89,7 +89,7 @@ const ReviewItem = ({ review }) => {
           clickHandler={editable && handleStarClick}
         />
         <p className='reviewer'>{review.createdBy}</p>
-        <span>{moment(review.createdAt).format('YYYY-MM-DD hh:mm')}</span>
+        <span>{moment(review.createdAt).format('YYYY.MM.DD hh:mm')}</span>
       </ReviewInfo>
       <ReviewContents>
         {editable ? (

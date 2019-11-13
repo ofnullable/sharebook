@@ -6,7 +6,6 @@ import {
   loadBookListByCategoryApi,
   loadBookApi,
   loadMyBookListApi,
-  loadMyBookListByLendingStatusApi,
 } from '@redux/api/book';
 import {
   loadBookListSuccess,
@@ -17,8 +16,6 @@ import {
   loadBookFailure,
   loadMyBookListSuccess,
   loadMyBookListFailure,
-  loadMyBookListByLendingStatusSuccess,
-  loadMyBookListByLendingStatusFailure,
 } from '@redux/actions/bookActions';
 
 export default function*() {
@@ -27,7 +24,6 @@ export default function*() {
     fork(watchLoadBookListByCategoryRequest),
     fork(watchLoadBookRequest),
     fork(watchLoadMyBookListRequest),
-    fork(watchLoadMyBookListByLendingStatusRequest),
   ]);
 }
 
@@ -80,18 +76,5 @@ function* loadMyBookList({ page, size }) {
   } catch (e) {
     console.error(e);
     yield put(loadMyBookListFailure(e));
-  }
-}
-
-function* watchLoadMyBookListByLendingStatusRequest() {
-  yield takeLatest(BOOK.LOAD_MY_BOOK_LIST_BY_LENDING_STATUS_REQUEST, loadMyBookListByLendingStatus);
-}
-function* loadMyBookListByLendingStatus({ status, page, size }) {
-  try {
-    const response = yield call(loadMyBookListByLendingStatusApi, { status, page, size });
-    yield put(loadMyBookListByLendingStatusSuccess(response.data));
-  } catch (e) {
-    console.error(e);
-    yield put(loadMyBookListByLendingStatusFailure(e));
   }
 }

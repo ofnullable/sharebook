@@ -32,7 +32,9 @@ export const Card = styled.div`
 
 export const CardBody = styled.div`
   padding: 10px;
+  text-align: right;
   & .card-title {
+    text-align: left;
     font-size: 1rem;
     margin: 0.5em 0;
     overflow: hidden;
@@ -40,6 +42,7 @@ export const CardBody = styled.div`
     text-overflow: ellipsis;
   }
   & .description {
+    text-align: left;
     margin: 0.5em 0;
     font-size: 0.9rem;
     color: ${COLOR_SCHEME.darkGray};
@@ -48,17 +51,10 @@ export const CardBody = styled.div`
     text-overflow: ellipsis;
   }
   & span {
-    float: right;
     font-size: 12px;
     color: ${COLOR_SCHEME.darkGray};
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-  }
-  &::after,
-  &::before {
-    display: block;
-    content: '';
-    clear: both;
   }
 `;

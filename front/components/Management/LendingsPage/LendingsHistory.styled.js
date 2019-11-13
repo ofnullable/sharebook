@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { COLOR_SCHEME } from '@styles/colors';
 
-export const ItemWrapper = styled.div`
+export const LendingHistoryWrapper = styled.div`
   padding: 1em;
   border-bottom: 1px solid ${COLOR_SCHEME.gray};
 `;

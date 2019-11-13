@@ -19,23 +19,23 @@ const LendingButton = ({ detail }) => {
   const dispatch = useDispatch();
 
   const handleBorrow = () => {
-    dispatch(borrowBookRequest(lending.book.id));
+    dispatch(borrowBookRequest(detail.id));
   };
 
   const handleAccept = () => {
-    dispatch(acceptLendingRequest(lending.id));
+    dispatch(acceptLendingRequest(lending.id, 'latestLending'));
   };
 
   const handleReject = () => {
-    dispatch(rejectLendingRequest(lending.id));
+    dispatch(rejectLendingRequest(lending.id, 'latestLending'));
   };
 
   const handleCancel = () => {
-    dispatch(cancelBorrowRequest(lending.id));
+    dispatch(cancelBorrowRequest(lending.id, 'latestLending'));
   };
 
   const handleReturn = () => {
-    dispatch(returnBookRequest(lending.id));
+    dispatch(returnBookRequest(lending.id, 'latestLending'));
   };
 
   // 로그인하지 않은 경우
@@ -52,17 +52,28 @@ const LendingButton = ({ detail }) => {
     if (detail.status === BOOK_STATUS.UNAVAILABLE) {
       if (lending.currentStatus === LENDING_STATUS.REQUESTED) {
         return (
-            <>
-              <Button _color='primary' onClick={handleAccept}>수락</Button>
-              <Button style={{ color: 'red' }} onClick={handleReject}>거절</Button>
-            </>
+          <>
+            <Button style={{ color: '#ff6b6b' }} onClick={handleReject}>
+              거절
+            </Button>
+            <Button _color='primary' onClick={handleAccept}>
+              수락
+            </Button>
+          </>
         );
       } else {
-        return <Button onClick={handleReturn}>반납처리</Button>;
+        return (
+          <Button _color='secondary' onClick={handleReturn}>
+            회수
+          </Button>
+        );
       }
     }
     return (
+      <>
         <Button>대여기록확인</Button>
+        <Button>도서정보수정</Button>
+      </>
     );
   }
 
@@ -79,12 +90,16 @@ const LendingButton = ({ detail }) => {
   if (lending.borrowerId === user.id) {
     if (lending.currentStatus === LENDING_STATUS.REQUESTED) {
       return (
-          <Button _color='red' onClick={handleCancel}>요청취소</Button>
-      )
+        <Button _color='red' onClick={handleCancel}>
+          요청취소
+        </Button>
+      );
     } else if (lending.currentStatus === LENDING_STATUS.ACCEPTED) {
       return (
-          <Button _color='secondary' onClick={handleReturn}>반납하기</Button>
-      )
+        <Button _color='secondary' onClick={handleReturn}>
+          반납하기
+        </Button>
+      );
     }
   }
 

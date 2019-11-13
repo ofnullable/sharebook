@@ -10,7 +10,7 @@ import { WithLeftMenu, Title, SubMenu } from '@components/Management/styled';
 import { CardWrapper, CenterDiv } from '@styles/common';
 
 const LendingsPage = ({ status }) => {
-  const { isLoading, data } = useSelector(state => state.lending.myLendings);
+  const { isLoading, data } = useSelector(state => state.lending.myRequests);
 
   const renderSubMenu = () => {
     return (

@@ -57,21 +57,6 @@ export const loadMyBookListFailure = error => ({
   error,
 });
 
-export const loadMyBookListByLendingStatusRequest = (status, page = 1, size = 20) => ({
-  type: BOOK.LOAD_MY_BOOK_LIST_BY_LENDING_STATUS_REQUEST,
-  status,
-  page,
-  size,
-});
-export const loadMyBookListByLendingStatusSuccess = data => ({
-  type: BOOK.LOAD_MY_BOOK_LIST_BY_LENDING_STATUS_SUCCESS,
-  data,
-});
-export const loadMyBookListByLendingStatusFailure = error => ({
-  type: BOOK.LOAD_MY_BOOK_LIST_BY_LENDING_STATUS_FAILURE,
-  error,
-});
-
 export const changeBookStatus = (id, status) => ({
   type: BOOK.CHANGE_BOOK_STATUS,
   id,

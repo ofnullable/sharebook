@@ -1,7 +1,7 @@
 import React from 'react';
 
 import LendingsPage from '@components/Management/LendingsPage';
-import { loadLendingListRequest } from '@redux/actions/lendingActions';
+import { loadMyRequestListByStatusRequest } from '@redux/actions/lendingActions';
 
 const Lendings = ({ status }) => {
   return <LendingsPage status={status} />;
@@ -10,7 +10,7 @@ const Lendings = ({ status }) => {
 Lendings.getInitialProps = async ({ query, store }) => {
   const status = query.status;
 
-  store.dispatch(loadLendingListRequest(status.toUpperCase()));
+  store.dispatch(loadMyRequestListByStatusRequest(status.toUpperCase()));
 
   return { status };
 };

@@ -61,6 +61,9 @@ export const ReviewContents = styled.div`
     &:first-child {
       margin-right: 0.5em;
     }
+    & i {
+      padding-right: 5px;
+    }
   }
 
   & div:last-child {

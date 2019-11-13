@@ -6,7 +6,8 @@ import {
   borrowBookApi,
   changeLendingStatusApi,
   loadLatestLendingApi,
-  loadLendingListApi,
+  loadMyRequestListByStatusApi,
+  loadRequestListForMyBookApi,
 } from '@redux/api/lending';
 import {
   borrowBookSuccess,
@@ -21,8 +22,10 @@ import {
   returnBookFailure,
   loadLatestLendingSuccess,
   loadLatestLendingFailure,
-  loadLendingListSuccess,
-  loadLendingListFailure,
+  loadMyRequestListByStatusSuccess,
+  loadMyRequestListByStatusFailure,
+  loadRequestListForMyBookSuccess,
+  loadRequestListForMyBookFailure,
 } from '@redux/actions/lendingActions';
 import { changeBookStatus } from '@redux/actions/bookActions';
 
@@ -34,7 +37,8 @@ export default function*() {
     fork(watchRejectLendingRequest),
     fork(watchReturnBookRequest),
     fork(watchLoadLatestLendingRequest),
-    fork(watchLoadLendingListRequest),
+    fork(watchloadMyRequestListByStatusRequest),
+    fork(watchloadRequestListForMyBookRequest),
   ]);
 }
 
@@ -115,19 +119,33 @@ function* loadLatestLending({ bookId }) {
     const response = yield call(loadLatestLendingApi, bookId);
     yield put(loadLatestLendingSuccess(response.data));
   } catch (e) {
+    console.error(e);
     yield put(loadLatestLendingFailure(e));
   }
 }
 
-function* watchLoadLendingListRequest() {
-  yield takeLatest(LENDING.LOAD_LENDING_LIST_REQUEST, loadLendingList);
+function* watchloadMyRequestListByStatusRequest() {
+  yield takeLatest(LENDING.LOAD_MY_REQUEST_LIST_BY_STATUS_REQUEST, loadMyRequestListByStatus);
 }
-function* loadLendingList({ status, page, size }) {
+function* loadMyRequestListByStatus({ status, page, size }) {
   try {
-    const response = yield call(loadLendingListApi, { status, page, size });
-    yield put(loadLendingListSuccess(response.data));
+    const response = yield call(loadMyRequestListByStatusApi, { status, page, size });
+    yield put(loadMyRequestListByStatusSuccess(response.data));
   } catch (e) {
     console.error(e);
-    yield put(loadLendingListFailure(e));
+    yield put(loadMyRequestListByStatusFailure(e));
+  }
+}
+
+function* watchloadRequestListForMyBookRequest() {
+  yield takeLatest(LENDING.LOAD_REQUEST_LIST_FOR_MY_BOOK_REQUEST, loadRequestListForMyBook);
+}
+function* loadRequestListForMyBook({ status, page, size }) {
+  try {
+    const response = yield call(loadRequestListForMyBookApi, { status, page, size });
+    yield put(loadRequestListForMyBookSuccess(response.data));
+  } catch (e) {
+    console.error(e);
+    yield put(loadRequestListForMyBookFailure(e));
   }
 }

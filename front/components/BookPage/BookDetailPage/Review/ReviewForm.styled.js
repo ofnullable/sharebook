@@ -7,10 +7,12 @@ export const ReviewFormWrapper = styled.div`
   border-bottom: 1px solid ${COLOR_SCHEME.gray};
   padding: 20px;
   background-color: ${COLOR_SCHEME.lightGray};
+
   & p {
     margin: 0 0 1em;
     text-align: center;
   }
+
   & form {
     &::after,
     &::before {
@@ -41,5 +43,8 @@ export const ReviewFormWrapper = styled.div`
   & button {
     float: right;
     margin-right: 5%;
+    & i {
+      padding-right: 5px;
+    }
   }
 `;
