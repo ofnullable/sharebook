@@ -4,20 +4,21 @@ import moment from 'moment';
 
 import { Card, CardBody } from './index.styled';
 
-const BookCard = ({ data }) => {
+const BookCard = ({ data, children }) => {
   return (
-    <Link href='/book/[id]' as={`/book/${data.id}`} prefetch={false}>
-      <a>
-        <Card>
-          <img src={`${data.imageUrl}`} />
-          <CardBody>
-            <h2 className='card-title'>{data.title}</h2>
-            <p className='description'>{`${data.category} | ${data.author} | ${data.publisher}`}</p>
-            <span>{moment(data.createdAt).format('YYYY-MM-DD')}</span>
-          </CardBody>
-        </Card>
-      </a>
-    </Link>
+    <Card>
+      <Link href='/book/[id]' as={`/book/${data.id}`} prefetch={false}>
+        <a>
+          <img src={`${data.imageUrl}?v=${data.id}`} />
+        </a>
+      </Link>
+      <CardBody>
+        <h2 className='card-title'>{data.title}</h2>
+        <p className='description'>{`${data.category} | ${data.author} | ${data.publisher}`}</p>
+        <span>{moment(data.createdAt).format('YYYY.MM.DD')}</span>
+        {children}
+      </CardBody>
+    </Card>
   );
 };
 

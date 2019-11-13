@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { useSelector } from 'react-redux';
 
 import LendingButton from './LendingButton';
@@ -28,7 +29,7 @@ const BookPage = () => {
           <p>{data.category}</p>
           <h1>{data.title}</h1>
           <p>{`${data.author} | ${data.publisher}`}</p>
-          <span>{`${data.owner} | ${data.createdAt}`}</span>
+          <span>{`${data.owner} | ${moment(data.createdAt).format('YYYY.MM.DD')}`}</span>
           <div>
             <h3>책 소개</h3>
             <p>{data.description}</p>

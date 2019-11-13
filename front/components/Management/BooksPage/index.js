@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
+import ManagementButton from './ManagementButton';
 import BookCard from '@components/BookCard';
 import LeftMenu from '@components/Management/LeftMenu';
 import LoadingOverlay from '@components/common/LoadingOverlay';
@@ -11,7 +12,10 @@ import { WithLeftMenu, Title, SubMenu } from '@components/Management/styled';
 import { Button, CardWrapper, CenterDiv } from '@styles/common';
 
 const BooksPage = ({ status }) => {
-  const { isLoading, data } = useSelector(state => state.book.myBooks);
+  const { isLoading: isBooksLoading, data: books } = useSelector(state => state.book.myBooks);
+  const { isLoading: isRequestsLoading, data: requests } = useSelector(
+    state => state.lending.requests
+  );
   const router = useRouter();
 
   const renderSubMenu = () => {
@@ -36,6 +40,25 @@ const BooksPage = ({ status }) => {
     );
   };
 
+  const renderContents = () => {
+    const data = status === 'all' ? books : requests;
+    return data.length ? (
+      status === 'all' ? (
+        books.map(book => <BookCard key={book.id} data={book} />)
+      ) : (
+        requests.map(lending => (
+          <BookCard key={lending.id} data={lending.book}>
+            <ManagementButton status={status} lendingId={lending.id} />
+          </BookCard>
+        ))
+      )
+    ) : (
+      <CenterDiv>
+        <p>도서가 존재하지 않습니다.</p>
+      </CenterDiv>
+    );
+  };
+
   return (
     <CenterDiv>
       <LeftMenu menu={'books'} />
@@ -48,18 +71,9 @@ const BooksPage = ({ status }) => {
 
         {renderSubMenu()}
 
-        {isLoading && <LoadingOverlay />}
+        {(isBooksLoading || isRequestsLoading) && <LoadingOverlay />}
 
-        <CardWrapper>
-          {!isLoading &&
-            (data.length ? (
-              data.map(book => <BookCard key={book.id} data={book} />)
-            ) : (
-              <CenterDiv>
-                <p>도서가 존재하지 않습니다.</p>
-              </CenterDiv>
-            ))}
-        </CardWrapper>
+        <CardWrapper>{renderContents()}</CardWrapper>
       </WithLeftMenu>
     </CenterDiv>
   );
