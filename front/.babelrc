@@ -8,8 +8,9 @@
         "root": ["./"],
         "alias": {
           "@components": "./components",
-          "@styles": "./styles",
+          "@axios": "./config/axios",
           "@redux": "./redux",
+          "@styles": "./styles",
           "@utils": "./utils"
         }
       }

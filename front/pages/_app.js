@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import axios from '@axios';
 import App from 'next/app';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
