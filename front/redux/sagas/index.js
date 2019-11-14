@@ -1,9 +1,4 @@
 import { all, fork } from 'redux-saga/effects';
-import axios from 'axios';
-
-import { SERVER_URL } from '@utils/consts';
-
-axios.defaults.baseURL = SERVER_URL;
 
 import user from './user';
 import book from './book';
