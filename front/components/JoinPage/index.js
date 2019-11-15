@@ -3,37 +3,44 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useInput } from '@utils/inputUtils';
-import { signUpRequest } from '@redux/actions/userActions';
+import LoadingOverlay from '@components/common/LoadingOverlay';
+import { useInput, isEmail } from '@utils/inputUtils';
+import { signUpRequest, emailDuplicationCheckRequest } from '@redux/actions/userActions';
 
-import { ErrorText } from './index.styled';
+import { SuccessText, ErrorText } from './index.styled';
 import { Button, LoadingIcon, CenterDiv, InputGroup, CenterForm, ButtonLink } from '@styles/common';
 
 const JoinPage = () => {
-  const [email, emailHandler] = useInput();
+  const [email, setEmail] = useState('');
+  const [emailChecked, setEmailChecked] = useState(false);
   const [name, nameHandler] = useInput();
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
 
   const { isSignedIn } = useSelector(state => state.user.user);
-  const { data, error, isLoading } = useSelector(state => state.user.join);
+  const { error, isLoading, isDuplicated } = useSelector(state => state.user.join);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (isSignedIn) {
-      Router.back();
+      const referrer = document.referrer;
+      const origin = location.origin;
+
+      if (referrer.startsWith(origin) && !referrer.endsWith('/signin')) {
+        Router.back();
+      } else {
+        Router.push('/');
+      }
     }
   }, [isSignedIn]);
 
-  useEffect(() => {
-    if (data.email) {
-      Router.replace('/signin');
-    }
-  }, [data]);
-
   const handleSubmit = e => {
     e.preventDefault();
+
+    if (!emailChecked || isDuplicated) {
+      return;
+    }
 
     if (password !== passwordCheck) {
       setPasswordError(true);
@@ -41,6 +48,13 @@ const JoinPage = () => {
     }
 
     dispatch(signUpRequest({ email: { address: email.trim().toLowerCase() }, name, password }));
+  };
+
+  const handleEmailChange = e => {
+    if (emailChecked) {
+      setEmailChecked(false);
+    }
+    setEmail(e.target.value);
   };
 
   const handlePasswordChange = e => {
@@ -51,9 +65,16 @@ const JoinPage = () => {
     setPasswordCheck(e.target.value);
   };
 
+  const emailDuplicateCheck = () => {
+    if (isDuplicated || (isEmail(email) && !emailChecked)) {
+      dispatch(emailDuplicationCheckRequest({ email }));
+      setEmailChecked(true);
+    }
+  };
+
   const getEmailError = () => {
     if (error.status === 409) {
-      return '이미 사용중인 아이디 입니다.';
+      return <ErrorText>이미 사용중인 아이디 입니다.</ErrorText>;
     }
     if (error.errors && error.errors['email.address']) {
       return <ErrorText>{error.errors['email.address']}</ErrorText>;
@@ -68,6 +89,7 @@ const JoinPage = () => {
 
   return (
     <CenterDiv>
+      {isLoading && <LoadingOverlay />}
       <h1 className='title'>회원가입</h1>
       <CenterForm onSubmit={handleSubmit}>
         <InputGroup>
@@ -79,11 +101,20 @@ const JoinPage = () => {
             id='email'
             type='email'
             placeholder='your@email.com'
+            pattern='^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$'
+            title='이메일 형식이 올바르지 않습니다.'
             value={email}
-            onChange={emailHandler}
+            onChange={handleEmailChange}
+            onBlur={emailDuplicateCheck}
           />
         </InputGroup>
-        {getEmailError()}
+        {emailChecked && !isDuplicated && (
+          <SuccessText>사용 가능한 아이디(이메일) 입니다.</SuccessText>
+        )}
+        {emailChecked && isDuplicated && (
+          <ErrorText>이미 사용중인 아이디(이메일) 입니다.</ErrorText>
+        )}
+        {error.status && getEmailError()}
         <InputGroup>
           <label htmlFor='name'>
             이름<span className='import'>*</span>
@@ -139,7 +170,7 @@ const JoinPage = () => {
           )}
         </CenterDiv>
         <CenterDiv>
-          <Link href='/signin' prefetch={false}>
+          <Link href='/signin'>
             <ButtonLink>이미 계정이 있으신가요?</ButtonLink>
           </Link>
         </CenterDiv>

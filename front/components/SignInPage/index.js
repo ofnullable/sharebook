@@ -9,7 +9,7 @@ import { signInRequest } from '@redux/actions/userActions';
 import { CenterDiv, InputGroup, Button, LoadingIcon, CenterForm, ButtonLink } from '@styles/common';
 
 const SignInPage = () => {
-  const { isSignedIn, isLoading } = useSelector(state => state.user.user);
+  const { isSignedIn, isLoading, signInError } = useSelector(state => state.user.user);
   const { data } = useSelector(state => state.user.join);
   const [username, usernameHandler] = useInput(data && data.email);
   const [password, passwordHandler] = useInput();
@@ -18,7 +18,7 @@ const SignInPage = () => {
   useEffect(() => {
     if (isSignedIn) {
       const referrer = document.referrer;
-      const origin = document.location.origin;
+      const origin = location.origin;
 
       if (referrer.startsWith(origin)) {
         Router.back();
@@ -58,6 +58,9 @@ const SignInPage = () => {
             onChange={passwordHandler}
           />
         </InputGroup>
+        {signInError && (
+          <p style={{ color: 'red', textAlign: 'center' }}>이메일 또는 비밀번호를 확인해주세요.</p>
+        )}
         <CenterDiv>
           {isLoading ? (
             <Button _color='primary' type='submit' disabled>
@@ -72,7 +75,7 @@ const SignInPage = () => {
           )}
         </CenterDiv>
         <CenterDiv>
-          <Link href='/join' prefetch={false}>
+          <Link href='/join'>
             <ButtonLink>아직 회원이 아니신가요?</ButtonLink>
           </Link>
         </CenterDiv>

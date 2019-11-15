@@ -11,3 +11,7 @@ export const useInput = (initialValue = '') => {
 export const isBlank = (...values) => {
   return values.some(v => !!v.trim() === false);
 };
+
+export const isEmail = value => {
+  return /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$/.test(value);
+};
