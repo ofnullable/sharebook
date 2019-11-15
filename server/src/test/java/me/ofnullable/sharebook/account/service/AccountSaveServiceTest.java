@@ -38,7 +38,7 @@ class AccountSaveServiceTest {
         given(accountRepository.save(any(Account.class)))
                 .willReturn(signUpRequest.toEntity());
 
-        var account = accountSaveService.save(signUpRequest);
+        var account = accountSaveService.saveAndSignIn(signUpRequest);
 
         assertEquals(account.getEmail().getAddress(), account.getEmail().getAddress());
         assertEquals(account.getPassword(), account.getPassword());
@@ -50,7 +50,7 @@ class AccountSaveServiceTest {
         given(accountFindService.existedEmail(any(Email.class)))
                 .willReturn(true);
 
-        assertThrows(EmailDuplicationException.class, () -> accountSaveService.save(signUpRequest));
+        assertThrows(EmailDuplicationException.class, () -> accountSaveService.saveAndSignIn(signUpRequest));
     }
 
 }

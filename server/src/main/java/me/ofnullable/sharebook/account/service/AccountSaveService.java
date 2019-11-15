@@ -6,6 +6,9 @@ import me.ofnullable.sharebook.account.domain.RoleName;
 import me.ofnullable.sharebook.account.dto.SignUpRequest;
 import me.ofnullable.sharebook.account.exception.EmailDuplicationException;
 import me.ofnullable.sharebook.account.repository.AccountRepository;
+import me.ofnullable.sharebook.config.security.userdetails.AccountDetails;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +20,21 @@ public class AccountSaveService {
     private final AccountRepository accountRepository;
 
     @Transactional
-    public Account save(SignUpRequest dto) {
+    public Account saveAndSignIn(SignUpRequest dto) {
         if (accountFindService.existedEmail(dto.getEmail())) {
             throw new EmailDuplicationException(dto.getEmail());
         }
         var entity = dto.toEntity();
         entity.addRole(RoleName.BASIC);
-        return accountRepository.save(entity);
+
+        var saveResult = accountRepository.save(entity);
+
+        var accountDetails = new AccountDetails(saveResult);
+        var authToken = new UsernamePasswordAuthenticationToken(accountDetails, accountDetails.getPassword(), accountDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authToken);
+
+        return saveResult;
     }
 
 }

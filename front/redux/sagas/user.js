@@ -2,6 +2,8 @@ import { fork, put, takeLatest, call, all } from 'redux-saga/effects';
 
 import { USER } from '@redux/actionTypes';
 import {
+  emailDuplicationCheckSuccess,
+  emailDuplicationCheckFailure,
   signUpSuccess,
   signUpFailure,
   signInSuccess,
@@ -11,15 +13,34 @@ import {
   loadUserSuccess,
   loadUserFailure,
 } from '@redux/actions/userActions';
-import { signUpApi, signInApi, loadUserApi, signOutApi } from '@redux/api/user';
+import {
+  emailDuplicationCheckApi,
+  signUpApi,
+  signInApi,
+  loadUserApi,
+  signOutApi,
+} from '@redux/api/user';
 
 export default function*() {
   yield all([
+    fork(watchEmailDuplicationCheckRequest),
     fork(watchSignUpRequest),
     fork(watchSignInRequest),
     fork(watchLoadUserRequest),
     fork(watchSignOutRequest),
   ]);
+}
+
+function* watchEmailDuplicationCheckRequest() {
+  yield takeLatest(USER.EMAIL_DUPLICATION_CHECK_REQUEST, emailDuplicationCheck);
+}
+function* emailDuplicationCheck({ email }) {
+  try {
+    const response = yield call(emailDuplicationCheckApi, email);
+    yield put(emailDuplicationCheckSuccess(response));
+  } catch (e) {
+    yield put(emailDuplicationCheckFailure(e));
+  }
 }
 
 function* watchSignUpRequest() {

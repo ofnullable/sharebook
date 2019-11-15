@@ -1,5 +1,9 @@
 import axios from '@axios';
 
+export const emailDuplicationCheckApi = email => {
+  return axios.get(`/account/duplicate?email=${email}`);
+};
+
 export const signUpApi = user => {
   return axios.post('/account', user);
 };

@@ -2,8 +2,13 @@ import styled from 'styled-components';
 
 import { COLOR_SCHEME } from '@styles/colors';
 
-export const ErrorText = styled.p`
+export const SuccessText = styled.p`
   margin: 0;
-  padding: 0 0 15px 0;
+  padding-bottom: 15px;
+  text-align: center;
+  color: ${COLOR_SCHEME.primary};
+`;
+
+export const ErrorText = styled(SuccessText)`
   color: ${COLOR_SCHEME.red};
 `;

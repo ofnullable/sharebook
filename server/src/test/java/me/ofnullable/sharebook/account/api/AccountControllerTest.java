@@ -81,7 +81,7 @@ class AccountControllerTest extends WithAuthenticationPrincipal {
     @Test
     @DisplayName("유효한 이메일로 회원가입")
     void sign_in() throws Exception {
-        given(accountSaveService.save(any(SignUpRequest.class)))
+        given(accountSaveService.saveAndSignIn(any(SignUpRequest.class)))
                 .willReturn(buildNormalAccount());
 
         mvc.perform(post("/account")
@@ -95,7 +95,7 @@ class AccountControllerTest extends WithAuthenticationPrincipal {
     @Test
     @DisplayName("중복된 이메일로 회원가입")
     void sign_in_duplicated_email() throws Exception {
-        given(accountSaveService.save(any(SignUpRequest.class)))
+        given(accountSaveService.saveAndSignIn(any(SignUpRequest.class)))
                 .willThrow(EmailDuplicationException.class);
 
         mvc.perform(post("/account")
@@ -109,7 +109,7 @@ class AccountControllerTest extends WithAuthenticationPrincipal {
     @Test
     @DisplayName("유효하지 않은 이메일로 회원가입 - 400")
     void sign_in_invalid_email() throws Exception {
-        given(accountSaveService.save(any(SignUpRequest.class)))
+        given(accountSaveService.saveAndSignIn(any(SignUpRequest.class)))
                 .willReturn(buildNormalAccount());
 
         mvc.perform(post("/account")

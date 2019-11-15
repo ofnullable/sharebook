@@ -1,5 +1,18 @@
 import { USER } from '@redux/actionTypes';
 
+export const emailDuplicationCheckRequest = ({ email }) => ({
+  type: USER.EMAIL_DUPLICATION_CHECK_REQUEST,
+  email,
+});
+export const emailDuplicationCheckSuccess = data => ({
+  type: USER.EMAIL_DUPLICATION_CHECK_SUCCESS,
+  data,
+});
+export const emailDuplicationCheckFailure = error => ({
+  type: USER.EMAIL_DUPLICATION_CHECK_FAILURE,
+  error,
+});
+
 export const signUpRequest = ({ email, name, password }) => ({
   type: USER.SIGN_UP_REQUEST,
   user: {
