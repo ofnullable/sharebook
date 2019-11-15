@@ -23,6 +23,7 @@ BookRegister.getInitialProps = async ({ store }) => {
   if (!categoryList.length) {
     store.dispatch(loadCategoryListRequest());
   }
+  return { categoryList };
 };
 
 export default BookRegister;

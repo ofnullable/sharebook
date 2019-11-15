@@ -14,7 +14,7 @@ function* watchLoadCategoryListRequest() {
 function* loadCategoryList() {
   try {
     const response = yield call(loadCategoryListApi);
-    yield put(loadCategoryListSuccess(response.data));
+    yield put(loadCategoryListSuccess(response));
   } catch (e) {
     console.dir(e);
     yield put(loadCategoryListFailure(e));

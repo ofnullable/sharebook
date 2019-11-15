@@ -33,9 +33,8 @@ function* watchLoadBookListRequest() {
 function* loadBookList({ searchText, page, size }) {
   try {
     const response = yield call(loadBookListApi, { searchText, page, size });
-    yield put(loadBookListSuccess(response.data));
+    yield put(loadBookListSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(loadBookListFailure(e));
   }
 }
@@ -46,9 +45,8 @@ function* watchLoadBookListByCategoryRequest() {
 function* loadBookListByCategory({ page, size, category }) {
   try {
     const response = yield call(loadBookListByCategoryApi, { page, size, category });
-    yield put(loadBookListByCategorySuccess(response.data));
+    yield put(loadBookListByCategorySuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(loadBookListByCategoryFailure(e));
   }
 }
@@ -59,9 +57,8 @@ function* watchLoadBookRequest() {
 function* loadBook({ id }) {
   try {
     const response = yield call(loadBookApi, id);
-    yield put(loadBookSuccess(response.data));
+    yield put(loadBookSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(loadBookFailure(e));
   }
 }
@@ -72,9 +69,8 @@ function* watchLoadMyBookListRequest() {
 function* loadMyBookList({ page, size }) {
   try {
     const response = yield call(loadMyBookListApi, { page, size });
-    yield put(loadMyBookListSuccess(response.data));
+    yield put(loadMyBookListSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(loadMyBookListFailure(e));
   }
 }

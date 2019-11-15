@@ -7,7 +7,7 @@ import { Card, CardBody } from './index.styled';
 const BookCard = ({ data, children }) => {
   return (
     <Card>
-      <Link href='/book/[id]' as={`/book/${data.id}`} prefetch={false}>
+      <Link href='/book/[id]' as={`/book/${data.id}`}>
         <a>
           <img src={`${data.imageUrl}?v=${data.id}`} />
         </a>

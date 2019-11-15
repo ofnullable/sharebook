@@ -19,9 +19,8 @@ function* watchUploadImageRequest() {
 function* uploadImage({ file }) {
   try {
     const response = yield call(uploadImageApi, file);
-    yield put(uploadImageSuccess(response.data));
+    yield put(uploadImageSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(uploadImageFailure(e));
   }
 }
@@ -32,9 +31,8 @@ function* watchRegisterBookRequest() {
 function* registerBook({ data }) {
   try {
     const response = yield call(registerBookApi, data);
-    yield put(registerBookSuccess(response.data));
+    yield put(registerBookSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(registerBookFailure(e));
   }
 }

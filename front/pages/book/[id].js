@@ -10,11 +10,13 @@ const Book = () => {
 };
 
 Book.getInitialProps = async ({ query, store }) => {
-  const bookId = query.id;
+  const id = query.id;
 
-  store.dispatch(loadBookRequest(bookId));
-  store.dispatch(loadLatestLendingRequest(bookId));
-  store.dispatch(loadReviewListRequest(bookId));
+  store.dispatch(loadBookRequest(id));
+  store.dispatch(loadLatestLendingRequest(id));
+  store.dispatch(loadReviewListRequest(id));
+
+  return { id };
 };
 
 export default Book;

@@ -33,9 +33,8 @@ function* watchLoadReviewListRequest() {
 function* loadReviewList({ bookId }) {
   try {
     const response = yield call(loadReviewListApi, bookId);
-    yield put(loadReviewListSuccess(response.data));
+    yield put(loadReviewListSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(loadReviewListFailure(e));
   }
 }
@@ -46,9 +45,8 @@ function* watchSaveReviewRequest() {
 function* saveReview({ data }) {
   try {
     const response = yield call(saveReviewApi, data);
-    yield put(saveReviewSuccess(response.data));
+    yield put(saveReviewSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(saveReviewFailure(e));
   }
 }
@@ -59,9 +57,8 @@ function* watchUpdateReviewRequest() {
 function* updateReview({ data }) {
   try {
     const response = yield call(updateReviewApi, data);
-    yield put(updateReviewSuccess(response.data));
+    yield put(updateReviewSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(updateReviewFailure(e));
   }
 }
@@ -72,9 +69,8 @@ function* watchDeleteReviewRequest() {
 function* deleteReview({ id }) {
   try {
     const response = yield call(deleteReviewApi, id);
-    yield put(deleteReviewSuccess(response.data));
+    yield put(deleteReviewSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(deleteReviewFailure(e));
   }
 }

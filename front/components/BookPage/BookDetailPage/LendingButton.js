@@ -41,7 +41,7 @@ const LendingButton = ({ detail }) => {
   // 로그인하지 않은 경우
   if (!user.id) {
     return (
-      <Link href={{ pathname: '/signin' }} prefetch={false}>
+      <Link href={{ pathname: '/signin' }}>
         <Button>로그인하기</Button>
       </Link>
     );
