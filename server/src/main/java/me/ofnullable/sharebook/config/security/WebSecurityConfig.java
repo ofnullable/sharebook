@@ -97,6 +97,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
             .and()
                 .authorizeRequests()
+                    .antMatchers(HttpMethod.GET, "/account/duplicate", "/lending/book/*/latest").permitAll()
                     .antMatchers(HttpMethod.GET, "/account/**", "/lending/**", "/lendings/**").authenticated()
                     .antMatchers(HttpMethod.POST, "/account").permitAll()
                     .antMatchers(HttpMethod.GET, "/**").permitAll()

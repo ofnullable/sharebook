@@ -32,35 +32,35 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ApiError handleResourceNotFoundException(ResourceNotFoundException e, WebRequest request) {
         log.debug("Fail to find resource, key: {}", e.getKey());
-        return bindResourceNotFoundError(e.getMessage(), request);
+        return bindError(e.getMessage(), request);
     }
 
     @ExceptionHandler(EmailDuplicationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     protected ApiError handleEmailDuplicationException(EmailDuplicationException e, WebRequest request) {
         log.debug("Duplicate email: {}", e.getEmail());
-        return bindResourceNotFoundError(ErrorCode.EMAIL_DUPLICATION, request);
+        return bindError(ErrorCode.EMAIL_DUPLICATION, request);
     }
 
     @ExceptionHandler(LendingAlreadyCompletionException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ApiError handleLendingAlreadyCompletionException(LendingAlreadyCompletionException e, WebRequest request) {
         log.debug("Lending Already Completion.");
-        return bindResourceNotFoundError(ErrorCode.LENDING_ALREADY_COMPLETION, request);
+        return bindError(ErrorCode.LENDING_ALREADY_COMPLETION, request);
     }
 
     @ExceptionHandler(LendingNotRequestedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ApiError handleLendingNotRequestedException(LendingNotRequestedException e, WebRequest request) {
         log.debug("This Lending Is Not Requested. id: {}", e.getLendingId());
-        return bindResourceNotFoundError(ErrorCode.LENDING_NOT_REQUESTED, request);
+        return bindError(ErrorCode.LENDING_NOT_REQUESTED, request);
     }
 
     @ExceptionHandler(LendingStatusEqualsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ApiError handleLendingStatusEqualsException(LendingStatusEqualsException e, WebRequest request) {
         log.debug("Lending Status Can Not Equals. status: {}", e.getStatus());
-        return bindResourceNotFoundError(ErrorCode.LENDING_STATUS_EQUALS, request);
+        return bindError(ErrorCode.LENDING_STATUS_EQUALS, request);
     }
 
     @ExceptionHandler(LendingStatusInvalidException.class)
@@ -74,7 +74,7 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ApiError handleLendingHistoryNotExistsException(LendingHistoryNotExistsException e, WebRequest request) {
         log.debug("Lending history not exists. book id: {}", e.getBookId());
-        return bindResourceNotFoundError(ErrorCode.LENDING_HISTORY_NOT_FOUND, request);
+        return bindError(ErrorCode.LENDING_HISTORY_NOT_FOUND, request);
     }
 
     @Override
@@ -100,20 +100,20 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
                 .collect(toMap(FieldError::getField, FieldError::getDefaultMessage));
     }
 
-    private ApiError bindResourceNotFoundError(ErrorCode errorCode, WebRequest request) {
-        var req = ((ServletWebRequest) request).getRequest();
-        return ApiError.builder()
-                .status(errorCode.getStatus())
-                .message(errorCode.getMessage())
-                .path(req.getRequestURI())
-                .build();
-    }
-
-    private ApiError bindResourceNotFoundError(String message, WebRequest request) {
+    private ApiError bindError(String message, WebRequest request) {
         var req = ((ServletWebRequest) request).getRequest();
         return ApiError.builder()
                 .status(ErrorCode.RESOURCE_NOT_FOUND.getStatus())
                 .message(message)
+                .path(req.getRequestURI())
+                .build();
+    }
+
+    private ApiError bindError(ErrorCode errorCode, WebRequest request) {
+        var req = ((ServletWebRequest) request).getRequest();
+        return ApiError.builder()
+                .status(errorCode.getStatus())
+                .message(errorCode.getMessage())
                 .path(req.getRequestURI())
                 .build();
     }
