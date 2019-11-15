@@ -2,6 +2,7 @@ package me.ofnullable.sharebook.account.api;
 
 import lombok.RequiredArgsConstructor;
 import me.ofnullable.sharebook.account.domain.Account;
+import me.ofnullable.sharebook.account.domain.Email;
 import me.ofnullable.sharebook.account.dto.AccountResponse;
 import me.ofnullable.sharebook.account.dto.SignUpRequest;
 import me.ofnullable.sharebook.account.service.AccountFindService;
@@ -24,7 +25,12 @@ public class AccountController {
     @PostMapping("/account")
     @ResponseStatus(HttpStatus.CREATED)
     public AccountResponse saveAccount(@RequestBody @Valid SignUpRequest dto) {
-        return new AccountResponse(accountSaveService.save(dto));
+        return new AccountResponse(accountSaveService.saveAndSignIn(dto));
+    }
+
+    @GetMapping("/account/duplicate")
+    public boolean duplicateCheck(@Valid Email email) {
+        return accountFindService.existedEmail(email);
     }
 
     @GetMapping("/account/{id}")
