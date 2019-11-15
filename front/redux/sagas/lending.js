@@ -48,10 +48,9 @@ function* watchBorrowBookRequest() {
 function* borrowBook({ id }) {
   try {
     const response = yield call(borrowBookApi, id);
-    yield put(borrowBookSuccess(response.data));
-    yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.UNAVAILABLE));
+    yield put(borrowBookSuccess(response));
+    yield put(changeBookStatus(response.book.id, BOOK_STATUS.UNAVAILABLE));
   } catch (e) {
-    console.error(e);
     yield put(borrowBookFailure(e));
   }
 }
@@ -62,10 +61,9 @@ function* watchCancelBorrowBookRequest() {
 function* cancelBorrowBook({ id }) {
   try {
     const response = yield call(changeLendingStatusApi, { id, status: LENDING_STATUS.CANCELED });
-    yield put(cancelBorrowSuccess(response.data));
-    yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.AVAILABLE));
+    yield put(cancelBorrowSuccess(response));
+    yield put(changeBookStatus(response.book.id, BOOK_STATUS.AVAILABLE));
   } catch (e) {
-    console.error(e);
     yield put(cancelBorrowFailure(e));
   }
 }
@@ -76,9 +74,8 @@ function* watchAcceptLendingRequest() {
 function* acceptLending({ id }) {
   try {
     const response = yield call(changeLendingStatusApi, { id, status: LENDING_STATUS.ACCEPTED });
-    yield put(acceptLendingSuccess(response.data));
+    yield put(acceptLendingSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(acceptLendingFailure(e));
   }
 }
@@ -89,10 +86,9 @@ function* watchRejectLendingRequest() {
 function* rejectLending({ id }) {
   try {
     const response = yield call(changeLendingStatusApi, { id, status: LENDING_STATUS.REJECTED });
-    yield put(rejectLendingSuccess(response.data));
-    yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.AVAILABLE));
+    yield put(rejectLendingSuccess(response));
+    yield put(changeBookStatus(response.book.id, BOOK_STATUS.AVAILABLE));
   } catch (e) {
-    console.error(e);
     yield put(rejectLendingFailure(e));
   }
 }
@@ -103,10 +99,9 @@ function* watchReturnBookRequest() {
 function* returnBook({ id }) {
   try {
     const response = yield call(changeLendingStatusApi, { id, status: LENDING_STATUS.RETURNED });
-    yield put(returnBookSuccess(response.data));
-    yield put(changeBookStatus(response.data.book.id, BOOK_STATUS.AVAILABLE));
+    yield put(returnBookSuccess(response));
+    yield put(changeBookStatus(response.book.id, BOOK_STATUS.AVAILABLE));
   } catch (e) {
-    console.error(e);
     yield put(returnBookFailure(e));
   }
 }
@@ -117,9 +112,8 @@ function* watchLoadLatestLendingRequest() {
 function* loadLatestLending({ bookId }) {
   try {
     const response = yield call(loadLatestLendingApi, bookId);
-    yield put(loadLatestLendingSuccess(response.data));
+    yield put(loadLatestLendingSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(loadLatestLendingFailure(e));
   }
 }
@@ -130,9 +124,8 @@ function* watchloadMyRequestListByStatusRequest() {
 function* loadMyRequestListByStatus({ status, page, size }) {
   try {
     const response = yield call(loadMyRequestListByStatusApi, { status, page, size });
-    yield put(loadMyRequestListByStatusSuccess(response.data));
+    yield put(loadMyRequestListByStatusSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(loadMyRequestListByStatusFailure(e));
   }
 }
@@ -143,9 +136,8 @@ function* watchloadRequestListForMyBookRequest() {
 function* loadRequestListForMyBook({ status, page, size }) {
   try {
     const response = yield call(loadRequestListForMyBookApi, { status, page, size });
-    yield put(loadRequestListForMyBookSuccess(response.data));
+    yield put(loadRequestListForMyBookSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(loadRequestListForMyBookFailure(e));
   }
 }

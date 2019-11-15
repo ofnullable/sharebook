@@ -22,11 +22,11 @@ Home.getInitialProps = async ({ query, store }) => {
   const category = query.category;
   if (!category || category === 'ALL') {
     store.dispatch(loadBookListRequest());
+    return { category: null };
   } else {
     store.dispatch(loadBookListByCategoryRequest(category));
     return { category };
   }
-  return { category: null };
 };
 
 export default Home;

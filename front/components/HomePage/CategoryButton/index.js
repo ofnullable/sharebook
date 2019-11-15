@@ -5,7 +5,7 @@ import { Category } from './index.styled';
 
 const CategoryButton = ({ name }) => {
   return (
-    <Link href={`/?category=${name}`} prefetch={false}>
+    <Link href={`/?category=${name}`}>
       <a>
         <Category type='button'>{name}</Category>
       </a>

@@ -16,7 +16,8 @@ const title = 'sharebook';
 const description = 'share your books!';
 
 class Sharebook extends App {
-  static async getInitialProps({ Component, ctx }) {
+  static async getInitialProps(appContext) {
+    const { ctx } = appContext;
     const loadUserNeeded = ctx.isServer && !['/signin', '/join'].includes(ctx.req.url);
 
     if (ctx.isServer) {
@@ -28,11 +29,8 @@ class Sharebook extends App {
       ctx.store.dispatch(loadUserRequest());
     }
 
-    let pageProps = {};
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
-    }
-    return { pageProps };
+    const appProps = await App.getInitialProps(appContext);
+    return { ...appProps };
   }
 
   render() {

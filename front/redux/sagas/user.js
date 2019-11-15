@@ -28,9 +28,8 @@ function* watchSignUpRequest() {
 function* signUp({ user }) {
   try {
     const response = yield call(signUpApi, user);
-    yield put(signUpSuccess(response.data));
+    yield put(signUpSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(signUpFailure(e));
   }
 }
@@ -41,9 +40,8 @@ function* watchSignInRequest() {
 function* signIn({ user }) {
   try {
     const response = yield call(signInApi, user);
-    yield put(signInSuccess(response.data));
+    yield put(signInSuccess(response));
   } catch (e) {
-    console.error(e);
     yield put(signInFailure(e));
   }
 }
@@ -56,7 +54,6 @@ function* signOut() {
     yield call(signOutApi);
     yield put(signOutSuccess());
   } catch (e) {
-    console.error(e);
     yield put(signOutFailure(e));
   }
 }
@@ -67,11 +64,10 @@ function* watchLoadUserRequest() {
 function* loadUser({ id }) {
   try {
     const response = yield call(loadUserApi, id);
-    yield put(loadUserSuccess(response.data));
+    yield put(loadUserSuccess(response));
   } catch (e) {
-    if (id !== 0) {
-      console.error(e);
+    if (id === 0) {
+      yield put(loadUserFailure(e));
     }
-    yield put(loadUserFailure(e));
   }
 }
