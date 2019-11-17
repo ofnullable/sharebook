@@ -116,11 +116,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .deleteCookies("JSESSIONID", "SPRING_SECURITY_REMEMBER_ME_COOKIE")
                     .clearAuthentication(true)
                     .invalidateHttpSession(true)
-            .and()
-                .rememberMe()
-                    .key("PUBLIC_SHARE_SECRET_KEY")
-                    .authenticationSuccessHandler(authSuccessHandler())
-                    .tokenValiditySeconds(7 * 24 * 60 * 60) // 1 week
             .and();
     }
 
