@@ -49,10 +49,10 @@ class LendingIntegrationTest {
     }
 
     @Test
-    @DisplayName("로그인하지 않고 특정 도서의 최근 대여기록 요청")
+    @DisplayName("특정 도서의 최근 대여기록 요청")
     void find_latest_lending_by_book_id_with_no_auth() throws Exception {
-        mvc.perform(get("/lending/book/1/latest"))
-                .andExpect(status().isUnauthorized())
+        mvc.perform(get("/lending/book/65/latest"))
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 

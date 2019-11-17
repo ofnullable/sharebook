@@ -2,6 +2,7 @@ package me.ofnullable.sharebook.account.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.ofnullable.sharebook.account.domain.Account;
+import me.ofnullable.sharebook.account.domain.Email;
 import me.ofnullable.sharebook.account.dto.SignUpRequest;
 import me.ofnullable.sharebook.account.exception.EmailDuplicationException;
 import me.ofnullable.sharebook.account.service.AccountFindService;
@@ -9,6 +10,7 @@ import me.ofnullable.sharebook.account.service.AccountSaveService;
 import me.ofnullable.sharebook.account.service.AccountUpdateService;
 import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.config.WithAuthenticationPrincipal;
+import me.ofnullable.sharebook.error.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,11 +22,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static me.ofnullable.sharebook.account.utils.AccountUtils.*;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 class AccountControllerTest extends WithAuthenticationPrincipal {
@@ -76,6 +79,39 @@ class AccountControllerTest extends WithAuthenticationPrincipal {
 
         mvc.perform(get("/account/1"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("이메일을 가진 계정이 존재하는경우 true")
+    void is_account_duplicated_true() throws Exception {
+        given(accountFindService.existedEmail(any(Email.class)))
+                .willReturn(true);
+
+        mvc.perform(get("/account/duplicate?email=test@asd.com"))
+                .andExpect(content().string("true"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("이메일을 가진 계정이 존재하지 않는 경우 false")
+    void is_account_duplicated_false() throws Exception {
+        given(accountFindService.existedEmail(any(Email.class)))
+                .willReturn(false);
+
+        mvc.perform(get("/account/duplicate?email=test@asd.com"))
+                .andExpect(content().string("false"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("올바른 이메일 주소가 아닌 경우 - 400")
+    void is_account_duplicated() throws Exception {
+        given(accountFindService.existedEmail(any(Email.class)))
+                .willReturn(true);
+
+        mvc.perform(get("/account/duplicate?email=test@asd"))
+                .andExpect(jsonPath("$.message", is(ErrorCode.INVALID_INPUT_VALUE.getMessage())))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

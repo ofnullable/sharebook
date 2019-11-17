@@ -4,6 +4,7 @@ import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.account.domain.Email;
 import me.ofnullable.sharebook.account.repository.AccountRepository;
 import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
+import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 @ExtendWith(SpringExtension.class)
 class AccountFindServiceTest {
@@ -82,6 +84,26 @@ class AccountFindServiceTest {
 
         var result = accountFindService.findAll();
         assertEquals(0, result.size());
+    }
+
+    @Test
+    @DisplayName("이메일로 계정 존재여부 - 존재시 true")
+    void exists_by_email_true() {
+        given(accountRepository.existsByEmail(any(Email.class)))
+                .willReturn(true);
+
+        BDDAssertions.then(accountFindService.existedEmail(Email.of("test1@asd.com")))
+                .isTrue();
+    }
+
+    @Test
+    @DisplayName("이메일로 계정 존재여부 - 존재하지 않는 경우 false")
+    void exists_by_email_false() {
+        given(accountRepository.existsByEmail(any(Email.class)))
+                .willReturn(false);
+
+        BDDAssertions.then(accountFindService.existedEmail(Email.of("test1@asd.com")))
+                .isFalse();
     }
 
     private void accountEquals(Account result) {
