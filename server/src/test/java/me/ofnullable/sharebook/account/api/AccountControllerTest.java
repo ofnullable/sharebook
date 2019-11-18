@@ -5,9 +5,11 @@ import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.account.domain.Email;
 import me.ofnullable.sharebook.account.dto.SignUpRequest;
 import me.ofnullable.sharebook.account.exception.EmailDuplicationException;
+import me.ofnullable.sharebook.account.exception.PasswordNotMatchingException;
 import me.ofnullable.sharebook.account.service.AccountFindService;
 import me.ofnullable.sharebook.account.service.AccountSaveService;
 import me.ofnullable.sharebook.account.service.AccountUpdateService;
+import me.ofnullable.sharebook.account.service.AccountVerifyService;
 import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.config.WithAuthenticationPrincipal;
 import me.ofnullable.sharebook.error.ErrorCode;
@@ -43,6 +45,9 @@ class AccountControllerTest extends WithAuthenticationPrincipal {
 
     @Mock
     private AccountUpdateService accountUpdateService;
+
+    @Mock
+    private AccountVerifyService accountVerifyService;
 
     private MockMvc mvc;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -182,6 +187,31 @@ class AccountControllerTest extends WithAuthenticationPrincipal {
                 .content("newPassword")
         )
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("비밀번호 인증")
+    void verify_with_valid_password() throws Exception {
+        account.verified();
+        given(accountVerifyService.verify(any(Account.class), any(String.class)))
+                .willReturn(account);
+
+        mvc.perform(post("/account/verify")
+                .contentType(MediaType.TEXT_PLAIN)
+                .content("test"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("일치하지 않는 비밀번호로 인증 요청 - 400")
+    void verify_with_invalid_password() throws Exception {
+        given(accountVerifyService.verify(any(Account.class), any(String.class)))
+                .willThrow(PasswordNotMatchingException.class);
+
+        mvc.perform(post("/account/verify")
+                .contentType(MediaType.TEXT_PLAIN)
+                .content("test"))
+                .andExpect(status().isBadRequest());
     }
 
 }

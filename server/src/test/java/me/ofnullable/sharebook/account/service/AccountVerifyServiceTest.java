@@ -29,7 +29,7 @@ class AccountVerifyServiceTest {
 
     @Test
     @DisplayName("비밀번호 인증")
-    void password_verify_success() {
+    void verify_with_valid_password() {
         given(passwordEncoder.matches(any(String.class), any(String.class)))
                 .willReturn(true);
 
@@ -41,7 +41,7 @@ class AccountVerifyServiceTest {
 
     @Test
     @DisplayName("비밀번호 인증 실패시 - PasswordNotMatchingException")
-    void password_verify_failure() {
+    void verify_with_invalid_password() {
         given(passwordEncoder.matches(any(String.class), any(String.class)))
                 .willReturn(false);
 

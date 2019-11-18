@@ -11,19 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 
 import static me.ofnullable.sharebook.account.utils.AccountUtils.*;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
@@ -35,8 +35,8 @@ class AccountIntegrationTest {
     private final Account defaultAccount = buildNormalAccount();
 
     @Test
-    @DisplayName("로그인 후 현재 계정 조회")
     @WithUserDetails("test1@asd.com")
+    @DisplayName("현재 세션에 있는 계정조회")
     void get_current_account_with_auth() throws Exception {
         var resultAction = mvc.perform(get("/account/0"))
                 .andExpect(status().isOk())
@@ -54,8 +54,8 @@ class AccountIntegrationTest {
     }
 
     @Test
-    @DisplayName("로그인 후 계정 조회")
     @WithUserDetails("test1@asd.com")
+    @DisplayName("로그인 후 계정 조회")
     void get_account_with_auth() throws Exception {
         var resultAction = mvc.perform(get("/account/1"))
                 .andExpect(status().isOk())
@@ -70,6 +70,31 @@ class AccountIntegrationTest {
         mvc.perform(get("/account/1"))
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
+    }
+
+    @Test
+    @WithUserDetails("test1@asd.com")
+    @DisplayName("존재하지않는 계정 조회")
+    void get_invalid_account_with_auth() throws Exception {
+        mvc.perform(get("/account/1001"))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("이메일을 가진 계정이 존재하지 않는 경우 false")
+    void email_duplicated_check() throws Exception {
+        mvc.perform(get("/account/duplicate?email=test@asd.com"))
+                .andExpect(content().string("false"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("이메일을 가진 계정이 존재하는 경우 true")
+    void email_duplicated_check_failure() throws Exception {
+        mvc.perform(get("/account/duplicate?email=test1@asd.com"))
+                .andExpect(content().string("true"))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -201,7 +226,7 @@ class AccountIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test1@asd.com", roles = "BASIC")
+    @WithUserDetails("test1@asd.com")
     @DisplayName("로그인 후 비밀번호 업데이트")
     void update_password_with_auth() throws Exception {
         mvc.perform(patch("/account/1")
@@ -214,7 +239,7 @@ class AccountIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test1@asd.com", roles = "BASIC")
+    @WithUserDetails("test1@asd.com")
     @DisplayName("로그인 후 존재하지 않는 계정 비밀번호 업데이트")
     void update_password_with_invalid_account_with_auth() throws Exception {
         mvc.perform(patch("/account/10")
@@ -236,6 +261,29 @@ class AccountIntegrationTest {
         )
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
+    }
+
+    @Test
+    @WithUserDetails("test1@asd.com")
+    @DisplayName("비밀번호 인증")
+    void verify_with_valid_password() throws Exception {
+        mvc.perform(post("/account/verify")
+                .contentType(MediaType.TEXT_PLAIN)
+                .content("test"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @WithUserDetails("test1@asd.com")
+    @DisplayName("일치하지 않는 비밀번호로 비밀번호 인증")
+    void verify_with_invalid_password() throws Exception {
+        mvc.perform(post("/account/verify")
+                .contentType(MediaType.TEXT_PLAIN)
+                .content("test1"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
     private void assertEmailAndName(ResultActions actions) throws Exception {

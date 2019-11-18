@@ -23,7 +23,6 @@ public enum ErrorCode {
 
     // lending
     LENDING_HISTORY_NOT_FOUND(404, "There is no lending history"),
-    LENDING_STATUS_NOT_FOUND(404, "No such lending status"),
     LENDING_ALREADY_COMPLETION(400, "Lending already completion"),
     LENDING_NOT_REQUESTED(400, "Lending did not requested"),
     LENDING_STATUS_EQUALS(400, "Can not change with same status"),

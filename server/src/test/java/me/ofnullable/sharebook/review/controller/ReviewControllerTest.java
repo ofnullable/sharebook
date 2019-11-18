@@ -19,6 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
+
 import static me.ofnullable.sharebook.review.utils.ReviewUtils.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -58,6 +60,36 @@ class ReviewControllerTest extends WithAuthenticationPrincipal {
                 .willReturn(buildReviewList());
 
         mvc.perform(get("/reviews/book/1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("현재 로그인된 계정의 Id로 리뷰목록 조회")
+    void find_all_by_my_reviews() throws Exception {
+        given(reviewFindService.findAllByReviewerId(any(Long.class)))
+                .willReturn(buildReviewList());
+
+        mvc.perform(get("/account/0/reviews"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("작성자 Id로 리뷰목록 조회")
+    void find_all_by_reviewer_id() throws Exception {
+        given(reviewFindService.findAllByReviewerId(any(Long.class)))
+                .willReturn(buildReviewList());
+
+        mvc.perform(get("/account/1/reviews"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("리뷰를 작성한적 없는 유저의 리뷰목록 조회")
+    void find_all_by_invalid_reviewer_id() throws Exception {
+        given(reviewFindService.findAllByReviewerId(any(Long.class)))
+                .willReturn(Collections.emptyList());
+
+        mvc.perform(get("/account/1/reviews"))
                 .andExpect(status().isOk());
     }
 
