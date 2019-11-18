@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.ofnullable.sharebook.common.domain.Auditable;
 import me.ofnullable.sharebook.review.dto.UpdateReviewRequest;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 
@@ -41,7 +42,7 @@ public class Review extends Auditable {
         if (dto.getScore() != null) {
             this.score = dto.getScore();
         }
-        if (dto.getContents() != null) {
+        if (StringUtils.hasText(dto.getContents())) {
             this.contents = dto.getContents();
         }
     }

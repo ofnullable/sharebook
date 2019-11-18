@@ -66,7 +66,7 @@ public class FileService {
         Arrays.stream(splitPath).forEach(p -> {
             try (var session = sf.getSession()) {
                 log.debug("mkdir : {}", temp);
-                if (!p.equals(" ") || !StringUtils.isEmpty(p)) {
+                if (StringUtils.hasText(p)) {
                     session.mkdir(temp.append("/").append(p).toString());
                 }
             } catch (IOException e) {

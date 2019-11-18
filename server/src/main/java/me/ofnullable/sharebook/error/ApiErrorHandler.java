@@ -29,6 +29,12 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
+    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ApiError handleIllegalArgumentException(RuntimeException e, WebRequest request) {
+        return bindError(e.getMessage(), request);
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ApiError handleResourceNotFoundException(ResourceNotFoundException e, WebRequest request) {
