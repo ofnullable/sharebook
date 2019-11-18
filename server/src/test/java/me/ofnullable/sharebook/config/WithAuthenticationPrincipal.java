@@ -27,6 +27,7 @@ public class WithAuthenticationPrincipal {
                 , NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
             var account = buildNormalAccount();
+            account.verified();
             var idField = account.getClass().getDeclaredField("id");
             idField.setAccessible(true);
             idField.set(account, 1L);

@@ -131,7 +131,6 @@ class AccountIntegrationTest {
         )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status", is(400)))
-                .andExpect(jsonPath("$.message", is("Username and/or Password did not match")))
                 .andExpect(jsonPath("$.path", is("/auth/sign-in")))
                 .andDo(print());
     }
@@ -151,7 +150,6 @@ class AccountIntegrationTest {
         )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status", is(400)))
-                .andExpect(jsonPath("$.message", is("Username and/or Password did not match")))
                 .andExpect(jsonPath("$.path", is("/auth/sign-in")))
                 .andDo(print());
     }
@@ -171,7 +169,6 @@ class AccountIntegrationTest {
         )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status", is(400)))
-                .andExpect(jsonPath("$.message", is("Username and/or Password did not match")))
                 .andExpect(jsonPath("$.path", is("/auth/sign-in")))
                 .andDo(print());
     }
@@ -202,7 +199,6 @@ class AccountIntegrationTest {
         )
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.status", is(409)))
-                .andExpect(jsonPath("$.message", is("Email duplication")))
                 .andExpect(jsonPath("$.path", is("/account")))
                 .andDo(print());
     }
@@ -219,7 +215,6 @@ class AccountIntegrationTest {
         )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status", is(400)))
-                .andExpect(jsonPath("$.message", is("Invalid value")))
                 .andExpect(jsonPath("$.path", is("/account")))
                 .andExpect(jsonPath("$.errors['email.address']", is("must be a well-formed email address")))
                 .andDo(print());
@@ -227,37 +222,43 @@ class AccountIntegrationTest {
 
     @Test
     @WithUserDetails("test1@asd.com")
-    @DisplayName("로그인 후 비밀번호 업데이트")
+    @DisplayName("비밀번호 인증 하지않고 계정정보 업데이트 - 400")
     void update_password_with_auth() throws Exception {
-        mvc.perform(patch("/account/1")
+        var updateDto = buildUpdateDto("test1", null);
+
+        mvc.perform(put("/account/1")
                 .characterEncoding("UTF-8")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("test")
+                .content(mapper.writeValueAsString(updateDto))
         )
-                .andExpect(status().isOk())
+                .andExpect(status().isBadRequest())
                 .andDo(print());
     }
 
     @Test
     @WithUserDetails("test1@asd.com")
-    @DisplayName("로그인 후 존재하지 않는 계정 비밀번호 업데이트")
+    @DisplayName("다른 유저의 계정정보 업데이트 - 400")
     void update_password_with_invalid_account_with_auth() throws Exception {
-        mvc.perform(patch("/account/10")
+        var updateDto = buildUpdateDtoWithId(10L, "test1", null);
+
+        mvc.perform(put("/account/10")
                 .characterEncoding("UTF-8")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("newPassword")
+                .content(mapper.writeValueAsString(updateDto))
         )
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andDo(print());
     }
 
     @Test
-    @DisplayName("로그인하지 않고 비밀번호 업데이트")
+    @DisplayName("로그인하지 않고 계정정보 업데이트 - 401")
     void update_password_with_no_auth() throws Exception {
-        mvc.perform(patch("/account/1")
+        var updateDto = buildUpdateDto("test1", null);
+
+        mvc.perform(put("/account/1")
                 .characterEncoding("UTF-8")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("newPassword")
+                .content(mapper.writeValueAsString(updateDto))
         )
                 .andExpect(status().isUnauthorized())
                 .andDo(print());
