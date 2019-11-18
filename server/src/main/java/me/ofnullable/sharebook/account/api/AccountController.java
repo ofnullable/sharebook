@@ -5,6 +5,7 @@ import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.account.domain.Email;
 import me.ofnullable.sharebook.account.dto.AccountResponse;
 import me.ofnullable.sharebook.account.dto.SignUpRequest;
+import me.ofnullable.sharebook.account.dto.UpdateAccountRequest;
 import me.ofnullable.sharebook.account.service.AccountFindService;
 import me.ofnullable.sharebook.account.service.AccountSaveService;
 import me.ofnullable.sharebook.account.service.AccountUpdateService;
@@ -46,9 +47,17 @@ public class AccountController {
         return new AccountResponse(accountFindService.findById(id));
     }
 
-    @PatchMapping("/account/{id}")
-    public AccountResponse updatePassword(@PathVariable Long id, @RequestBody @NotBlank String newPassword) {
-        return new AccountResponse(accountUpdateService.updatePassword(id, newPassword));
+    @PutMapping("/account/{id}")
+    public AccountResponse updateAccount(
+            @AuthenticationPrincipal(expression = "account") Account account,
+            @RequestBody @Valid UpdateAccountRequest dto) {
+        if (!account.getId().equals(dto.getId())) {
+            throw new IllegalArgumentException("자신의 정보만 수정할 수 있습니다.");
+        }
+        if (!account.isVerified()) {
+            throw new IllegalStateException("비밀번호 인증 후 정보수정이 가능합니다.");
+        }
+        return new AccountResponse(accountUpdateService.update(dto));
     }
 
     @PostMapping("/account/verify")
