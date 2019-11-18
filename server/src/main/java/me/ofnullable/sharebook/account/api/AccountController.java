@@ -8,11 +8,13 @@ import me.ofnullable.sharebook.account.dto.SignUpRequest;
 import me.ofnullable.sharebook.account.service.AccountFindService;
 import me.ofnullable.sharebook.account.service.AccountSaveService;
 import me.ofnullable.sharebook.account.service.AccountUpdateService;
+import me.ofnullable.sharebook.account.service.AccountVerifyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +23,7 @@ public class AccountController {
     private final AccountFindService accountFindService;
     private final AccountSaveService accountSaveService;
     private final AccountUpdateService accountUpdateService;
+    private final AccountVerifyService accountVerifyService;
 
     @PostMapping("/account")
     @ResponseStatus(HttpStatus.CREATED)
@@ -44,8 +47,14 @@ public class AccountController {
     }
 
     @PatchMapping("/account/{id}")
-    public AccountResponse updatePassword(@PathVariable Long id, @RequestBody String newPassword) {
+    public AccountResponse updatePassword(@PathVariable Long id, @RequestBody @NotBlank String newPassword) {
         return new AccountResponse(accountUpdateService.updatePassword(id, newPassword));
     }
 
+    @PostMapping("/account/verify")
+    public AccountResponse verifyAccount(
+            @AuthenticationPrincipal(expression = "account") Account account,
+            @RequestBody @NotBlank String password) {
+        return new AccountResponse(accountVerifyService.verify(account, password));
+    }
 }

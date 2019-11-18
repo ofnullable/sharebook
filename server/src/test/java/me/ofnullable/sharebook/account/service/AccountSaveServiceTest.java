@@ -2,6 +2,7 @@ package me.ofnullable.sharebook.account.service;
 
 import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.account.domain.Email;
+import me.ofnullable.sharebook.account.domain.RoleName;
 import me.ofnullable.sharebook.account.dto.SignUpRequest;
 import me.ofnullable.sharebook.account.exception.EmailDuplicationException;
 import me.ofnullable.sharebook.account.repository.AccountRepository;
@@ -10,10 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static me.ofnullable.sharebook.account.utils.AccountUtils.buildNormalSignUpRequest;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -30,18 +32,28 @@ class AccountSaveServiceTest {
     @Mock
     private AccountRepository accountRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     private final SignUpRequest signUpRequest = buildNormalSignUpRequest("test@test.com");
 
     @Test
     @DisplayName("회원가입")
     void save_account() {
+        given(passwordEncoder.encode(any(String.class)))
+                .willReturn("test");
+        var entity = signUpRequest.toEntity(passwordEncoder);
+        entity.addRole(RoleName.BASIC);
+
         given(accountRepository.save(any(Account.class)))
-                .willReturn(signUpRequest.toEntity());
+                .willReturn(entity);
 
         var account = accountSaveService.saveAndSignIn(signUpRequest);
 
-        assertEquals(account.getEmail().getAddress(), account.getEmail().getAddress());
-        assertEquals(account.getPassword(), account.getPassword());
+        then(account.getEmail().getAddress())
+                .isEqualTo(entity.getEmail().getAddress());
+        then(account.getPassword())
+                .isEqualTo(entity.getPassword());
     }
 
     @Test

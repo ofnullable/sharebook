@@ -1,6 +1,7 @@
 package me.ofnullable.sharebook.error;
 
 import me.ofnullable.sharebook.account.exception.EmailDuplicationException;
+import me.ofnullable.sharebook.account.exception.PasswordNotMatchingException;
 import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.lending.exception.*;
 import org.slf4j.Logger;
@@ -40,6 +41,13 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     protected ApiError handleEmailDuplicationException(EmailDuplicationException e, WebRequest request) {
         log.debug("Duplicate email: {}", e.getEmail());
         return bindError(ErrorCode.EMAIL_DUPLICATION, request);
+    }
+
+    @ExceptionHandler(PasswordNotMatchingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ApiError handlePasswordNotMatchingException(PasswordNotMatchingException e, WebRequest request) {
+        log.debug("Password did not match.");
+        return bindError(ErrorCode.PASSWORD_DID_NOT_MATCH, request);
     }
 
     @ExceptionHandler(LendingAlreadyCompletionException.class)

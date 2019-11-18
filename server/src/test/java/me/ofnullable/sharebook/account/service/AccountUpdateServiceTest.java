@@ -5,34 +5,43 @@ import me.ofnullable.sharebook.account.domain.Email;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
 class AccountUpdateServiceTest {
 
-    @Mock
+    @InjectMocks
     private AccountUpdateService accountUpdateService;
 
+    @Mock
+    private AccountFindService accountFindService;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     private final Account account = Account.builder().email(Email.of("test@asd.com")).name("test").password("test").build();
-    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @Test
     @DisplayName("비밀번호 업데이트")
     void update_password() {
-        given(accountUpdateService.updatePassword(any(Long.class), anyString()))
+        given(accountFindService.findById(any(Long.class)))
                 .willReturn(account);
+        given(passwordEncoder.encode(any(String.class)))
+                .willReturn("test1");
 
-        var result = accountUpdateService.updatePassword(1L, "test");
+        var result = accountUpdateService.updatePassword(1L, "test1");
 
-        assertTrue(passwordEncoder.matches("test", result.getPassword()));
+        then(result.getEmail().getAddress())
+                .isEqualTo(account.getEmail().getAddress());
+        then(result.getPassword())
+                .isEqualTo("test1");
     }
 
 }

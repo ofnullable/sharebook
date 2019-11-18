@@ -22,4 +22,8 @@ public class ReviewFindService {
         return reviewRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(id, Review.class));
     }
+
+    public List<Review> findAllByReviewerId(Long reviewerId) {
+        return reviewRepository.findAllByReviewerId(reviewerId);
+    }
 }

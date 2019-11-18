@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.account.domain.Email;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -30,10 +31,10 @@ public class SignUpRequest {
         this.name = name;
     }
 
-    public Account toEntity() {
+    public Account toEntity(PasswordEncoder passwordEncoder) {
         return Account.builder()
                 .email(email)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .name(name)
                 .build();
     }

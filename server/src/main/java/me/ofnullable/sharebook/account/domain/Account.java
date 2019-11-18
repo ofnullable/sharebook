@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.ofnullable.sharebook.common.domain.Auditable;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -34,10 +33,13 @@ public class Account extends Auditable {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Role> roles = new HashSet<>();
 
+    @Transient
+    private boolean verified;
+
     @Builder
     public Account(Email email, String password, String name) {
         this.email = email;
-        this.password = encodePassword(password);
+        this.password = password;
         this.name = name;
     }
 
@@ -45,8 +47,13 @@ public class Account extends Auditable {
         this.roles.add(buildRole(roleName));
     }
 
+    public Account verified() {
+        this.verified = true;
+        return this;
+    }
+
     public void updatePassword(String password) {
-        this.password = encodePassword(password);
+        this.password = password;
     }
 
     private Role buildRole(RoleName roleName) {
@@ -54,10 +61,6 @@ public class Account extends Auditable {
                 .name(roleName)
                 .account(this)
                 .build();
-    }
-
-    private String encodePassword(String password) {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(password);
     }
 
 }
