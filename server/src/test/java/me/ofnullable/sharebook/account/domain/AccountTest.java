@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AccountTest {
 
@@ -28,7 +27,7 @@ class AccountTest {
     void account_builder() {
         assertEquals(account.getEmail().getAddress(), "asd@asd.com");
         assertEquals(account.getName(), "test");
-        assertTrue(account.getPassword().startsWith("{bcrypt}"));
+        assertEquals(account.getPassword(), "test");
     }
 
     @Test
@@ -42,7 +41,7 @@ class AccountTest {
     @DisplayName("비밀번호 업데이트")
     void update_password() {
         account.updatePassword("modifyTest");
-        assertTrue(account.getPassword().startsWith("{bcrypt}"));
+        assertEquals(account.getPassword(), "modifyTest");
     }
 
 }

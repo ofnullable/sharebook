@@ -29,14 +29,19 @@ public class AccountSaveService {
         var entity = dto.toEntity(passwordEncoder);
         entity.addRole(RoleName.BASIC);
 
-        var saveResult = accountRepository.save(entity);
+        var account = accountRepository.save(entity);
+        return signIn(account);
+    }
 
-        var accountDetails = new AccountDetails(saveResult);
+    private Account signIn(Account account) {
+        System.out.println(account.getEmail());
+        System.out.println(account.getPassword());
+        System.out.println(account.getRoles());
+        var accountDetails = new AccountDetails(account);
         var authToken = new UsernamePasswordAuthenticationToken(accountDetails, accountDetails.getPassword(), accountDetails.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
-
-        return saveResult;
+        return account;
     }
 
 }
