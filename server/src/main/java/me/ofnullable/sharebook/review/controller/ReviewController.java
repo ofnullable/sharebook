@@ -52,4 +52,20 @@ public class ReviewController {
         return reviewDeleteService.deleteReview(id);
     }
 
+    @GetMapping("/account/{accountId}/reviews")
+    public List<ReviewResponse> findReviewsByAccountId(
+            @AuthenticationPrincipal(expression = "account") Account account,
+            @PathVariable Long accountId) {
+        if (accountId == 0) {
+            return reviewFindService.findAllByReviewerId(account.getId())
+                    .stream()
+                    .map(ReviewResponse::new)
+                    .collect(Collectors.toList());
+        }
+        return reviewFindService.findAllByReviewerId(accountId)
+                .stream()
+                .map(ReviewResponse::new)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -4,7 +4,6 @@ import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.account.domain.Email;
 import me.ofnullable.sharebook.account.repository.AccountRepository;
 import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
-import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,11 +16,11 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static me.ofnullable.sharebook.account.utils.AccountUtils.buildNormalAccount;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 
 @ExtendWith(SpringExtension.class)
 class AccountFindServiceTest {
@@ -92,7 +91,7 @@ class AccountFindServiceTest {
         given(accountRepository.existsByEmail(any(Email.class)))
                 .willReturn(true);
 
-        BDDAssertions.then(accountFindService.existedEmail(Email.of("test1@asd.com")))
+        then(accountFindService.existedEmail(Email.of("test1@asd.com")))
                 .isTrue();
     }
 
@@ -102,7 +101,7 @@ class AccountFindServiceTest {
         given(accountRepository.existsByEmail(any(Email.class)))
                 .willReturn(false);
 
-        BDDAssertions.then(accountFindService.existedEmail(Email.of("test1@asd.com")))
+        then(accountFindService.existedEmail(Email.of("test1@asd.com")))
                 .isFalse();
     }
 
