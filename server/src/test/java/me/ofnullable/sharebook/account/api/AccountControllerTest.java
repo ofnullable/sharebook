@@ -4,13 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.account.domain.Email;
 import me.ofnullable.sharebook.account.dto.SignUpRequest;
+import me.ofnullable.sharebook.account.dto.UpdateAccountRequest;
 import me.ofnullable.sharebook.account.exception.EmailDuplicationException;
+import me.ofnullable.sharebook.account.exception.PasswordNotMatchingException;
 import me.ofnullable.sharebook.account.service.AccountFindService;
 import me.ofnullable.sharebook.account.service.AccountSaveService;
 import me.ofnullable.sharebook.account.service.AccountUpdateService;
+import me.ofnullable.sharebook.account.service.AccountVerifyService;
 import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.config.WithAuthenticationPrincipal;
-import me.ofnullable.sharebook.error.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,12 +24,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static me.ofnullable.sharebook.account.utils.AccountUtils.*;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 class AccountControllerTest extends WithAuthenticationPrincipal {
@@ -43,6 +44,9 @@ class AccountControllerTest extends WithAuthenticationPrincipal {
 
     @Mock
     private AccountUpdateService accountUpdateService;
+
+    @Mock
+    private AccountVerifyService accountVerifyService;
 
     private MockMvc mvc;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -110,7 +114,6 @@ class AccountControllerTest extends WithAuthenticationPrincipal {
                 .willReturn(true);
 
         mvc.perform(get("/account/duplicate?email=test@asd"))
-                .andExpect(jsonPath("$.message", is(ErrorCode.INVALID_INPUT_VALUE.getMessage())))
                 .andExpect(status().isBadRequest());
     }
 
@@ -157,31 +160,62 @@ class AccountControllerTest extends WithAuthenticationPrincipal {
     }
 
     @Test
-    @DisplayName("비밀번호 변경 요청")
+    @DisplayName("계정정보 업데이트 요청")
     void update_password() throws Exception {
-        given(accountUpdateService.updatePassword(any(Long.class), anyString()))
+        var dto = buildUpdateDto("테스트", "test");
+
+        given(accountUpdateService.update(any(UpdateAccountRequest.class)))
                 .willReturn(account);
 
-        mvc.perform(patch("/account/1")
+        mvc.perform(put("/account/1")
                 .characterEncoding("UTF-8")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("newPassword")
+                .content(mapper.writeValueAsString(dto))
         )
                 .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("존재하지 않는 계정 비밀번호 변경 요청 - 404")
+    @DisplayName("존재하지 않는 계정정보 업데이트 요청 - 404")
     void invalid_update_password() throws Exception {
-        given(accountUpdateService.updatePassword(any(Long.class), anyString()))
+        var dto = buildUpdateDto("없는계정", "test");
+
+        given(accountUpdateService.update(any(UpdateAccountRequest.class)))
                 .willThrow(ResourceNotFoundException.class);
 
-        mvc.perform(patch("/account/1")
+        mvc.perform(put("/account/1")
                 .characterEncoding("UTF-8")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("newPassword")
+                .content(mapper.writeValueAsString(dto))
         )
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("비밀번호 인증")
+    void verify_with_valid_password() throws Exception {
+        account.verified();
+        given(accountVerifyService.verify(any(Account.class), any(String.class)))
+                .willReturn(account);
+
+        mvc.perform(post("/account/verify")
+                .contentType(MediaType.TEXT_PLAIN)
+                .content("test")
+        )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("일치하지 않는 비밀번호로 인증 요청 - 400")
+    void verify_with_invalid_password() throws Exception {
+        given(accountVerifyService.verify(any(Account.class), any(String.class)))
+                .willThrow(PasswordNotMatchingException.class);
+
+        mvc.perform(post("/account/verify")
+                .contentType(MediaType.TEXT_PLAIN)
+                .content("test")
+        )
+                .andExpect(status().isBadRequest());
     }
 
 }

@@ -4,7 +4,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.ofnullable.sharebook.account.dto.UpdateAccountRequest;
 import me.ofnullable.sharebook.common.domain.Auditable;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -52,8 +55,15 @@ public class Account extends Auditable {
         return this;
     }
 
-    public void updatePassword(String password) {
-        this.password = password;
+    public Account update(UpdateAccountRequest dto, PasswordEncoder passwordEncoder) {
+        if (StringUtils.hasText(dto.getName())) {
+            this.name = dto.getName();
+        }
+        if (StringUtils.hasText(dto.getNewPassword())) {
+            this.password = passwordEncoder.encode(dto.getNewPassword());
+        }
+        this.verified();
+        return this;
     }
 
     private Role buildRole(RoleName roleName) {

@@ -1,11 +1,17 @@
 package me.ofnullable.sharebook.account.domain;
 
+import me.ofnullable.sharebook.account.utils.AccountUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AccountTest {
+
+    private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     private Account account = Account.builder()
             .email(Email.of("asd@asd.com"))
@@ -38,10 +44,21 @@ class AccountTest {
     }
 
     @Test
-    @DisplayName("비밀번호 업데이트")
+    @DisplayName("계정정보(비밀번호) 업데이트")
     void update_password() {
-        account.updatePassword("modifyTest");
-        assertEquals(account.getPassword(), "modifyTest");
+        var updateDto = AccountUtils.buildUpdateDto(null, "test1");
+        account.update(updateDto, passwordEncoder);
+
+        assertTrue(account.getPassword().startsWith("{bcrypt}"));
+    }
+
+    @Test
+    @DisplayName("계정정보(이름) 업데이트")
+    void update_name() {
+        var updateDto = AccountUtils.buildUpdateDto("테스트유저", null);
+        account.update(updateDto, passwordEncoder);
+
+        assertEquals(account.getName(), "테스트유저");
     }
 
 }

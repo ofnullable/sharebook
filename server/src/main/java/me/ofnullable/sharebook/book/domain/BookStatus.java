@@ -19,7 +19,7 @@ public enum BookStatus {
         return Arrays.stream(BookStatus.values())
                 .filter(c -> c.getCode() == code)
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("Can not found book status for code: " + code));
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 도서상태코드 입니다. 코드: " + code));
     }
 
 }

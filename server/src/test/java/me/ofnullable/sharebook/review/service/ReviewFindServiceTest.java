@@ -10,10 +10,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static me.ofnullable.sharebook.review.utils.ReviewUtils.buildReview;
+import static me.ofnullable.sharebook.review.utils.ReviewUtils.buildReviewList;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
@@ -72,6 +74,30 @@ class ReviewFindServiceTest {
 
         then(exception)
                 .isInstanceOf(ResourceNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("리뷰작성자 Id로 리뷰 조회")
+    void find_all_by_reviewer_id() {
+        given(reviewRepository.findAllByReviewerId(any(Long.class)))
+                .willReturn(buildReviewList());
+
+        var result = reviewFindService.findAllByReviewerId(1L);
+
+        then(result.size())
+                .isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("작성자 Id에 해당하는 Review가 존재하지 않는 경우")
+    void find_all_by_invalid_reviewer_id() {
+        given(reviewRepository.findAllByReviewerId(any(Long.class)))
+                .willReturn(Collections.emptyList());
+
+        var result = reviewFindService.findAllByReviewerId(1L);
+
+        then(result.isEmpty())
+                .isTrue();
     }
 
 }

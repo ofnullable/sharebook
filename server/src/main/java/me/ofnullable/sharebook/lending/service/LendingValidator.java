@@ -25,14 +25,14 @@ public class LendingValidator {
 
     private void isAvailable(Book book) {
         if (!book.isAvailable()) {
-            throw new IllegalStateException("Can not borrow unavailable status book");
+            throw new IllegalStateException("대여불가 상태의 도서입니다.");
         }
     }
 
     private void isNotOwner(Lending lending) {
         var ownerId = lending.getBook().getOwner().getId();
         if (lending.getBorrowerId().equals(ownerId)) {
-            throw new IllegalArgumentException("Can not borrow own book");
+            throw new IllegalArgumentException("자신의 도서를 대여할 수 없습니다.");
         }
     }
 

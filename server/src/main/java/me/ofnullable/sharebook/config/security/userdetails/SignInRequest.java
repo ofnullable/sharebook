@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -14,7 +15,7 @@ public class SignInRequest {
 
     @Builder
     public SignInRequest(String username, String password) {
-        this.username = username != null ? username.trim().toLowerCase() : null;
+        this.username = StringUtils.hasText(username) ? username.trim().toLowerCase() : null;
         this.password = password;
     }
 

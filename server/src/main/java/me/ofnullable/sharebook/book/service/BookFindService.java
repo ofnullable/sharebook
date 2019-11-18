@@ -21,7 +21,7 @@ public class BookFindService {
     }
 
     public Page<Book> findAll(String searchText, PageRequest pageRequest) {
-        if (StringUtils.isEmpty(searchText)) {
+        if (!StringUtils.hasText(searchText)) {
             return bookRepository.findAllByOrderByStatus(pageRequest.of());
         }
         return bookRepository.findALlByTitleContainingIgnoreCaseOrderByStatus(searchText, pageRequest.of());

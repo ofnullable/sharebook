@@ -31,7 +31,7 @@ public class ReviewValidator {
 
     private void reviewExists(Long reviewerId, Long bookId) {
         if (reviewRepository.findByReviewerIdAndBookId(reviewerId, bookId).isPresent()) {
-            throw new IllegalArgumentException("Already reviewed this book");
+            throw new IllegalArgumentException("이미 리뷰를 작성한 도서입니다.");
         }
     }
 

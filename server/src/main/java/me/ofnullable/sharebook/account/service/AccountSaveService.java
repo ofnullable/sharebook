@@ -34,9 +34,6 @@ public class AccountSaveService {
     }
 
     private Account signIn(Account account) {
-        System.out.println(account.getEmail());
-        System.out.println(account.getPassword());
-        System.out.println(account.getRoles());
         var accountDetails = new AccountDetails(account);
         var authToken = new UsernamePasswordAuthenticationToken(accountDetails, accountDetails.getPassword(), accountDetails.getAuthorities());
 
