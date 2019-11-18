@@ -9,6 +9,7 @@ import me.ofnullable.sharebook.account.repository.AccountRepository;
 import me.ofnullable.sharebook.config.security.userdetails.AccountDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AccountSaveService {
 
+    private final PasswordEncoder passwordEncoder;
     private final AccountFindService accountFindService;
     private final AccountRepository accountRepository;
 
@@ -24,7 +26,7 @@ public class AccountSaveService {
         if (accountFindService.existedEmail(dto.getEmail())) {
             throw new EmailDuplicationException(dto.getEmail());
         }
-        var entity = dto.toEntity();
+        var entity = dto.toEntity(passwordEncoder);
         entity.addRole(RoleName.BASIC);
 
         var saveResult = accountRepository.save(entity);
