@@ -66,8 +66,8 @@ const JoinPage = () => {
   };
 
   const emailDuplicateCheck = () => {
-    if (isDuplicated || (isEmail(email) && !emailChecked)) {
-      dispatch(emailDuplicationCheckRequest({ email }));
+    if (isEmail(email) && (!emailChecked || isDuplicated)) {
+      dispatch(emailDuplicationCheckRequest(email));
       setEmailChecked(true);
     }
   };

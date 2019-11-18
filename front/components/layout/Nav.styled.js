@@ -19,24 +19,6 @@ export const HeaderNav = styled.nav`
     margin: 0 auto;
   }
 `;
-export const HamburgerMenu = styled.li`
-  ${device.laptops`
-    display: none;
-  `};
-  ${device.tablets`
-    display: none;
-  `};
-  ${device.mobiles`
-    display: inline-block;
-    vertical-align: middle;
-  `};
-  padding: 5px;
-  cursor: pointer;
-  & i {
-    display: block;
-    color: ${COLOR_SCHEME.white};
-  }
-`;
 
 export const HeaderMenu = styled.li`
   color: ${COLOR_SCHEME.white};
@@ -46,8 +28,17 @@ export const HeaderMenu = styled.li`
   float: ${props => props._float};
   & a {
     display: inline-block;
-    vertical-align: sub;
+    vertical-align: middle;
     color: inherit;
+
+    & span {
+      vertical-align: middle;
+    }
+    & i {
+      font-size: 22px;
+      vertical-align: middle;
+      padding-right: 5px;
+    }
   }
 `;
 
@@ -55,10 +46,6 @@ export const HeaderMenuGroup = styled.div`
   padding: 0;
   display: inline-block;
   vertical-align: middle;
-  & span {
-    padding: 0 10px;
-    vertical-align: sub;
-  }
 `;
 
 export const HomepageLink = styled.a`

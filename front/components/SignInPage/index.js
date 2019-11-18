@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useInput } from '@utils/inputUtils';
@@ -11,9 +11,10 @@ import { CenterDiv, InputGroup, Button, LoadingIcon, CenterForm, ButtonLink } fr
 const SignInPage = () => {
   const { isSignedIn, isLoading, signInError } = useSelector(state => state.user.user);
   const { data } = useSelector(state => state.user.join);
-  const [username, usernameHandler] = useInput(data && data.email);
+  const [username, usernameHandler, setUsername] = useInput(data && data.email);
   const [password, passwordHandler] = useInput();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     if (isSignedIn) {
@@ -21,16 +22,17 @@ const SignInPage = () => {
       const origin = location.origin;
 
       if (referrer.startsWith(origin)) {
-        Router.back();
+        router.back();
       } else {
-        Router.push('/');
+        router.push('/');
       }
     }
   }, [isSignedIn]);
 
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(signInRequest({ username: username.trim().toLowerCase(), password }));
+    setUsername(username.trim().toLowerCase());
+    dispatch(signInRequest({ username, password }));
   };
 
   return (

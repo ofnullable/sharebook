@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { HeaderNav, HeaderMenu, HeaderMenuGroup, HomepageLink } from './Nav.styled';
 
 const Nav = () => {
-  const { isSignedIn } = useSelector(state => state.user.user);
+  const { data, isSignedIn } = useSelector(state => state.user.user);
   const router = useRouter();
 
   const getSecondMenu = () => {
@@ -21,7 +21,10 @@ const Nav = () => {
       return (
         <HeaderMenu _float='right'>
           <Link href='/management/user/[menu]' as='/management/user/profile'>
-            <a>마이페이지</a>
+            <a>
+              <i className='material-icons'>perm_identity</i>
+              <span>{data.name}</span>
+            </a>
           </Link>
         </HeaderMenu>
       );
@@ -31,11 +34,15 @@ const Nav = () => {
       <HeaderMenu _float='right'>
         <HeaderMenuGroup>
           <Link href={{ pathname: '/signin' }}>
-            <a>로그인</a>
+            <a>
+              <span>로그인</span>
+            </a>
           </Link>
-          <span>|</span>
+          <span style={{ padding: '0 10px' }}>|</span>
           <Link href={{ pathname: '/join' }}>
-            <a>회원가입</a>
+            <a>
+              <span>회원가입</span>
+            </a>
           </Link>
         </HeaderMenuGroup>
       </HeaderMenu>

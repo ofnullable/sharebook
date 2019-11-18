@@ -27,7 +27,7 @@ export const WithLeftMenu = styled.div`
   `};
 `;
 
-export const SubMenu = styled.div`
+export const SubMenuWrapper = styled.div`
   margin: 0.7rem 1%;
   & span {
     margin-right: 1em;

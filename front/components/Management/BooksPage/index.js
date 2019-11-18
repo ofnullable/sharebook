@@ -1,15 +1,21 @@
 import React from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 import ManagementButton from './ManagementButton';
 import BookCard from '@components/BookCard';
 import LeftMenu from '@components/Management/LeftMenu';
+import SubMenu from '@components/Management/SubMenu';
 import LoadingOverlay from '@components/common/LoadingOverlay';
 
-import { WithLeftMenu, Title, SubMenu } from '@components/Management/styled';
+import { WithLeftMenu, Title } from '@components/Management/styled';
 import { Button, CardWrapper, CenterDiv } from '@styles/common';
+
+const SUBMENU = {
+  all: '전체보기',
+  requested: '요청받은도서',
+  accepted: '대여해준도서',
+};
 
 const BooksPage = ({ status }) => {
   const { isLoading: isBooksLoading, data: books } = useSelector(state => state.book.myBooks);
@@ -17,28 +23,6 @@ const BooksPage = ({ status }) => {
     state => state.lending.requests
   );
   const router = useRouter();
-
-  const renderSubMenu = () => {
-    return (
-      <SubMenu>
-        <Link href='/management/books/[status]' as={`/management/books/all`}>
-          <a>
-            <span className={status === 'all' ? 'active' : ''}>전체보기</span>
-          </a>
-        </Link>
-        <Link href='/management/books/[status]' as={`/management/books/requested`}>
-          <a>
-            <span className={status === 'requested' ? 'active' : ''}>요청받은도서</span>
-          </a>
-        </Link>
-        <Link href='/management/books/[status]' as={`/management/books/accepted`}>
-          <a>
-            <span className={status === 'accepted' ? 'active' : ''}>대여해준도서</span>
-          </a>
-        </Link>
-      </SubMenu>
-    );
-  };
 
   const renderContents = () => {
     const data = status === 'all' ? books : requests;
@@ -68,8 +52,7 @@ const BooksPage = ({ status }) => {
         <Button _color='primary' onClick={() => router.push('/management/books/register')}>
           도서등록
         </Button>
-
-        {renderSubMenu()}
+        <SubMenu href='/management/books/[status]' currentMenu={status} menus={SUBMENU} />
 
         {(isBooksLoading || isRequestsLoading) && <LoadingOverlay />}
 
