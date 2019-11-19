@@ -203,7 +203,8 @@ export const GlobalStyle = createGlobalStyle`
     border-radius: 5px;
     border: 1px solid ${COLOR_SCHEME.gray};
     &:read-only {
-      background: ${COLOR_SCHEME.lightGray};
+      border: none;
+      background: ${COLOR_SCHEME.white};
     }
   }
   img {

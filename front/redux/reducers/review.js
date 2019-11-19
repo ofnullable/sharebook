@@ -20,6 +20,11 @@ const initial = {
     isLoading: false,
     error: '',
   },
+  myReviewList: {
+    data: {},
+    isLoading: false,
+    error: {},
+  },
 };
 
 export default (state = initial, action) => {
@@ -81,6 +86,19 @@ export default (state = initial, action) => {
       case REVIEW.DELETE_REVIEW_FAILURE:
         draft.deleteRequest.isLoading = false;
         draft.deleteRequest.error = action.error;
+        break;
+
+      case REVIEW.LOAD_MY_REVIEW_LIST_REQUEST:
+        draft.myReviewList.isLoading = true;
+        draft.myReviewList.error = {};
+        break;
+      case REVIEW.LOAD_MY_REVIEW_LIST_SUCCESS:
+        draft.myReviewList.isLoading = false;
+        draft.myReviewList.data = action.data;
+        break;
+      case REVIEW.LOAD_MY_REVIEW_LIST_FAILURE:
+        draft.myReviewList.isLoading = false;
+        draft.myReviewList.error = action.error;
         break;
 
       default:

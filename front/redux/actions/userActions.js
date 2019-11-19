@@ -1,6 +1,6 @@
 import { USER } from '@redux/actionTypes';
 
-export const emailDuplicationCheckRequest = ({ email }) => ({
+export const emailDuplicationCheckRequest = email => ({
   type: USER.EMAIL_DUPLICATION_CHECK_REQUEST,
   email,
 });
@@ -13,13 +13,9 @@ export const emailDuplicationCheckFailure = error => ({
   error,
 });
 
-export const signUpRequest = ({ email, name, password }) => ({
+export const signUpRequest = data => ({
   type: USER.SIGN_UP_REQUEST,
-  user: {
-    email,
-    name,
-    password,
-  },
+  user: data,
 });
 export const signUpSuccess = data => ({
   type: USER.SIGN_UP_SUCCESS,
@@ -30,12 +26,9 @@ export const signUpFailure = error => ({
   error,
 });
 
-export const signInRequest = ({ username, password }) => ({
+export const signInRequest = data => ({
   type: USER.SIGN_IN_REQUEST,
-  user: {
-    username: username.trim().toLowerCase(),
-    password,
-  },
+  user: data,
 });
 export const signInSuccess = data => ({
   type: USER.SIGN_IN_SUCCESS,
@@ -66,5 +59,31 @@ export const loadUserSuccess = data => ({
 });
 export const loadUserFailure = error => ({
   type: USER.LOAD_USER_FAILURE,
+  error,
+});
+
+export const passwordVerifyRequest = password => ({
+  type: USER.PASSWORD_VERIFY_REQUEST,
+  password,
+});
+export const passwordVerifySuccess = data => ({
+  type: USER.PASSWORD_VERIFY_SUCCESS,
+  data,
+});
+export const passwordVerifyFailure = error => ({
+  type: USER.PASSWORD_VERIFY_FAILURE,
+  error,
+});
+
+export const updateInfoRequest = data => ({
+  type: USER.UPDATE_INFO_REQUEST,
+  data,
+});
+export const updateInfoSuccess = data => ({
+  type: USER.UPDATE_INFO_SUCCESS,
+  data,
+});
+export const updateInfoFailure = error => ({
+  type: USER.UPDATE_INFO_FAILURE,
   error,
 });

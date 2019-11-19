@@ -12,6 +12,10 @@ import {
   signOutFailure,
   loadUserSuccess,
   loadUserFailure,
+  passwordVerifySuccess,
+  passwordVerifyFailure,
+  updateInfoSuccess,
+  updateInfoFailure,
 } from '@redux/actions/userActions';
 import {
   emailDuplicationCheckApi,
@@ -19,6 +23,8 @@ import {
   signInApi,
   loadUserApi,
   signOutApi,
+  passwordVerifyApi,
+  updateInfoApi,
 } from '@redux/api/user';
 
 export default function*() {
@@ -28,6 +34,8 @@ export default function*() {
     fork(watchSignInRequest),
     fork(watchLoadUserRequest),
     fork(watchSignOutRequest),
+    fork(watchPasswordVerifyRequest),
+    fork(watchUpdateInfoRequest),
   ]);
 }
 
@@ -87,8 +95,30 @@ function* loadUser({ id }) {
     const response = yield call(loadUserApi, id);
     yield put(loadUserSuccess(response));
   } catch (e) {
-    if (id === 0) {
-      yield put(loadUserFailure(e));
-    }
+    yield put(loadUserFailure(e));
+  }
+}
+
+function* watchPasswordVerifyRequest() {
+  yield takeLatest(USER.PASSWORD_VERIFY_REQUEST, passwordVerify);
+}
+function* passwordVerify({ password }) {
+  try {
+    const response = yield call(passwordVerifyApi, password);
+    yield put(passwordVerifySuccess(response));
+  } catch (e) {
+    yield put(passwordVerifyFailure(e));
+  }
+}
+
+function* watchUpdateInfoRequest() {
+  yield takeLatest(USER.UPDATE_INFO_REQUEST, updateInfo);
+}
+function* updateInfo({ data }) {
+  try {
+    const response = yield call(updateInfoApi, data);
+    yield put(updateInfoSuccess(response));
+  } catch (e) {
+    yield put(updateInfoFailure(e));
   }
 }

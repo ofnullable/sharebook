@@ -4,7 +4,7 @@ import Router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import LoadingOverlay from '@components/common/LoadingOverlay';
-import { useInput, isEmail } from '@utils/inputUtils';
+import { useInput, isEmail, hasWhitespace } from '@utils/inputUtils';
 import { signUpRequest, emailDuplicationCheckRequest } from '@redux/actions/userActions';
 
 import { SuccessText, ErrorText } from './index.styled';
@@ -41,7 +41,10 @@ const JoinPage = () => {
     if (!emailChecked || isDuplicated) {
       return;
     }
-
+    if (hasWhitespace(password)) {
+      alert('비밀번호는 공백문자를 포함할 수 없습니다.');
+      return;
+    }
     if (password !== passwordCheck) {
       setPasswordError(true);
       return;
@@ -66,8 +69,8 @@ const JoinPage = () => {
   };
 
   const emailDuplicateCheck = () => {
-    if (isDuplicated || (isEmail(email) && !emailChecked)) {
-      dispatch(emailDuplicationCheckRequest({ email }));
+    if (isEmail(email) && (!emailChecked || isDuplicated)) {
+      dispatch(emailDuplicationCheckRequest(email));
       setEmailChecked(true);
     }
   };

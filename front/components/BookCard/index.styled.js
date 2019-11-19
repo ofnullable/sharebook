@@ -6,16 +6,14 @@ import { COLOR_SCHEME } from '@styles/colors';
 export const Card = styled.div`
   ${device.laptops`
     width: 18%;
-    margin: 1%;
   `};
   ${device.tablets`
     width: 31%;
-    margin: 1%;
   `};
   ${device.mobiles`
     width: 48%;
-    margin: 1%;
   `};
+  margin: 1%;
   color: ${COLOR_SCHEME.black};
   text-align: left;
   display: inline-block;
