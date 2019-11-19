@@ -75,6 +75,32 @@ export default (state = initial, action) => {
         draft.user.isLoading = false;
         break;
 
+      case USER.PASSWORD_VERIFY_REQUEST:
+        draft.user.isLoading = true;
+        draft.user.error = {};
+        break;
+      case USER.PASSWORD_VERIFY_SUCCESS:
+        draft.user.isLoading = false;
+        draft.user.data = action.data;
+        break;
+      case USER.PASSWORD_VERIFY_FAILURE:
+        draft.user.isLoading = false;
+        draft.user.error = action.error;
+        break;
+
+      case USER.UPDATE_INFO_REQUEST:
+        draft.user.isLoading = true;
+        draft.user.error = {};
+        break;
+      case USER.UPDATE_INFO_SUCCESS:
+        draft.user.isLoading = false;
+        draft.user.data = action.data;
+        break;
+      case USER.UPDATE_INFO_FAILURE:
+        draft.user.isLoading = false;
+        draft.user.error = action.error;
+        break;
+
       default:
         break;
     }

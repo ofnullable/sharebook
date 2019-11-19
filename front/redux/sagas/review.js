@@ -6,6 +6,7 @@ import {
   saveReviewApi,
   updateReviewApi,
   deleteReviewApi,
+  loadMyReviewListApi,
 } from '@redux/api/review';
 import {
   loadReviewListSuccess,
@@ -16,6 +17,8 @@ import {
   updateReviewFailure,
   deleteReviewSuccess,
   deleteReviewFailure,
+  loadMyReviewListSuccess,
+  loadMyReviewListFailure,
 } from '@redux/actions/reviewActions';
 
 export default function*() {
@@ -24,6 +27,7 @@ export default function*() {
     fork(watchSaveReviewRequest),
     fork(watchUpdateReviewRequest),
     fork(watchDeleteReviewRequest),
+    fork(watchLoadMyReviewListRequest),
   ]);
 }
 
@@ -72,5 +76,17 @@ function* deleteReview({ id }) {
     yield put(deleteReviewSuccess(response));
   } catch (e) {
     yield put(deleteReviewFailure(e));
+  }
+}
+
+function* watchLoadMyReviewListRequest() {
+  yield takeLatest(REVIEW.LOAD_MY_REVIEW_LIST_REQUEST, loadMyReviewList);
+}
+function* loadMyReviewList() {
+  try {
+    const response = yield call(loadMyReviewListApi);
+    yield put(loadMyReviewListSuccess(response));
+  } catch (e) {
+    yield put(loadMyReviewListFailure(e));
   }
 }

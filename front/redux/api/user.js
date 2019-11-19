@@ -19,3 +19,11 @@ export const signOutApi = () => {
 export const loadUserApi = id => {
   return axios.get(`/account/${id}`);
 };
+
+export const passwordVerifyApi = password => {
+  return axios.post('/account/verify', password, { headers: { 'Content-Type': 'text/plain' } });
+};
+
+export const updateInfoApi = data => {
+  return axios.put(`/account/${data.id}`, data);
+};

@@ -51,3 +51,15 @@ export const deleteReviewFailure = error => ({
   type: REVIEW.DELETE_REVIEW_FAILURE,
   error,
 });
+
+export const loadMyReviewListRequest = () => ({
+  type: REVIEW.LOAD_MY_REVIEW_LIST_REQUEST,
+});
+export const loadMyReviewListSuccess = data => ({
+  type: REVIEW.LOAD_MY_REVIEW_LIST_SUCCESS,
+  data,
+});
+export const loadMyReviewListFailure = error => ({
+  type: REVIEW.LOAD_MY_REVIEW_LIST_FAILURE,
+  error,
+});
