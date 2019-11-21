@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import ProfileModifyForm from './ProfileModifyForm';
+import EditProfileForm from './EditProfileForm';
 import ReviewManagement from './ReviewManagement';
 import LeftMenu from '@components/Management/LeftMenu';
 import SubMenu from '@components/Management/SubMenu';
@@ -48,7 +48,7 @@ const UserPage = ({ menu }) => {
           </PasswordVerifyForm>
         );
       }
-      return <ProfileModifyForm data={data} />;
+      return <EditProfileForm data={data} />;
     }
 
     return <ReviewManagement />;
