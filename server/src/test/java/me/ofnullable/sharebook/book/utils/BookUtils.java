@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-import static me.ofnullable.sharebook.common.utils.PageRequestUtils.buildPage;
+import static me.ofnullable.sharebook.utils.PageRequestUtils.buildPage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BookUtils {
@@ -43,7 +43,7 @@ public class BookUtils {
                 .build();
     }
 
-    public static List<Book> buildBookList() {
+    private static List<Book> buildBookList() {
         return List.of(book, book, book);
     }
 

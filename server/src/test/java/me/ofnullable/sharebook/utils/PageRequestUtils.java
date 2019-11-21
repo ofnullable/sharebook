@@ -1,4 +1,4 @@
-package me.ofnullable.sharebook.common.utils;
+package me.ofnullable.sharebook.utils;
 
 import me.ofnullable.sharebook.common.dto.PageRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +28,7 @@ public class PageRequestUtils {
 
     @Test
     @DisplayName("PageRequest 기본값 테스트")
-    public void page_request_default_value() {
+    void page_request_default_value() {
         var request = buildPageRequest(10);
         request.of(); // 기본값 세팅을 위한 메서드 호출
 
