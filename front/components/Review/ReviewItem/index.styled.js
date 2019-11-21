@@ -12,27 +12,26 @@ export const ReviewItemWrapper = styled.div`
 export const ReviewInfo = styled.div`
   ${device.laptops`
     width: 25%;
-    padding: 10px 15px;
+    padding: 10px 0;
   `};
   ${device.tablets`
     width: 25%;
-    padding: 10px  15px;
+    padding: 10px 0;
   `};
   ${device.mobiles`
     width: 100%;
     padding: 5px 0;
   `};
   display: inline-block;
-  vertical-align: middle;
 
   & p.reviewer {
-    margin: 0.5rem;
+    margin: 0.5em;
     ${device.mobiles`
       margin: 0;
     `};
   }
   & span {
-    margin: 0.5rem;
+    margin: 0.5em;
     ${device.mobiles`
       margin: 0;
     `};
@@ -44,19 +43,21 @@ export const ReviewInfo = styled.div`
 export const ReviewContents = styled.div`
   ${device.laptops`
     width: 75%;
-    padding: 15px 0;
+    padding: 10px 0;
   `};
   ${device.tablets`
     width: 75%;
-    padding: 15px 0;
+    padding: 10px 0;
   `};
   ${device.mobiles`
     width: 100%;
-    padding: 5px 0;
   `};
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: top;
 
+  & p {
+    margin: 0 0 0.5em;
+  }
   & button {
     &:first-child {
       margin-right: 0.5em;
@@ -77,4 +78,10 @@ export const DangerButton = styled(Button)`
 
 export const WarningButton = styled(Button)`
   color: ${COLOR_SCHEME.secondary};
+`;
+
+export const EmptyReview = styled.h3`
+  padding: 2em 15px 15px;
+  margin: 0;
+  text-align: center;
 `;

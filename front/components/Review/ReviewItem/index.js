@@ -12,7 +12,7 @@ import {
   ReviewContents,
   DangerButton,
   WarningButton,
-} from './ReviewItem.styled';
+} from './index.styled';
 import { InputGroup, Button } from '@styles/common';
 
 const ReviewItem = ({ review }) => {
@@ -88,8 +88,8 @@ const ReviewItem = ({ review }) => {
           score={editable ? score : review.score}
           clickHandler={editable && handleStarClick}
         />
-        <p className='reviewer'>{review.createdBy}</p>
-        <span>{moment(review.createdAt).format('YYYY.MM.DD hh:mm')}</span>
+        <p className='reviewer'>{review.modifiedBy}</p>
+        <span>{moment(review.modifiedAt).format('YYYY.MM.DD hh:mm')}</span>
       </ReviewInfo>
       <ReviewContents>
         {editable ? (

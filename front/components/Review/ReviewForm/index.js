@@ -1,17 +1,18 @@
 import React, { useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import StarRating from './StarRating';
+import StarRating from '../ReviewItem/StarRating';
 import { saveReviewRequest } from '@redux/actions/reviewActions';
 import { isBlank } from '@utils/inputUtils';
 
-import { ReviewFormWrapper } from './ReviewForm.styled';
+import { ReviewFormWrapper } from './index.styled';
 import { InputGroup, Button } from '@styles/common';
 
 const ReviewForm = () => {
   const [contents, setContents] = useState('');
   const [score, setScore] = useState(0);
 
+  const { isSignedIn } = useSelector(state => state.user.user);
   const book = useSelector(state => state.book.detail.data);
   const { error } = useSelector(state => state.review.saveRequest);
   const dispatch = useDispatch();
@@ -39,11 +40,7 @@ const ReviewForm = () => {
 
   return (
     <ReviewFormWrapper>
-      {error ? (
-        <p style={{ color: 'red' }}>리뷰 등록에 실패했습니다.</p>
-      ) : (
-        <p>리뷰를 작성해주세요!</p>
-      )}
+      {error ? <p style={{ color: 'red' }}>{error.message}</p> : <p>리뷰를 작성해주세요!</p>}
       <form onSubmit={handleSubmit}>
         <StarRating readOnly={false} score={score} clickHandler={handleStarClick} />
         <InputGroup>
