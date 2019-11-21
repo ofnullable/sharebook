@@ -82,9 +82,9 @@ function* deleteReview({ id }) {
 function* watchLoadMyReviewListRequest() {
   yield takeLatest(REVIEW.LOAD_MY_REVIEW_LIST_REQUEST, loadMyReviewList);
 }
-function* loadMyReviewList() {
+function* loadMyReviewList({ page, size }) {
   try {
-    const response = yield call(loadMyReviewListApi);
+    const response = yield call(loadMyReviewListApi, { page, size });
     yield put(loadMyReviewListSuccess(response));
   } catch (e) {
     yield put(loadMyReviewListFailure(e));

@@ -9,7 +9,7 @@ import { signInRequest } from '@redux/actions/userActions';
 import { CenterDiv, InputGroup, Button, LoadingIcon, CenterForm, ButtonLink } from '@styles/common';
 
 const SignInPage = () => {
-  const { isSignedIn, isLoading, signInError } = useSelector(state => state.user.user);
+  const { isSignedIn, isLoading, signInError, error } = useSelector(state => state.user.user);
   const { data } = useSelector(state => state.user.join);
   const [username, usernameHandler, setUsername] = useInput(data && data.email);
   const [password, passwordHandler] = useInput();
@@ -60,9 +60,7 @@ const SignInPage = () => {
             onChange={passwordHandler}
           />
         </InputGroup>
-        {signInError && (
-          <p style={{ color: 'red', textAlign: 'center' }}>이메일 또는 비밀번호를 확인해주세요.</p>
-        )}
+        {signInError && <p style={{ color: 'red', textAlign: 'center' }}>{error.message}</p>}
         <CenterDiv>
           {isLoading ? (
             <Button _color='primary' type='submit' disabled>

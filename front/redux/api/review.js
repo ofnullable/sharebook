@@ -16,6 +16,6 @@ export const deleteReviewApi = id => {
   return axios.delete(`/review/${id}`);
 };
 
-export const loadMyReviewListApi = () => {
-  return axios.get(`/account/0/reviews`);
+export const loadMyReviewListApi = ({ page, size }) => {
+  return axios.get(`/account/0/reviews?page=${page}&size=${size}`);
 };

@@ -33,13 +33,13 @@ const Nav = () => {
     return (
       <HeaderMenu _float='right'>
         <HeaderMenuGroup>
-          <Link href={{ pathname: '/signin' }}>
+          <Link href='/signin'>
             <a>
               <span>로그인</span>
             </a>
           </Link>
           <span style={{ padding: '0 10px' }}>|</span>
-          <Link href={{ pathname: '/join' }}>
+          <Link href='/join'>
             <a>
               <span>회원가입</span>
             </a>
