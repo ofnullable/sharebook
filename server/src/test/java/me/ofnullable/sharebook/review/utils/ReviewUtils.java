@@ -1,10 +1,15 @@
 package me.ofnullable.sharebook.review.utils;
 
 import me.ofnullable.sharebook.review.domain.Review;
+import me.ofnullable.sharebook.review.dto.MyReviewResponse;
 import me.ofnullable.sharebook.review.dto.SaveReviewRequest;
 import me.ofnullable.sharebook.review.dto.UpdateReviewRequest;
+import org.springframework.data.domain.Page;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static me.ofnullable.sharebook.utils.PageRequestUtils.buildPage;
 
 public class ReviewUtils {
 
@@ -42,6 +47,59 @@ public class ReviewUtils {
                 .contents(null)
                 .score(1)
                 .build();
+    }
+
+    private static MyReviewResponse buildMyReviewResponse() {
+        return new MyReviewResponse() {
+            @Override
+            public Long getId() {
+                return 1L;
+            }
+
+            @Override
+            public Long getBookId() {
+                return 65L;
+            }
+
+            @Override
+            public String getBookTitle() {
+                return "book title";
+            }
+
+            @Override
+            public String getBookAuthor() {
+                return "book author";
+            }
+
+            @Override
+            public Long getReviewerId() {
+                return 2L;
+            }
+
+            @Override
+            public String getContents() {
+                return "review contents";
+            }
+
+            @Override
+            public Integer getScore() {
+                return 5;
+            }
+
+            @Override
+            public LocalDateTime getModifiedAt() {
+                return LocalDateTime.now();
+            }
+
+            @Override
+            public String getModifiedBy() {
+                return "test user2";
+            }
+        };
+    }
+
+    public static Page<MyReviewResponse> buildMyReviewResponsePage() {
+        return buildPage(List.of(buildMyReviewResponse(), buildMyReviewResponse(), buildMyReviewResponse()), 10);
     }
 
 }

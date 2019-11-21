@@ -2,6 +2,7 @@ package me.ofnullable.sharebook.review.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.ofnullable.sharebook.account.domain.Account;
+import me.ofnullable.sharebook.common.dto.PageRequest;
 import me.ofnullable.sharebook.config.WithAuthenticationPrincipal;
 import me.ofnullable.sharebook.review.dto.SaveReviewRequest;
 import me.ofnullable.sharebook.review.dto.UpdateReviewRequest;
@@ -15,11 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Collections;
 
 import static me.ofnullable.sharebook.review.utils.ReviewUtils.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -66,30 +66,30 @@ class ReviewControllerTest extends WithAuthenticationPrincipal {
     @Test
     @DisplayName("현재 로그인된 계정의 Id로 리뷰목록 조회")
     void find_all_by_my_reviews() throws Exception {
-        given(reviewFindService.findAllByReviewerId(any(Long.class)))
-                .willReturn(buildReviewList());
+        given(reviewFindService.findAllByReviewerId(any(Long.class), any(PageRequest.class)))
+                .willReturn(buildMyReviewResponsePage());
 
-        mvc.perform(get("/account/0/reviews"))
+        mvc.perform(get("/account/0/reviews?page=1&size=10"))
                 .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("작성자 Id로 리뷰목록 조회")
     void find_all_by_reviewer_id() throws Exception {
-        given(reviewFindService.findAllByReviewerId(any(Long.class)))
-                .willReturn(buildReviewList());
+        given(reviewFindService.findAllByReviewerId(any(Long.class), any(PageRequest.class)))
+                .willReturn(buildMyReviewResponsePage());
 
-        mvc.perform(get("/account/1/reviews"))
+        mvc.perform(get("/account/1/reviews?page=1&size=10"))
                 .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("리뷰를 작성한적 없는 유저의 리뷰목록 조회")
     void find_all_by_invalid_reviewer_id() throws Exception {
-        given(reviewFindService.findAllByReviewerId(any(Long.class)))
-                .willReturn(Collections.emptyList());
+        given(reviewFindService.findAllByReviewerId(any(Long.class), any(PageRequest.class)))
+                .willReturn(Page.empty());
 
-        mvc.perform(get("/account/1/reviews"))
+        mvc.perform(get("/account/1/reviews?page=1&size=10"))
                 .andExpect(status().isOk());
     }
 

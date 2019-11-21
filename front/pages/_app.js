@@ -21,7 +21,7 @@ class Sharebook extends App {
     const loadUserNeeded = ctx.isServer && !['/signin', '/join'].includes(ctx.req.url);
 
     if (ctx.isServer) {
-      axios.defaults.headers.cookie = ctx.req.headers.cookie;
+      axios.defaults.headers.cookie = ctx.req.headers.cookie || '';
     }
 
     const state = ctx.store.getState();

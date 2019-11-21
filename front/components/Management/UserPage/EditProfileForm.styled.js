@@ -4,7 +4,7 @@ import device from '@styles/device';
 import { transition } from '@styles/mixins';
 import { COLOR_SCHEME } from '@styles/colors';
 
-export const ProfileModifyFormWrapper = styled.form`
+export const EditProfileFormWrapper = styled.form`
   ${device.laptops`
     width: 70%;
     margin: 1em 15%;
@@ -31,7 +31,8 @@ export const ProfileModifyFormWrapper = styled.form`
   }
 `;
 
-export const PasswordSelector = styled.span`
+export const ChangePasswordButton = styled.span`
+  cursor: pointer;
   display: block;
   padding-bottom: 15px;
   color: ${COLOR_SCHEME.secondary};

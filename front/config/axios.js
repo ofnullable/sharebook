@@ -16,7 +16,7 @@ instance.interceptors.response.use(
     console.error(err);
     const error = err.response
       ? err.response.data
-      : { status: 503, path: err.config.url, message: 'Service Unavailable' };
+      : { status: 503, path: err.config ? err.config.url : '', message: 'Service Unavailable' };
     return Promise.reject(error);
   }
 );

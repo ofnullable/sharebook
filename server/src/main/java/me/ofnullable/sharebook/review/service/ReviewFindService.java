@@ -1,9 +1,12 @@
 package me.ofnullable.sharebook.review.service;
 
 import lombok.RequiredArgsConstructor;
+import me.ofnullable.sharebook.common.dto.PageRequest;
 import me.ofnullable.sharebook.common.exception.ResourceNotFoundException;
 import me.ofnullable.sharebook.review.domain.Review;
+import me.ofnullable.sharebook.review.dto.MyReviewResponse;
 import me.ofnullable.sharebook.review.repository.ReviewRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +26,8 @@ public class ReviewFindService {
                 .orElseThrow(() -> new ResourceNotFoundException(id, Review.class));
     }
 
-    public List<Review> findAllByReviewerId(Long reviewerId) {
-        return reviewRepository.findAllByReviewerId(reviewerId);
+    public Page<MyReviewResponse> findAllByReviewerId(Long reviewerId, PageRequest pageRequest) {
+        return reviewRepository.findAllWithBookByReviewerId(reviewerId, pageRequest.of());
     }
+
 }

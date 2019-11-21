@@ -4,7 +4,7 @@ import { REVIEW } from '@redux/actionTypes';
 
 const initial = {
   reviewList: {
-    data: {},
+    data: [],
     isLoading: false,
     error: {},
   },
@@ -21,7 +21,10 @@ const initial = {
     error: '',
   },
   myReviewList: {
-    data: {},
+    data: [],
+    page: 1,
+    totalPages: 1,
+    isLast: false,
     isLoading: false,
     error: {},
   },
@@ -89,12 +92,16 @@ export default (state = initial, action) => {
         break;
 
       case REVIEW.LOAD_MY_REVIEW_LIST_REQUEST:
+        draft.myReviewList.data = !action.page || action.page === 1 ? [] : draft.list.data;
+        draft.myReviewList.page = action.page ? action.page : 1;
         draft.myReviewList.isLoading = true;
         draft.myReviewList.error = {};
         break;
       case REVIEW.LOAD_MY_REVIEW_LIST_SUCCESS:
+        draft.myReviewList.data = draft.myReviewList.data.concat(action.data.content);
+        draft.myReviewList.isLast = action.data.last;
+        draft.myReviewList.totalPages = action.data.totalPages;
         draft.myReviewList.isLoading = false;
-        draft.myReviewList.data = action.data;
         break;
       case REVIEW.LOAD_MY_REVIEW_LIST_FAILURE:
         draft.myReviewList.isLoading = false;

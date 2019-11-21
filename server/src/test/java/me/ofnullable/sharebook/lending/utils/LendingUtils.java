@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-import static me.ofnullable.sharebook.common.utils.PageRequestUtils.buildPage;
+import static me.ofnullable.sharebook.utils.PageRequestUtils.buildPage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LendingUtils {
@@ -47,7 +47,7 @@ public class LendingUtils {
         return lending;
     }
 
-    public static List<Lending> buildLendingList() {
+    private static List<Lending> buildLendingList() {
         return List.of(buildLending(1L), buildLending(2L), buildLending(3L));
     }
 

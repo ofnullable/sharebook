@@ -52,8 +52,10 @@ export const deleteReviewFailure = error => ({
   error,
 });
 
-export const loadMyReviewListRequest = () => ({
+export const loadMyReviewListRequest = (page = 1, size = 20) => ({
   type: REVIEW.LOAD_MY_REVIEW_LIST_REQUEST,
+  page,
+  size,
 });
 export const loadMyReviewListSuccess = data => ({
   type: REVIEW.LOAD_MY_REVIEW_LIST_SUCCESS,

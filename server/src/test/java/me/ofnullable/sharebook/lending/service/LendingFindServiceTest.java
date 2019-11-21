@@ -16,8 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
-import static me.ofnullable.sharebook.common.utils.PageRequestUtils.buildPageRequest;
 import static me.ofnullable.sharebook.lending.utils.LendingUtils.*;
+import static me.ofnullable.sharebook.utils.PageRequestUtils.buildPageRequest;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.assertEquals;

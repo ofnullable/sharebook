@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static me.ofnullable.sharebook.book.utils.BookUtils.*;
 import static me.ofnullable.sharebook.book.utils.CategoryUtils.buildCategory;
-import static me.ofnullable.sharebook.common.utils.PageRequestUtils.buildPageRequest;
+import static me.ofnullable.sharebook.utils.PageRequestUtils.buildPageRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;

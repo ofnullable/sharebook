@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useInput, hasWhitespace } from '@utils/inputUtils';
 import { updateInfoRequest } from '@redux/actions/userActions';
 
-import { ProfileModifyFormWrapper, PasswordSelector } from './ProfileModifyForm.styled';
+import { EditProfileFormWrapper, ChangePasswordButton } from './EditProfileForm.styled';
 import { Button, InputGroup } from '@styles/common';
 
 const ProfileModifyForm = ({ data }) => {
@@ -13,7 +13,7 @@ const ProfileModifyForm = ({ data }) => {
   const [newPasswordCheck, setNewPasswordCheck] = useState('');
   const dispatch = useDispatch();
 
-  const handlePasswordSelectorClick = e => {
+  const handleChangePassword = e => {
     e.target.classList.toggle('active');
   };
 
@@ -44,7 +44,7 @@ const ProfileModifyForm = ({ data }) => {
   };
 
   return (
-    <ProfileModifyFormWrapper onSubmit={handleProfileModify}>
+    <EditProfileFormWrapper onSubmit={handleProfileModify}>
       <InputGroup>
         <label htmlFor='email'>이메일</label>
         <input id='email' type='text' value={data.email} readOnly />
@@ -54,7 +54,7 @@ const ProfileModifyForm = ({ data }) => {
         <input id='name' type='text' value={name} onChange={nameHandler} />
       </InputGroup>
 
-      <PasswordSelector onClick={handlePasswordSelectorClick}>비밀번호 변경하기</PasswordSelector>
+      <ChangePasswordButton onClick={handleChangePassword}>비밀번호 변경하기</ChangePasswordButton>
 
       <div>
         <InputGroup>
@@ -78,7 +78,7 @@ const ProfileModifyForm = ({ data }) => {
       </div>
 
       <Button _color='primary'>변경하기</Button>
-    </ProfileModifyFormWrapper>
+    </EditProfileFormWrapper>
   );
 };
 

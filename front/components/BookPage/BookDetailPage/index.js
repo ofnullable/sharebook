@@ -2,8 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 
-import LendingButton from './LendingButton';
-import Review from './Review';
+import DetailButton from './DetailButton';
+import ReviewList from './ReviewList';
 
 import { BookDetailHeader, BookImageWrapper, BookDetailWrapper } from './index.styled';
 import { CenterDiv } from '@styles/common';
@@ -34,9 +34,9 @@ const BookPage = () => {
             <h3>책 소개</h3>
             <p>{data.description}</p>
           </div>
-          <LendingButton detail={data} />
+          <DetailButton detail={data} />
         </BookDetailWrapper>
-        <Review />
+        <ReviewList />
       </BookDetailHeader>
     </>
   );

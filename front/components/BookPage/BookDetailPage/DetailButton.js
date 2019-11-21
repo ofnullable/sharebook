@@ -13,7 +13,7 @@ import {
 
 import { Button } from '@styles/common';
 
-const LendingButton = ({ detail }) => {
+const DetailButton = ({ detail }) => {
   const lending = useSelector(state => state.lending.latestLending.data);
   const user = useSelector(state => state.user.user.data);
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const LendingButton = ({ detail }) => {
   // 로그인하지 않은 경우
   if (!user.id) {
     return (
-      <Link href={{ pathname: '/signin' }}>
+      <Link href='/signin'>
         <Button>로그인하기</Button>
       </Link>
     );
@@ -111,4 +111,4 @@ const LendingButton = ({ detail }) => {
   );
 };
 
-export default LendingButton;
+export default DetailButton;
