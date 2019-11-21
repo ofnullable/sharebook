@@ -2,6 +2,8 @@ package me.ofnullable.sharebook.review.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.ofnullable.sharebook.account.domain.Account;
+import me.ofnullable.sharebook.common.dto.PageRequest;
+import me.ofnullable.sharebook.review.dto.MyReviewResponse;
 import me.ofnullable.sharebook.review.dto.ReviewResponse;
 import me.ofnullable.sharebook.review.dto.SaveReviewRequest;
 import me.ofnullable.sharebook.review.dto.UpdateReviewRequest;
@@ -9,6 +11,7 @@ import me.ofnullable.sharebook.review.service.ReviewDeleteService;
 import me.ofnullable.sharebook.review.service.ReviewFindService;
 import me.ofnullable.sharebook.review.service.ReviewSaveService;
 import me.ofnullable.sharebook.review.service.ReviewUpdateService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -53,19 +56,14 @@ public class ReviewController {
     }
 
     @GetMapping("/account/{accountId}/reviews")
-    public List<ReviewResponse> findReviewsByAccountId(
+    public Page<MyReviewResponse> findReviewsByAccountId(
             @AuthenticationPrincipal(expression = "account") Account account,
+            @Valid PageRequest pageRequest,
             @PathVariable Long accountId) {
         if (accountId == 0) {
-            return reviewFindService.findAllByReviewerId(account.getId())
-                    .stream()
-                    .map(ReviewResponse::new)
-                    .collect(Collectors.toList());
+            return reviewFindService.findAllByReviewerId(account.getId(), pageRequest);
         }
-        return reviewFindService.findAllByReviewerId(accountId)
-                .stream()
-                .map(ReviewResponse::new)
-                .collect(Collectors.toList());
+        return reviewFindService.findAllByReviewerId(accountId, pageRequest);
     }
 
 }
