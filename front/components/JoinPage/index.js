@@ -35,24 +35,6 @@ const JoinPage = () => {
     }
   }, [isSignedIn]);
 
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    if (!emailChecked || isDuplicated) {
-      return;
-    }
-    if (hasWhitespace(password)) {
-      alert('비밀번호는 공백문자를 포함할 수 없습니다.');
-      return;
-    }
-    if (password !== passwordCheck) {
-      setPasswordError(true);
-      return;
-    }
-
-    dispatch(signUpRequest({ email: { address: email.trim().toLowerCase() }, name, password }));
-  };
-
   const handleEmailChange = e => {
     if (emailChecked) {
       setEmailChecked(false);
@@ -88,6 +70,24 @@ const JoinPage = () => {
     if (error.errors && error.errors.password) {
       return <ErrorText>{error.errors.password}</ErrorText>;
     }
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    if (!emailChecked || isDuplicated) {
+      return;
+    }
+    if (hasWhitespace(password)) {
+      alert('비밀번호는 공백문자를 포함할 수 없습니다.');
+      return;
+    }
+    if (password !== passwordCheck) {
+      setPasswordError(true);
+      return;
+    }
+
+    dispatch(signUpRequest({ email: { address: email.trim().toLowerCase() }, name, password }));
   };
 
   return (
@@ -144,7 +144,7 @@ const JoinPage = () => {
             onChange={handlePasswordChange}
           />
         </InputGroup>
-        {error.errors && getPasswordError()}
+        {error.status && getPasswordError()}
         <InputGroup>
           <label htmlFor='passwordCheck'>
             비밀번호 확인<span className='import'>*</span>
