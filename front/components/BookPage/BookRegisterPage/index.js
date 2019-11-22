@@ -71,6 +71,13 @@ const BookRegisterPage = () => {
       fileRef.current.click();
     }
   };
+  const preventDefaultEvent = e => {
+    e.preventDefault();
+  };
+  const handleImageDrop = e => {
+    e.preventDefault();
+    handleImageUpload(e);
+  };
 
   const makeImagePreview = file => {
     const fileReader = new FileReader();
@@ -89,7 +96,13 @@ const BookRegisterPage = () => {
   };
 
   const handleImageUpload = e => {
-    const file = e.target.files[0];
+    const file = e.target.files ? e.target.files[0] : e.dataTransfer.files[0];
+
+    if (!file.type.startsWith('image/')) {
+      alert('이미지 파일만 업로드 할 수 있습니다.');
+      return;
+    }
+
     makeImagePreview(file);
     setImageUploaded(true);
 
@@ -104,7 +117,16 @@ const BookRegisterPage = () => {
         {imagePreviewUrl ? (
           <img src={imagePreviewUrl} />
         ) : (
-          <BookImagePreview onClick={handleImageSelect}>
+          <BookImagePreview
+            onClick={handleImageSelect}
+            onDrop={handleImageDrop}
+            onDrag={preventDefaultEvent}
+            onDragOver={preventDefaultEvent}
+            onDragEnter={preventDefaultEvent}
+            onDragLeave={preventDefaultEvent}
+            onDragStart={preventDefaultEvent}
+            onDragEnd={preventDefaultEvent}
+          >
             <span>Upload Book Image!</span>
           </BookImagePreview>
         )}

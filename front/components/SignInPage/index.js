@@ -10,8 +10,7 @@ import { CenterDiv, InputGroup, Button, LoadingIcon, CenterForm, ButtonLink } fr
 
 const SignInPage = () => {
   const { isSignedIn, isLoading, signInError, error } = useSelector(state => state.user.user);
-  const { data } = useSelector(state => state.user.join);
-  const [username, usernameHandler, setUsername] = useInput(data && data.email);
+  const [username, usernameHandler, setUsername] = useInput();
   const [password, passwordHandler] = useInput();
   const dispatch = useDispatch();
   const router = useRouter();
@@ -21,7 +20,7 @@ const SignInPage = () => {
       const referrer = document.referrer;
       const origin = location.origin;
 
-      if (referrer.startsWith(origin)) {
+      if (referrer.startsWith(origin) && !referrer.endsWith('/join')) {
         router.back();
       } else {
         router.push('/');

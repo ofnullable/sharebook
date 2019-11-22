@@ -14,6 +14,3 @@ BITCAMP에서 진행했던 프로젝트의 REMAKE ver.
 - commons-fileupload -> spring-integration-ftp
 - login with interceptor -> spring security
 
-## WIP:
-
-- Review기능 구현중
