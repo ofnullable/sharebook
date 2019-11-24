@@ -12,8 +12,10 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static me.ofnullable.sharebook.account.utils.AccountUtils.buildNormalAccount;
-import static me.ofnullable.sharebook.book.utils.BookUtils.*;
+import static me.ofnullable.sharebook.book.utils.BookUtils.buildBookWithId;
+import static me.ofnullable.sharebook.book.utils.BookUtils.buildSaveBookRequest;
 import static me.ofnullable.sharebook.book.utils.CategoryUtils.buildCategory;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -35,8 +37,8 @@ class BookSaveServiceTest {
 
     @Test
     @DisplayName("도서 등록")
-    void save_book() {
-        var book = buildBook();
+    void save_book() throws NoSuchFieldException, IllegalAccessException {
+        var book = buildBookWithId();
 
         given(accountFindService.findById(any(Long.class)))
                 .willReturn(buildNormalAccount());
@@ -47,7 +49,7 @@ class BookSaveServiceTest {
 
         var result = bookSaveService.save(buildSaveBookRequest(), buildNormalAccount());
 
-        equalBook(result, book);
+        assertEquals(result, book.getId());
     }
 
     @Test

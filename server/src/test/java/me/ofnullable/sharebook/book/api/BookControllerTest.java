@@ -75,7 +75,7 @@ class BookControllerTest extends WithAuthenticationPrincipal {
     @DisplayName("도서 등록")
     void save_book() throws Exception {
         given(bookSaveService.save(any(SaveBookRequest.class), any(Account.class)))
-                .willReturn(book);
+                .willReturn(1L);
 
         mvc.perform(post("/book")
                 .contentType(MediaType.APPLICATION_JSON)

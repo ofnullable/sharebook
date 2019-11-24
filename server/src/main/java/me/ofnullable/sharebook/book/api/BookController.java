@@ -29,10 +29,10 @@ public class BookController {
 
     @PostMapping("/book")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookResponse saveBook(
+    public Long saveBook(
             @AuthenticationPrincipal(expression = "account") Account account,
             @RequestBody @Valid SaveBookRequest dto) {
-        return new BookResponse(bookSaveService.save(dto, account));
+        return bookSaveService.save(dto, account);
     }
 
     @GetMapping("/books")

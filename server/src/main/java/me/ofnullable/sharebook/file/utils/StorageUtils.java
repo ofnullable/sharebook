@@ -2,6 +2,7 @@ package me.ofnullable.sharebook.file.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,6 +38,8 @@ public class StorageUtils {
      * @return String of {@link #makeFilenamePrefix()} + "-" + original filename
      */
     public static String makeUniqueFilename(String originalFilename) {
+        if (!StringUtils.hasText(originalFilename))
+            throw new IllegalArgumentException("파일명은 비어있거나 공백일 수 없습니다. " + originalFilename);
         return String.format("/%s-%s", makeFilenamePrefix(), originalFilename.replace(" ", "-"));
     }
 

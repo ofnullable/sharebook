@@ -12,7 +12,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static me.ofnullable.sharebook.file.utils.StorageUtils.*;
+import static me.ofnullable.sharebook.file.utils.StorageUtils.makeDirectoryName;
+import static me.ofnullable.sharebook.file.utils.StorageUtils.makeUniqueFilename;
 
 @RequiredArgsConstructor
 public class FtpStorageService implements StorageService {
