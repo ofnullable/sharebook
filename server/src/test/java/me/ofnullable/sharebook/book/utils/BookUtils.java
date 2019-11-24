@@ -32,6 +32,14 @@ public class BookUtils {
         return book;
     }
 
+    public static Book buildBookWithId() throws NoSuchFieldException, IllegalAccessException {
+        var book = buildBook();
+        var field = book.getClass().getDeclaredField("id");
+        field.setAccessible(true);
+        field.set(book, 1L);
+        return book;
+    }
+
     public static SaveBookRequest buildSaveBookRequest() {
         return SaveBookRequest.builder()
                 .title("title")
