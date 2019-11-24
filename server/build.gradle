@@ -3,7 +3,6 @@ plugins {
     id 'org.springframework.boot' version '2.2.0.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'jacoco'
-    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
 group = 'io.joonak'
@@ -25,35 +24,6 @@ repositories {
     mavenCentral()
 }
 
-def querydslDestDir = "build/generated/sources/apt/main"
-
-querydsl {
-    jpa = true
-    library = 'com.querydsl:querydsl-apt'
-    querydslSourcesDir = querydslDestDir
-}
-
-configurations {
-    querydsl.extendsFrom compileClasspath
-}
-
-compileQuerydsl {
-    options.annotationProcessorPath = configurations.querydsl
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main/java', querydslDestDir]
-        }
-    }
-    querydsl {
-        resources {
-            srcDirs = ['build/generated/sources/apt/resources']
-        }
-    }
-}
-
 test {
     useJUnitPlatform()
 }
@@ -64,11 +34,6 @@ jacocoTestReport {
         html.enabled = true
         html.destination file("${buildDir}/jacoco/html")
     }
-    afterEvaluate {
-        classDirectories = files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: ['**/Q*.class'])
-        })
-    }
 }
 
 dependencies {
@@ -78,9 +43,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.integration:spring-integration-ftp'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-
-    implementation 'com.querydsl:querydsl-jpa'
-    compileOnly 'com.querydsl:querydsl-apt'
 
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'

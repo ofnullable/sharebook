@@ -1,6 +1,5 @@
 package me.ofnullable.sharebook.lending.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +19,6 @@ public class Lending {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private Book book;
 
