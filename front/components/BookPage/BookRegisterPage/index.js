@@ -120,12 +120,7 @@ const BookRegisterPage = () => {
           <BookImagePreview
             onClick={handleImageSelect}
             onDrop={handleImageDrop}
-            onDrag={preventDefaultEvent}
             onDragOver={preventDefaultEvent}
-            onDragEnter={preventDefaultEvent}
-            onDragLeave={preventDefaultEvent}
-            onDragStart={preventDefaultEvent}
-            onDragEnd={preventDefaultEvent}
           >
             <span>Upload Book Image!</span>
           </BookImagePreview>

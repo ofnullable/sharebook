@@ -2,8 +2,6 @@ package me.ofnullable.sharebook.config;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,29 +10,25 @@ import org.springframework.integration.file.remote.session.CachingSessionFactory
 import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
 
-
 @Configuration
-@PropertySource("classpath:/properties/ftp.properties")
+@PropertySource("classpath:properties/ftp.properties")
 public class FtpConfig {
 
-    private Logger log = LoggerFactory.getLogger(this.getClass());
-
     @Value("${ftp.host}")
-    private String FTP_HOST;
+    private String ftpHost;
     @Value("${ftp.username}")
-    private String FTP_USERNAME;
+    private String ftpUsername;
     @Value("${ftp.password}")
-    private String FTP_PASSWORD;
+    private String ftpPassword;
 
     @Bean
     public SessionFactory<FTPFile> sessionFactory() {
-        log.info("Setup for FTP session factory..");
         var sf = new DefaultFtpSessionFactory();
-        sf.setHost(FTP_HOST);
+        sf.setHost(ftpHost);
         sf.setPort(FTPClient.DEFAULT_PORT);
         sf.setControlEncoding("UTF-8");
-        sf.setUsername(FTP_USERNAME);
-        sf.setPassword(FTP_PASSWORD);
+        sf.setUsername(ftpUsername);
+        sf.setPassword(ftpPassword);
         sf.setDefaultTimeout(5000);
         sf.setConnectTimeout(5000);
         sf.setClientMode(FTPClient.PASSIVE_LOCAL_DATA_CONNECTION_MODE);
