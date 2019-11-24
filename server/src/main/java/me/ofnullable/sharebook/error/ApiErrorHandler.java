@@ -32,14 +32,15 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ApiError handleIllegalArgumentException(RuntimeException e, WebRequest request) {
-        return bindError(e.getMessage(), request);
+        log.debug("{}: {}", e.getClass().getSimpleName(), e.getMessage());
+        return bindError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), request);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ApiError handleResourceNotFoundException(ResourceNotFoundException e, WebRequest request) {
         log.debug("Fail to find resource, key: {}", e.getKey());
-        return bindError(e.getMessage(), request);
+        return bindError(HttpStatus.NOT_FOUND.value(), e.getMessage(), request);
     }
 
     @ExceptionHandler(EmailDuplicationException.class)
@@ -114,29 +115,29 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
                 .collect(toMap(FieldError::getField, FieldError::getDefaultMessage));
     }
 
-    private ApiError bindError(String message, WebRequest request) {
+    private ApiError bindError(int status, String message, WebRequest request) {
         var req = ((ServletWebRequest) request).getRequest();
         return ApiError.builder()
-                .status(ErrorCode.RESOURCE_NOT_FOUND.getStatus())
+                .status(status)
                 .message(message)
                 .path(req.getRequestURI())
                 .build();
     }
 
-    private ApiError bindError(ErrorCode errorCode, WebRequest request) {
+    private ApiError bindError(ErrorCode code, WebRequest request) {
         var req = ((ServletWebRequest) request).getRequest();
         return ApiError.builder()
-                .status(errorCode.getStatus())
-                .message(errorCode.getMessage())
+                .status(code.getStatus())
+                .message(code.getMessage())
                 .path(req.getRequestURI())
                 .build();
     }
 
-    private ApiError bindErrorWithFields(ErrorCode errorCode, Map<String, String> errors, WebRequest request) {
+    private ApiError bindErrorWithFields(ErrorCode code, Map<String, String> errors, WebRequest request) {
         var req = ((ServletWebRequest) request).getRequest();
         return ApiError.builder()
-                .status(errorCode.getStatus())
-                .message(errorCode.getMessage())
+                .status(code.getStatus())
+                .message(code.getMessage())
                 .path(req.getRequestURI())
                 .errors(errors)
                 .build();
