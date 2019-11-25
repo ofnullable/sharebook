@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useInput } from '@utils/inputUtils';
 import { uploadImageRequest, registerBookRequest } from '@redux/actions/registerActions';
+import RegisterResultAlert from './RegisterResultAlert';
 
 import { RegisterForm, BookImagePreview, ImageUploadButton, RegisterButton } from './index.styled';
 import {
@@ -13,7 +13,7 @@ import {
 import { InputGroup } from '@styles/common';
 
 const BookRegisterPage = () => {
-  const { image, result } = useSelector(state => state.register);
+  const { image, result, showAlert } = useSelector(state => state.register);
   const categoryList = useSelector(state => state.category.list);
 
   const [imageUploaded, setImageUploaded] = useState(false);
@@ -25,31 +25,25 @@ const BookRegisterPage = () => {
   const [description, descriptionHandler] = useInput();
 
   const dispatch = useDispatch();
-  const router = useRouter();
   const fileRef = useRef();
 
-  const cleanImageData = () => {
+  const clearImageData = () => {
     setImageUploaded(false);
     setImagePreviewUrl('');
     fileRef.current.value = '';
   };
 
-  //TODO: useEffect 사용하여 image upload 오류 시 처리
   useEffect(() => {
     if (Object.keys(image.error).length) {
-      cleanImageData();
+      clearImageData();
     }
   }, [image.error]);
 
-  useEffect(() => {
-    if (Object.keys(result.data).length) {
-      router.back();
-    } else if (Object.keys(result.error).length) {
-    }
-  }, [result]);
+  useEffect(() => {}, [result]);
 
   const handleRegister = e => {
     e.preventDefault();
+
     if (image.url) {
       const registerData = {
         categoryId,
@@ -60,19 +54,17 @@ const BookRegisterPage = () => {
         imageUrl: image.url,
       };
       dispatch(registerBookRequest(registerData));
-      cleanImageData();
+      clearImageData();
     } else {
       alert('도서 이미지를 선택해주세요.');
     }
   };
 
   const handleImageSelect = () => {
-    if (!imageUploaded) {
-      fileRef.current.click();
+    if (imageUploaded) {
+      // remove image request or mark image url for remove
     }
-  };
-  const preventDefaultEvent = e => {
-    e.preventDefault();
+    fileRef.current.click();
   };
   const handleImageDrop = e => {
     e.preventDefault();
@@ -110,12 +102,24 @@ const BookRegisterPage = () => {
     dispatch(uploadImageRequest(formFile));
   };
 
+  const handleImageChange = e => {
+    if (confirm('이미지를 변경하시겠습니까?')) {
+      handleImageSelect();
+    }
+  };
+
   return (
     <RegisterForm onSubmit={handleRegister}>
-      <input type='file' accept='image/*' hidden ref={fileRef} onChange={handleImageUpload} />
+      {showAlert && <RegisterResultAlert id={result.id} />}
+      <input type='file' accept='image/*' ref={fileRef} onChange={handleImageUpload} hidden />
       <BookImageWrapper>
         {imagePreviewUrl ? (
-          <img src={imagePreviewUrl} />
+          <div>
+            <img src={imagePreviewUrl} />
+            <i className='material-icons-outlined' onClick={handleImageChange}>
+              close
+            </i>
+          </div>
         ) : (
           <BookImagePreview
             onClick={handleImageSelect}
@@ -126,11 +130,9 @@ const BookRegisterPage = () => {
           </BookImagePreview>
         )}
 
-        {!imageUploaded && (
-          <ImageUploadButton _color='primary' onClick={handleImageSelect} type='button'>
-            Image Upload
-          </ImageUploadButton>
-        )}
+        <ImageUploadButton _color='primary' onClick={handleImageSelect} type='button'>
+          Image Upload
+        </ImageUploadButton>
       </BookImageWrapper>
       <BookDetailWrapper>
         <InputGroup>
@@ -145,17 +147,32 @@ const BookRegisterPage = () => {
         </InputGroup>
         <InputGroup>
           <label htmlFor='title'>Title</label>
-          <input type='text' id='title' value={title} onChange={titleHandler} required />
+          <input
+            type='text'
+            id='title'
+            placeholder='토비의 스프링 3.1'
+            value={title}
+            onChange={titleHandler}
+            required
+          />
         </InputGroup>
         <InputGroup>
           <label htmlFor='author'>Author</label>
-          <input type='text' id='author' value={author} onChange={authorHandler} required />
+          <input
+            type='text'
+            id='author'
+            placeholder='이일민'
+            value={author}
+            onChange={authorHandler}
+            required
+          />
         </InputGroup>
         <InputGroup>
           <label htmlFor='publisher'>Publisher</label>
           <input
             type='text'
             id='publisher'
+            placeholder='에이콘출판사'
             value={publisher}
             onChange={publisherHandler}
             required

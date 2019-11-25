@@ -9,10 +9,11 @@ const initial = {
     error: {},
   },
   result: {
-    data: {},
+    id: 0,
     isLoading: false,
     error: {},
   },
+  showAlert: false,
 };
 
 export default (state = initial, action) => {
@@ -33,15 +34,22 @@ export default (state = initial, action) => {
 
       case REGISTER.REGISTER_BOOK_REQUEST:
         draft.result.isLoading = true;
-        draft.result.data = {};
+        draft.result.id = 0;
+        draft.showAlert = false;
         break;
       case REGISTER.REGISTER_BOOK_SUCCESS:
         draft.result.isLoading = false;
-        draft.result.data = action.data;
+        draft.result.id = action.id;
+        draft.showAlert = true;
         break;
       case REGISTER.REGISTER_BOOK_FAILURE:
         draft.result.isLoading = false;
         draft.result.error = action.error;
+        draft.showAlert = true;
+        break;
+
+      case REGISTER.CLOSE_ALERT:
+        draft.showAlert = false;
         break;
 
       default:

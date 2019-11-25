@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import device from '@styles/device';
+import { transition } from '@styles/mixins';
 
 export const BookDetailHeader = styled.article`
   ${device.laptops`
@@ -41,6 +42,33 @@ export const BookImageWrapper = styled.section`
     width: 200px;
     border-radius: 5px;
     vertical-align: bottom;
+
+    &:hover + i {
+      opacity: 1;
+      cursor: pointer;
+      position: absolute;
+      top: 7px;
+      right: 7px;
+    }
+  }
+
+  & div {
+    width: 200px;
+    position: relative;
+    margin: 0 auto;
+
+    i {
+      opacity: 0;
+      ${transition};
+      position: absolute;
+      top: 7px;
+      right: 7px;
+
+      &:hover {
+        opacity: 1;
+        cursor: pointer;
+      }
+    }
   }
 `;
 
@@ -79,10 +107,10 @@ export const BookDetailWrapper = styled.section`
       width: 30%;
     `};
     ${device.tablets`
-      width: 50%;
+      width: 40%;
     `};
     ${device.mobiles`
-      width: 100%;
+      width: 50%;
     `};
     margin: 1em 0 0;
   }
