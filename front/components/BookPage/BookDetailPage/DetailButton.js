@@ -71,7 +71,7 @@ const DetailButton = ({ detail }) => {
     }
     return (
       <>
-        <Button>대여기록확인</Button>
+        <Button _color='primary'>대여기록확인</Button>
         <Button>도서정보수정</Button>
       </>
     );

@@ -17,11 +17,15 @@ export const registerBookRequest = data => ({
   type: REGISTER.REGISTER_BOOK_REQUEST,
   data,
 });
-export const registerBookSuccess = data => ({
+export const registerBookSuccess = id => ({
   type: REGISTER.REGISTER_BOOK_SUCCESS,
-  data,
+  id,
 });
 export const registerBookFailure = error => ({
   type: REGISTER.REGISTER_BOOK_FAILURE,
   error,
+});
+
+export const closeAlert = () => ({
+  type: REGISTER.CLOSE_ALERT,
 });

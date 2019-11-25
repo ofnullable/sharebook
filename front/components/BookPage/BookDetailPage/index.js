@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 import DetailButton from './DetailButton';
 import ReviewList from './ReviewList';
+import { IMAGE_BASE_URL } from '@utils/consts';
 
 import { BookDetailHeader, BookImageWrapper, BookDetailWrapper } from './index.styled';
 import { CenterDiv } from '@styles/common';
@@ -23,7 +24,7 @@ const BookPage = () => {
     <>
       <BookDetailHeader>
         <BookImageWrapper>
-          <img src={data.imageUrl} alt={data.title} />
+          <img src={`${IMAGE_BASE_URL}${data.imageUrl}`} alt={data.title} />
         </BookImageWrapper>
         <BookDetailWrapper>
           <p>{data.category}</p>

@@ -2,6 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import moment from 'moment';
 
+import { IMAGE_BASE_URL } from '@utils/consts';
+
 import { Card, CardBody } from './index.styled';
 
 const BookCard = ({ data, children }) => {
@@ -9,7 +11,7 @@ const BookCard = ({ data, children }) => {
     <Card>
       <Link href='/book/[id]' as={`/book/${data.id}`}>
         <a>
-          <img src={`${data.imageUrl}?v=${data.id}`} />
+          <img src={`${IMAGE_BASE_URL}${data.imageUrl}`} />
         </a>
       </Link>
       <CardBody>
