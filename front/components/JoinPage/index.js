@@ -162,7 +162,7 @@ const JoinPage = () => {
         <CenterDiv>
           {isLoading ? (
             <Button _color='primary' type='submit' disabled>
-              <LoadingIcon _size='14px' className='material-icons'>
+              <LoadingIcon _size='14px' className='material-icons-outlined'>
                 autorenew
               </LoadingIcon>
             </Button>

@@ -7,7 +7,7 @@ const LoadingOverlay = () => {
     <>
       <ScreenOverlay />
       <LoadingIconWrapper>
-        <LoadingIcon _size='100px' _color='primary' className='material-icons'>
+        <LoadingIcon _size='100px' _color='primary' className='material-icons-outlined'>
           autorenew
         </LoadingIcon>
       </LoadingIconWrapper>

@@ -9,6 +9,7 @@ import { EmptyReview } from '@components/Review/ReviewItem/index.styled';
 
 const ReviewManagement = () => {
   const { data } = useSelector(state => state.review.myReviewList);
+
   return (
     <div>
       {data.length ? (
@@ -24,7 +25,7 @@ const ReviewManagement = () => {
           </div>
         ))
       ) : (
-        <EmptyReview>리뷰가 존재하지 않아요 ㅠ^ㅠ</EmptyReview>
+        <EmptyReview>등록한 리뷰가 존재하지 않아요 ㅠ^ㅠ</EmptyReview>
       )}
     </div>
   );

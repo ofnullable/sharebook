@@ -44,7 +44,7 @@ const LeftMenu = ({ menu }) => {
           return (
             <Link key={m} href={`${menus[m].pathname}`} as={menus[m].as}>
               <MenuItem style={menu === m ? activeStyle : {}}>
-                <i className='material-icons'>{menus[m].icon}</i>
+                <i className='material-icons-outlined'>{menus[m].icon}</i>
                 <p>{menus[m].name}</p>
               </MenuItem>
             </Link>

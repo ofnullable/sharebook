@@ -5,6 +5,7 @@ import { Button } from '@styles/common';
 export const SearchForm = styled.form`
   & input {
     width: 80%;
+    vertical-align: middle;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
