@@ -46,7 +46,7 @@ class Sharebook extends App {
           <meta name='title' content={title} />
           <meta name='description' content={description} />
           <link rel='icon' href='/static/favicon.ico' />
-          <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' />
+          <link href='https://fonts.googleapis.com/icon?family=Material+Icons+Outlined' rel='stylesheet' />
           <link
             href='https://fonts.googleapis.com/css?family=Jua&display=swap&subset=korean'
             rel='stylesheet'

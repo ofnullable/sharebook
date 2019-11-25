@@ -68,10 +68,10 @@ const ReviewItem = ({ review }) => {
         return (
           <div>
             <DangerButton onClick={handleDelete}>
-              <i className='material-icons'>delete_forever</i>삭제
+              <i className='material-icons-outlined'>delete_forever</i>삭제
             </DangerButton>
             <WarningButton onClick={toggleEditable}>
-              <i className='material-icons'>create</i>수정
+              <i className='material-icons-outlined'>create</i>수정
             </WarningButton>
           </div>
         );

@@ -29,7 +29,7 @@ const SearchBar = () => {
       />
       <SearchButton _color='primary' className='searchButton'>
         {isLoading ? (
-          <LoadingIcon _size='16px' className='material-icons'>
+          <LoadingIcon _size='16px' className='material-icons-outlined'>
             autorenew
           </LoadingIcon>
         ) : (

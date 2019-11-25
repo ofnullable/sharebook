@@ -22,7 +22,7 @@ const Nav = () => {
         <HeaderMenu _float='right'>
           <Link href='/management/user/[menu]' as='/management/user/profile'>
             <a>
-              <i className='material-icons'>perm_identity</i>
+              <i className='material-icons-outlined'>perm_identity</i>
               <span>{data.name}</span>
             </a>
           </Link>
@@ -56,7 +56,7 @@ const Nav = () => {
           <HeaderMenu>
             <Link href='/'>
               <HomepageLink>
-                <i className='material-icons'>share</i>
+                <i className='material-icons-outlined'>share</i>
                 <span>SHAREBOOK</span>
               </HomepageLink>
             </Link>

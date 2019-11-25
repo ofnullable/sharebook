@@ -7,11 +7,11 @@ const StarRating = ({ readOnly, score, clickHandler }) => {
     <StarWrapper>
       {Array.from(new Array(5)).map((_, i) =>
         i >= score ? (
-          <EmptyStar key={i} className='material-icons'>
+          <EmptyStar key={i} className='material-icons-outlined'>
             star_border
           </EmptyStar>
         ) : (
-          <FilledStar key={i} className='material-icons'>
+          <FilledStar key={i} className='material-icons-outlined'>
             star
           </FilledStar>
         )
@@ -21,11 +21,11 @@ const StarRating = ({ readOnly, score, clickHandler }) => {
     <StarWrapper>
       {Array.from(new Array(5)).map((_, i) =>
         i >= score ? (
-          <EmptyStar key={i} id={i + 1} className='material-icons' onClick={clickHandler}>
+          <EmptyStar key={i} id={i + 1} className='material-icons-outlined' onClick={clickHandler}>
             star_border
           </EmptyStar>
         ) : (
-          <FilledStar key={i} id={i + 1} className='material-icons' onClick={clickHandler}>
+          <FilledStar key={i} id={i + 1} className='material-icons-outlined' onClick={clickHandler}>
             star
           </FilledStar>
         )

@@ -12,7 +12,6 @@ const ReviewForm = () => {
   const [contents, setContents] = useState('');
   const [score, setScore] = useState(0);
 
-  const { isSignedIn } = useSelector(state => state.user.user);
   const book = useSelector(state => state.book.detail.data);
   const { error } = useSelector(state => state.review.saveRequest);
   const dispatch = useDispatch();
@@ -48,7 +47,7 @@ const ReviewForm = () => {
           <textarea id='review' value={contents} onChange={handleContentsChange} />
         </InputGroup>
         <Button type='submit' _color='primary'>
-          <i className='material-icons'>rate_review</i>리뷰등록
+          <i className='material-icons-outlined'>rate_review</i>리뷰등록
         </Button>
       </form>
     </ReviewFormWrapper>

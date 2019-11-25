@@ -31,14 +31,14 @@ export const HeaderMenu = styled.li`
     vertical-align: middle;
     color: inherit;
 
-    & span {
-      vertical-align: middle;
-    }
     & i {
       font-size: 22px;
       vertical-align: middle;
       padding-right: 5px;
     }
+  }
+  & span {
+    vertical-align: middle;
   }
 `;
 
