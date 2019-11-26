@@ -67,5 +67,4 @@ class LendingValidatorTest {
         return book;
     }
 
-
 }

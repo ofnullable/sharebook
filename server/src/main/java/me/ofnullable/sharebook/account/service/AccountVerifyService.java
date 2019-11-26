@@ -18,4 +18,5 @@ public class AccountVerifyService {
         }
         return account.verified();
     }
+
 }
