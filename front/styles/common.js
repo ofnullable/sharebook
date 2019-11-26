@@ -14,7 +14,7 @@ export const Button = styled.button`
   ${transition};
   ${buttonColor};
   cursor: pointer;
-  padding: 3px 15px;
+  padding: 5px 15px;
   border-radius: 5px;
   text-align: center;
   vertical-align: middle;

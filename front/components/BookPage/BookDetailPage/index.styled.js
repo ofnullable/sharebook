@@ -94,10 +94,20 @@ export const BookDetailWrapper = styled.section`
     `};
     margin: 0.5em 0;
   }
-  & p,
-  & span {
+  & p {
     display: block;
     margin: 0 0 0.5em;
+  }
+  & span {
+    display: inline-block;
+    vertical-align: middle;
+
+    & img {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
   }
   & h3 {
     margin: 1em 0 0.5em;
@@ -110,8 +120,11 @@ export const BookDetailWrapper = styled.section`
       width: 40%;
     `};
     ${device.mobiles`
-      width: 50%;
+      width: calc(50% - 0.25em);
     `};
-    margin: 1em 0 0;
+    margin: 1em 0.5em 0 0;
+    &:last-child {
+      margin: 1em 0 0;
+    }
   }
 `;

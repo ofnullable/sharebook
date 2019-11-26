@@ -15,11 +15,6 @@ const initial = {
     isLoading: false,
     isDuplicated: true,
   },
-  updated: {
-    avatar: false,
-    info: false,
-    showAlert: false,
-  },
 };
 
 export default (state = initial, action) => {
@@ -78,40 +73,30 @@ export default (state = initial, action) => {
         draft.user.isLoading = false;
         break;
 
-      case USER.UPDATE_AVATAR_REQUEST:
-        draft.user.isLoading = true;
-        draft.updated.avatar = false;
-        draft.user.error = {};
-        draft.updated.showAlert = false;
-        break;
-      case USER.UPDATE_AVATAR_SUCCESS:
-        draft.user.isLoading = false;
-        draft.user.data = action.data;
-        draft.updated.avatar = true;
-        draft.updated.showAlert = true;
-        break;
-      case USER.UPDATE_AVATAR_FAILURE:
-        draft.user.isLoading = false;
-        draft.user.error = action.error;
-        draft.updated.showAlert = true;
-        break;
-
       case USER.PASSWORD_VERIFY_REQUEST:
         draft.user.isLoading = true;
-        draft.updated.info = false;
         draft.user.error = {};
-        draft.updated.showAlert = false;
         break;
       case USER.PASSWORD_VERIFY_SUCCESS:
         draft.user.isLoading = false;
         draft.user.data = action.data;
-        draft.updated.info = true;
-        draft.updated.showAlert = true;
         break;
       case USER.PASSWORD_VERIFY_FAILURE:
         draft.user.isLoading = false;
         draft.user.error = action.error;
-        draft.updated.showAlert = true;
+        break;
+
+      case USER.UPDATE_AVATAR_REQUEST:
+        draft.user.isLoading = true;
+        draft.user.error = {};
+        break;
+      case USER.UPDATE_AVATAR_SUCCESS:
+        draft.user.isLoading = false;
+        draft.user.data = action.data;
+        break;
+      case USER.UPDATE_AVATAR_FAILURE:
+        draft.user.isLoading = false;
+        draft.user.error = action.error;
         break;
 
       case USER.UPDATE_INFO_REQUEST:

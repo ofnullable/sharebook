@@ -5,7 +5,7 @@ import EditProfileForm from './EditProfileForm';
 import ReviewManagement from './ReviewManagement';
 import LeftMenu from '@components/Management/LeftMenu';
 import SubMenu from '@components/Management/SubMenu';
-import { useInput } from '@utils/inputUtils';
+import { useInput } from '@utils';
 import { signOutRequest, passwordVerifyRequest } from '@redux/actions/userActions';
 
 import { PasswordVerifyForm } from './index.styled';
@@ -19,7 +19,7 @@ const SUBMENU = {
 
 const UserPage = ({ menu }) => {
   const [password, passwordHandler] = useInput();
-  const { data } = useSelector(state => state.user.user);
+  const { verified } = useSelector(state => state.user.user.data);
   const dispatch = useDispatch();
 
   const handleSignOut = () => {
@@ -35,7 +35,7 @@ const UserPage = ({ menu }) => {
 
   const renderContents = () => {
     if (menu === 'profile') {
-      if (!data.verified) {
+      if (!verified) {
         return (
           <PasswordVerifyForm onSubmit={handlePasswordVerifySubmit}>
             <div>
@@ -48,7 +48,7 @@ const UserPage = ({ menu }) => {
           </PasswordVerifyForm>
         );
       }
-      return <EditProfileForm data={data} />;
+      return <EditProfileForm />;
     }
 
     return <ReviewManagement />;

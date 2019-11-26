@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import moment from 'moment';
 
+import { IMAGE_BASE_URL } from '@utils/consts';
 import LendingButton from './LendingButton';
 
 import {
@@ -18,7 +19,10 @@ const LendingHistory = ({ data }) => {
     <LendingHistoryWrapper>
       <Link href='/book/[id]' as={`/book/${data.book.id}`}>
         <a>
-          <ThumbnailImage src={data.book.imageUrl} alt={`이미지 - ${data.book.title}`} />
+          <ThumbnailImage
+            src={`${IMAGE_BASE_URL}${data.book.imageUrl}`}
+            alt={`이미지 - ${data.book.title}`}
+          />
         </a>
       </Link>
       <LendingInfoWrapper>

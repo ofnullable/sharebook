@@ -1,4 +1,7 @@
 import { useState, useCallback } from 'react';
+import gravatar from 'gravatar';
+
+import { IMAGE_BASE_URL } from './consts';
 
 export const useInput = (initialValue = '') => {
   const [value, setter] = useState(initialValue);
@@ -21,3 +24,11 @@ export const isEmail = value => {
 export const preventDefaultEvent = e => {
   e.preventDefault();
 };
+
+export const getAvatar = uri => {
+  if (!uri) return;
+  return uri.startsWith('http') ? uri : `${IMAGE_BASE_URL}${uri}`;
+};
+
+export const getGravatar = (email, size) =>
+  gravatar.url(email, { protocol: 'https', s: size, d: 'identicon' });

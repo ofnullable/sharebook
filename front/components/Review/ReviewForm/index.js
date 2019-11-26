@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import StarRating from '../ReviewItem/StarRating';
 import { saveReviewRequest } from '@redux/actions/reviewActions';
-import { isBlank } from '@utils/inputUtils';
+import { isBlank } from '@utils';
 
 import { ReviewFormWrapper } from './index.styled';
 import { InputGroup, Button } from '@styles/common';
