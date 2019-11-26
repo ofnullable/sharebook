@@ -75,6 +75,19 @@ export const passwordVerifyFailure = error => ({
   error,
 });
 
+export const updateAvatarRequest = file => ({
+  type: USER.UPDATE_AVATAR_REQUEST,
+  file,
+});
+export const updateAvatarSuccess = data => ({
+  type: USER.UPDATE_AVATAR_SUCCESS,
+  data,
+});
+export const updateAvatarFailure = error => ({
+  type: USER.UPDATE_AVATAR_FAILURE,
+  error,
+});
+
 export const updateInfoRequest = data => ({
   type: USER.UPDATE_INFO_REQUEST,
   data,

@@ -83,7 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring()
                 .antMatchers("/error") // spring boot default error handler
-                .antMatchers("/css/**", "/js/**", "/img/**")
+                .antMatchers("/css/**", "/js/**", "/image/**")
                 .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/webjars/**");
     }
 

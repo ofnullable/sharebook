@@ -51,5 +51,4 @@ class AccountUpdateServiceTest {
                 .isEqualTo(dto.getNewPassword());
     }
 
-
 }
