@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 
 import { preventDefaultEvent } from '@utils/inputUtils';
 
-const FileUploader = ({ StyledTag, defaultImage, handleUpload }) => {
+const ImageUploader = ({ StyledTag, defaultImage, handleUpload, children }) => {
   const [preview, setPreview] = useState(defaultImage);
   const fileRef = useRef();
 
@@ -18,8 +18,14 @@ const FileUploader = ({ StyledTag, defaultImage, handleUpload }) => {
 
   const handleFileChange = e => {
     const file = e.target.files ? e.target.files[0] : e.dataTransfer.files[0];
+
+    if (file.type && !file.type.startsWith('image/')) {
+      alert('이미지 파일만 업로드 할 수 있습니다.');
+      return;
+    }
+
     makePreview(file);
-    handleUpload(e);
+    handleUpload(file);
   };
 
   const handleSelect = () => {
@@ -42,18 +48,18 @@ const FileUploader = ({ StyledTag, defaultImage, handleUpload }) => {
     <>
       <input type='file' accept='image/*' ref={fileRef} onChange={handleFileChange} hidden />
       {preview ? (
-        <StyledTag className='uploaded' _preview={preview}>
+        <StyledTag className='uploaded' _preview={preview} onClick={handleSelect}>
           <i className='material-icons-outlined' onClick={handleReSelect}>
             close
           </i>
         </StyledTag>
       ) : (
         <StyledTag onClick={handleSelect} onDrop={handleDrop} onDragOver={preventDefaultEvent}>
-          <span>Upload Your Image!</span>
+          {children}
         </StyledTag>
       )}
     </>
   );
 };
 
-export default FileUploader;
+export default ImageUploader;

@@ -24,6 +24,10 @@ export const passwordVerifyApi = password => {
   return axios.post('/account/verify', password, { headers: { 'Content-Type': 'text/plain' } });
 };
 
+export const updateAvatarApi = file => {
+  return axios.patch(`/account/avatar`, file);
+};
+
 export const updateInfoApi = data => {
   return axios.put(`/account/${data.id}`, data);
 };
