@@ -13,7 +13,7 @@ public enum ErrorCode {
 
     // authentication/account
     BAD_CREDENTIALS(400, "아이디 또는 비밀번호를 다시 확인해 주세요."),
-    UNAUTHORIZED(401, "로그인 후 확인할 수 있습니다."),
+    UNAUTHORIZED(401, "로그인 후 이용할 수 있습니다."),
     ACCESS_DENIED(403, "조회할 수 있는 권한이 없습니다."),
     PASSWORD_DID_NOT_MATCH(400, "비밀번호가 일치하지 않습니다."),
     EMAIL_DUPLICATION(409, "이미 사용중인 이메일 입니다."),

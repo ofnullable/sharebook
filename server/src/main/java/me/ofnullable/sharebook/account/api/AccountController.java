@@ -13,9 +13,11 @@ import me.ofnullable.sharebook.account.service.AccountVerifyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,6 +32,13 @@ public class AccountController {
     @ResponseStatus(HttpStatus.CREATED)
     public AccountResponse saveAccount(@RequestBody @Valid SignUpRequest dto) {
         return new AccountResponse(accountSaveService.saveAndSignIn(dto));
+    }
+
+    @PatchMapping("/account/avatar")
+    public AccountResponse updateAvatar(
+            @AuthenticationPrincipal(expression = "account") Account account,
+            MultipartFile avatar) throws IOException {
+        return new AccountResponse(accountUpdateService.updateAvatar(account.getId(), avatar));
     }
 
     @GetMapping("/account/duplicate")
@@ -66,4 +75,5 @@ public class AccountController {
             @RequestBody @NotBlank String password) {
         return new AccountResponse(accountVerifyService.verify(account, password));
     }
+
 }

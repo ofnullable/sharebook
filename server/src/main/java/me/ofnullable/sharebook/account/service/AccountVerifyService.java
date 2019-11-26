@@ -16,7 +16,6 @@ public class AccountVerifyService {
         if (!passwordEncoder.matches(password, account.getPassword())) {
             throw new PasswordNotMatchingException();
         }
-
         return account.verified();
     }
 }
