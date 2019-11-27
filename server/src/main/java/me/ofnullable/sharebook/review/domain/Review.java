@@ -38,13 +38,14 @@ public class Review extends Auditable {
         this.score = score;
     }
 
-    public void update(UpdateReviewRequest dto) {
+    public Review update(UpdateReviewRequest dto) {
         if (dto.getScore() != null) {
             this.score = dto.getScore();
         }
         if (StringUtils.hasText(dto.getContents())) {
             this.contents = dto.getContents();
         }
+        return this;
     }
 
 }

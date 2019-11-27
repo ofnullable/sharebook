@@ -17,6 +17,7 @@ public class BookResponse {
     private String description;
     private BookStatus status;
     private String owner;
+    private String ownerAvatar;
     private String imageUrl;
     private Long currentBorrowerId;
     private LocalDateTime modifiedAt;
@@ -33,6 +34,7 @@ public class BookResponse {
         this.description = book.getDescription();
         this.status = book.getStatus();
         this.owner = book.getOwner().getName();
+        this.ownerAvatar = book.getOwner().getAvatar();
         this.currentBorrowerId = book.getCurrentBorrowerId();
         this.imageUrl = book.getImageUrl();
         this.modifiedAt = book.getModifiedAt();

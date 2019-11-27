@@ -15,10 +15,10 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
-public class StorageServiceTest {
+class FileStorageServiceTest {
 
     @InjectMocks
-    private FileSystemStorageService storageService;
+    private FileSystemFileStorageService storageService;
 
     @Test
     void store() throws IOException {

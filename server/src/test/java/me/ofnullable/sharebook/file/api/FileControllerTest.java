@@ -1,7 +1,7 @@
 package me.ofnullable.sharebook.file.api;
 
 import me.ofnullable.sharebook.error.ApiErrorHandler;
-import me.ofnullable.sharebook.file.service.StorageService;
+import me.ofnullable.sharebook.file.service.FileStorageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +29,7 @@ class FileControllerTest {
     private FileController fileController;
 
     @Mock
-    private StorageService storageService;
+    private FileStorageService fileStorageService;
 
     private MockMvc mvc;
 
@@ -47,7 +47,7 @@ class FileControllerTest {
         var mockFile = ResourceUtils.getFile("classpath:static/image/두근두근-파이썬.jpg");
         var file = new MockMultipartFile("image", "두근두근-파이썬.jpg", "image/jpeg", Files.readAllBytes(mockFile.toPath()));
 
-        given(storageService.store(any(MultipartFile.class)))
+        given(fileStorageService.store(any(MultipartFile.class)))
                 .willReturn("/image/두근두근-파이썬.jpg");
 
         mvc.perform(multipart("/file/image")

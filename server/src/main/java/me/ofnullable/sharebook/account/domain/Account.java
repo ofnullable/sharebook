@@ -57,19 +57,19 @@ public class Account extends Auditable {
         return this;
     }
 
-    public Account updateAvatar(String avatar) {
+    public void updateAvatar(String avatar) {
         this.avatar = avatar;
-        return this.verified();
+        this.verified();
     }
 
-    public Account update(UpdateAccountRequest dto, PasswordEncoder passwordEncoder) {
+    public void update(UpdateAccountRequest dto, PasswordEncoder passwordEncoder) {
         if (StringUtils.hasText(dto.getName())) {
             this.name = dto.getName();
         }
         if (StringUtils.hasText(dto.getNewPassword())) {
             this.password = passwordEncoder.encode(dto.getNewPassword());
         }
-        return this.verified();
+        this.verified();
     }
 
     private Role buildRole(RoleName roleName) {

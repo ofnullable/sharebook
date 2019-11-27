@@ -15,8 +15,7 @@ public class ReviewUpdateService {
     @Transactional
     public Review updateReview(UpdateReviewRequest dto) {
         var review = reviewFindService.findByReviewId(dto.getId());
-        review.update(dto);
-        return review;
+        return review.update(dto);
     }
 
 }

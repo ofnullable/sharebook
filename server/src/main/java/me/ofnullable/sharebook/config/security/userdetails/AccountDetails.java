@@ -14,7 +14,7 @@ public class AccountDetails extends User {
 
     private static final String ROLE_PREFIX = "ROLE_";
 
-    private final Account account;
+    private Account account;
 
     public AccountDetails(Account account) {
         super(account.getEmail().getAddress(), account.getPassword(), getAuthorities(account.getRoles()));
@@ -23,6 +23,11 @@ public class AccountDetails extends User {
 
     public Account getAccount() {
         return this.account;
+    }
+
+    public Account refresh(Account account) {
+        this.account = account;
+        return account;
     }
 
     private static Collection<? extends GrantedAuthority> getAuthorities(Set<Role> roles) {

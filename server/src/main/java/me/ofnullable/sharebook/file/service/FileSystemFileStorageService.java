@@ -14,7 +14,7 @@ import static me.ofnullable.sharebook.file.utils.StorageUtils.makeDirectoryName;
 import static me.ofnullable.sharebook.file.utils.StorageUtils.makeUniqueFilename;
 
 @Service
-public class FileSystemStorageService implements StorageService {
+public class FileSystemFileStorageService implements FileStorageService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 

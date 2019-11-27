@@ -16,7 +16,7 @@ import static me.ofnullable.sharebook.file.utils.StorageUtils.makeDirectoryName;
 import static me.ofnullable.sharebook.file.utils.StorageUtils.makeUniqueFilename;
 
 @RequiredArgsConstructor
-public class FtpStorageService implements StorageService {
+public class FtpFileStorageService implements FileStorageService {
 
     private static final String BASE_PATH = "share/image/book";
 
