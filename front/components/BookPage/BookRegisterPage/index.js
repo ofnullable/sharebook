@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useInput } from '@utils/inputUtils';
+import { useInput, preventDefaultEvent } from '@utils';
 import { uploadImageRequest, registerBookRequest } from '@redux/actions/registerActions';
 import RegisterResultAlert from './RegisterResultAlert';
 
@@ -13,9 +13,10 @@ import {
 import { InputGroup } from '@styles/common';
 
 const BookRegisterPage = () => {
-  const { image, result, showAlert } = useSelector(state => state.register);
+  const { image, result } = useSelector(state => state.register);
   const categoryList = useSelector(state => state.category.list);
 
+  const [showAlert, setShowAlert] = useState(false);
   const [imageUploaded, setImageUploaded] = useState(false);
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
   const [categoryId, categoryHandler] = useInput(categoryList.data[0].id);
@@ -110,7 +111,13 @@ const BookRegisterPage = () => {
 
   return (
     <RegisterForm onSubmit={handleRegister}>
-      {showAlert && <RegisterResultAlert id={result.id} />}
+      {showAlert && (
+        <RegisterResultAlert
+          id={result.id}
+          isSuccess={result.id}
+          link={{ href: '/book/[id]', as: `/book/${result.id}` }}
+        />
+      )}
       <input type='file' accept='image/*' ref={fileRef} onChange={handleImageUpload} hidden />
       <BookImageWrapper>
         {imagePreviewUrl ? (

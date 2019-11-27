@@ -6,7 +6,7 @@ import { closeAlert } from '@redux/actions/registerActions';
 
 import { Alert } from './RegisterResultAlert.styled';
 
-const RegisterResultAlert = ({ id }) => {
+const RegisterResultAlert = ({ id, link }) => {
   const dispatch = useDispatch();
 
   const handleClose = () => {
@@ -16,7 +16,7 @@ const RegisterResultAlert = ({ id }) => {
   return id ? (
     <Alert _color='primary'>
       <span>등록성공!</span>
-      <Link href='/book/[id]' as={`/book/${id}`}>
+      <Link {...link}>
         <a>
           <i className='material-icons-outlined'>arrow_right</i>
         </a>

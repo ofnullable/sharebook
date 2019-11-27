@@ -29,6 +29,33 @@ export const EditProfileFormWrapper = styled.form`
   & label + input {
     width: 70%;
   }
+
+  & button {
+    margin-top: 20px;
+  }
+`;
+
+export const ProfileImage = styled.div`
+  position: relative;
+  cursor: pointer;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: ${props => `url(${props._preview}) center center / cover no-repeat`};
+
+  & i {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+  }
+  & span {
+    color: ${COLOR_SCHEME.primary};
+  }
 `;
 
 export const ChangePasswordButton = styled.span`

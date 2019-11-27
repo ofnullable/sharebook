@@ -4,7 +4,7 @@ import Router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import LoadingOverlay from '@components/common/LoadingOverlay';
-import { useInput, isEmail, hasWhitespace } from '@utils/inputUtils';
+import { useInput, isEmail, hasWhitespace } from '@utils';
 import { signUpRequest, emailDuplicationCheckRequest } from '@redux/actions/userActions';
 
 import { SuccessText, ErrorText } from './index.styled';

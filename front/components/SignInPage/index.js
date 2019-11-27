@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useInput } from '@utils/inputUtils';
+import { useInput } from '@utils';
 import { signInRequest } from '@redux/actions/userActions';
 
 import { CenterDiv, InputGroup, Button, LoadingIcon, CenterForm, ButtonLink } from '@styles/common';
@@ -23,7 +23,7 @@ const SignInPage = () => {
       if (referrer.startsWith(origin) && !referrer.endsWith('/join')) {
         router.back();
       } else {
-        router.push('/');
+        router.replace('/');
       }
     }
   }, [isSignedIn]);

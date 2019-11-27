@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-import { preventDefaultEvent } from '@utils/inputUtils';
+import { preventDefaultEvent } from '@utils';
 
 const ImageUploader = ({ StyledTag, defaultImage, handleUpload, children }) => {
   const [preview, setPreview] = useState(defaultImage);

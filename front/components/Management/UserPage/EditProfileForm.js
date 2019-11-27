@@ -1,34 +1,51 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useInput, hasWhitespace } from '@utils/inputUtils';
-import { updateInfoRequest } from '@redux/actions/userActions';
+import ActionResultAlert from '@components/common/ActionResultAlert';
+import ImageUploader from '@components/common/ImageUploader';
+import { useInput, hasWhitespace, getAvatar, getGravatar } from '@utils';
+import { updateInfoRequest, updateAvatarRequest } from '@redux/actions/userActions';
 
-import { EditProfileFormWrapper, ChangePasswordButton } from './EditProfileForm.styled';
+import {
+  EditProfileFormWrapper,
+  ProfileImage,
+  ChangePasswordButton,
+} from './EditProfileForm.styled';
 import { Button, InputGroup } from '@styles/common';
 
-const ProfileModifyForm = ({ data }) => {
-  const [name, nameHandler] = useInput(data.name);
+const EditProfileForm = () => {
+  const user = useSelector(state => state.user.user);
+
+  const [name, nameHandler] = useInput(user.data.name);
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordCheck, setNewPasswordCheck] = useState('');
+  const [updated, setUpdated] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (updated) {
+      setShowAlert(true);
+    }
+  }, [user.data, updated]);
 
   const handleChangePassword = e => {
     e.target.classList.toggle('active');
   };
 
   const handleNewPasswordChange = e => {
-    setNewPassword(e.target.value.trim());
+    setNewPassword(e.target.value);
   };
 
   const handleNewPasswordCheckChange = e => {
-    setNewPasswordCheck(e.target.value.trim());
+    setNewPasswordCheck(e.target.value);
   };
 
-  const handleProfileModify = e => {
+  const handleEditProfile = e => {
     e.preventDefault();
-    if (!name) {
-      alert('?');
+    if (!name.trim()) {
+      alert('이름은 공백일 수 없습니다.');
       return;
     }
     if (hasWhitespace(newPassword)) {
@@ -40,14 +57,36 @@ const ProfileModifyForm = ({ data }) => {
       return;
     }
 
-    dispatch(updateInfoRequest({ id: data.id, name, newPassword }));
+    dispatch(updateInfoRequest({ id: user.data.id, name, newPassword }));
+    setUpdated(true);
   };
 
+  const handleAvatarUpload = useCallback(file => {
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    dispatch(updateAvatarRequest(formData));
+    setUpdated(true);
+  }, []);
+
+  const closeAlert = useCallback(() => {
+    setShowAlert(false);
+    setUpdated(false);
+  }, []);
+
   return (
-    <EditProfileFormWrapper onSubmit={handleProfileModify}>
+    <EditProfileFormWrapper onSubmit={handleEditProfile}>
+      {showAlert && (
+        <ActionResultAlert isSuccess={!Object.keys(user.error).length} close={closeAlert} />
+      )}
+      <ImageUploader
+        StyledTag={ProfileImage}
+        defaultImage={getAvatar(user.data.avatar) || getGravatar(user.data.email, 200)}
+        handleUpload={handleAvatarUpload}
+      />
       <InputGroup>
         <label htmlFor='email'>이메일</label>
-        <input id='email' type='text' value={data.email} readOnly />
+        <input id='email' type='text' value={user.data.email} readOnly />
       </InputGroup>
       <InputGroup>
         <label htmlFor='name'>이름</label>
@@ -55,7 +94,6 @@ const ProfileModifyForm = ({ data }) => {
       </InputGroup>
 
       <ChangePasswordButton onClick={handleChangePassword}>비밀번호 변경하기</ChangePasswordButton>
-
       <div>
         <InputGroup>
           <label htmlFor='newPassword'>새 비밀번호</label>
@@ -77,9 +115,9 @@ const ProfileModifyForm = ({ data }) => {
         </InputGroup>
       </div>
 
-      <Button _color='primary'>변경하기</Button>
+      <Button _color='primary'>변경사항 저장</Button>
     </EditProfileFormWrapper>
   );
 };
 
-export default ProfileModifyForm;
+export default EditProfileForm;
