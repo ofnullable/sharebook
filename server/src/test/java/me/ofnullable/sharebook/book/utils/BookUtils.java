@@ -22,7 +22,7 @@ public class BookUtils {
             .publisher("test")
             .description("book for test!")
             .owner(account)
-            .imageUrl("/asd")
+            .imageUri("/asd")
             .build();
 
     private static Category category = Category.of("운영체제");
@@ -46,7 +46,7 @@ public class BookUtils {
                 .author("author")
                 .description("description")
                 .publisher("publisher")
-                .imageUrl("/image/url")
+                .imageUri("/image/url")
                 .categoryId(1L)
                 .build();
     }
@@ -68,7 +68,7 @@ public class BookUtils {
         assertEquals(result.getAuthor(), target.getAuthor());
         assertEquals(result.getPublisher(), target.getPublisher());
         assertEquals(result.getDescription(), target.getDescription());
-        assertEquals(result.getImageUrl(), target.getImageUrl());
+        assertEquals(result.getImageUri(), target.getImageUri());
         assertEquals(result.getOwner(), target.getOwner());
         assertEquals(result.getCategory(), target.getCategory());
     }

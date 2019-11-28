@@ -23,7 +23,7 @@ class BookTest {
             .publisher("test")
             .description("book for test!")
             .owner(account)
-            .imageUrl("")
+            .imageUri("")
             .build();
 
     private Category category = Category.of("운영체제");

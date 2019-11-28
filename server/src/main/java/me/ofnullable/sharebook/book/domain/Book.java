@@ -39,19 +39,19 @@ public class Book extends Auditable {
     private Account owner;
 
     @Column(nullable = false)
-    private String imageUrl;
+    private String imageUri;
 
     private Long currentBorrowerId;
 
     @Builder
-    public Book(String title, String author, String publisher, Category category, String description, Account owner, String imageUrl) {
+    public Book(String title, String author, String publisher, Category category, String description, Account owner, String imageUri) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.category = category;
         this.description = description;
         this.owner = owner;
-        this.imageUrl = imageUrl;
+        this.imageUri = imageUri;
         this.status = BookStatus.AVAILABLE;
     }
 

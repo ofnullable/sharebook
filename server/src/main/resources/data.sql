@@ -21,7 +21,7 @@ VALUES
        ("네트워크", 1),
        ("프로그래밍 언어", 1);
 
-INSERT INTO share_jpa.book(title, author, publisher, category_id, description, status, image_url, owner_id, current_borrower_id, created_at, created_by, modified_at, modified_by)
+INSERT INTO share_jpa.book(title, author, publisher, category_id, description, status, image_uri, owner_id, current_borrower_id, created_at, created_by, modified_at, modified_by)
 VALUES
        ("이것이 우분투 리눅스다", "우재남", "한빛미디어", 1,"description for test book1", 1, "/image/이것이-우분투-리눅스다.jpg", 2, 3, now(), "test2@asd.com", now(), "test2@asd.com"),
        ("리눅스 시스템 원리와 실제", "창병모", "생능출판사", 1,"description for test book2", 1, "/image/리눅스-시스템-원리와-실제.jpg", 2, 2, now(), "test2@asd.com", now(), "test2@asd.com"),
