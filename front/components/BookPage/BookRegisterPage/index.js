@@ -1,153 +1,113 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useInput, preventDefaultEvent } from '@utils';
-import { uploadImageRequest, registerBookRequest } from '@redux/actions/registerActions';
-import RegisterResultAlert from './RegisterResultAlert';
+import ImageUploader from '@components/common/ImageUploader';
+import ActionResultAlert from '@components/common/ActionResultAlert';
+import { useForm, isEmptyObject, preventDefaultEvent } from '@utils';
+import { clear, uploadImageRequest, registerBookRequest } from '@redux/actions/registerActions';
 
-import { RegisterForm, BookImagePreview, ImageUploadButton, RegisterButton } from './index.styled';
+import { RegisterForm, BookImagePreview, RegisterButton } from './index.styled';
 import {
   BookImageWrapper,
   BookDetailWrapper,
 } from '@components/BookPage/BookDetailPage/index.styled';
 import { InputGroup } from '@styles/common';
 
+const initialForm = categoryList => ({
+  categoryId: categoryList.data.length && categoryList.data[0].id,
+  title: '',
+  author: '',
+  publisher: '',
+  description: '',
+});
+
 const BookRegisterPage = () => {
   const { image, result } = useSelector(state => state.register);
   const categoryList = useSelector(state => state.category.list);
 
   const [showAlert, setShowAlert] = useState(false);
-  const [imageUploaded, setImageUploaded] = useState(false);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState('');
-  const [categoryId, categoryHandler] = useInput(categoryList.data[0].id);
-  const [title, titleHandler] = useInput();
-  const [author, authorHandler] = useInput();
-  const [publisher, publisherHandler] = useInput();
-  const [description, descriptionHandler] = useInput();
+  const [registered, setRegistered] = useState(false);
+  const { form, formHandler, resetForm } = useForm(initialForm(categoryList));
 
   const dispatch = useDispatch();
-  const fileRef = useRef();
-
-  const clearImageData = () => {
-    setImageUploaded(false);
-    setImagePreviewUrl('');
-    fileRef.current.value = '';
-  };
 
   useEffect(() => {
-    if (Object.keys(image.error).length) {
-      clearImageData();
-    }
-  }, [image.error]);
+    return () => {
+      dispatch(clear());
+    };
+  }, []);
 
-  useEffect(() => {}, [result]);
+  useEffect(() => {
+    if (registered) {
+      if (result.id) {
+        resetForm();
+      }
+      if (result.id || !isEmptyObject(result.error)) {
+        setShowAlert(true);
+      }
+      setRegistered(false);
+    }
+  }, [result.id, result.error]);
 
   const handleRegister = e => {
-    e.preventDefault();
+    preventDefaultEvent(e);
 
-    if (image.url) {
+    const { categoryId, title, author, publisher, description } = form;
+    const imageUri = image.uri;
+
+    if (imageUri) {
       const registerData = {
-        categoryId,
+        categoryId: categoryId || categoryList.data[0].id,
         title,
         author,
         publisher,
         description,
-        imageUrl: image.url,
+        imageUri,
       };
+
       dispatch(registerBookRequest(registerData));
-      clearImageData();
+      setRegistered(true);
     } else {
       alert('도서 이미지를 선택해주세요.');
     }
   };
 
-  const handleImageSelect = () => {
-    if (imageUploaded) {
-      // remove image request or mark image url for remove
-    }
-    fileRef.current.click();
-  };
-  const handleImageDrop = e => {
-    e.preventDefault();
-    handleImageUpload(e);
-  };
-
-  const makeImagePreview = file => {
-    const fileReader = new FileReader();
-
-    fileReader.readAsDataURL(file);
-
-    fileReader.onloadend = () => {
-      setImagePreviewUrl(fileReader.result);
-    };
-  };
-
-  const makeFormData = file => {
+  const handleImageUpload = useCallback(file => {
     const formData = new FormData();
     formData.append('image', file);
-    return formData;
-  };
 
-  const handleImageUpload = e => {
-    const file = e.target.files ? e.target.files[0] : e.dataTransfer.files[0];
+    dispatch(uploadImageRequest(formData));
+  }, []);
 
-    if (!file.type.startsWith('image/')) {
-      alert('이미지 파일만 업로드 할 수 있습니다.');
-      return;
-    }
-
-    makeImagePreview(file);
-    setImageUploaded(true);
-
-    const formFile = makeFormData(file);
-    dispatch(uploadImageRequest(formFile));
-  };
-
-  const handleImageChange = e => {
-    if (confirm('이미지를 변경하시겠습니까?')) {
-      handleImageSelect();
-    }
-  };
+  const closeAlert = useCallback(() => {
+    setShowAlert(false);
+    dispatch(clear());
+  }, []);
 
   return (
     <RegisterForm onSubmit={handleRegister}>
       {showAlert && (
-        <RegisterResultAlert
-          id={result.id}
+        <ActionResultAlert
           isSuccess={result.id}
+          close={closeAlert}
           link={{ href: '/book/[id]', as: `/book/${result.id}` }}
         />
       )}
-      <input type='file' accept='image/*' ref={fileRef} onChange={handleImageUpload} hidden />
       <BookImageWrapper>
-        {imagePreviewUrl ? (
-          <div>
-            <img src={imagePreviewUrl} />
-            <i className='material-icons-outlined' onClick={handleImageChange}>
-              close
-            </i>
-          </div>
-        ) : (
-          <BookImagePreview
-            onClick={handleImageSelect}
-            onDrop={handleImageDrop}
-            onDragOver={preventDefaultEvent}
-          >
-            <span>Upload Book Image!</span>
-          </BookImagePreview>
-        )}
-
-        <ImageUploadButton _color='primary' onClick={handleImageSelect} type='button'>
-          Image Upload
-        </ImageUploadButton>
+        <ImageUploader
+          StyledTag={BookImagePreview}
+          handleUpload={handleImageUpload}
+          defaultImage={image.uri}
+          clearPreview={registered && result.id}
+        />
       </BookImageWrapper>
       <BookDetailWrapper>
         <InputGroup>
-          <label htmlFor='category'>Category</label>
-          <select id='category' value={categoryId} onChange={categoryHandler} required>
-            {categoryList.data.map(c => (
-              <option key={c.name} value={c.id}>
-                {c.name}
+          <label htmlFor='categoryId'>Category</label>
+          <select id='categoryId' value={form.categoryId} onChange={formHandler} required>
+            {categoryList.data.map(category => (
+              <option key={category.name} value={category.id}>
+                {category.name}
               </option>
             ))}
           </select>
@@ -158,8 +118,8 @@ const BookRegisterPage = () => {
             type='text'
             id='title'
             placeholder='토비의 스프링 3.1'
-            value={title}
-            onChange={titleHandler}
+            value={form.title}
+            onChange={formHandler}
             required
           />
         </InputGroup>
@@ -169,8 +129,8 @@ const BookRegisterPage = () => {
             type='text'
             id='author'
             placeholder='이일민'
-            value={author}
-            onChange={authorHandler}
+            value={form.author}
+            onChange={formHandler}
             required
           />
         </InputGroup>
@@ -180,8 +140,8 @@ const BookRegisterPage = () => {
             type='text'
             id='publisher'
             placeholder='에이콘출판사'
-            value={publisher}
-            onChange={publisherHandler}
+            value={form.publisher}
+            onChange={formHandler}
             required
           />
         </InputGroup>
@@ -191,8 +151,8 @@ const BookRegisterPage = () => {
             style={{ minHeight: '150px', width: '100%' }}
             type='text'
             id='description'
-            value={description}
-            onChange={descriptionHandler}
+            value={form.description}
+            onChange={formHandler}
             required
           />
         </InputGroup>

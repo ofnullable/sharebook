@@ -26,6 +26,6 @@ export const registerBookFailure = error => ({
   error,
 });
 
-export const closeAlert = () => ({
-  type: REGISTER.CLOSE_ALERT,
+export const clear = () => ({
+  type: REGISTER.CLEAR,
 });

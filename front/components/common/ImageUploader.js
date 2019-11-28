@@ -1,10 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import { preventDefaultEvent } from '@utils';
 
-const ImageUploader = ({ StyledTag, defaultImage, handleUpload, children }) => {
+const ImageUploader = ({ StyledTag, handleUpload, defaultImage, clearPreview }) => {
   const [preview, setPreview] = useState(defaultImage);
   const fileRef = useRef();
+
+  useEffect(() => {
+    if (clearPreview) {
+      setPreview('');
+    }
+  }, [clearPreview]);
 
   const makePreview = file => {
     const fileReader = new FileReader();
@@ -55,7 +61,8 @@ const ImageUploader = ({ StyledTag, defaultImage, handleUpload, children }) => {
         </StyledTag>
       ) : (
         <StyledTag onClick={handleSelect} onDrop={handleDrop} onDragOver={preventDefaultEvent}>
-          {children}
+          <p>Drop file or </p>
+          <p>Click to Upload Image!</p>
         </StyledTag>
       )}
     </>
