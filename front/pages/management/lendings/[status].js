@@ -10,7 +10,9 @@ const Lendings = ({ status }) => {
 Lendings.getInitialProps = async ({ query, store }) => {
   const status = query.status;
 
-  store.dispatch(loadMyRequestListByStatusRequest(status.toUpperCase()));
+  if (status !== 'undefined') {
+    store.dispatch(loadMyRequestListByStatusRequest(status.toUpperCase()));
+  }
 
   return { status };
 };

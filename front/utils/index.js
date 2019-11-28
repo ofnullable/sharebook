@@ -1,7 +1,30 @@
-import { useState, useCallback } from 'react';
 import gravatar from 'gravatar';
+import { useState, useCallback } from 'react';
 
 import { IMAGE_BASE_URL } from './consts';
+
+export const useForm = (initialForm = {}) => {
+  const [form, setForm] = useState(initialForm);
+
+  const formHandler = useCallback(
+    e => {
+      const { id, value } = e.target;
+      setForm({
+        ...form,
+        [id]: value,
+      });
+    },
+    [form]
+  );
+
+  const resetForm = useCallback(() => setForm(initialForm), []);
+
+  return {
+    form,
+    formHandler,
+    resetForm,
+  };
+};
 
 export const useInput = (initialValue = '') => {
   const [value, setter] = useState(initialValue);
@@ -14,6 +37,8 @@ export const useInput = (initialValue = '') => {
 export const isBlank = (...values) => {
   return values.some(v => !!v.trim() === false);
 };
+
+export const isEmptyObject = obj => !Object.keys(obj).length;
 
 export const hasWhitespace = value => /\s/.test(value);
 

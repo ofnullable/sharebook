@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
 import ManagementButton from './ManagementButton';
@@ -22,7 +22,6 @@ const BooksPage = ({ status }) => {
   const { isLoading: isRequestsLoading, data: requests } = useSelector(
     state => state.lending.requests
   );
-  const router = useRouter();
 
   const renderContents = () => {
     const data = status === 'all' ? books : requests;
@@ -49,9 +48,11 @@ const BooksPage = ({ status }) => {
 
       <WithLeftMenu>
         <Title>도서관리</Title>
-        <Button _color='primary' onClick={() => router.push('/management/books/register')}>
-          도서등록
-        </Button>
+        <Link href={`/management/books/register`}>
+          <a>
+            <Button _color='primary'>도서등록</Button>
+          </a>
+        </Link>
         <SubMenu href='/management/books/[status]' currentMenu={status} menus={SUBMENU} />
 
         {(isBooksLoading || isRequestsLoading) && <LoadingOverlay />}

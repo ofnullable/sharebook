@@ -20,7 +20,7 @@ const LendingHistory = ({ data }) => {
       <Link href='/book/[id]' as={`/book/${data.book.id}`}>
         <a>
           <ThumbnailImage
-            src={`${IMAGE_BASE_URL}${data.book.imageUrl}`}
+            src={`${IMAGE_BASE_URL}${data.book.imageUri}`}
             alt={`이미지 - ${data.book.title}`}
           />
         </a>

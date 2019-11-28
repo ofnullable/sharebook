@@ -25,7 +25,7 @@ const BookPage = () => {
     <>
       <BookDetailHeader>
         <BookImageWrapper>
-          <img src={`${IMAGE_BASE_URL}${data.imageUrl}`} alt={data.title} />
+          <img src={`${IMAGE_BASE_URL}${data.imageUri}`} alt={data.title} />
         </BookImageWrapper>
         <BookDetailWrapper>
           <p>{data.category}</p>

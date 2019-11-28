@@ -25,16 +25,16 @@ public class SaveBookRequest {
     @NotNull
     private Long categoryId;
     @NotBlank
-    private String imageUrl;
+    private String imageUri;
 
     @Builder
-    public SaveBookRequest(String title, String author, String publisher, String description, Long categoryId, String imageUrl) {
+    public SaveBookRequest(String title, String author, String publisher, String description, Long categoryId, String imageUri) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.description = description;
         this.categoryId = categoryId;
-        this.imageUrl = imageUrl;
+        this.imageUri = imageUri;
     }
 
     public Book toEntity(Account account) {
@@ -44,7 +44,7 @@ public class SaveBookRequest {
                 .publisher(publisher)
                 .description(description)
                 .owner(account)
-                .imageUrl(imageUrl)
+                .imageUri(imageUri)
                 .build();
     }
 

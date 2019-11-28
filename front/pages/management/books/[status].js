@@ -13,7 +13,7 @@ Books.getInitialProps = async ({ query, store }) => {
 
   if (status === 'all') {
     store.dispatch(loadMyBookListRequest());
-  } else {
+  } else if (status !== 'undefined') {
     store.dispatch(loadRequestListForMyBookRequest(status.toUpperCase()));
   }
 

@@ -12,16 +12,21 @@ export const BookImagePreview = styled.div`
   margin: 0 auto;
   color: ${COLOR_SCHEME.secondary};
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px dashed ${COLOR_SCHEME.secondary};
   border-radius: 15px;
   cursor: pointer;
-`;
+  border: 2px dashed ${COLOR_SCHEME.secondary};
 
-export const ImageUploadButton = styled(Button)`
-  width: 200px;
-  margin: 1em calc((100% - 200px) / 2) 0;
+  &.uploaded {
+    border: none;
+    background: ${props => `url(${props._preview}) center center / cover no-repeat`};
+  }
+
+  & p {
+    margin: 0.5em 0;
+  }
 `;
 
 export const RegisterButton = styled(Button)`

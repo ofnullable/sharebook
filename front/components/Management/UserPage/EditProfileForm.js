@@ -81,8 +81,8 @@ const EditProfileForm = () => {
       )}
       <ImageUploader
         StyledTag={ProfileImage}
-        defaultImage={getAvatar(user.data.avatar) || getGravatar(user.data.email, 200)}
         handleUpload={handleAvatarUpload}
+        defaultImage={getAvatar(user.data.avatar) || getGravatar(user.data.email, 200)}
       />
       <InputGroup>
         <label htmlFor='email'>이메일</label>

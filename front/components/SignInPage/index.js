@@ -21,7 +21,7 @@ const SignInPage = () => {
       const origin = location.origin;
 
       if (referrer.startsWith(origin) && !referrer.endsWith('/join')) {
-        router.back();
+        router.replace(referrer.slice(origin.length));
       } else {
         router.replace('/');
       }
