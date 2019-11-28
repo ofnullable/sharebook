@@ -11,7 +11,7 @@ const BookCard = ({ data, children }) => {
     <Card>
       <Link href='/book/[id]' as={`/book/${data.id}`}>
         <a>
-          <img src={`${IMAGE_BASE_URL}${data.imageUrl}`} />
+          <img src={`${IMAGE_BASE_URL}${data.imageUri}`} />
         </a>
       </Link>
       <CardBody>
