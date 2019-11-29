@@ -1,0 +1,47 @@
+#sharebook:
+#  ftp:
+#    host: "ftp.host.com"
+#    username: "ftp username"
+#    password: "ftp password"
+#    base-path: "base/path/to/save"
+
+spring:
+  http:
+    encoding:
+      force: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/share_jpa?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 1234
+    data: classpath:data.sql
+    initialization-mode: always
+
+  jpa:
+    database: mysql
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: create
+
+  devtools:
+    livereload:
+      enabled: true
+
+server:
+  port: 8081
+  tomcat:
+    uri-encoding: UTF-8
+
+logging:
+  level:
+    web: debug
+    org:
+      springframework:
+        security: debug
+      slam: debug
