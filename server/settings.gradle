@@ -1,1 +1,4 @@
 rootProject.name = 'sharebook'
+
+include 'module-file-service'
+include 'module-api'
