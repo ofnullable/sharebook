@@ -1,5 +1,6 @@
 package me.ofnullable.sharebook.review.utils;
 
+import me.ofnullable.sharebook.common.domain.SimpleAccountInfo;
 import me.ofnullable.sharebook.review.domain.Review;
 import me.ofnullable.sharebook.review.dto.MyReviewResponse;
 import me.ofnullable.sharebook.review.dto.SaveReviewRequest;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static me.ofnullable.sharebook.account.utils.AccountUtils.buildNormalAccount;
 import static me.ofnullable.sharebook.utils.PageRequestUtils.buildPage;
 
 public class ReviewUtils {
@@ -18,7 +20,7 @@ public class ReviewUtils {
     }
 
     public static Review buildReview() {
-        return buildSaveRequest().toEntity(2L);
+        return buildSaveRequest().toEntity(buildNormalAccount());
     }
 
     public static List<Review> buildReviewList() {
