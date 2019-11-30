@@ -16,9 +16,9 @@ public class ReviewValidator {
     private final ReviewRepository reviewRepository;
 
     void isValidRequest(Review review) {
-        isValidAccountId(review.getReviewerId());
+        isValidAccountId(review.getReviewer().getAccountId());
         isValidBookId(review.getBookId());
-        reviewExists(review.getReviewerId(), review.getBookId());
+        reviewExists(review.getReviewer().getAccountId(), review.getBookId());
     }
 
     private void isValidAccountId(Long reviewerId) {
@@ -30,7 +30,7 @@ public class ReviewValidator {
     }
 
     private void reviewExists(Long reviewerId, Long bookId) {
-        if (reviewRepository.findByReviewerIdAndBookId(reviewerId, bookId).isPresent()) {
+        if (reviewRepository.findByReviewerAccountIdAndBookId(reviewerId, bookId).isPresent()) {
             throw new IllegalArgumentException("이미 리뷰를 작성한 도서입니다.");
         }
     }

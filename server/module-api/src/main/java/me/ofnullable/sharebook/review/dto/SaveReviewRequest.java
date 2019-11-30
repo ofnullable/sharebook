@@ -3,6 +3,8 @@ package me.ofnullable.sharebook.review.dto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.ofnullable.sharebook.account.domain.Account;
+import me.ofnullable.sharebook.common.domain.SimpleAccountInfo;
 import me.ofnullable.sharebook.review.domain.Review;
 
 import javax.validation.constraints.NotBlank;
@@ -18,7 +20,8 @@ public class SaveReviewRequest {
     private String contents;
     @NotNull
     private Integer score;
-    private Long reviewerId;
+
+    private SimpleAccountInfo reviewer;
 
     public SaveReviewRequest(Long bookId, String contents, Integer score) {
         this.bookId = bookId;
@@ -26,10 +29,10 @@ public class SaveReviewRequest {
         this.score = score;
     }
 
-    public Review toEntity(Long reviewerId) {
+    public Review toEntity(Account reviewer) {
         return Review.builder()
                 .bookId(bookId)
-                .reviewerId(reviewerId)
+                .reviewer(SimpleAccountInfo.of(reviewer))
                 .contents(contents)
                 .score(score)
                 .build();

@@ -1,3 +1,9 @@
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = true
+}
 dependencies {
     implementation 'org.springframework.integration:spring-integration-ftp'
 }

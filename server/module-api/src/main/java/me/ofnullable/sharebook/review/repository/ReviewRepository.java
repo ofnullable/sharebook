@@ -15,14 +15,14 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findAllByBookIdOrderByIdDesc(Long bookId);
 
-    Optional<Review> findByReviewerIdAndBookId(Long reviewerId, Long bookId);
+    Optional<Review> findByReviewerAccountIdAndBookId(Long reviewerId, Long bookId);
 
     @Query(
-            countQuery = "SELECT count(id) FROM Review r WHERE r.reviewerId = :reviewerId",
-            value = "SELECT r.id as id, r.reviewerId as reviewerId, r.bookId as bookId, r.contents as contents, r.score as score, " +
+            countQuery = "SELECT count(r.id) FROM Review r WHERE r.reviewer.accountId = :reviewerId",
+            value = "SELECT r.id as id, r.reviewer.accountId as reviewerId, r.bookId as bookId, r.contents as contents, r.score as score, " +
                     "r.modifiedBy as modifiedBy, r.modifiedAt as modifiedAt, b.title as bookTitle, b.author as bookAuthor " +
-                    "FROM Review r INNER JOIN Book b ON r.bookId = b.id WHERE r.reviewerId = :reviewerId"
+                    "FROM Review r INNER JOIN Book b ON r.bookId = b.id WHERE r.reviewer.accountId = :reviewerId"
     )
-    Page<MyReviewResponse> findAllWithBookByReviewerId(@Param("reviewerId") Long reviewerId, Pageable pageable);
+    Page<MyReviewResponse> findAllByReviewerWithBook(@Param("reviewerId") Long reviewerId, Pageable pageable);
 
 }

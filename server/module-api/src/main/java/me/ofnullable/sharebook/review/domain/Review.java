@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.ofnullable.sharebook.common.domain.Auditable;
+import me.ofnullable.sharebook.common.domain.SimpleAccountInfo;
 import me.ofnullable.sharebook.review.dto.UpdateReviewRequest;
 import org.springframework.util.StringUtils;
 
@@ -21,8 +22,8 @@ public class Review extends Auditable {
     @Column(nullable = false)
     private Long bookId;
 
-    @Column(nullable = false)
-    private Long reviewerId;
+    @Embedded
+    private SimpleAccountInfo reviewer;
 
     @Column(nullable = false)
     private String contents;
@@ -31,9 +32,9 @@ public class Review extends Auditable {
     private Integer score;
 
     @Builder
-    public Review(Long bookId, Long reviewerId, String contents, Integer score) {
+    public Review(Long bookId, SimpleAccountInfo reviewer, String contents, Integer score) {
         this.bookId = bookId;
-        this.reviewerId = reviewerId;
+        this.reviewer = reviewer;
         this.contents = contents;
         this.score = score;
     }
