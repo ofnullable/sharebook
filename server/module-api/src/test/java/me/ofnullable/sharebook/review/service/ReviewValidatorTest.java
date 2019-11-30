@@ -50,7 +50,7 @@ class ReviewValidatorTest {
 
         then(reviewRepository)
                 .should()
-                .findByReviewerIdAndBookId(any(Long.class), any(Long.class));
+                .findByReviewerAccountIdAndBookId(any(Long.class), any(Long.class));
     }
 
     @Test
@@ -94,7 +94,7 @@ class ReviewValidatorTest {
     @DisplayName("리뷰가 이미 존재하는 경우 IllegalArgumentException")
     void review_already_exists() {
         var review = buildReview();
-        given(reviewRepository.findByReviewerIdAndBookId(any(Long.class), any(Long.class)))
+        given(reviewRepository.findByReviewerAccountIdAndBookId(any(Long.class), any(Long.class)))
                 .willReturn(Optional.of(review));
 
         var exception = catchThrowable(() -> reviewValidator.isValidRequest(buildReview()));

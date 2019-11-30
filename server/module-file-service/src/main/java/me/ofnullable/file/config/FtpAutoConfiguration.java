@@ -20,13 +20,11 @@ import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
 public class FtpAutoConfiguration {
 
     @Bean(name = "ftpSessionFactory")
-    @ConditionalOnProperty("sharebook.ftp.host")
+    @ConditionalOnProperty({"sharebook.ftp.port", "sharebook.ftp.host", "sharebook.ftp.username", "sharebook.ftp.password"})
     public SessionFactory<FTPFile> ftpSessionFactory(FtpProperties properties) {
-        final int port = properties.getPort() > 0 ? properties.getPort() : FTPClient.DEFAULT_PORT;
-
         var sf = new DefaultFtpSessionFactory();
         sf.setHost(properties.getHost());
-        sf.setPort(port);
+        sf.setPort(properties.getPort());
         sf.setControlEncoding("UTF-8");
         sf.setUsername(properties.getUsername());
         sf.setPassword(properties.getPassword());

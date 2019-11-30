@@ -17,13 +17,15 @@ import static me.ofnullable.file.utils.StorageUtils.makeUniqueFilename;
 
 public class FtpFileStorageService implements FileStorageService {
 
+    private final static String DEFAULT_PATH = "sharebook/images";
+
     private final SessionFactory<FTPFile> sf;
     private final String basePath;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public FtpFileStorageService(SessionFactory<FTPFile> sf, FtpProperties properties) {
         this.sf = sf;
-        this.basePath = properties.getBasePath();
+        this.basePath = properties.getBasePath() != null ? properties.getBasePath() : DEFAULT_PATH;
         log.info("Create ftp file storage service!");
     }
 

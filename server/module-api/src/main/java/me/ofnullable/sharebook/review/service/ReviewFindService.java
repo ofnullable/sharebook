@@ -27,7 +27,7 @@ public class ReviewFindService {
     }
 
     public Page<MyReviewResponse> findAllByReviewerId(Long reviewerId, PageRequest pageRequest) {
-        return reviewRepository.findAllWithBookByReviewerId(reviewerId, pageRequest.of());
+        return reviewRepository.findAllByReviewerWithBook(reviewerId, pageRequest.of());
     }
 
 }
