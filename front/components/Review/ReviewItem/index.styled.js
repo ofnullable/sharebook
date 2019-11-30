@@ -23,17 +23,30 @@ export const ReviewInfo = styled.div`
     padding: 5px 0;
   `};
   display: inline-block;
+  vertical-align: middle;
 
   & p.reviewer {
-    margin: 0.5em;
+    margin: 0.5em 0;
     ${device.mobiles`
-      margin: 0;
+      width: 70%;
+      display: inline-block;
     `};
+    & img {
+      vertical-align: middle;
+      width: 25px;
+      height: 25px;
+      margin-right: 5px;
+      border-radius: 50%;
+    }
+    & span {
+      display: inline-block;
+      vertical-align: middle;
+    }
   }
-  & span {
-    margin: 0.5em;
+
+  & span.reviewedAt {
     ${device.mobiles`
-      margin: 0;
+      width: 30%;
     `};
     font-size: 80%;
     color: ${COLOR_SCHEME.darkGray};

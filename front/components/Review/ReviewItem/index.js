@@ -3,6 +3,7 @@ import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 
 import StarRating from './StarRating';
+import { getAvatar, getGravatar } from '@utils';
 import LoadingOverlay from '@components/common/LoadingOverlay';
 import { updateReviewRequest, deleteReviewRequest } from '@redux/actions/reviewActions';
 
@@ -88,8 +89,14 @@ const ReviewItem = ({ review }) => {
           score={editable ? score : review.score}
           clickHandler={editable && handleStarClick}
         />
-        <p className='reviewer'>{review.modifiedBy}</p>
-        <span>{moment(review.modifiedAt).format('YYYY.MM.DD hh:mm')}</span>
+        <p className='reviewer'>
+          <img
+            src={getAvatar(review.reviewer.avatar) || getGravatar(review.reviewer.email, 25)}
+            alt='avatar'
+          />
+          <span>{review.reviewer.name}</span>
+        </p>
+        <span className='reviewedAt'>{moment(review.modifiedAt).format('YYYY.MM.DD hh:mm')}</span>
       </ReviewInfo>
       <ReviewContents>
         {editable ? (
