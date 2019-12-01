@@ -1,17 +1,16 @@
-package me.ofnullable.file.service;
+package me.ofnullable.sharebook.file.service;
 
+import me.ofnullable.file.service.FileSystemStorageService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static me.ofnullable.sharebook.file.utils.StorageUtils.getMultipartFile;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
@@ -22,16 +21,7 @@ class FileStorageServiceTest {
 
     @Test
     void store() throws IOException {
-        var file = ResourceUtils.getFile("classpath:static/image/두근두근-파이썬.jpg");
-
-        var path = storageService.store(
-                new MockMultipartFile(
-                        file.getName(),
-                        file.getName(),
-                        "image/jpeg",
-                        Files.readAllBytes(file.toPath())
-                )
-        );
+        var path = storageService.store(getMultipartFile(""));
 
         assertTrue(path.startsWith(String.format("%s%s", "/image/", getDate())));
     }

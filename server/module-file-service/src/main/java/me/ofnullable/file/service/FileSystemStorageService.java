@@ -26,15 +26,15 @@ public class FileSystemStorageService implements FileStorageService {
     }
 
     private String save(MultipartFile image) throws IOException {
-        var targetFile = makeFile(image.getOriginalFilename());
+        var targetFile = makeFile(makeDir(), image.getOriginalFilename());
         image.transferTo(targetFile);
 
         log.info("file save success at '{}'", targetFile.getPath());
         return "/image/" + targetFile.getParentFile().getName() + "/" + targetFile.getName();
     }
 
-    private File makeFile(String filename) throws IOException {
-        return new File(makeDir(), makeUniqueFilename(filename));
+    private File makeFile(File directory, String filename) {
+        return new File(directory, makeUniqueFilename(filename));
     }
 
     private File makeDir() throws IOException {
