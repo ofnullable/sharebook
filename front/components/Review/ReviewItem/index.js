@@ -3,7 +3,7 @@ import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 
 import StarRating from './StarRating';
-import { getAvatar, getGravatar } from '@utils';
+import { getAvatar } from '@utils';
 import LoadingOverlay from '@components/common/LoadingOverlay';
 import { updateReviewRequest, deleteReviewRequest } from '@redux/actions/reviewActions';
 
@@ -20,7 +20,7 @@ const ReviewItem = ({ review }) => {
   const [editable, setEditable] = useState(false);
   const [score, setScore] = useState(review.score);
   const [contents, setContents] = useState(review.contents);
-  const user = useSelector(state => state.user.user.data);
+  const { data: user, isSignedIn } = useSelector(state => state.user.user);
   const { isLoading } = useSelector(state => state.review.updateRequest);
   const dispatch = useDispatch();
 
@@ -64,8 +64,8 @@ const ReviewItem = ({ review }) => {
       );
     }
 
-    if (Object.keys(user).length) {
-      if (review.reviewerId === user.id) {
+    if (isSignedIn) {
+      if (review.accountId === user.id) {
         return (
           <div>
             <DangerButton onClick={handleDelete}>
@@ -90,11 +90,8 @@ const ReviewItem = ({ review }) => {
           clickHandler={editable && handleStarClick}
         />
         <p className='reviewer'>
-          <img
-            src={getAvatar(review.reviewer.avatar) || getGravatar(review.reviewer.email, 25)}
-            alt='avatar'
-          />
-          <span>{review.reviewer.name}</span>
+          <img src={getAvatar(review.avatar, review.createdBy, 25)} alt='avatar' />
+          <span>{review.name}</span>
         </p>
         <span className='reviewedAt'>{moment(review.modifiedAt).format('YYYY.MM.DD hh:mm')}</span>
       </ReviewInfo>

@@ -38,7 +38,7 @@ export const isBlank = (...values) => {
   return values.some(v => !!v.trim() === false);
 };
 
-export const isEmptyObject = obj => !Object.keys(obj).length;
+export const isEmptyObject = obj => (obj ? !Object.keys(obj).length : true);
 
 export const hasWhitespace = value => /\s/.test(value);
 
@@ -50,10 +50,14 @@ export const preventDefaultEvent = e => {
   e.preventDefault();
 };
 
-export const getAvatar = uri => {
+const getAvatarUri = uri => {
   if (!uri) return;
   return uri.startsWith('http') ? uri : `${IMAGE_BASE_URL}${uri}`;
 };
 
-export const getGravatar = (email, size) =>
+const getGravatar = (email, size) =>
   gravatar.url(email, { protocol: 'https', s: size, d: 'identicon' });
+
+export const getAvatar = (uri, email, size) => {
+  return getAvatarUri(uri) || getGravatar(email, size);
+};
