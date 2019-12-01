@@ -17,22 +17,18 @@ public class SimpleAccountInfo {
     private Long accountId;
 
     @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
     private String name;
 
     private String avatar;
 
-    private SimpleAccountInfo(Long id, String email, String name, String avatar) {
+    private SimpleAccountInfo(Long id, String name, String avatar) {
         this.accountId = id;
-        this.email = email;
         this.name = name;
         this.avatar = avatar;
     }
 
     public static SimpleAccountInfo of(Account account) {
-        return new SimpleAccountInfo(account.getId(), account.getEmail().getAddress(), account.getName(), account.getAvatar());
+        return new SimpleAccountInfo(account.getId(), account.getName(), account.getAvatar());
     }
 
 }

@@ -1,4 +1,4 @@
-package me.ofnullable.sharebook.review.controller;
+package me.ofnullable.sharebook.review.api;
 
 import lombok.RequiredArgsConstructor;
 import me.ofnullable.sharebook.account.domain.Account;

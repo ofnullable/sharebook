@@ -12,10 +12,14 @@ public interface MyReviewResponse {
     Long getBookId();
     String getBookTitle();
     String getBookAuthor();
-    Long getReviewerId();
+    Long getAccountId();
+    String getName();
+    String getAvatar();
     String getContents();
     Integer getScore();
     LocalDateTime getModifiedAt();
     String getModifiedBy();
+    LocalDateTime getCreatedAt();
+    String getCreatedBy();
 
 }

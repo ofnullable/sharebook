@@ -21,8 +21,6 @@ public class SaveReviewRequest {
     @NotNull
     private Integer score;
 
-    private SimpleAccountInfo reviewer;
-
     public SaveReviewRequest(Long bookId, String contents, Integer score) {
         this.bookId = bookId;
         this.contents = contents;

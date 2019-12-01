@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import ActionResultAlert from '@components/common/ActionResultAlert';
 import ImageUploader from '@components/common/ImageUploader';
-import { useInput, hasWhitespace, getAvatar, getGravatar } from '@utils';
+import { useInput, hasWhitespace, getAvatar } from '@utils';
 import { updateInfoRequest, updateAvatarRequest } from '@redux/actions/userActions';
 
 import {
@@ -82,7 +82,7 @@ const EditProfileForm = () => {
       <ImageUploader
         StyledTag={ProfileImage}
         handleUpload={handleAvatarUpload}
-        defaultImage={getAvatar(user.data.avatar) || getGravatar(user.data.email, 200)}
+        defaultImage={getAvatar(user.data.avatar, user.data.email, 200)}
       />
       <InputGroup>
         <label htmlFor='email'>이메일</label>

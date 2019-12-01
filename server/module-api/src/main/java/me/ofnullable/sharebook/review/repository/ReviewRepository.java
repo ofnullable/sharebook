@@ -19,9 +19,24 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query(
             countQuery = "SELECT count(r.id) FROM Review r WHERE r.reviewer.accountId = :reviewerId",
-            value = "SELECT r.id as id, r.reviewer.accountId as reviewerId, r.bookId as bookId, r.contents as contents, r.score as score, " +
-                    "r.modifiedBy as modifiedBy, r.modifiedAt as modifiedAt, b.title as bookTitle, b.author as bookAuthor " +
-                    "FROM Review r INNER JOIN Book b ON r.bookId = b.id WHERE r.reviewer.accountId = :reviewerId"
+            value = "SELECT " +
+                    "   r.id as id, " +
+                    "   b.id as bookId, " +
+                    "   b.title as bookTitle, " +
+                    "   b.author as bookAuthor, " +
+                    "   a.id as accountId, " +
+                    "   a.name as name, " +
+                    "   a.avatar as avartar, " +
+                    "   r.contents as contents, " +
+                    "   r.score as score, " +
+                    "   r.modifiedBy as modifiedBy, " +
+                    "   r.modifiedAt as modifiedAt, " +
+                    "   r.createdBy as createdBy, " +
+                    "   r.createdAt as createdAt " +
+                    "FROM Review r " +
+                    "INNER JOIN Book b ON r.bookId = b.id " +
+                    "INNER JOIN Account a ON r.reviewer.accountId = a.id " +
+                    "WHERE r.reviewer.accountId = :reviewerId"
     )
     Page<MyReviewResponse> findAllByReviewerWithBook(@Param("reviewerId") Long reviewerId, Pageable pageable);
 

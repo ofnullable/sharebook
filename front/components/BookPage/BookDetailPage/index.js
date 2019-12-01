@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import DetailButton from './DetailButton';
 import ReviewList from './ReviewList';
-import { getAvatar, getGravatar } from '@utils';
+import { getAvatar } from '@utils';
 import { IMAGE_BASE_URL } from '@utils/consts';
 
 import { BookDetailHeader, BookImageWrapper, BookDetailWrapper } from './index.styled';
@@ -32,10 +32,7 @@ const BookPage = () => {
           <h1>{data.title}</h1>
           <p>{`${data.author} | ${data.publisher}`}</p>
           <span>
-            <img
-              src={getAvatar(data.ownerAvatar) || getGravatar(data.createdBy, 25)}
-              alt='owner avatar'
-            />
+            <img src={getAvatar(data.ownerAvatar, data.createdBy, 25)} alt='owner avatar' />
           </span>
           <span>{`${data.owner} | ${moment(data.createdAt).format('YYYY.MM.DD')}`}</span>
           <div>
