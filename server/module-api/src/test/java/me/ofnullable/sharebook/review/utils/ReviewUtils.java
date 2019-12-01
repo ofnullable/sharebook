@@ -1,6 +1,5 @@
 package me.ofnullable.sharebook.review.utils;
 
-import me.ofnullable.sharebook.common.domain.SimpleAccountInfo;
 import me.ofnullable.sharebook.review.domain.Review;
 import me.ofnullable.sharebook.review.dto.MyReviewResponse;
 import me.ofnullable.sharebook.review.dto.SaveReviewRequest;
@@ -74,8 +73,23 @@ public class ReviewUtils {
             }
 
             @Override
-            public Long getReviewerId() {
+            public Long getAccountId() {
                 return 2L;
+            }
+
+            @Override
+            public String getEmail() {
+                return "test2@asd.com";
+            }
+
+            @Override
+            public String getName() {
+                return "test2 user";
+            }
+
+            @Override
+            public String getAvatar() {
+                return null;
             }
 
             @Override

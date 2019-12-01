@@ -33,7 +33,7 @@ class ReviewSaveServiceTest {
     private ReviewValidator validator;
 
     private final SaveReviewRequest request = new SaveReviewRequest(1L, "Test Review", 5);
-    private final Review review = request.toEntity(1L);
+    private final Review review = request.toEntity(buildNormalAccount());
 
     @Test
     @DisplayName("정상적인 review 등록")

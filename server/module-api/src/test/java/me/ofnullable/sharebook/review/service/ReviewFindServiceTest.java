@@ -58,8 +58,8 @@ class ReviewFindServiceTest {
                 .isEqualTo(review.getId());
         then(result.getBookId())
                 .isEqualTo(review.getBookId());
-        then(result.getReviewerId())
-                .isEqualTo(review.getReviewerId());
+        then(result.getReviewer())
+                .isEqualTo(review.getReviewer());
         then(result.getScore())
                 .isEqualTo(review.getScore());
         then(result.getContents())
@@ -81,7 +81,7 @@ class ReviewFindServiceTest {
     @Test
     @DisplayName("리뷰작성자 Id로 리뷰 조회")
     void find_all_by_reviewer_id() {
-        given(reviewRepository.findAllWithBookByReviewerId(any(Long.class), any(Pageable.class)))
+        given(reviewRepository.findAllByReviewerWithBook(any(Long.class), any(Pageable.class)))
                 .willReturn(buildMyReviewResponsePage());
 
         var result = reviewFindService.findAllByReviewerId(1L, buildPageRequest(10));
@@ -95,7 +95,7 @@ class ReviewFindServiceTest {
     @Test
     @DisplayName("작성자 Id에 해당하는 Review가 존재하지 않는 경우")
     void find_all_by_invalid_reviewer_id() {
-        given(reviewRepository.findAllWithBookByReviewerId(any(Long.class), any(Pageable.class)))
+        given(reviewRepository.findAllByReviewerWithBook(any(Long.class), any(Pageable.class)))
                 .willReturn(Page.empty());
 
         var result = reviewFindService.findAllByReviewerId(1L, buildPageRequest(10));
