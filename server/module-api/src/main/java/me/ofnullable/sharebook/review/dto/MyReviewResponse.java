@@ -13,12 +13,13 @@ public interface MyReviewResponse {
     String getBookTitle();
     String getBookAuthor();
     Long getAccountId();
-    String getEmail();
     String getName();
     String getAvatar();
     String getContents();
     Integer getScore();
     LocalDateTime getModifiedAt();
     String getModifiedBy();
+    LocalDateTime getCreatedAt();
+    String getCreatedBy();
 
 }

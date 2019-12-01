@@ -1,10 +1,10 @@
-INSERT INTO share_jpa.account(email, password, name, created_at, created_by, modified_by, modified_at)
+INSERT INTO share_jpa.account(email, password, name, created_at, created_by, modified_at, modified_by)
 VALUES
-       ("test1@asd.com", "{noop}test", "test user1", now(), "test user1", "test user1", now()),
-       ("test2@asd.com", "{noop}test", "test user2", now(), "test user2", "test user2", now()),
-       ("test3@asd.com", "{noop}test", "test user3", now(), "test user3", "test user3", now()),
-       ("test4@asd.com", "{noop}test", "test user4", now(), "test user4", "test user4", now()),
-       ("test5@asd.com", "{noop}test", "test user5", now(), "test user5", "test user5", now());
+       ("test1@asd.com", "{noop}test", "test user1", now(), "test1@asd.com", now(), "test1@asd.com"),
+       ("test2@asd.com", "{noop}test", "test user2", now(), "test2@asd.com", now(), "test2@asd.com"),
+       ("test3@asd.com", "{noop}test", "test user3", now(), "test3@asd.com", now(), "test3@asd.com"),
+       ("test4@asd.com", "{noop}test", "test user4", now(), "test4@asd.com", now(), "test4@asd.com"),
+       ("test5@asd.com", "{noop}test", "test user5", now(), "test5@asd.com", now(), "test5@asd.com");
 
 INSERT INTO share_jpa.role(name, account_id)
 VALUES
@@ -130,7 +130,7 @@ VALUES
        (7, "REQUESTED", "test2@asd.com", now(), "test2@asd.com", now()),
        (8, "REQUESTED", "test2@asd.com", now(), "test2@asd.com", now());
 
-INSERT INTO share_jpa.review(book_id, account_id, email, name, contents, score, created_by, created_at, modified_by, modified_at)
+INSERT INTO share_jpa.review(book_id, account_id, name, contents, score, created_by, created_at, modified_by, modified_at)
 VALUES
-       (65, 2, "test2@asd.com", "test2", "나는 휴머니즘. 평등주의자라고 강력하게 생각하고 있었는데 이 책을 읽으며 내가 얼마나 편협한 생각을 하고 있었는지 다시 한번 생각하게 되네요. 쉽지 않은 내용인데 쉽게 잘 풀어주셔서 술술 읽으며 많은 밑줄을 긋고 책갈피를 하며 봤습니다", 5, "test2@asd.com", now(), "test2@asd.com", now()),
-       (65, 3, "test2@asd.com", "test3", "권력과 차별을 이토록 섬세하게 풀어내주시다니요~ 개인적으로 역대 밑줄 친 부분이 가장 많은 책입니다", 3, "test3@asd.com", now(), "test3@asd.com", now());
+       (65, 2, "test2 user", "나는 휴머니즘. 평등주의자라고 강력하게 생각하고 있었는데 이 책을 읽으며 내가 얼마나 편협한 생각을 하고 있었는지 다시 한번 생각하게 되네요. 쉽지 않은 내용인데 쉽게 잘 풀어주셔서 술술 읽으며 많은 밑줄을 긋고 책갈피를 하며 봤습니다", 5, "test2@asd.com", now(), "test2@asd.com", now()),
+       (65, 3, "test3 user", "권력과 차별을 이토록 섬세하게 풀어내주시다니요~ 개인적으로 역대 밑줄 친 부분이 가장 많은 책입니다", 3, "test3@asd.com", now(), "test3@asd.com", now());

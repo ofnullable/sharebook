@@ -2,7 +2,6 @@ package me.ofnullable.sharebook.review.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.ofnullable.sharebook.common.domain.SimpleAccountInfo;
 import me.ofnullable.sharebook.review.domain.Review;
 
 import java.time.LocalDateTime;
@@ -13,7 +12,9 @@ public class ReviewResponse {
 
     private Long id;
     private Long bookId;
-    private SimpleAccountInfo reviewer;
+    private Long accountId;
+    private String name;
+    private String avatar;
     private String contents;
     private Integer score;
     private LocalDateTime modifiedAt;
@@ -24,7 +25,9 @@ public class ReviewResponse {
     public ReviewResponse(Review review) {
         this.id = review.getId();
         this.bookId = review.getBookId();
-        this.reviewer = review.getReviewer();
+        this.accountId = review.getReviewer().getAccountId();
+        this.name = review.getReviewer().getName();
+        this.avatar = review.getReviewer().getAvatar();
         this.contents = review.getContents();
         this.score = review.getScore();
         this.modifiedAt = review.getModifiedAt();

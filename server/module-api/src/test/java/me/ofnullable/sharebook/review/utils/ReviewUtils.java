@@ -78,11 +78,6 @@ public class ReviewUtils {
             }
 
             @Override
-            public String getEmail() {
-                return "test2@asd.com";
-            }
-
-            @Override
             public String getName() {
                 return "test2 user";
             }
@@ -109,7 +104,17 @@ public class ReviewUtils {
 
             @Override
             public String getModifiedBy() {
-                return "test user2";
+                return "test2@asd.com";
+            }
+
+            @Override
+            public LocalDateTime getCreatedAt() {
+                return LocalDateTime.now();
+            }
+
+            @Override
+            public String getCreatedBy() {
+                return "test2@asd.com";
             }
         };
     }

@@ -25,13 +25,14 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
                     "   b.title as bookTitle, " +
                     "   b.author as bookAuthor, " +
                     "   a.id as accountId, " +
-                    "   a.email.address as email, " +
                     "   a.name as name, " +
                     "   a.avatar as avartar, " +
                     "   r.contents as contents, " +
                     "   r.score as score, " +
                     "   r.modifiedBy as modifiedBy, " +
-                    "   r.modifiedAt as modifiedAt " +
+                    "   r.modifiedAt as modifiedAt, " +
+                    "   r.createdBy as createdBy, " +
+                    "   r.createdAt as createdAt " +
                     "FROM Review r " +
                     "INNER JOIN Book b ON r.bookId = b.id " +
                     "INNER JOIN Account a ON r.reviewer.accountId = a.id " +
