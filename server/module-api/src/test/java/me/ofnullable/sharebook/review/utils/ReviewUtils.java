@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static me.ofnullable.sharebook.account.utils.AccountUtils.buildNormalAccount;
+import static me.ofnullable.sharebook.account.utils.AccountUtils.buildAccountWithId;
 import static me.ofnullable.sharebook.utils.PageRequestUtils.buildPage;
 
 public class ReviewUtils {
@@ -19,7 +19,11 @@ public class ReviewUtils {
     }
 
     public static Review buildReview() {
-        return buildSaveRequest().toEntity(buildNormalAccount());
+        try {
+            return buildSaveRequest().toEntity(buildAccountWithId());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new Error();
+        }
     }
 
     public static List<Review> buildReviewList() {

@@ -9,7 +9,6 @@ import me.ofnullable.sharebook.book.service.BookSaveService;
 import me.ofnullable.sharebook.common.dto.PageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +36,7 @@ public class BookController {
 
     @GetMapping("/books")
     public Page<BookResponse> findAllBook(
-            @Nullable final String searchText,
+            final String searchText,
             @Valid PageRequest pageRequest) {
         return bookFindService.findAll(searchText, pageRequest)
                 .map(BookResponse::new);
