@@ -7,6 +7,8 @@ import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.common.domain.SimpleAccountInfo;
 import me.ofnullable.sharebook.review.domain.Review;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -18,6 +20,8 @@ public class SaveReviewRequest {
     private Long bookId;
     @NotBlank
     private String contents;
+    @Min(1)
+    @Max(5)
     @NotNull
     private Integer score;
 

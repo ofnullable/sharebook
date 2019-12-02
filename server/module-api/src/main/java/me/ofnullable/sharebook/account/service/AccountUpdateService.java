@@ -38,7 +38,6 @@ public class AccountUpdateService {
 
     private Account refreshSecurityContext(Account account) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth);
         return ((AccountDetails) auth.getPrincipal())
                 .refresh(account);
     }

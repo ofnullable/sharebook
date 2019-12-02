@@ -6,6 +6,7 @@ import me.ofnullable.sharebook.book.service.BookFindService;
 import me.ofnullable.sharebook.review.domain.Review;
 import me.ofnullable.sharebook.review.repository.ReviewRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -15,6 +16,7 @@ public class ReviewValidator {
     private final AccountFindService accountFindService;
     private final ReviewRepository reviewRepository;
 
+    @Transactional
     void isValidRequest(Review review) {
         isValidAccountId(review.getReviewer().getAccountId());
         isValidBookId(review.getBookId());
