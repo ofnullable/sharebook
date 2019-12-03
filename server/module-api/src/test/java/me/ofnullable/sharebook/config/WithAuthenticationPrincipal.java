@@ -10,7 +10,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import static me.ofnullable.sharebook.account.utils.AccountUtils.buildNormalAccount;
+import static me.ofnullable.sharebook.account.utils.AccountUtils.buildAccountWithId;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 public class WithAuthenticationPrincipal {
@@ -24,14 +24,9 @@ public class WithAuthenticationPrincipal {
         @Override
         public Object resolveArgument(
                 MethodParameter parameter, ModelAndViewContainer mavContainer
-                , NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-
-            var account = buildNormalAccount();
+                , NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+            var account = buildAccountWithId();
             account.verified();
-            var idField = account.getClass().getDeclaredField("id");
-            idField.setAccessible(true);
-            idField.set(account, 1L);
-
             return account;
         }
     };

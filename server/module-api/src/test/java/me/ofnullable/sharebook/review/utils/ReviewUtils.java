@@ -19,11 +19,7 @@ public class ReviewUtils {
     }
 
     public static Review buildReview() {
-        try {
-            return buildSaveRequest().toEntity(buildAccountWithId());
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new Error();
-        }
+        return buildSaveRequest().toEntity(buildAccountWithId());
     }
 
     public static List<Review> buildReviewList() {

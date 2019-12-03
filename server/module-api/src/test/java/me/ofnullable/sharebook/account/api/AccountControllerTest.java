@@ -22,8 +22,13 @@ import org.mockito.Mock;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 import static me.ofnullable.sharebook.account.utils.AccountUtils.*;
+import static me.ofnullable.sharebook.file.utils.StorageUtils.getMultipartFile;
+import static me.ofnullable.sharebook.utils.RequestBuilderUtils.putMultipart;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -216,6 +221,44 @@ class AccountControllerTest extends WithAuthenticationPrincipal {
                 .content("test")
         )
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("아바타(프로필) 업데이트")
+    void update_avatar() throws Exception {
+        var accountWithAvatar = buildAccountWithAvatar();
+
+        given(accountUpdateService.updateAvatar(any(Long.class), any(MultipartFile.class)))
+                .willReturn(accountWithAvatar);
+
+        mvc.perform(putMultipart("/account/avatar")
+                .file(getMultipartFile("avatar"))
+        )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("아바타(프로필) 업로드 오류 - 500")
+    void upload_avatar_failure() throws Exception {
+        given(accountUpdateService.updateAvatar(any(Long.class), any(MultipartFile.class)))
+                .willThrow(IOException.class);
+
+        mvc.perform(putMultipart("/account/avatar")
+                .file(getMultipartFile("avatar"))
+        )
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 계정 정보 업데이트 - 404")
+    void update_avatar_failure() throws Exception {
+        given(accountUpdateService.updateAvatar(any(Long.class), any(MultipartFile.class)))
+                .willThrow(ResourceNotFoundException.class);
+
+        mvc.perform(putMultipart("/account/avatar")
+                .file(getMultipartFile("avatar"))
+        )
+                .andExpect(status().isNotFound());
     }
 
 }

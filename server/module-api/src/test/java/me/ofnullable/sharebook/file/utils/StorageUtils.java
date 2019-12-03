@@ -42,9 +42,13 @@ public class StorageUtils {
         return ResourceUtils.getFile("classpath:static/image/두근두근-파이썬.jpg");
     }
 
-    public static MockMultipartFile getMultipartFile(String variableName) throws IOException {
-        var file = getFile();
-        return new MockMultipartFile(variableName, file.getName(), IMAGE_JPEG_VALUE, Files.readAllBytes(file.toPath()));
+    public static MockMultipartFile getMultipartFile(String variableName) {
+        try {
+            var file = getFile();
+            return new MockMultipartFile(variableName, file.getName(), IMAGE_JPEG_VALUE, Files.readAllBytes(file.toPath()));
+        } catch (IOException e) {
+            throw new Error();
+        }
     }
 
 }

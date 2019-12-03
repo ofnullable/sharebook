@@ -61,4 +61,14 @@ class AccountTest {
         assertEquals(account.getName(), "테스트유저");
     }
 
+    @Test
+    @DisplayName("아바타(프로필) 업데이트")
+    void update_avatar() {
+        var testUri = "/image/test.jpg";
+        account.updateAvatar(testUri);
+
+        assertEquals(account.getAvatar(),testUri);
+        assertTrue(account.isVerified());
+    }
+
 }
