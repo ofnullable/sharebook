@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static me.ofnullable.sharebook.account.utils.AccountUtils.*;
-import static me.ofnullable.sharebook.file.utils.StorageUtils.getMultipartFile;
+import static me.ofnullable.sharebook.utils.StorageTestUtils.getMultipartFile;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.assertEquals;

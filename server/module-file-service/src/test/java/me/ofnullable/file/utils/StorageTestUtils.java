@@ -1,28 +1,25 @@
-package me.ofnullable.sharebook.file.utils;
+package me.ofnullable.file.utils;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static me.ofnullable.file.utils.StorageUtils.makeDirectoryName;
+import static me.ofnullable.file.utils.StorageUtils.makeUniqueFilename;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.util.MimeTypeUtils.IMAGE_JPEG_VALUE;
 
-public class StorageUtils {
+public class StorageTestUtils {
 
     @Test
     @DisplayName("현재 날짜로 폴더명 생성")
-    void makeDirectoryName() {
-        var directory = me.ofnullable.file.utils.StorageUtils.makeDirectoryName();
+    void make_directory_name() {
+        var directory = makeDirectoryName();
 
         var format = DateTimeFormatter.ofPattern("/YYYYMMdd");
         assertEquals(directory, LocalDate.now().format(format));
@@ -30,8 +27,8 @@ public class StorageUtils {
 
     @Test
     @DisplayName("현재 시간과 파일명으로 고유한 파일명 생성")
-    void makeUniqueFilename() {
-        var filename = me.ofnullable.file.utils.StorageUtils.makeUniqueFilename("test.jpg");
+    void make_unique_filename() {
+        var filename = makeUniqueFilename("test.jpg");
 
         var format = DateTimeFormatter.ofPattern("/HHmm");
         assertTrue(filename.startsWith(LocalDateTime.now().format(format)));
@@ -39,13 +36,13 @@ public class StorageUtils {
     }
 
     private static File getFile() throws FileNotFoundException {
-        return ResourceUtils.getFile("classpath:static/image/두근두근-파이썬.jpg");
+        return ResourceUtils.getFile("classpath:static/image/test.jpg");
     }
 
-    public static MockMultipartFile getMultipartFile(String variableName) {
+    public static InputStream getFileInputStream() {
         try {
             var file = getFile();
-            return new MockMultipartFile(variableName, file.getName(), IMAGE_JPEG_VALUE, Files.readAllBytes(file.toPath()));
+            return new FileInputStream(file);
         } catch (IOException e) {
             throw new Error(e.getMessage());
         }

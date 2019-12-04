@@ -27,8 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 import static me.ofnullable.sharebook.account.utils.AccountUtils.*;
-import static me.ofnullable.sharebook.file.utils.StorageUtils.getMultipartFile;
 import static me.ofnullable.sharebook.utils.RequestBuilderUtils.putMultipart;
+import static me.ofnullable.sharebook.utils.StorageTestUtils.getMultipartFile;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

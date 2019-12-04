@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.InputStream;
 
-import static me.ofnullable.sharebook.file.utils.StorageUtils.getMultipartFile;
+import static me.ofnullable.sharebook.utils.StorageTestUtils.getMultipartFile;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

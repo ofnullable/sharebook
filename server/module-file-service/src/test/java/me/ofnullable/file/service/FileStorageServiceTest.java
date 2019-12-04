@@ -1,6 +1,5 @@
-package me.ofnullable.sharebook.file.service;
+package me.ofnullable.file.service;
 
-import me.ofnullable.file.service.FileSystemStorageService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,7 +9,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static me.ofnullable.sharebook.file.utils.StorageUtils.getMultipartFile;
+import static me.ofnullable.file.utils.StorageTestUtils.getFileInputStream;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
@@ -21,8 +20,8 @@ class FileStorageServiceTest {
 
     @Test
     void store() throws IOException {
-        var multipartFile = getMultipartFile("test.jpg");
-        var uri = storageService.store(multipartFile.getInputStream(), "test.jpg");
+        var inputStream = getFileInputStream();
+        var uri = storageService.store(inputStream, "test.jpg");
 
         assertTrue(uri.startsWith(String.format("%s%s", "/image/", getDate())));
     }
