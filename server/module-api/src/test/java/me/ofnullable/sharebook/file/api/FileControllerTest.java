@@ -11,9 +11,10 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.multipart.MultipartFile;
 
-import static me.ofnullable.sharebook.file.utils.StorageUtils.getMultipartFile;
+import java.io.InputStream;
+
+import static me.ofnullable.sharebook.utils.StorageTestUtils.getMultipartFile;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -45,7 +46,7 @@ class FileControllerTest {
     @Test
     @DisplayName("이미지 업로드")
     void file_upload() throws Exception {
-        given(fileStorageService.store(any(MultipartFile.class)))
+        given(fileStorageService.store(any(InputStream.class), any(String.class)))
                 .willReturn("/static/image/filename.jpg");
 
         mvc.perform(multipart("/file/image")

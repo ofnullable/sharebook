@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class StorageUtils {
@@ -31,6 +32,12 @@ public class StorageUtils {
         return LocalDateTime.now().format(format);
     }
 
+    private static String makeFilename(String filename) {
+        var splitFilename = filename.split("\\.");
+        var extension = splitFilename[splitFilename.length - 1];
+        return UUID.randomUUID().toString() + "." + extension;
+    }
+
     /**
      * Make filename with unique prefix
      *
@@ -40,7 +47,7 @@ public class StorageUtils {
     public static String makeUniqueFilename(String originalFilename) {
         if (!StringUtils.hasText(originalFilename))
             throw new IllegalArgumentException("파일명은 비어있거나 공백일 수 없습니다. " + originalFilename);
-        return String.format("/%s-%s", makeFilenamePrefix(), originalFilename.replace(" ", "-"));
+        return String.format("/%s-%s", makeFilenamePrefix(), makeFilename(originalFilename));
     }
 
 }

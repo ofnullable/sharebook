@@ -25,7 +25,7 @@ export const passwordVerifyApi = password => {
 };
 
 export const updateAvatarApi = file => {
-  return axios.patch(`/account/avatar`, file);
+  return axios.put(`/account/avatar`, file);
 };
 
 export const updateInfoApi = data => {

@@ -34,7 +34,7 @@ public class AccountController {
         return new AccountResponse(accountSaveService.saveAndSignIn(dto));
     }
 
-    @PatchMapping("/account/avatar")
+    @PutMapping("/account/avatar")
     public AccountResponse updateAvatar(
             @AuthenticationPrincipal(expression = "account") Account account,
             MultipartFile avatar) throws IOException {

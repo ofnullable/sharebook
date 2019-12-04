@@ -20,7 +20,7 @@ public class FileController {
     @PostMapping("/image")
     public String saveFile(MultipartFile image) throws IOException {
         Assert.notNull(image, "Image file can not be null");
-        return fileStorageService.store(image);
+        return fileStorageService.store(image.getInputStream(), image.getOriginalFilename());
     }
 
 }

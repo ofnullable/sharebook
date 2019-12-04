@@ -4,6 +4,9 @@ import me.ofnullable.sharebook.account.domain.Account;
 import me.ofnullable.sharebook.account.domain.Email;
 import me.ofnullable.sharebook.account.dto.SignUpRequest;
 import me.ofnullable.sharebook.account.dto.UpdateAccountRequest;
+import me.ofnullable.sharebook.config.security.userdetails.AccountDetails;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 public class AccountUtils {
 
@@ -31,11 +34,23 @@ public class AccountUtils {
                 .build();
     }
 
-    public static Account buildAccountWithId() throws NoSuchFieldException, IllegalAccessException {
-        var account = buildNormalAccount();
-        var idField = account.getClass().getDeclaredField("id");
-        idField.setAccessible(true);
-        idField.set(account, 1L);
+    public static Account buildAccountWithId() {
+        try {
+            var account = buildNormalAccount();
+
+            var idField = account.getClass().getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(account, 1L);
+
+            return account;
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new Error(e.getMessage());
+        }
+    }
+
+    public static Account buildAccountWithAvatar() {
+        var account = buildAccountWithId();
+        account.updateAvatar("/image/test.jpg");
         return account;
     }
 
@@ -53,6 +68,11 @@ public class AccountUtils {
                 .name(name)
                 .newPassword(newPassword)
                 .build();
+    }
+
+    public static Authentication getAuthentication(Account account) {
+        var details = new AccountDetails(account);
+        return new UsernamePasswordAuthenticationToken(details, details.getPassword(), details.getAuthorities());
     }
 
 }

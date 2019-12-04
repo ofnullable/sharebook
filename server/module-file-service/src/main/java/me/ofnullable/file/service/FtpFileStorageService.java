@@ -6,10 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 import static me.ofnullable.file.utils.StorageUtils.makeDirectoryName;
@@ -30,15 +30,15 @@ public class FtpFileStorageService implements FileStorageService {
     }
 
     @Override
-    public String store(MultipartFile image) throws IOException {
-        return transfer(image);
+    public String store(InputStream in, String originalFilename) throws IOException {
+        return transfer(in, originalFilename);
     }
 
-    private String transfer(MultipartFile image) throws IOException {
+    private String transfer(InputStream in, String originalFilename) throws IOException {
         try (var session = sf.getSession();
-             var bin = new BufferedInputStream(image.getInputStream())) {
+             var bin = new BufferedInputStream(in)) {
 
-            var remoteFilePath = makeRemoteDir() + makeUniqueFilename(image.getOriginalFilename());
+            var remoteFilePath = makeRemoteDir() + makeUniqueFilename(originalFilename);
             session.append(bin, remoteFilePath);
 
             log.info("file transfer success at '{}'", remoteFilePath);

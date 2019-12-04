@@ -20,6 +20,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;
@@ -90,6 +91,13 @@ public class ApiErrorHandler extends ResponseEntityExceptionHandler {
     protected ApiError handleLendingHistoryNotExistsException(LendingHistoryNotExistsException e, WebRequest request) {
         log.debug("Lending history not exists. book id: {}", e.getBookId());
         return bindError(ErrorCode.LENDING_HISTORY_NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(IOException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ApiError handleIOException(IOException e, WebRequest request) {
+        log.error("IOException: {}", e.getMessage());
+        return bindError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error", request);
     }
 
     @Override
