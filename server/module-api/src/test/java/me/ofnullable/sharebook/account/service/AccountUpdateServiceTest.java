@@ -14,9 +14,9 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import static me.ofnullable.sharebook.account.utils.AccountUtils.*;
 import static me.ofnullable.sharebook.file.utils.StorageUtils.getMultipartFile;
@@ -73,9 +73,9 @@ class AccountUpdateServiceTest {
     @Test
     @DisplayName("아바타(프로필) 업데이트")
     void update_avatar() throws IOException {
-        var account = buildAccountWithId();
+        var account = buildAccountWithAvatar();
 
-        given(fileStorageService.store(any(MultipartFile.class)))
+        given(fileStorageService.store(any(InputStream.class), any(String.class)))
                 .willReturn("/image/test.jpg");
         given(accountFindService.findById(any(Long.class)))
                 .willReturn(account);
@@ -94,7 +94,7 @@ class AccountUpdateServiceTest {
     @Test
     @DisplayName("아바타(프로필) 업로드 실패 시 - IOException")
     void upload_avatar_failure() throws IOException {
-        given(fileStorageService.store(any(MultipartFile.class)))
+        given(fileStorageService.store(any(InputStream.class), any(String.class)))
                 .willThrow(IOException.class);
 
         var result = catchThrowable(() -> accountUpdateService.updateAvatar(1L, multipartFile));
@@ -106,7 +106,7 @@ class AccountUpdateServiceTest {
     @Test
     @DisplayName("아이디(PK)가 존재하지 않는 경우 ResourceNotFoundException")
     void update_avatar_failure() throws IOException {
-        given(fileStorageService.store(any(MultipartFile.class)))
+        given(fileStorageService.store(any(InputStream.class), any(String.class)))
                 .willReturn("/image/test.jpg");
         given(accountFindService.findById(any(Long.class)))
                 .willThrow(ResourceNotFoundException.class);

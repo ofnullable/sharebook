@@ -30,8 +30,8 @@ public class AccountUpdateService {
 
     @Transactional
     public Account updateAvatar(Long accountId, MultipartFile avatar) throws IOException {
-        var avatarUri = fileStorageService.store(avatar);
         var account = accountFindService.findById(accountId);
+        var avatarUri = fileStorageService.store(avatar.getInputStream(), avatar.getOriginalFilename());
         account.updateAvatar(avatarUri);
         return refreshSecurityContext(account);
     }

@@ -44,7 +44,7 @@ public class AccountUtils {
 
             return account;
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new Error();
+            throw new Error(e.getMessage());
         }
     }
 

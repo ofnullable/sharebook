@@ -21,9 +21,10 @@ class FileStorageServiceTest {
 
     @Test
     void store() throws IOException {
-        var path = storageService.store(getMultipartFile("test.jpg"));
+        var multipartFile = getMultipartFile("test.jpg");
+        var uri = storageService.store(multipartFile.getInputStream(), "test.jpg");
 
-        assertTrue(path.startsWith(String.format("%s%s", "/image/", getDate())));
+        assertTrue(uri.startsWith(String.format("%s%s", "/image/", getDate())));
     }
 
     private String getDate() {

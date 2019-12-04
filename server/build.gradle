@@ -13,6 +13,7 @@ buildscript {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'jacoco'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
 
@@ -24,15 +25,12 @@ subprojects {
         mavenCentral()
     }
 
-    configurations {
-        developmentOnly
-        runtimeClasspath {
-            extendsFrom developmentOnly
+    jacocoTestReport {
+        reports {
+            xml.enabled = true
+            html.enabled = true
+            html.destination file("${buildDir}/jacoco/html")
         }
-        compileOnly {
-            extendsFrom annotationProcessor
-        }
-        implementation.exclude module: 'spring-boot-starter-logging'
     }
 
     test {
@@ -40,9 +38,6 @@ subprojects {
     }
 
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-
         annotationProcessor 'org.projectlombok:lombok'
         compileOnly 'org.projectlombok:lombok'
 

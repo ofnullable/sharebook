@@ -2,11 +2,13 @@ package me.ofnullable.file.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 
 import static me.ofnullable.file.utils.StorageUtils.makeDirectoryName;
@@ -21,13 +23,16 @@ public class FileSystemStorageService implements FileStorageService {
     }
 
     @Override
-    public String store(MultipartFile image) throws IOException {
-        return save(image);
+    public String store(InputStream in, String originalFilename) throws IOException {
+        return save(in, originalFilename);
     }
 
-    private String save(MultipartFile image) throws IOException {
-        var targetFile = makeFile(makeDir(), image.getOriginalFilename());
-        image.transferTo(targetFile);
+    private String save(InputStream in, String originalFilename) throws IOException {
+        var targetFile = makeFile(makeDir(), originalFilename);
+
+        try (var bin = new BufferedInputStream(in)) {
+            FileCopyUtils.copy(bin, Files.newOutputStream(targetFile.toPath()));
+        }
 
         log.info("file save success at '{}'", targetFile.getPath());
         return "/image/" + targetFile.getParentFile().getName() + "/" + targetFile.getName();

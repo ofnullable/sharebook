@@ -35,7 +35,7 @@ public class StorageUtils {
 
         var format = DateTimeFormatter.ofPattern("/HHmm");
         assertTrue(filename.startsWith(LocalDateTime.now().format(format)));
-        assertTrue(filename.endsWith("test.jpg"));
+        assertTrue(filename.endsWith(".jpg"));
     }
 
     private static File getFile() throws FileNotFoundException {
@@ -47,7 +47,7 @@ public class StorageUtils {
             var file = getFile();
             return new MockMultipartFile(variableName, file.getName(), IMAGE_JPEG_VALUE, Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
-            throw new Error();
+            throw new Error(e.getMessage());
         }
     }
 
