@@ -1,6 +1,5 @@
 package me.ofnullable.file.service;
 
-import me.ofnullable.file.config.FtpProperties;
 import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +22,9 @@ public class FtpFileStorageService implements FileStorageService {
     private final String basePath;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public FtpFileStorageService(SessionFactory<FTPFile> sf, FtpProperties properties) {
+    public FtpFileStorageService(SessionFactory<FTPFile> sf, String basePath) {
         this.sf = sf;
-        this.basePath = properties.getBasePath() != null ? properties.getBasePath() : DEFAULT_PATH;
+        this.basePath = StringUtils.hasText(basePath) ? basePath : DEFAULT_PATH;
         log.info("Create ftp file storage service!");
     }
 

@@ -5,13 +5,12 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter @Setter
-@ConfigurationProperties(prefix = "sharebook.ftp")
+@ConfigurationProperties(prefix = "sharebook.file.ftp")
 public class FtpProperties {
 
-    private Integer port;
     private String host;
+    private Integer port;
     private String username;
     private String password;
-    private String basePath;
 
 }
