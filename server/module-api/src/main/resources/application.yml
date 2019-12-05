@@ -1,9 +1,11 @@
 #sharebook:
-#  ftp:
-#    host: "ftp.host.com"
-#    username: "ftp username"
-#    password: "ftp password"
-#    base-path: "base/path/to/save"
+#  file:
+#    base-path: "/image"
+#    ftp:
+#      host: "ftp.host.com"
+#      port: 21
+#      username: "ftp username"
+#      password: "ftp password"
 
 spring:
   http:

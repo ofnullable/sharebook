@@ -16,11 +16,11 @@ import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
 
 @Configuration
-@EnableConfigurationProperties(FtpProperties.class)
+@EnableConfigurationProperties({FileProperties.class, FtpProperties.class})
 public class FtpAutoConfiguration {
 
     @Bean(name = "ftpSessionFactory")
-    @ConditionalOnProperty({"sharebook.ftp.port", "sharebook.ftp.host", "sharebook.ftp.username", "sharebook.ftp.password"})
+    @ConditionalOnProperty(prefix = "sharebook.file.ftp", name = {"port", "host", "username", "password"})
     public SessionFactory<FTPFile> ftpSessionFactory(FtpProperties properties) {
         var sf = new DefaultFtpSessionFactory();
         sf.setHost(properties.getHost());
@@ -36,14 +36,14 @@ public class FtpAutoConfiguration {
 
     @Bean
     @ConditionalOnBean(name = "ftpSessionFactory")
-    public FileStorageService ftpFileStorageService(SessionFactory<FTPFile> sf, FtpProperties properties) {
-        return new FtpFileStorageService(sf, properties);
+    public FileStorageService ftpFileStorageService(SessionFactory<FTPFile> sf, FileProperties properties) {
+        return new FtpFileStorageService(sf, properties.getBasePath());
     }
 
     @Bean
     @ConditionalOnMissingBean(name = "ftpSessionFactory")
-    public FileStorageService fileSystemStorageService() {
-        return new FileSystemStorageService();
+    public FileStorageService fileSystemStorageService(FileProperties properties) {
+        return new FileSystemStorageService(properties.getBasePath());
     }
 
 }
