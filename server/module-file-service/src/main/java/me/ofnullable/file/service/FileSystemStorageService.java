@@ -4,22 +4,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
+import org.springframework.util.StringUtils;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 
 import static me.ofnullable.file.utils.StorageUtils.makeDirectoryName;
 import static me.ofnullable.file.utils.StorageUtils.makeUniqueFilename;
+import static org.springframework.util.ResourceUtils.CLASSPATH_URL_PREFIX;
 
 public class FileSystemStorageService implements FileStorageService {
 
+    private static final String DEFAULT_PATH = "classpath:static/image";
+    private static final String RESOURCES_PREFIX = "classpath:static";
+
+    private final String basePath;
+
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public FileSystemStorageService() {
+    public FileSystemStorageService(String basePath) {
         log.info("Create file system storage service!");
+
+        if (StringUtils.hasText(basePath)) {
+            this.basePath = RESOURCES_PREFIX + basePath;
+        } else {
+            this.basePath = DEFAULT_PATH;
+        }
     }
 
     @Override
@@ -35,7 +45,7 @@ public class FileSystemStorageService implements FileStorageService {
         }
 
         log.info("file save success at '{}'", targetFile.getPath());
-        return "/image/" + targetFile.getParentFile().getName() + "/" + targetFile.getName();
+        return makeResourcePath(targetFile.getAbsolutePath());
     }
 
     private File makeFile(File directory, String filename) {
@@ -43,13 +53,25 @@ public class FileSystemStorageService implements FileStorageService {
     }
 
     private File makeDir() throws IOException {
-        var file = new File(
-                ResourceUtils.getFile("classpath:static/image").getPath() + makeDirectoryName());
+        File dir = getFile(basePath);
 
-        if (!file.exists())
-            return Files.createDirectory(file.toPath()).toFile();
+        if (dir.exists())
+            return dir;
         else
-            return file;
+            return Files.createDirectories(dir.toPath()).toFile();
+    }
+
+    private File getFile(String basePath) throws FileNotFoundException {
+        if (basePath.startsWith(CLASSPATH_URL_PREFIX)) {
+            return new File(ResourceUtils.getFile(basePath).getPath(), makeDirectoryName());
+        } else {
+            return new File(basePath, makeDirectoryName());
+        }
+    }
+
+    private String makeResourcePath(String absolutePath) throws FileNotFoundException {
+        var resourcePath = ResourceUtils.getFile(RESOURCES_PREFIX).getAbsolutePath();
+        return absolutePath.substring(resourcePath.length()).replace("\\", "/");
     }
 
 }
