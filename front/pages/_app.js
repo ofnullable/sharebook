@@ -7,7 +7,7 @@ import withRedux from 'next-redux-wrapper';
 import withReduxSaga from 'next-redux-saga';
 
 import { loadUserRequest } from '@redux/actions/userActions';
-import Layout from '@components/layout';
+import Layout from '@components/Layout';
 import storeConfig from '@redux/store';
 
 import { GlobalStyle } from '@styles/common';
@@ -46,7 +46,10 @@ class Sharebook extends App {
           <meta name='title' content={title} />
           <meta name='description' content={description} />
           <link rel='icon' href='/static/favicon.ico' />
-          <link href='https://fonts.googleapis.com/icon?family=Material+Icons+Outlined' rel='stylesheet' />
+          <link
+            href='https://fonts.googleapis.com/icon?family=Material+Icons+Outlined'
+            rel='stylesheet'
+          />
           <link
             href='https://fonts.googleapis.com/css?family=Jua&display=swap&subset=korean'
             rel='stylesheet'
