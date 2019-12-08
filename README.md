@@ -2,7 +2,7 @@
 
 `학원 또는 직장등의 조직 내 조직원들의 자유로운 도서 공유를 위한 Web App`
 
-[BITCAMP](https://bitcamp.co.kr/index.php?main_page=home)에서 진행했던 Semi 프로젝트의 REMAKE ver.  
+[BITCAMP](https://bitcamp.co.kr/index.php?main_page=home)에서 진행했던 Semi 프로젝트의   
 **[origin-repository](https://github.com/thdnthdn2/publicshare)**, **[forked-repository](https://github.com/jooonak/publicshare)**
 
 ## Key Concepts
@@ -19,11 +19,20 @@
 - VSCode (front) + Intellij (back)
 - Node.js: 10.15.3
 - Java: 11.0.1
+- MySQL: 8.0.13
 
 ## 실행방법
 
+프로젝트를 받지 않았다면 우선 프로젝트를 로컬에 clone 받는다.
+
+```
+// terminal
+> cd path/to/download
+> git clone https://github.com/ofnullable/sharebook.git
+```
+
 - front: [실행방법](./front/README.md#실행방법)
-- back: [실행방법](./server/README.md#실행방법)
+- server: [실행방법](./server/README.md#실행방법)
 
 ## 변경사항
 
