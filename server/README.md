@@ -4,15 +4,7 @@
 
 ## 실행방법
 
-프로젝트를 받지 않았다면 우선 프로젝트를 로컬에 clone 받는다.
-
-```
-// terminal
-> cd path/to/download
-> git clone https://github.com/ofnullable/sharebook.git
-```
-
-이 후 server 폴더로 이동 후 gradlew을 이용하여 실행한다. `// port: 8081`
+server 폴더로 이동 후 gradlew을 이용하여 실행한다. `// port: 8081`
 
 ```
 // terminal
