@@ -2,7 +2,7 @@
 
 `학원 또는 직장등의 조직 내 조직원들의 자유로운 도서 공유를 위한 Web App`
 
-[BITCAMP](https://bitcamp.co.kr/index.php?main_page=home)에서 진행했던 Semi 프로젝트의 개선버전  
+[BITCAMP](https://bitcamp.co.kr/index.php?main_page=home)에서 진행했던 프로젝트의 개선버전  
 **[origin-repository](https://github.com/thdnthdn2/publicshare)**, **[forked-repository](https://github.com/jooonak/publicshare)**
 
 ## Key Concepts
